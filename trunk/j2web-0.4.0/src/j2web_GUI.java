@@ -1,13 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.Toolkit;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import javax.swing.BoxLayout;
+//import javax.swing.border.EmptyBorder;
+//import java.awt.Toolkit;
+//import java.awt.GridBagLayout;
+//import java.awt.GridBagConstraints;
+//import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -16,8 +15,8 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import javax.swing.JLabel;
-import java.awt.FlowLayout;
-import java.awt.Color;
+//import java.awt.FlowLayout;
+//import java.awt.Color;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import com.jgoodies.forms.factories.FormFactory;
@@ -25,37 +24,54 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
-import javax.swing.JTextPane;
+//import javax.swing.JEditorPane;
+//import javax.swing.JTextPane;
 import javax.swing.JButton;
-import javax.swing.JSeparator;
+//import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
+//import java.awt.Component;
+//import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
 import java.awt.Component;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class j2web_GUI extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField txtCodiceInserzione;
 	private JTextField textTitoloAnnuncio;
 	private JTextField textFieldCap;
 	private JTextField textFieldIndirizzoLocalita;
-	private JTextField textFieldTitoloDellaScheda;
 	private JTextField textSuperficieImmobile;
 	private JTextField textFieldPrezzoImmobile;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_15;
-	private JTextField textField_11;
-	private JTextField textField_14;
+	private JTextField textFieldImmagine1;
+	private JTextField textFieldImmagine2;
+	private JTextField textFieldImmagine3;
+	private JTextField textFieldImmagine4;
+	private JTextField textFieldImmagine5;
+	private JTextField textFieldImmagine6;
+	private JTextField textFieldNumeroTotalePiani;
+	private JTextField textFieldAnnoCostruzione;
+	private JTextField textFieldImmagine7;
+	private JTextField textFieldImmagine8;
+	private JTextField textFieldImmagine9;
+	private JTextField textFieldImmagine10;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -73,9 +89,8 @@ public class j2web_GUI extends JFrame {
 	 */
 	public j2web_GUI() {
 		setTitle("J2Web - Immobiliare ver. 0.4.0");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Documents and Settings\\user\\workspace\\j2web-0.4.0\\images\\J2Web.ico"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 720);
+		setBounds(100, 100, 800, 600);
 		
 		JMenuBar menuBar_1 = new JMenuBar();
 		setJMenuBar(menuBar_1);
@@ -108,195 +123,311 @@ public class j2web_GUI extends JFrame {
 		mnNewMenu_2.add(mntmNewMenuItem_5);
 		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Creazione schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		getContentPane().add(panel_4);
-		panel_4.setLayout(new BorderLayout(0, 0));
+		JPanel panelCreazioneScheda = new JPanel();
+		panelCreazioneScheda.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Creazione schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		getContentPane().add(panelCreazioneScheda);
+		panelCreazioneScheda.setLayout(new BorderLayout(0, 0));
 		
-		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_1.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		panel_4.add(tabbedPane_1);
+		JTabbedPane tabbedPaneCreazioneSchede = new JTabbedPane(JTabbedPane.TOP);
+		panelCreazioneScheda.add(tabbedPaneCreazioneSchede, BorderLayout.NORTH);
 		
-		JPanel panel_3 = new JPanel();
-		tabbedPane_1.addTab("Dati obbligatori", null, panel_3, null);
-		panel_3.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("235px"),},
+		JPanel panelTabDatiObbligatori = new JPanel();
+		tabbedPaneCreazioneSchede.addTab("Dati obbligatori", null, panelTabDatiObbligatori, null);
+		panelTabDatiObbligatori.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("235px:grow"),},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("17px"),
-				RowSpec.decode("17px"),
+				RowSpec.decode("default:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
-				RowSpec.decode("17px"),
+				RowSpec.decode("100px:grow(5)"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("17px"),
-				FormFactory.DEFAULT_ROWSPEC,
+				RowSpec.decode("default:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("17px"),
-				RowSpec.decode("17px"),
+				RowSpec.decode("default:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("17px"),
-				RowSpec.decode("17px"),
+				RowSpec.decode("default:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("17px"),
-				RowSpec.decode("17px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("17px"),
-				RowSpec.decode("17px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("17px"),
-				RowSpec.decode("17px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("17px"),
-				RowSpec.decode("17px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("17px"),
-				RowSpec.decode("17px"),}));
+				RowSpec.decode("default:grow"),
+				FormFactory.UNRELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),}));
+		
+		JPanel panelCodiceInserzione = new JPanel();
+		panelTabDatiObbligatori.add(panelCodiceInserzione, "1, 2, fill, fill");
+		panelCodiceInserzione.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("fill:20px"),}));
 		
 		JLabel lblCodiceInserzione = new JLabel("Codice inserzione");
-		panel_3.add(lblCodiceInserzione, "1, 2");
+		lblCodiceInserzione.setToolTipText("");
+		panelCodiceInserzione.add(lblCodiceInserzione, "1, 1, left, fill");
 		
 		txtCodiceInserzione = new JTextField();
-		lblCodiceInserzione.setLabelFor(txtCodiceInserzione);
+		panelCodiceInserzione.add(txtCodiceInserzione, "2, 1, left, default");
 		txtCodiceInserzione.setHorizontalAlignment(SwingConstants.LEFT);
 		txtCodiceInserzione.setToolTipText("Inserire un codice per identificare univocamente l'annuncio");
 		txtCodiceInserzione.setColumns(10);
-		panel_3.add(txtCodiceInserzione, "1, 3");
+		lblCodiceInserzione.setLabelFor(txtCodiceInserzione);
+		
+		JPanel panelTitoloAnnuncio = new JPanel();
+		panelTabDatiObbligatori.add(panelTitoloAnnuncio, "1, 4, fill, fill");
+		panelTitoloAnnuncio.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("20px"),}));
 		
 		JLabel lblTitoloAnnuncio = new JLabel("Titolo annuncio");
-		panel_3.add(lblTitoloAnnuncio, "1, 5");
-		lblTitoloAnnuncio.setLabelFor(textTitoloAnnuncio);
+		panelTitoloAnnuncio.add(lblTitoloAnnuncio, "1, 1, fill, fill");
 		
 		textTitoloAnnuncio = new JTextField();
+		lblTitoloAnnuncio.setLabelFor(textTitoloAnnuncio);
+		panelTitoloAnnuncio.add(textTitoloAnnuncio, "2, 1, left, default");
 		textTitoloAnnuncio.setToolTipText("Inserire un titolo per l'annuncio");
-		textTitoloAnnuncio.setColumns(28);
-		panel_3.add(textTitoloAnnuncio, "1, 6");
+		textTitoloAnnuncio.setColumns(25);
+		
+		JPanel panelRegProvCom = new JPanel();
+		panelTabDatiObbligatori.add(panelRegProvCom, "1, 6, fill, fill");
+		panelRegProvCom.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("20px"),
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("20px"),
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("20px"),}));
 		
 		JLabel lblRegione = new JLabel("Regione");
-		panel_3.add(lblRegione, "1, 8");
+		panelRegProvCom.add(lblRegione, "1, 1, fill, fill");
 		
 		JComboBox comboBoxRegione = new JComboBox();
-		comboBoxRegione.setToolTipText("Selezionare la regione");
+		comboBoxRegione.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Select: Seleziona Regione");
+			}
+		});
+		comboBoxRegione.setModel(new DefaultComboBoxModel(new String[] {"Seleziona la regione", "Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"}));
 		lblRegione.setLabelFor(comboBoxRegione);
-		panel_3.add(comboBoxRegione, "1, 9");
+		panelRegProvCom.add(comboBoxRegione, "2, 1, left, default");
+		comboBoxRegione.setToolTipText("Selezionare la regione");
 		
 		JLabel lblProvincia = new JLabel("Provincia");
+		panelRegProvCom.add(lblProvincia, "1, 3, fill, fill");
 		lblProvincia.setToolTipText("Selezionare la provincia");
-		panel_3.add(lblProvincia, "1, 11");
 		
 		JComboBox comboBoxProvincia = new JComboBox();
+		comboBoxProvincia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Select: Seleziona Provincia");
+			}
+		});
 		lblProvincia.setLabelFor(comboBoxProvincia);
+		panelRegProvCom.add(comboBoxProvincia, "2, 3, left, default");
 		comboBoxProvincia.setToolTipText("Selezionare la provincia");
-		panel_3.add(comboBoxProvincia, "1, 12");
-		lblComune.setLabelFor(comboBoxComune);
+		
 		
 		JLabel lblComune = new JLabel("Comune");
+		panelRegProvCom.add(lblComune, "1, 5, fill, fill");
 		lblComune.setToolTipText("Selezionare il comune");
-		panel_3.add(lblComune, "1, 14");
+		
 		
 		JComboBox comboBoxComune = new JComboBox();
+		comboBoxComune.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Select: Seleziona Comune");
+			}
+		});
+		lblComune.setLabelFor(comboBoxComune);
+		panelRegProvCom.add(comboBoxComune, "2, 5, left, default");
 		comboBoxComune.setToolTipText("Selezionare il comune");
-		panel_3.add(comboBoxComune, "1, 15");
+		
+		JPanel panelCap = new JPanel();
+		panelTabDatiObbligatori.add(panelCap, "1, 8, fill, fill");
+		panelCap.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("default:grow"),}));
 		
 		JLabel lblCap = new JLabel("CAP");
-		panel_3.add(lblCap, "1, 17");
+		panelCap.add(lblCap, "1, 1, fill, fill");
 		
 		textFieldCap = new JTextField();
-		textFieldCap.setToolTipText("Inserire il CAP");
 		lblCap.setLabelFor(textFieldCap);
+		panelCap.add(textFieldCap, "2, 1, left, default");
+		textFieldCap.setToolTipText("Inserire il CAP");
 		textFieldCap.setColumns(10);
-		panel_3.add(textFieldCap, "1, 18");
+		
+		JPanel panelIndirizzo = new JPanel();
+		panelTabDatiObbligatori.add(panelIndirizzo, "1, 10, fill, fill");
+		panelIndirizzo.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("50dlu:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("20px"),}));
 		
 		JLabel lblIndirizzoLocalita = new JLabel("Indirizzo/Località");
-		panel_3.add(lblIndirizzoLocalita, "1, 20");
-		lblIndirizzoLocalita.setLabelFor(textFieldIndirizzoLocalita);
+		panelIndirizzo.add(lblIndirizzoLocalita, "1, 1, fill, fill");
 		
 		textFieldIndirizzoLocalita = new JTextField();
+		lblIndirizzoLocalita.setLabelFor(textFieldIndirizzoLocalita);
+		panelIndirizzo.add(textFieldIndirizzoLocalita, "2, 1, left, default");
 		textFieldIndirizzoLocalita.setToolTipText("Specificare un indirizzo completo o la località dell'immobile");
-		textFieldIndirizzoLocalita.setColumns(28);
-		panel_3.add(textFieldIndirizzoLocalita, "1, 21");
-		lblTitoloDellaScheda.setLabelFor(textFieldTitoloDellaScheda);
+		textFieldIndirizzoLocalita.setColumns(25);
 		
-		JLabel lblTitoloDellaScheda = new JLabel("Titolo della scheda");
-		lblTitoloDellaScheda.setToolTipText("Inserire un titolo descrittivo per l'annuncio");
-		panel_3.add(lblTitoloDellaScheda, "1, 23");
 		
-		textFieldTitoloDellaScheda = new JTextField();
-		textFieldTitoloDellaScheda.setToolTipText("Inserire un titolo descrittivo per l'annuncio");
-		panel_3.add(textFieldTitoloDellaScheda, "1, 24");
-		textFieldTitoloDellaScheda.setColumns(28);
+		JLabel lblTestoDellaScheda = new JLabel("Testo dell'annuncio");
+		lblTestoDellaScheda.setToolTipText("");
+		panelTabDatiObbligatori.add(lblTestoDellaScheda, "1, 12, default, fill");
 		
-		JLabel lblTestoDellaScheda = new JLabel("Testo della scheda");
-		panel_3.add(lblTestoDellaScheda, "1, 26");
-		lblTestoDellaScheda.setLabelFor(editorPaneTestoDellaScheda);
+		JScrollPane scrollPaneTestoScheda = new JScrollPane();
+		panelTabDatiObbligatori.add(scrollPaneTestoScheda, "1, 13, fill, fill");
 		
-		JEditorPane editorPaneTestoDellaScheda = new JEditorPane();
-		editorPaneTestoDellaScheda.setToolTipText("Inserire una descrizione completa dell'immobile");
-		panel_3.add(editorPaneTestoDellaScheda, "1, 27");
+		JTextArea textAreaTestoAnnuncio = new JTextArea();
+		textAreaTestoAnnuncio.setTabSize(4);
+		lblTestoDellaScheda.setLabelFor(textAreaTestoAnnuncio);
+		textAreaTestoAnnuncio.setToolTipText("Inserire il testo dell'annuncio");
+		scrollPaneTestoScheda.setViewportView(textAreaTestoAnnuncio);
+		
+		JPanel panelCategoriaTipologia = new JPanel();
+		panelTabDatiObbligatori.add(panelCategoriaTipologia, "1, 15, fill, default");
+		panelCategoriaTipologia.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("50dlu:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("20px"),
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("20px"),}));
 		
 		JLabel lblCategoriaImmobile = new JLabel("Categoria immobile");
-		panel_3.add(lblCategoriaImmobile, "1, 29");
-		lblCategoriaImmobile.setLabelFor(comboBoxCategoriaImmobile);
+		panelCategoriaTipologia.add(lblCategoriaImmobile, "1, 1, fill, fill");
+		
 		
 		JComboBox comboBoxCategoriaImmobile = new JComboBox();
+		comboBoxCategoriaImmobile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Select: Seleziona Categoria immobile");
+			}
+		});
+		comboBoxCategoriaImmobile.setModel(new DefaultComboBoxModel(new String[] {"Seleziona la categoria", "Residenziale", "Commerciale", "Industriale", "Turistico"}));
+		lblCategoriaImmobile.setLabelFor(comboBoxCategoriaImmobile);
+		comboBoxCategoriaImmobile.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panelCategoriaTipologia.add(comboBoxCategoriaImmobile, "2, 1, left, default");
 		comboBoxCategoriaImmobile.setToolTipText("Selezionare la categoria dell'immobile");
-		panel_3.add(comboBoxCategoriaImmobile, "1, 30");
 		
 		JLabel lblTipologiaImmobile = new JLabel("Tipologia immobile");
-		panel_3.add(lblTipologiaImmobile, "1, 32");
-		lblTipologiaImmobile.setLabelFor(comboBoxTipologiaImmobile);
+		panelCategoriaTipologia.add(lblTipologiaImmobile, "1, 3, fill, fill");
+		
 		
 		JComboBox comboBoxTipologiaImmobile = new JComboBox();
+		lblTipologiaImmobile.setLabelFor(comboBoxTipologiaImmobile);
+		comboBoxTipologiaImmobile.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panelCategoriaTipologia.add(comboBoxTipologiaImmobile, "2, 3, left, default");
 		comboBoxTipologiaImmobile.setToolTipText("Selezionare la tipologia di immobile");
-		panel_3.add(comboBoxTipologiaImmobile, "1, 33");
+		
+		JPanel panelSuperficie = new JPanel();
+		panelTabDatiObbligatori.add(panelSuperficie, "1, 17, fill, fill");
+		panelSuperficie.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("20px"),}));
+		
 		
 		JLabel lblSuperficieImmmobile = new JLabel("Superficie (mq)");
-		panel_3.add(lblSuperficieImmmobile, "1, 35");
-		lblSuperficieImmmobile.setLabelFor(textSuperficieImmobile);
+		panelSuperficie.add(lblSuperficieImmmobile, "1, 1, fill, fill");
 		
 		textSuperficieImmobile = new JTextField();
+		lblSuperficieImmmobile.setLabelFor(textSuperficieImmobile);
+		panelSuperficie.add(textSuperficieImmobile, "2, 1, left, default");
 		textSuperficieImmobile.setToolTipText("Inserire la superficie dell'immobile in metri quadrati");
-		panel_3.add(textSuperficieImmobile, "1, 36");
 		textSuperficieImmobile.setColumns(10);
-		lblPrezzoImmobile.setLabelFor(textFieldPrezzoImmobile);
+		
+		JPanel panelTipologiaContratto = new JPanel();
+		panelTabDatiObbligatori.add(panelTipologiaContratto, "1, 19, fill, fill");
+		panelTipologiaContratto.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("20px"),}));
 		
 		JLabel lblTipologiaContratto = new JLabel("Tipologia contratto");
-		lblTipologiaContratto.setToolTipText("Selezionare la tipologia di contratto valida per l'immobile");
-		panel_3.add(lblTipologiaContratto, "1, 38");
-		lblTipologiaContratto.setLabelFor(comboBoxTipologiaContratto);
+		panelTipologiaContratto.add(lblTipologiaContratto, "1, 1, fill, fill");
+		lblTipologiaContratto.setToolTipText("");
+		
 		
 		JComboBox comboBoxTipologiaContratto = new JComboBox();
-		comboBoxTipologiaContratto.setToolTipText("Selezionare la tipologia di contratto valida per l'immobile");
-		panel_3.add(comboBoxTipologiaContratto, "1, 39");
+		comboBoxTipologiaContratto.setModel(new DefaultComboBoxModel(new String[] {"Affitto", "Vendita"}));
+		lblTipologiaContratto.setLabelFor(comboBoxTipologiaContratto);
+		comboBoxTipologiaContratto.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panelTipologiaContratto.add(comboBoxTipologiaContratto, "2, 1, left, default");
+		comboBoxTipologiaContratto.setToolTipText("");
+		
+		JPanel panelPrezzo = new JPanel();
+		panelTabDatiObbligatori.add(panelPrezzo, "1, 21, fill, fill");
+		panelPrezzo.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormFactory.MIN_ROWSPEC,}));
 		
 		JLabel lblPrezzoImmobile = new JLabel("Prezzo");
-		panel_3.add(lblPrezzoImmobile, "1, 41");
+		panelPrezzo.add(lblPrezzoImmobile, "1, 1, fill, fill");
 		
 		textFieldPrezzoImmobile = new JTextField();
+		lblPrezzoImmobile.setLabelFor(textFieldPrezzoImmobile);
+		panelPrezzo.add(textFieldPrezzoImmobile, "2, 1, left, default");
 		textFieldPrezzoImmobile.setToolTipText("Inserire il prezzo di vendita o affitto dell'immobile");
-		panel_3.add(textFieldPrezzoImmobile, "1, 42");
 		textFieldPrezzoImmobile.setColumns(10);
 		
-		JPanel panel_5 = new JPanel();
-		tabbedPane_1.addTab("Immagini", null, panel_5, null);
-		panel_5.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px"),
-				ColumnSpec.decode("max(8dlu;min)"),
-				ColumnSpec.decode("121px"),},
+		JPanel panelPulsantiCreazioneScheda = new JPanel();
+		panelTabDatiObbligatori.add(panelPulsantiCreazioneScheda, "1, 23, fill, fill");
+		panelPulsantiCreazioneScheda.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("81px:grow"),
+				ColumnSpec.decode("20px:grow"),
+				ColumnSpec.decode("81px:grow"),},
 			new RowSpec[] {
-				RowSpec.decode("25px"),
+				RowSpec.decode("23px"),}));
+		
+		JButton btnCreaScheda = new JButton("Crea scheda");
+		btnCreaScheda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: Crea scheda");
+			}
+		});
+		btnCreaScheda.setToolTipText("Crea la scheda e la inserisce nela pannello schede");
+		panelPulsantiCreazioneScheda.add(btnCreaScheda, "1, 1, default, fill");
+		
+		JLabel label = new JLabel("");
+		panelPulsantiCreazioneScheda.add(label, "2, 1, fill, fill");
+		
+		JButton btnResettaPannelloCreazioneScheda = new JButton("Resetta");
+		btnResettaPannelloCreazioneScheda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: Resetta");
+			}
+		});
+		btnResettaPannelloCreazioneScheda.setToolTipText("Resetta il pannello di creazione scheda");
+		panelPulsantiCreazioneScheda.add(btnResettaPannelloCreazioneScheda, "3, 1, default, fill");
+		
+		JPanel panelTabImmagini = new JPanel();
+		tabbedPaneCreazioneSchede.addTab("Immagini", null, panelTabImmagini, null);
+		panelTabImmagini.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("max(54dlu;default)"),
+				ColumnSpec.decode("max(0dlu;min)"),
+				ColumnSpec.decode("right:80px:grow"),},
+			new RowSpec[] {
 				FormFactory.LINE_GAP_ROWSPEC,
 				RowSpec.decode("25px"),
 				FormFactory.LINE_GAP_ROWSPEC,
@@ -306,185 +437,384 @@ public class j2web_GUI extends JFrame {
 				FormFactory.LINE_GAP_ROWSPEC,
 				RowSpec.decode("25px"),
 				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("25px"),}));
+				RowSpec.decode("25px"),
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("25px"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JButton btnNewButton = new JButton("New button");
-		panel_5.add(btnNewButton, "1, 1, fill, fill");
+		JButton btnImmagine1 = new JButton("Immagine1");
+		btnImmagine1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Click: Immmagine 1");
+			}
+		});
+		btnImmagine1.setToolTipText("Inserimento immagine 1");
+		panelTabImmagini.add(btnImmagine1, "1, 2");
 		
-		textField_7 = new JTextField();
-		panel_5.add(textField_7, "3, 1, fill, fill");
-		textField_7.setColumns(10);
+		textFieldImmagine1 = new JTextField();
+		textFieldImmagine1.setToolTipText("Inserimento immagine 1");
+		panelTabImmagini.add(textFieldImmagine1, "3, 2, left, default");
+		textFieldImmagine1.setColumns(25);
 		
-		JButton btnNewButton_1 = new JButton("New button");
-		panel_5.add(btnNewButton_1, "1, 3, fill, fill");
+		JButton btnImmagine2 = new JButton("Immagine 2");
+		btnImmagine2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Click: Immmagine 2");
+			}
+		});
+		btnImmagine2.setToolTipText("Inserimento immagine 2");
+		panelTabImmagini.add(btnImmagine2, "1, 4, default, fill");
 		
-		textField_8 = new JTextField();
-		panel_5.add(textField_8, "3, 3, fill, fill");
-		textField_8.setColumns(10);
+		textFieldImmagine2 = new JTextField();
+		textFieldImmagine2.setToolTipText("Inserimento immagine 2");
+		panelTabImmagini.add(textFieldImmagine2, "3, 4, left, default");
+		textFieldImmagine2.setColumns(25);
 		
-		JButton btnNewButton_4 = new JButton("New button");
-		panel_5.add(btnNewButton_4, "1, 5, fill, fill");
+		JButton btnImmagine3 = new JButton("Immagine 3");
+		btnImmagine3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Click: Immmagine 3");
+			}
+		});
+		btnImmagine3.setToolTipText("Inserimento immagine 3");
+		panelTabImmagini.add(btnImmagine3, "1, 6, default, fill");
 		
-		textField_9 = new JTextField();
-		panel_5.add(textField_9, "3, 5, fill, fill");
-		textField_9.setColumns(10);
+		textFieldImmagine3 = new JTextField();
+		textFieldImmagine3.setToolTipText("Inserimento immagine 3");
+		panelTabImmagini.add(textFieldImmagine3, "3, 6, left, default");
+		textFieldImmagine3.setColumns(25);
 		
-		JButton btnNewButton_3 = new JButton("New button");
-		panel_5.add(btnNewButton_3, "1, 7, fill, fill");
+		JButton btnImmagine4 = new JButton("Immagine 4");
+		btnImmagine4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Click: Immmagine 4");
+			}
+		});
+		btnImmagine4.setToolTipText("Inserimento immagine 4");
+		panelTabImmagini.add(btnImmagine4, "1, 8, default, fill");
 		
-		textField_10 = new JTextField();
-		panel_5.add(textField_10, "3, 7, fill, fill");
-		textField_10.setColumns(10);
+		textFieldImmagine4 = new JTextField();
+		textFieldImmagine4.setToolTipText("Inserimento immagine 4");
+		panelTabImmagini.add(textFieldImmagine4, "3, 8, left, default");
+		textFieldImmagine4.setColumns(25);
 		
-		JButton btnNewButton_6 = new JButton("New button");
-		panel_5.add(btnNewButton_6, "1, 9, fill, fill");
+		JButton btnImmagine5 = new JButton("Immagine 5");
+		btnImmagine5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Click: Immmagine 5");
+			}
+		});
+		btnImmagine5.setToolTipText("Inserimento immagine 5");
+		panelTabImmagini.add(btnImmagine5, "1, 10, default, fill");
 		
-		textField_12 = new JTextField();
-		panel_5.add(textField_12, "3, 9, fill, fill");
-		textField_12.setColumns(10);
+		textFieldImmagine5 = new JTextField();
+		textFieldImmagine5.setToolTipText("Inserimento immagine 5");
+		panelTabImmagini.add(textFieldImmagine5, "3, 10, left, default");
+		textFieldImmagine5.setColumns(25);
 		
-		JButton btnNewButton_7 = new JButton("New button");
-		panel_5.add(btnNewButton_7, "1, 11, fill, fill");
+		JButton btnImmagine6 = new JButton("Immagine 6");
+		btnImmagine6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Click: Immmagine 6");
+			}
+		});
+		btnImmagine6.setToolTipText("Inserimento immagine 6");
+		panelTabImmagini.add(btnImmagine6, "1, 12, default, fill");
 		
-		textField_13 = new JTextField();
-		panel_5.add(textField_13, "3, 11, fill, fill");
-		textField_13.setColumns(10);
+		textFieldImmagine6 = new JTextField();
+		textFieldImmagine6.setToolTipText("Inserimento immagine 6");
+		panelTabImmagini.add(textFieldImmagine6, "3, 12, left, default");
+		textFieldImmagine6.setColumns(25);
 		
-		JButton btnNewButton_9 = new JButton("New button");
-		panel_5.add(btnNewButton_9, "1, 11, fill, fill");
+		JButton btnImmagine7 = new JButton("Immagine 7");
+		btnImmagine7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Click: Immmagine 7");
+			}
+		});
+		btnImmagine7.setToolTipText("Inserimento immagine 7");
+		panelTabImmagini.add(btnImmagine7, "1, 14");
 		
-		textField_15 = new JTextField();
-		panel_5.add(textField_15, "3, 11, fill, fill");
-		textField_15.setColumns(10);
+		textFieldImmagine7 = new JTextField();
+		textFieldImmagine7.setToolTipText("Inserimento immagine 7");
+		panelTabImmagini.add(textFieldImmagine7, "3, 14, left, default");
+		textFieldImmagine7.setColumns(25);
 		
-		JPanel panel = new JPanel();
-		tabbedPane_1.addTab("Dati secondari", null, panel, null);
-		panel.setLayout(new GridLayout(0, 2, 0, 0));
+		JButton btnImmagine8 = new JButton("Immagine 8");
+		btnImmagine8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Click: Immmagine 8");
+			}
+		});
+		btnImmagine8.setToolTipText("Inserimento immagine 8");
+		panelTabImmagini.add(btnImmagine8, "1, 16");
 		
-		JLabel lblNewLabel_6 = new JLabel("Numero locali");
-		panel.add(lblNewLabel_6);
+		textFieldImmagine8 = new JTextField();
+		textFieldImmagine8.setToolTipText("Inserimento immagine 8");
+		panelTabImmagini.add(textFieldImmagine8, "3, 16, left, default");
+		textFieldImmagine8.setColumns(25);
 		
-		JComboBox comboBox_6 = new JComboBox();
-		panel.add(comboBox_6);
+		JButton btnImmagine9 = new JButton("Immagine 9");
+		btnImmagine9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Click: Immmagine 9");
+			}
+		});
+		btnImmagine9.setToolTipText("Inserimento immagine 9");
+		panelTabImmagini.add(btnImmagine9, "1, 18");
 		
-		JLabel lblNewLabel_5 = new JLabel("Numero camere da letto");
-		panel.add(lblNewLabel_5);
+		textFieldImmagine9 = new JTextField();
+		textFieldImmagine9.setToolTipText("Inserimento immagine 9");
+		panelTabImmagini.add(textFieldImmagine9, "3, 18, left, default");
+		textFieldImmagine9.setColumns(25);
 		
-		JComboBox comboBox_7 = new JComboBox();
-		panel.add(comboBox_7);
+		JButton btImmagine10 = new JButton("Immagine 10");
+		btImmagine10.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Click: Immmagine 10");
+			}
+		});
+		btImmagine10.setToolTipText("Inserimento immagine 10");
+		panelTabImmagini.add(btImmagine10, "1, 20");
 		
-		JLabel lblNewLabel_7 = new JLabel("Numero bagni");
-		panel.add(lblNewLabel_7);
+		textFieldImmagine10 = new JTextField();
+		textFieldImmagine10.setToolTipText("Inserimento immagine 10");
+		panelTabImmagini.add(textFieldImmagine10, "3, 20, left, default");
+		textFieldImmagine10.setColumns(25);
 		
-		JComboBox comboBox_8 = new JComboBox();
-		panel.add(comboBox_8);
+		JPanel panelTabDatiSecondari = new JPanel();
+		tabbedPaneCreazioneSchede.addTab("Dati secondari", null, panelTabDatiSecondari, null);
+		panelTabDatiSecondari.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("121px:grow"),
+				ColumnSpec.decode("50dlu:grow"),},
+			new RowSpec[] {
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblNewLabel_8 = new JLabel("Stato dell'immobile");
-		panel.add(lblNewLabel_8);
+		JLabel lblNumeroLocali = new JLabel("Numero locali");
+		lblNumeroLocali.setToolTipText("Selezionare il numero dei locali dell'immobile");
+		panelTabDatiSecondari.add(lblNumeroLocali, "1, 2, left, default");
 		
-		JComboBox comboBox_9 = new JComboBox();
-		panel.add(comboBox_9);
+		JComboBox comboBoxNumeroLocali = new JComboBox();
+		comboBoxNumeroLocali.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", ">7"}));
+		comboBoxNumeroLocali.setToolTipText("Selezionare il numero dei locali dell'immobile");
+		lblNumeroLocali.setLabelFor(comboBoxNumeroLocali);
+		panelTabDatiSecondari.add(comboBoxNumeroLocali, "2, 2, left, default");
 		
-		JLabel lblNewLabel_9 = new JLabel("Arredamenti");
-		panel.add(lblNewLabel_9);
+		JLabel lblNumeroCamere = new JLabel("Numero camere da letto");
+		lblNumeroCamere.setToolTipText("Selezionare il numero di camere da letto disponibili");
+		panelTabDatiSecondari.add(lblNumeroCamere, "1, 4");
 		
-		JComboBox comboBox_10 = new JComboBox();
-		panel.add(comboBox_10);
+		JComboBox comboBoxNumeroCamere = new JComboBox();
+		comboBoxNumeroCamere.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", ">5"}));
+		comboBoxNumeroCamere.setToolTipText("Selezionare il numero di camere da letto disponibili");
+		lblNumeroCamere.setLabelFor(comboBoxNumeroCamere);
+		panelTabDatiSecondari.add(comboBoxNumeroCamere, "2, 4, left, default");
 		
-		JLabel lblNewLabel_10 = new JLabel("Tipologia di riscaldamento");
-		panel.add(lblNewLabel_10);
+		JLabel lblNumeroBagni = new JLabel("Numero bagni");
+		lblNumeroBagni.setToolTipText("Selezionare il numero di bagni disponibili");
+		panelTabDatiSecondari.add(lblNumeroBagni, "1, 6");
 		
-		JComboBox comboBox_11 = new JComboBox();
-		panel.add(comboBox_11);
+		JComboBox comboBox_NumeroBagni = new JComboBox();
+		comboBox_NumeroBagni.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", ">5"}));
+		comboBox_NumeroBagni.setToolTipText("Selezionare il numero di bagni disponibili");
+		lblNumeroBagni.setLabelFor(comboBox_NumeroBagni);
+		panelTabDatiSecondari.add(comboBox_NumeroBagni, "2, 6, left, default");
 		
-		JLabel lblNewLabel_11 = new JLabel("Clima");
-		panel.add(lblNewLabel_11);
+		JLabel lblStatoImmobile = new JLabel("Stato dell'immobile");
+		lblStatoImmobile.setToolTipText("Selezionare lo stato attuale dell'immobile");
+		panelTabDatiSecondari.add(lblStatoImmobile, "1, 8");
 		
-		JComboBox comboBox_12 = new JComboBox();
-		panel.add(comboBox_12);
+		JComboBox comboBoxStatoImmobile = new JComboBox();
+		comboBoxStatoImmobile.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Nuovo", "Ristrutturato", "Da ristrutturare", "In buono stato", "Abitabile", "Ottimo", "In costruzione"}));
+		comboBoxStatoImmobile.setToolTipText("Selezionare lo stato attuale dell'immobile");
+		lblStatoImmobile.setLabelFor(comboBoxStatoImmobile);
+		panelTabDatiSecondari.add(comboBoxStatoImmobile, "2, 8");
 		
-		JLabel lblNewLabel_12 = new JLabel("Certificazioni energetiche");
-		panel.add(lblNewLabel_12);
+		JLabel lblArredamenti = new JLabel("Arredamenti");
+		lblArredamenti.setToolTipText("Selezionr la condizione attuale dell'arredamento");
+		panelTabDatiSecondari.add(lblArredamenti, "1, 10");
 		
-		JComboBox comboBox_13 = new JComboBox();
-		panel.add(comboBox_13);
+		JComboBox comboBoxArredamenti = new JComboBox();
+		comboBoxArredamenti.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Arredato", "Semi arredato", "Non arredato"}));
+		comboBoxArredamenti.setToolTipText("Selezionr la condizione attuale dell'arredamento");
+		lblArredamenti.setLabelFor(comboBoxArredamenti);
+		panelTabDatiSecondari.add(comboBoxArredamenti, "2, 10");
 		
-		JLabel lblNewLabel_13 = new JLabel("Giardino");
-		panel.add(lblNewLabel_13);
+		JLabel lblPiano = new JLabel("Piano");
+		lblPiano.setToolTipText("Selezionare il piano in cui è situato l'immobile");
+		panelTabDatiSecondari.add(lblPiano, "1, 12");
 		
-		JComboBox comboBox_14 = new JComboBox();
-		panel.add(comboBox_14);
+		JComboBox comboBoxPiano = new JComboBox();
+		comboBoxPiano.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Piano terra", "Primo piano", "Piano intermedio", "Piano alto", "Ultimo piano", "Su più livelli"}));
+		comboBoxPiano.setToolTipText("Selezionare il piano in cui è situato l'immobile");
+		lblPiano.setLabelFor(comboBoxPiano);
+		panelTabDatiSecondari.add(comboBoxPiano, "2, 12");
 		
-		JLabel lblNewLabel_14 = new JLabel("Parcheggio");
-		panel.add(lblNewLabel_14);
+		JLabel lblNumeroTotalePiani = new JLabel("Numero totale di piani");
+		lblNumeroTotalePiani.setToolTipText("Indicare il numero totale dei piani dell'immobile");
+		panelTabDatiSecondari.add(lblNumeroTotalePiani, "1, 14");
+		lblNumeroTotalePiani.setLabelFor(textFieldNumeroTotalePiani);
 		
-		JComboBox comboBox_15 = new JComboBox();
-		panel.add(comboBox_15);
+		textFieldNumeroTotalePiani = new JTextField();
+		textFieldNumeroTotalePiani.setToolTipText("Indicare il numero totale dei piani dell'immobile");
+		panelTabDatiSecondari.add(textFieldNumeroTotalePiani, "2, 14, left, default");
+		textFieldNumeroTotalePiani.setColumns(10);
 		
-		JLabel lblNewLabel_15 = new JLabel("Piano");
-		panel.add(lblNewLabel_15);
+		JLabel lblCertificazioniEnergetiche = new JLabel("Certificazioni energetiche");
+		lblCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
+		panelTabDatiSecondari.add(lblCertificazioniEnergetiche, "1, 16");
 		
-		JComboBox comboBox_16 = new JComboBox();
-		panel.add(comboBox_16);
+		JComboBox comboBoxCertificazioniEnergetiche = new JComboBox();
+		comboBoxCertificazioniEnergetiche.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Certificazione energetica A+", "Certificazione energetica A", "Certificazione energetica B", "Certificazione energetica C", "Certificazione energetica D", "Certificazione energetica E", "Certificazione energetica F", "Certificazione energetica G", "Non specificata"}));
+		comboBoxCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
+		lblCertificazioniEnergetiche.setLabelFor(comboBoxCertificazioniEnergetiche);
+		panelTabDatiSecondari.add(comboBoxCertificazioniEnergetiche, "2, 16");
 		
-		JLabel lblNewLabel_16 = new JLabel("Numero totale di piani");
-		panel.add(lblNewLabel_16);
+		JLabel lbTipologiaRiscaldamento = new JLabel("Tipologia riscaldamento");
+		lbTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
+		panelTabDatiSecondari.add(lbTipologiaRiscaldamento, "1, 18");
 		
-		textField_11 = new JTextField();
-		panel.add(textField_11);
-		textField_11.setColumns(10);
+		JComboBox comboBoxTipologiaRiscaldamento = new JComboBox();
+		comboBoxTipologiaRiscaldamento.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Assente", "Centralizzato", "Autonomo", "Stufa"}));
+		comboBoxTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
+		panelTabDatiSecondari.add(comboBoxTipologiaRiscaldamento, "2, 18");
 		
-		JLabel lblNewLabel_17 = new JLabel("Anno");
-		panel.add(lblNewLabel_17);
+		JLabel lblClima = new JLabel("Clima");
+		lblClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
+		panelTabDatiSecondari.add(lblClima, "1, 20");
 		
-		textField_14 = new JTextField();
-		panel.add(textField_14);
-		textField_14.setColumns(10);
+		JComboBox comboBoxClima = new JComboBox();
+		comboBoxClima.setModel(new DefaultComboBoxModel(new String[] {"Assente", "Aria condizionata", "Climatizzatore"}));
+		comboBoxClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
+		panelTabDatiSecondari.add(comboBoxClima, "2, 20");
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("New check box");
-		panel.add(chckbxNewCheckBox);
+		JLabel lblParcheggio = new JLabel("Parcheggio");
+		lblParcheggio.setToolTipText("Selezionare la tipologia di parcheggio disponibile");
+		panelTabDatiSecondari.add(lblParcheggio, "1, 22");
 		
-		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("New check box");
-		panel.add(chckbxNewCheckBox_1);
+		JComboBox comboBoxParcheggio = new JComboBox();
+		comboBoxParcheggio.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Nessuno", "Garage", "Posto auto coperto", "Posto auto scoperto"}));
+		comboBoxParcheggio.setToolTipText("Selezionare la tipologia di parcheggio disponibile");
+		panelTabDatiSecondari.add(comboBoxParcheggio, "2, 22");
+		lblParcheggio.setLabelFor(comboBoxParcheggio);
 		
-		JCheckBox chckbxNewCheckBox_2 = new JCheckBox("New check box");
-		panel.add(chckbxNewCheckBox_2);
+		JLabel lblAnnoCostruzione = new JLabel("Anno costruzione");
+		lblAnnoCostruzione.setToolTipText("Inserire l'anno di costruzione dell'immobile");
+		panelTabDatiSecondari.add(lblAnnoCostruzione, "1, 24");
 		
-		JCheckBox chckbxNewCheckBox_3 = new JCheckBox("New check box");
-		panel.add(chckbxNewCheckBox_3);
+		textFieldAnnoCostruzione = new JTextField();
+		textFieldAnnoCostruzione.setToolTipText("Inserire l'anno di costruzione dell'immobile");
+		lblAnnoCostruzione.setLabelFor(textFieldAnnoCostruzione);
+		panelTabDatiSecondari.add(textFieldAnnoCostruzione, "2, 24, left, default");
+		textFieldAnnoCostruzione.setColumns(10);
 		
-		JCheckBox chckbxNewCheckBox_4 = new JCheckBox("New check box");
-		panel.add(chckbxNewCheckBox_4);
+		JLabel lblGiardino = new JLabel("Giardino");
+		lblGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
+		panelTabDatiSecondari.add(lblGiardino, "1, 26");
 		
-		JCheckBox chckbxNewCheckBox_5 = new JCheckBox("New check box");
-		panel.add(chckbxNewCheckBox_5);
+		JComboBox comboBoxGiardino = new JComboBox();
+		comboBoxGiardino.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Assente", "Giardino condominiale", "Giardino ad uso esclusivo"}));
+		comboBoxGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
+		panelTabDatiSecondari.add(comboBoxGiardino, "2, 26");
 		
-		JCheckBox chckbxNewCheckBox_6 = new JCheckBox("New check box");
-		panel.add(chckbxNewCheckBox_6);
+		JCheckBox chckbxBandaLarga = new JCheckBox("Banda larga");
+		chckbxBandaLarga.setToolTipText("Banda larga");
+		panelTabDatiSecondari.add(chckbxBandaLarga, "1, 30");
 		
-		JCheckBox chckbxNewCheckBox_7 = new JCheckBox("New check box");
-		panel.add(chckbxNewCheckBox_7);
+		JCheckBox chckbxSatellite = new JCheckBox("Satellite");
+		chckbxSatellite.setToolTipText("Satellite");
+		panelTabDatiSecondari.add(chckbxSatellite, "2, 30");
 		
-		JCheckBox chckbxNewCheckBox_8 = new JCheckBox("New check box");
-		panel.add(chckbxNewCheckBox_8);
+		JCheckBox chckbxAscensore = new JCheckBox("Ascensore");
+		chckbxAscensore.setToolTipText("Ascensore");
+		panelTabDatiSecondari.add(chckbxAscensore, "1, 32");
 		
-		JCheckBox chckbxNewCheckBox_9 = new JCheckBox("New check box");
-		panel.add(chckbxNewCheckBox_9);
+		JCheckBox chckbxAllarme = new JCheckBox("Sistema di allarme");
+		chckbxAllarme.setToolTipText("Sistema di allarme");
+		panelTabDatiSecondari.add(chckbxAllarme, "2, 32");
 		
-		JPanel panel_1 = new JPanel();
-		getContentPane().add(panel_1);
-		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
+		JCheckBox chckbxCasaEcologica = new JCheckBox("Casa ecologica");
+		chckbxCasaEcologica.setToolTipText("Casa ecologica");
+		panelTabDatiSecondari.add(chckbxCasaEcologica, "1, 34");
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setViewportBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Schede immobile create", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.add(scrollPane_1);
+		JCheckBox chckbxCancelloElettrico = new JCheckBox("Cancello elettrico");
+		chckbxCancelloElettrico.setToolTipText("Cancello elettrico");
+		panelTabDatiSecondari.add(chckbxCancelloElettrico, "2, 34");
 		
-		JPanel panel_2 = new JPanel();
-		getContentPane().add(panel_2);
-		panel_2.setLayout(new GridLayout(0, 1, 0, 0));
+		JCheckBox chckbxVicinanzeBus = new JCheckBox("Vicinanze bus");
+		chckbxVicinanzeBus.setToolTipText("Vicinanze bus");
+		panelTabDatiSecondari.add(chckbxVicinanzeBus, "1, 36");
 		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setViewportBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.add(scrollPane_2);
+		JCheckBox chckbxVicinanzeMetro = new JCheckBox("Vicinanze metro");
+		chckbxVicinanzeMetro.setToolTipText("Vicinanze metro");
+		panelTabDatiSecondari.add(chckbxVicinanzeMetro, "2, 36");
+		
+		JCheckBox chckbxVistaDiPregio = new JCheckBox("Vista di pregio");
+		chckbxVistaDiPregio.setToolTipText("Vista di pregio");
+		panelTabDatiSecondari.add(chckbxVistaDiPregio, "1, 38");
+		
+		JCheckBox chckbxRampeDisabili = new JCheckBox("Rampe per disabili");
+		chckbxRampeDisabili.setToolTipText("Rampe per disabili");
+		panelTabDatiSecondari.add(chckbxRampeDisabili, "2, 38");
+		
+		JPanel panelListaSchedeImmobile = new JPanel();
+		getContentPane().add(panelListaSchedeImmobile);
+		panelListaSchedeImmobile.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JScrollPane scrollPaneListaSchedeImmobile = new JScrollPane();
+		scrollPaneListaSchedeImmobile.setViewportBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Schede immobile create", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelListaSchedeImmobile.add(scrollPaneListaSchedeImmobile);
+		
+		JPanel panelInserimentoSchedeImmobile = new JPanel();
+		getContentPane().add(panelInserimentoSchedeImmobile);
+		panelInserimentoSchedeImmobile.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JScrollPane scrollPaneInserimentoSchede = new JScrollPane();
+		scrollPaneInserimentoSchede.setViewportBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelInserimentoSchedeImmobile.add(scrollPaneInserimentoSchede);
 	}
 }
