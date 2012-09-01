@@ -25,10 +25,9 @@ import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
 
 
-public class j2web_GUI extends JFrame implements parametriGenerali{
+public class j2web_GUI extends JFrame implements parametriGenerali {
 	/**
 	 * 
 	 */
@@ -51,7 +50,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali{
 	private JTextField textFieldImmagine8;
 	private JTextField textFieldImmagine9;
 	private JTextField textFieldImmagine10;
+	
+	private static JComboBox<String> comboBoxProvincia;
 
+	
+	
+	
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -72,19 +78,30 @@ public class j2web_GUI extends JFrame implements parametriGenerali{
 				}
 			}
 		});
+		
+		//Inizializzo alcune strutture dati relative alle provincie e ai comuni
+		inizializzaMappaRegioneProvincia();
+		
+		
 	}
+	
+	
+	
+	
+	
 
 	/**
 	 * Create the frame.
 	 */
 	public j2web_GUI() {
 		
+		
 	    setIconImage(frameIcon);    
 	    setTitle(nomeGUI);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(GUI_bounds[0], GUI_bounds[1], GUI_bounds[2], GUI_bounds[3]);
 		
-			
+		
 		/*Menu... in stand-by*/
 		JMenuBar menuBar_1 = new JMenuBar();
 		setJMenuBar(menuBar_1);
@@ -208,10 +225,12 @@ public class j2web_GUI extends JFrame implements parametriGenerali{
 		JLabel lblRegione = new JLabel("Regione");
 		panelRegProvCom.add(lblRegione, "1, 1, fill, fill");
 		
-		JComboBox<String> comboBoxRegione = new JComboBox<String>();
+		final JComboBox<String> comboBoxRegione = new JComboBox<String>();
 		comboBoxRegione.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Regione");
+				//Chiamo il metodo per popolare la combobox delle provincie
+				popolaComboBoxProvincia((String)comboBoxRegione.getSelectedItem());				
 			}
 		});
 		comboBoxRegione.setModel(new DefaultComboBoxModel<String>(arrayRegioni));
@@ -223,7 +242,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali{
 		panelRegProvCom.add(lblProvincia, "1, 3, fill, fill");
 		lblProvincia.setToolTipText("Selezionare la provincia");
 		
-		JComboBox<String> comboBoxProvincia = new JComboBox<String>();
+		comboBoxProvincia = new JComboBox<String>();
 		comboBoxProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Provincia");
@@ -816,4 +835,107 @@ public class j2web_GUI extends JFrame implements parametriGenerali{
 		scrollPaneInserimentoSchede.setViewportBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelInserimentoSchedeImmobile.add(scrollPaneInserimentoSchede);
 	}
+	
+	//Popola la combobox Provincia quando viene modificata la Regione
+	static void popolaComboBoxProvincia(String regione) {
+		//Rimuovo tutte le opzioni della select Provincia
+		comboBoxProvincia.removeAllItems();
+		if(!regione.equals("Seleziona")) {
+			switch (regione)
+        	{
+        	    case "Abruzzo":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Abruzzo")));
+        	        break;
+        	    case "Basilicata":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Basilicata")));
+        	        break;
+        	    case "Calabria":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Calabria")));
+        	        break;
+        	    case "Campania":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Campania")));
+        	        break;
+        	    case "Emilia-Romagna":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Emilia-Romagna")));
+        	        break;
+        	    case "Friuli-Venezia Giulia":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Friuli-Venezia Giulia")));
+        	        break;
+        	    case "Lazio":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Lazio")));
+        	        break;
+        	    case "Liguria":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Liguria")));
+        	        break;
+        	    case "Lombardia":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Lombardia")));
+        	        break;
+        	    case "Marche":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Marche")));
+        	        break;
+        	    case "Molise":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Molise")));
+        	        break;
+        	    case "Piemonte":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Piemonte")));
+        	        break;
+        	    case "Puglia":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Puglia")));
+        	        break;
+        	    case "Sardegna":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Sardegna")));
+        	        break;
+        	    case "Sicilia":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Sicilia")));
+        	        break;
+        	    case "Toscana":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Toscana")));
+        	        break;
+        	    case "Trentino-Alto Adige":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Trentino-Alto Adige")));
+        	        break;
+        	    case "Umbria":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Umbria")));
+        	        break;
+        	    case "Valle d'Aosta":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Valle d'Aosta")));
+        	        break;
+        	    case "Veneto":
+        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Veneto")));
+        	        break;
+        	    default:
+        	    	//              	    	
+        	}     
+		}
+	}
+
+	//Inizializza la mappa delle regioni e provincie
+	static void inizializzaMappaRegioneProvincia() {		
+		regioneProvincie.put("Abruzzo", provincieAbruzzo);
+		regioneProvincie.put("Basilicata", provincieBasilicata);
+		regioneProvincie.put("Calabria", provincieCalabria);
+		regioneProvincie.put("Campania", provincieCampania);
+		regioneProvincie.put("Emilia-Romagna", provincieEmiliaRomagna);
+		regioneProvincie.put("Friuli-Venezia Giulia", provincieFriuliVeneziaGiulia);
+		regioneProvincie.put("Lazio", provincieLazio);
+		regioneProvincie.put("Liguria", provincieLiguria);
+		regioneProvincie.put("Lombardia", provincieLombardia);
+		regioneProvincie.put("Marche", provincieMarche);
+		regioneProvincie.put("Molise", provincieMolise);
+		regioneProvincie.put("Piemonte", provinciePiemonte);
+		regioneProvincie.put("Puglia", provinciePuglia);
+		regioneProvincie.put("Sardegna", provincieSardegna);
+		regioneProvincie.put("Sicilia", provincieSicilia);
+		regioneProvincie.put("Toscana", provincieToscana);
+		regioneProvincie.put("Trentino-Alto Adige", provincieTrentinoAltoAdige);
+		regioneProvincie.put("Umbria", provincieUmbria);
+		regioneProvincie.put("Valle d'Aosta", provincieValleDAosta);
+		regioneProvincie.put("Veneto", provincieVeneto);
+	}
+
+
+
+
+
+
 }
