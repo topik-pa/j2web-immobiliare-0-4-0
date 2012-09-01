@@ -2,11 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-//import javax.swing.border.EmptyBorder;
-//import java.awt.Toolkit;
-//import java.awt.GridBagLayout;
-//import java.awt.GridBagConstraints;
-//import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -15,8 +10,6 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import javax.swing.JLabel;
-//import java.awt.FlowLayout;
-//import java.awt.Color;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import com.jgoodies.forms.factories.FormFactory;
@@ -24,22 +17,18 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.JComboBox;
-//import javax.swing.JEditorPane;
-//import javax.swing.JTextPane;
 import javax.swing.JButton;
-//import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
-//import java.awt.Component;
-//import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
 
 
-public class j2web_GUI extends JFrame {
+public class j2web_GUI extends JFrame implements parametriGenerali{
 	/**
 	 * 
 	 */
@@ -68,6 +57,7 @@ public class j2web_GUI extends JFrame {
 	 */
 	public static void main(String[] args) {
 		try {
+			//Definisce il Look and Feel della GUI
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -88,10 +78,14 @@ public class j2web_GUI extends JFrame {
 	 * Create the frame.
 	 */
 	public j2web_GUI() {
-		setTitle("J2Web - Immobiliare ver. 0.4.0");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
 		
+	    setIconImage(frameIcon);    
+	    setTitle(nomeGUI);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(GUI_bounds[0], GUI_bounds[1], GUI_bounds[2], GUI_bounds[3]);
+		
+			
+		/*Menu... in stand-by*/
 		JMenuBar menuBar_1 = new JMenuBar();
 		setJMenuBar(menuBar_1);
 		
@@ -122,6 +116,9 @@ public class j2web_GUI extends JFrame {
 		JMenuItem mntmNewMenuItem_5 = new JMenuItem("New menu item");
 		mnNewMenu_2.add(mntmNewMenuItem_5);
 		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+		/*Menu*/
+		
+		
 		
 		JPanel panelCreazioneScheda = new JPanel();
 		panelCreazioneScheda.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Creazione schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -157,7 +154,7 @@ public class j2web_GUI extends JFrame {
 				RowSpec.decode("default:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("default:grow"),
-				FormFactory.UNRELATED_GAP_ROWSPEC,
+				RowSpec.decode("7dlu:grow(14)"),
 				RowSpec.decode("default:grow"),}));
 		
 		JPanel panelCodiceInserzione = new JPanel();
@@ -194,7 +191,7 @@ public class j2web_GUI extends JFrame {
 		lblTitoloAnnuncio.setLabelFor(textTitoloAnnuncio);
 		panelTitoloAnnuncio.add(textTitoloAnnuncio, "2, 1, left, default");
 		textTitoloAnnuncio.setToolTipText("Inserire un titolo per l'annuncio");
-		textTitoloAnnuncio.setColumns(25);
+		textTitoloAnnuncio.setColumns(23);
 		
 		JPanel panelRegProvCom = new JPanel();
 		panelTabDatiObbligatori.add(panelRegProvCom, "1, 6, fill, fill");
@@ -211,13 +208,13 @@ public class j2web_GUI extends JFrame {
 		JLabel lblRegione = new JLabel("Regione");
 		panelRegProvCom.add(lblRegione, "1, 1, fill, fill");
 		
-		JComboBox comboBoxRegione = new JComboBox();
+		JComboBox<String> comboBoxRegione = new JComboBox<String>();
 		comboBoxRegione.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Regione");
 			}
 		});
-		comboBoxRegione.setModel(new DefaultComboBoxModel(new String[] {"Seleziona la regione", "Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"}));
+		comboBoxRegione.setModel(new DefaultComboBoxModel<String>(arrayRegioni));
 		lblRegione.setLabelFor(comboBoxRegione);
 		panelRegProvCom.add(comboBoxRegione, "2, 1, left, default");
 		comboBoxRegione.setToolTipText("Selezionare la regione");
@@ -226,7 +223,7 @@ public class j2web_GUI extends JFrame {
 		panelRegProvCom.add(lblProvincia, "1, 3, fill, fill");
 		lblProvincia.setToolTipText("Selezionare la provincia");
 		
-		JComboBox comboBoxProvincia = new JComboBox();
+		JComboBox<String> comboBoxProvincia = new JComboBox<String>();
 		comboBoxProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Provincia");
@@ -242,7 +239,7 @@ public class j2web_GUI extends JFrame {
 		lblComune.setToolTipText("Selezionare il comune");
 		
 		
-		JComboBox comboBoxComune = new JComboBox();
+		JComboBox<String> comboBoxComune = new JComboBox<String>();
 		comboBoxComune.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Comune");
@@ -284,7 +281,7 @@ public class j2web_GUI extends JFrame {
 		lblIndirizzoLocalita.setLabelFor(textFieldIndirizzoLocalita);
 		panelIndirizzo.add(textFieldIndirizzoLocalita, "2, 1, left, default");
 		textFieldIndirizzoLocalita.setToolTipText("Specificare un indirizzo completo o la località dell'immobile");
-		textFieldIndirizzoLocalita.setColumns(25);
+		textFieldIndirizzoLocalita.setColumns(23);
 		
 		
 		JLabel lblTestoDellaScheda = new JLabel("Testo dell'annuncio");
@@ -314,13 +311,13 @@ public class j2web_GUI extends JFrame {
 		panelCategoriaTipologia.add(lblCategoriaImmobile, "1, 1, fill, fill");
 		
 		
-		JComboBox comboBoxCategoriaImmobile = new JComboBox();
+		JComboBox<String> comboBoxCategoriaImmobile = new JComboBox<String>();
 		comboBoxCategoriaImmobile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Categoria immobile");
 			}
 		});
-		comboBoxCategoriaImmobile.setModel(new DefaultComboBoxModel(new String[] {"Seleziona la categoria", "Residenziale", "Commerciale", "Industriale", "Turistico"}));
+		comboBoxCategoriaImmobile.setModel(new DefaultComboBoxModel<String>(arrayCategorieImmobili ));
 		lblCategoriaImmobile.setLabelFor(comboBoxCategoriaImmobile);
 		comboBoxCategoriaImmobile.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panelCategoriaTipologia.add(comboBoxCategoriaImmobile, "2, 1, left, default");
@@ -330,7 +327,7 @@ public class j2web_GUI extends JFrame {
 		panelCategoriaTipologia.add(lblTipologiaImmobile, "1, 3, fill, fill");
 		
 		
-		JComboBox comboBoxTipologiaImmobile = new JComboBox();
+		JComboBox<String> comboBoxTipologiaImmobile = new JComboBox<String>();
 		lblTipologiaImmobile.setLabelFor(comboBoxTipologiaImmobile);
 		comboBoxTipologiaImmobile.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panelCategoriaTipologia.add(comboBoxTipologiaImmobile, "2, 3, left, default");
@@ -367,8 +364,8 @@ public class j2web_GUI extends JFrame {
 		lblTipologiaContratto.setToolTipText("");
 		
 		
-		JComboBox comboBoxTipologiaContratto = new JComboBox();
-		comboBoxTipologiaContratto.setModel(new DefaultComboBoxModel(new String[] {"Affitto", "Vendita"}));
+		JComboBox<String> comboBoxTipologiaContratto = new JComboBox<String>();
+		comboBoxTipologiaContratto.setModel(new DefaultComboBoxModel<String>(arrayTipologieContratto));
 		lblTipologiaContratto.setLabelFor(comboBoxTipologiaContratto);
 		comboBoxTipologiaContratto.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panelTipologiaContratto.add(comboBoxTipologiaContratto, "2, 1, left, default");
@@ -398,28 +395,30 @@ public class j2web_GUI extends JFrame {
 				ColumnSpec.decode("20px:grow"),
 				ColumnSpec.decode("81px:grow"),},
 			new RowSpec[] {
-				RowSpec.decode("23px"),}));
+				RowSpec.decode("33px"),}));
 		
 		JButton btnCreaScheda = new JButton("Crea scheda");
+		btnCreaScheda.setIcon(icoProcedi);
 		btnCreaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Click: Crea scheda");
 			}
 		});
 		btnCreaScheda.setToolTipText("Crea la scheda e la inserisce nela pannello schede");
-		panelPulsantiCreazioneScheda.add(btnCreaScheda, "1, 1, default, fill");
+		panelPulsantiCreazioneScheda.add(btnCreaScheda, "1, 1");
 		
 		JLabel label = new JLabel("");
 		panelPulsantiCreazioneScheda.add(label, "2, 1, fill, fill");
 		
 		JButton btnResettaPannelloCreazioneScheda = new JButton("Resetta");
+		btnResettaPannelloCreazioneScheda.setIcon(icoResetta);
 		btnResettaPannelloCreazioneScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Click: Resetta");
 			}
 		});
 		btnResettaPannelloCreazioneScheda.setToolTipText("Resetta il pannello di creazione scheda");
-		panelPulsantiCreazioneScheda.add(btnResettaPannelloCreazioneScheda, "3, 1, default, fill");
+		panelPulsantiCreazioneScheda.add(btnResettaPannelloCreazioneScheda, "3, 1");
 		
 		JPanel panelTabImmagini = new JPanel();
 		tabbedPaneCreazioneSchede.addTab("Immagini", null, panelTabImmagini, null);
@@ -461,7 +460,7 @@ public class j2web_GUI extends JFrame {
 		textFieldImmagine1 = new JTextField();
 		textFieldImmagine1.setToolTipText("Inserimento immagine 1");
 		panelTabImmagini.add(textFieldImmagine1, "3, 2, left, default");
-		textFieldImmagine1.setColumns(25);
+		textFieldImmagine1.setColumns(23);
 		
 		JButton btnImmagine2 = new JButton("Immagine 2");
 		btnImmagine2.addActionListener(new ActionListener() {
@@ -475,7 +474,7 @@ public class j2web_GUI extends JFrame {
 		textFieldImmagine2 = new JTextField();
 		textFieldImmagine2.setToolTipText("Inserimento immagine 2");
 		panelTabImmagini.add(textFieldImmagine2, "3, 4, left, default");
-		textFieldImmagine2.setColumns(25);
+		textFieldImmagine2.setColumns(23);
 		
 		JButton btnImmagine3 = new JButton("Immagine 3");
 		btnImmagine3.addActionListener(new ActionListener() {
@@ -489,7 +488,7 @@ public class j2web_GUI extends JFrame {
 		textFieldImmagine3 = new JTextField();
 		textFieldImmagine3.setToolTipText("Inserimento immagine 3");
 		panelTabImmagini.add(textFieldImmagine3, "3, 6, left, default");
-		textFieldImmagine3.setColumns(25);
+		textFieldImmagine3.setColumns(23);
 		
 		JButton btnImmagine4 = new JButton("Immagine 4");
 		btnImmagine4.addActionListener(new ActionListener() {
@@ -503,7 +502,7 @@ public class j2web_GUI extends JFrame {
 		textFieldImmagine4 = new JTextField();
 		textFieldImmagine4.setToolTipText("Inserimento immagine 4");
 		panelTabImmagini.add(textFieldImmagine4, "3, 8, left, default");
-		textFieldImmagine4.setColumns(25);
+		textFieldImmagine4.setColumns(23);
 		
 		JButton btnImmagine5 = new JButton("Immagine 5");
 		btnImmagine5.addActionListener(new ActionListener() {
@@ -517,7 +516,7 @@ public class j2web_GUI extends JFrame {
 		textFieldImmagine5 = new JTextField();
 		textFieldImmagine5.setToolTipText("Inserimento immagine 5");
 		panelTabImmagini.add(textFieldImmagine5, "3, 10, left, default");
-		textFieldImmagine5.setColumns(25);
+		textFieldImmagine5.setColumns(23);
 		
 		JButton btnImmagine6 = new JButton("Immagine 6");
 		btnImmagine6.addActionListener(new ActionListener() {
@@ -531,7 +530,7 @@ public class j2web_GUI extends JFrame {
 		textFieldImmagine6 = new JTextField();
 		textFieldImmagine6.setToolTipText("Inserimento immagine 6");
 		panelTabImmagini.add(textFieldImmagine6, "3, 12, left, default");
-		textFieldImmagine6.setColumns(25);
+		textFieldImmagine6.setColumns(23);
 		
 		JButton btnImmagine7 = new JButton("Immagine 7");
 		btnImmagine7.addActionListener(new ActionListener() {
@@ -545,7 +544,7 @@ public class j2web_GUI extends JFrame {
 		textFieldImmagine7 = new JTextField();
 		textFieldImmagine7.setToolTipText("Inserimento immagine 7");
 		panelTabImmagini.add(textFieldImmagine7, "3, 14, left, default");
-		textFieldImmagine7.setColumns(25);
+		textFieldImmagine7.setColumns(23);
 		
 		JButton btnImmagine8 = new JButton("Immagine 8");
 		btnImmagine8.addActionListener(new ActionListener() {
@@ -559,7 +558,7 @@ public class j2web_GUI extends JFrame {
 		textFieldImmagine8 = new JTextField();
 		textFieldImmagine8.setToolTipText("Inserimento immagine 8");
 		panelTabImmagini.add(textFieldImmagine8, "3, 16, left, default");
-		textFieldImmagine8.setColumns(25);
+		textFieldImmagine8.setColumns(23);
 		
 		JButton btnImmagine9 = new JButton("Immagine 9");
 		btnImmagine9.addActionListener(new ActionListener() {
@@ -573,7 +572,7 @@ public class j2web_GUI extends JFrame {
 		textFieldImmagine9 = new JTextField();
 		textFieldImmagine9.setToolTipText("Inserimento immagine 9");
 		panelTabImmagini.add(textFieldImmagine9, "3, 18, left, default");
-		textFieldImmagine9.setColumns(25);
+		textFieldImmagine9.setColumns(23);
 		
 		JButton btImmagine10 = new JButton("Immagine 10");
 		btImmagine10.addActionListener(new ActionListener() {
@@ -587,12 +586,12 @@ public class j2web_GUI extends JFrame {
 		textFieldImmagine10 = new JTextField();
 		textFieldImmagine10.setToolTipText("Inserimento immagine 10");
 		panelTabImmagini.add(textFieldImmagine10, "3, 20, left, default");
-		textFieldImmagine10.setColumns(25);
+		textFieldImmagine10.setColumns(23);
 		
 		JPanel panelTabDatiSecondari = new JPanel();
 		tabbedPaneCreazioneSchede.addTab("Dati secondari", null, panelTabDatiSecondari, null);
 		panelTabDatiSecondari.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px:grow"),
+				ColumnSpec.decode("75px:grow"),
 				ColumnSpec.decode("50dlu:grow"),},
 			new RowSpec[] {
 				FormFactory.LINE_GAP_ROWSPEC,
@@ -638,8 +637,8 @@ public class j2web_GUI extends JFrame {
 		lblNumeroLocali.setToolTipText("Selezionare il numero dei locali dell'immobile");
 		panelTabDatiSecondari.add(lblNumeroLocali, "1, 2, left, default");
 		
-		JComboBox comboBoxNumeroLocali = new JComboBox();
-		comboBoxNumeroLocali.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", ">7"}));
+		JComboBox<String> comboBoxNumeroLocali = new JComboBox<String>();
+		comboBoxNumeroLocali.setModel(new DefaultComboBoxModel<String>(arrayNumeroLocali));
 		comboBoxNumeroLocali.setToolTipText("Selezionare il numero dei locali dell'immobile");
 		lblNumeroLocali.setLabelFor(comboBoxNumeroLocali);
 		panelTabDatiSecondari.add(comboBoxNumeroLocali, "2, 2, left, default");
@@ -648,8 +647,8 @@ public class j2web_GUI extends JFrame {
 		lblNumeroCamere.setToolTipText("Selezionare il numero di camere da letto disponibili");
 		panelTabDatiSecondari.add(lblNumeroCamere, "1, 4");
 		
-		JComboBox comboBoxNumeroCamere = new JComboBox();
-		comboBoxNumeroCamere.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", ">5"}));
+		JComboBox<String> comboBoxNumeroCamere = new JComboBox<String>();
+		comboBoxNumeroCamere.setModel(new DefaultComboBoxModel<String>(arrayNumeroCamere));
 		comboBoxNumeroCamere.setToolTipText("Selezionare il numero di camere da letto disponibili");
 		lblNumeroCamere.setLabelFor(comboBoxNumeroCamere);
 		panelTabDatiSecondari.add(comboBoxNumeroCamere, "2, 4, left, default");
@@ -658,18 +657,18 @@ public class j2web_GUI extends JFrame {
 		lblNumeroBagni.setToolTipText("Selezionare il numero di bagni disponibili");
 		panelTabDatiSecondari.add(lblNumeroBagni, "1, 6");
 		
-		JComboBox comboBox_NumeroBagni = new JComboBox();
-		comboBox_NumeroBagni.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", ">5"}));
-		comboBox_NumeroBagni.setToolTipText("Selezionare il numero di bagni disponibili");
-		lblNumeroBagni.setLabelFor(comboBox_NumeroBagni);
-		panelTabDatiSecondari.add(comboBox_NumeroBagni, "2, 6, left, default");
+		JComboBox<String> comboBoxNumeroBagni = new JComboBox<String>();
+		comboBoxNumeroBagni.setModel(new DefaultComboBoxModel<String>(arrayNumeroBagni));
+		comboBoxNumeroBagni.setToolTipText("Selezionare il numero di bagni disponibili");
+		lblNumeroBagni.setLabelFor(comboBoxNumeroBagni);
+		panelTabDatiSecondari.add(comboBoxNumeroBagni, "2, 6, left, default");
 		
 		JLabel lblStatoImmobile = new JLabel("Stato dell'immobile");
 		lblStatoImmobile.setToolTipText("Selezionare lo stato attuale dell'immobile");
 		panelTabDatiSecondari.add(lblStatoImmobile, "1, 8");
 		
-		JComboBox comboBoxStatoImmobile = new JComboBox();
-		comboBoxStatoImmobile.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Nuovo", "Ristrutturato", "Da ristrutturare", "In buono stato", "Abitabile", "Ottimo", "In costruzione"}));
+		JComboBox<String> comboBoxStatoImmobile = new JComboBox<String>();
+		comboBoxStatoImmobile.setModel(new DefaultComboBoxModel<String>(arrayStatoImmobile));
 		comboBoxStatoImmobile.setToolTipText("Selezionare lo stato attuale dell'immobile");
 		lblStatoImmobile.setLabelFor(comboBoxStatoImmobile);
 		panelTabDatiSecondari.add(comboBoxStatoImmobile, "2, 8");
@@ -678,8 +677,8 @@ public class j2web_GUI extends JFrame {
 		lblArredamenti.setToolTipText("Selezionr la condizione attuale dell'arredamento");
 		panelTabDatiSecondari.add(lblArredamenti, "1, 10");
 		
-		JComboBox comboBoxArredamenti = new JComboBox();
-		comboBoxArredamenti.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Arredato", "Semi arredato", "Non arredato"}));
+		JComboBox<String> comboBoxArredamenti = new JComboBox<String>();
+		comboBoxArredamenti.setModel(new DefaultComboBoxModel<String>(arrayArredamenti));
 		comboBoxArredamenti.setToolTipText("Selezionr la condizione attuale dell'arredamento");
 		lblArredamenti.setLabelFor(comboBoxArredamenti);
 		panelTabDatiSecondari.add(comboBoxArredamenti, "2, 10");
@@ -688,8 +687,8 @@ public class j2web_GUI extends JFrame {
 		lblPiano.setToolTipText("Selezionare il piano in cui è situato l'immobile");
 		panelTabDatiSecondari.add(lblPiano, "1, 12");
 		
-		JComboBox comboBoxPiano = new JComboBox();
-		comboBoxPiano.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Piano terra", "Primo piano", "Piano intermedio", "Piano alto", "Ultimo piano", "Su più livelli"}));
+		JComboBox<String> comboBoxPiano = new JComboBox<String>();
+		comboBoxPiano.setModel(new DefaultComboBoxModel<String>(arrayPiano));
 		comboBoxPiano.setToolTipText("Selezionare il piano in cui è situato l'immobile");
 		lblPiano.setLabelFor(comboBoxPiano);
 		panelTabDatiSecondari.add(comboBoxPiano, "2, 12");
@@ -708,8 +707,8 @@ public class j2web_GUI extends JFrame {
 		lblCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
 		panelTabDatiSecondari.add(lblCertificazioniEnergetiche, "1, 16");
 		
-		JComboBox comboBoxCertificazioniEnergetiche = new JComboBox();
-		comboBoxCertificazioniEnergetiche.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Certificazione energetica A+", "Certificazione energetica A", "Certificazione energetica B", "Certificazione energetica C", "Certificazione energetica D", "Certificazione energetica E", "Certificazione energetica F", "Certificazione energetica G", "Non specificata"}));
+		JComboBox<String> comboBoxCertificazioniEnergetiche = new JComboBox<String>();
+		comboBoxCertificazioniEnergetiche.setModel(new DefaultComboBoxModel<String>(arrayCertificazioniEnergetiche));
 		comboBoxCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
 		lblCertificazioniEnergetiche.setLabelFor(comboBoxCertificazioniEnergetiche);
 		panelTabDatiSecondari.add(comboBoxCertificazioniEnergetiche, "2, 16");
@@ -718,8 +717,8 @@ public class j2web_GUI extends JFrame {
 		lbTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
 		panelTabDatiSecondari.add(lbTipologiaRiscaldamento, "1, 18");
 		
-		JComboBox comboBoxTipologiaRiscaldamento = new JComboBox();
-		comboBoxTipologiaRiscaldamento.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Assente", "Centralizzato", "Autonomo", "Stufa"}));
+		JComboBox<String> comboBoxTipologiaRiscaldamento = new JComboBox<String>();
+		comboBoxTipologiaRiscaldamento.setModel(new DefaultComboBoxModel<String>(arrayTipologieRiscaldamento));
 		comboBoxTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
 		panelTabDatiSecondari.add(comboBoxTipologiaRiscaldamento, "2, 18");
 		
@@ -727,8 +726,8 @@ public class j2web_GUI extends JFrame {
 		lblClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
 		panelTabDatiSecondari.add(lblClima, "1, 20");
 		
-		JComboBox comboBoxClima = new JComboBox();
-		comboBoxClima.setModel(new DefaultComboBoxModel(new String[] {"Assente", "Aria condizionata", "Climatizzatore"}));
+		JComboBox<String> comboBoxClima = new JComboBox<String>();
+		comboBoxClima.setModel(new DefaultComboBoxModel<String>(arrayClima));
 		comboBoxClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
 		panelTabDatiSecondari.add(comboBoxClima, "2, 20");
 		
@@ -736,8 +735,8 @@ public class j2web_GUI extends JFrame {
 		lblParcheggio.setToolTipText("Selezionare la tipologia di parcheggio disponibile");
 		panelTabDatiSecondari.add(lblParcheggio, "1, 22");
 		
-		JComboBox comboBoxParcheggio = new JComboBox();
-		comboBoxParcheggio.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Nessuno", "Garage", "Posto auto coperto", "Posto auto scoperto"}));
+		JComboBox<String> comboBoxParcheggio = new JComboBox<String>();
+		comboBoxParcheggio.setModel(new DefaultComboBoxModel<String>(arrayParcheggio));
 		comboBoxParcheggio.setToolTipText("Selezionare la tipologia di parcheggio disponibile");
 		panelTabDatiSecondari.add(comboBoxParcheggio, "2, 22");
 		lblParcheggio.setLabelFor(comboBoxParcheggio);
@@ -756,8 +755,8 @@ public class j2web_GUI extends JFrame {
 		lblGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
 		panelTabDatiSecondari.add(lblGiardino, "1, 26");
 		
-		JComboBox comboBoxGiardino = new JComboBox();
-		comboBoxGiardino.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Assente", "Giardino condominiale", "Giardino ad uso esclusivo"}));
+		JComboBox<String> comboBoxGiardino = new JComboBox<String>();
+		comboBoxGiardino.setModel(new DefaultComboBoxModel<String>(arrayGiardino));
 		comboBoxGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
 		panelTabDatiSecondari.add(comboBoxGiardino, "2, 26");
 		
