@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -51,51 +50,19 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	private JTextField textFieldImmagine9;
 	private JTextField textFieldImmagine10;
 	
+	//Alcuni campi devono essere inseriti al di fuori del costruttore per essere visibili all'intera classe
 	private static JComboBox<String> comboBoxProvincia;
+	private static JComboBox<String> comboBoxComune;
+	private static JComboBox<String> comboBoxCategoriaImmobile;
+	private static JComboBox<String> comboBoxTipologiaImmobile;
+	
 
-	
-	
-	
-	
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			//Definisce il Look and Feel della GUI
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					j2web_GUI frame = new j2web_GUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		//Inizializzo alcune strutture dati relative alle provincie e ai comuni
-		inizializzaMappaRegioneProvincia();
-		
-		
-	}
-	
-	
-	
-	
-	
 
 	/**
 	 * Create the frame.
 	 */
 	public j2web_GUI() {
-		
-		
+				
 	    setIconImage(frameIcon);    
 	    setTitle(nomeGUI);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -246,6 +213,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		comboBoxProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Provincia");
+				//Chiamo il metodo per popolare la combobox dei comuni
+				popolaComboBoxComune((String)comboBoxProvincia.getSelectedItem());
 			}
 		});
 		lblProvincia.setLabelFor(comboBoxProvincia);
@@ -258,7 +227,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblComune.setToolTipText("Selezionare il comune");
 		
 		
-		JComboBox<String> comboBoxComune = new JComboBox<String>();
+		comboBoxComune = new JComboBox<String>();
 		comboBoxComune.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Comune");
@@ -330,10 +299,12 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelCategoriaTipologia.add(lblCategoriaImmobile, "1, 1, fill, fill");
 		
 		
-		JComboBox<String> comboBoxCategoriaImmobile = new JComboBox<String>();
+		comboBoxCategoriaImmobile = new JComboBox<String>();
 		comboBoxCategoriaImmobile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Categoria immobile");
+				//Chiamo il metodo per popolare la combobox delle provincie
+				popolaComboBoxTipologiaImmobile((String)comboBoxCategoriaImmobile.getSelectedItem());	
 			}
 		});
 		comboBoxCategoriaImmobile.setModel(new DefaultComboBoxModel<String>(arrayCategorieImmobili ));
@@ -346,7 +317,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelCategoriaTipologia.add(lblTipologiaImmobile, "1, 3, fill, fill");
 		
 		
-		JComboBox<String> comboBoxTipologiaImmobile = new JComboBox<String>();
+		comboBoxTipologiaImmobile = new JComboBox<String>();
+		//comboBoxTipologiaImmobile.setModel(new DefaultComboBoxModel<String>(arrayCategorieImmobili ));
 		lblTipologiaImmobile.setLabelFor(comboBoxTipologiaImmobile);
 		comboBoxTipologiaImmobile.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panelCategoriaTipologia.add(comboBoxTipologiaImmobile, "2, 3, left, default");
@@ -839,103 +811,39 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	//Popola la combobox Provincia quando viene modificata la Regione
 	static void popolaComboBoxProvincia(String regione) {
 		//Rimuovo tutte le opzioni della select Provincia
-		comboBoxProvincia.removeAllItems();
+		comboBoxComune.removeAllItems();
 		if(!regione.equals("Seleziona")) {
-			switch (regione)
-        	{
-        	    case "Abruzzo":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Abruzzo")));
-        	        break;
-        	    case "Basilicata":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Basilicata")));
-        	        break;
-        	    case "Calabria":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Calabria")));
-        	        break;
-        	    case "Campania":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Campania")));
-        	        break;
-        	    case "Emilia-Romagna":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Emilia-Romagna")));
-        	        break;
-        	    case "Friuli-Venezia Giulia":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Friuli-Venezia Giulia")));
-        	        break;
-        	    case "Lazio":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Lazio")));
-        	        break;
-        	    case "Liguria":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Liguria")));
-        	        break;
-        	    case "Lombardia":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Lombardia")));
-        	        break;
-        	    case "Marche":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Marche")));
-        	        break;
-        	    case "Molise":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Molise")));
-        	        break;
-        	    case "Piemonte":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Piemonte")));
-        	        break;
-        	    case "Puglia":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Puglia")));
-        	        break;
-        	    case "Sardegna":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Sardegna")));
-        	        break;
-        	    case "Sicilia":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Sicilia")));
-        	        break;
-        	    case "Toscana":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Toscana")));
-        	        break;
-        	    case "Trentino-Alto Adige":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Trentino-Alto Adige")));
-        	        break;
-        	    case "Umbria":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Umbria")));
-        	        break;
-        	    case "Valle d'Aosta":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Valle d'Aosta")));
-        	        break;
-        	    case "Veneto":
-        	    	comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get("Veneto")));
-        	        break;
-        	    default:
-        	    	//              	    	
-        	}     
+			System.out.println("Regione: " + regione);
+			comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get(regione)));
+		}	
+	}
+	
+	
+	//Popola la combobox Comune quando viene modificata la Provincia
+	static void popolaComboBoxComune(String provincia) {
+		if(!provincia.equals("Seleziona")) {
+			System.out.println("Provincia: " + provincia);
+			comboBoxComune.setModel(new DefaultComboBoxModel<String>(provinciaComuni.get(provincia)));
 		}
 	}
-
-	//Inizializza la mappa delle regioni e provincie
-	static void inizializzaMappaRegioneProvincia() {		
-		regioneProvincie.put("Abruzzo", provincieAbruzzo);
-		regioneProvincie.put("Basilicata", provincieBasilicata);
-		regioneProvincie.put("Calabria", provincieCalabria);
-		regioneProvincie.put("Campania", provincieCampania);
-		regioneProvincie.put("Emilia-Romagna", provincieEmiliaRomagna);
-		regioneProvincie.put("Friuli-Venezia Giulia", provincieFriuliVeneziaGiulia);
-		regioneProvincie.put("Lazio", provincieLazio);
-		regioneProvincie.put("Liguria", provincieLiguria);
-		regioneProvincie.put("Lombardia", provincieLombardia);
-		regioneProvincie.put("Marche", provincieMarche);
-		regioneProvincie.put("Molise", provincieMolise);
-		regioneProvincie.put("Piemonte", provinciePiemonte);
-		regioneProvincie.put("Puglia", provinciePuglia);
-		regioneProvincie.put("Sardegna", provincieSardegna);
-		regioneProvincie.put("Sicilia", provincieSicilia);
-		regioneProvincie.put("Toscana", provincieToscana);
-		regioneProvincie.put("Trentino-Alto Adige", provincieTrentinoAltoAdige);
-		regioneProvincie.put("Umbria", provincieUmbria);
-		regioneProvincie.put("Valle d'Aosta", provincieValleDAosta);
-		regioneProvincie.put("Veneto", provincieVeneto);
+	
+	//Popola la combobox Categoria immobile quando viene modificata la Tipologia immobile
+	static void popolaComboBoxTipologiaImmobile(String categoria) {
+			System.out.println("Categoria: " + categoria);
+			switch (categoria)
+        	{
+    	    case "Residenziale":
+    	    	comboBoxTipologiaImmobile.setModel(new DefaultComboBoxModel<String>(arrayTipologieImmobiliResidenziali));
+    	        break;
+    	    case "Commerciale":
+    	    	comboBoxTipologiaImmobile.setModel(new DefaultComboBoxModel<String>(arrayTipologieImmobiliCommerciali));
+    	    	break;
+    	    case "Industriale":
+    	    	comboBoxTipologiaImmobile.setModel(new DefaultComboBoxModel<String>(arrayTipologieImmobiliIndustriali));
+    	    	break;
+    	    default:
+    	    	comboBoxTipologiaImmobile.removeAllItems();            	    	
+        	}
 	}
-
-
-
-
-
 
 }
