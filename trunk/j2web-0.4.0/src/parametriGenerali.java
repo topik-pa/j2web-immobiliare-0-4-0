@@ -34,6 +34,18 @@ public interface parametriGenerali {
     //icone dei pulsanti
     final ImageIcon icoProcedi = new ImageIcon("./images/forward.png");
     final ImageIcon icoResetta = new ImageIcon("./images/refresh.png");
+    
+    //Dimensioni massime delle immagini
+    final int maxFileSize = 1048576;
+    //Formato immagini consentito
+    final String format=".jpg";
+    
+    //Le seguenti mappe contengono il nome della Regione/Provincia e le/i rispettive/i Provincie/Comuni - vengono inizializzate nel main all'avvio di j2web
+  	Map<String,String[]> regioneProvincie = new Hashtable<String,String[]>();
+  	Map<String,String[]> provinciaComuni =  new Hashtable<String,String[]>();
+  	
+  	//Mappa che contiene il limite di caratteri immessi per certi campi testuali
+    Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>();
 	
 	//Tutti gli array che compongono le combo box
     final String[] arrayCategorieImmobili = {"Seleziona la categoria", "Residenziale", "Commerciale", "Industriale"};
@@ -41,9 +53,9 @@ public interface parametriGenerali {
     final String[] arrayTipologieImmobiliCommerciali = {"Seleziona la tipologia", "Agriturismo", "Albergo", "Bar", "Negozio", "Ristorante", "Ufficio"};
     final String[] arrayTipologieImmobiliIndustriali = {"Seleziona la tipologia", "Capannone", "Laboratorio", "Magazzino"};
 	final String[] arrayTipologieContratto = {"Affitto", "Vendita"};
-	final String[] arrayNumeroLocali = {"1", "2", "3", "4", "5", "6", "7", ">7"};
-	final String[] arrayNumeroCamere = {"1", "2", "3", "4", "5", ">5"};
-	final String[] arrayNumeroBagni = {"1", "2", "3", "4", "5", ">5"};
+	final String[] arrayNumeroLocali = {"Seleziona", "1", "2", "3", "4", "5", "6", "7", ">7"};
+	final String[] arrayNumeroCamere = {"Seleziona", "1", "2", "3", "4", "5", ">5"};
+	final String[] arrayNumeroBagni = {"Seleziona", "1", "2", "3", "4", "5", ">5"};
 	final String[] arrayStatoImmobile = {"Seleziona", "Nuovo", "Ristrutturato", "Da ristrutturare", "In buono stato", "Abitabile", "Ottimo", "In costruzione"};
 	final String[] arrayArredamenti = {"Seleziona", "Arredato", "Semi arredato", "Non arredato"};
 	final String[] arrayPiano = {"Seleziona", "Piano terra", "Primo piano", "Piano intermedio", "Piano alto", "Ultimo piano", "Su più livelli"};
@@ -8141,8 +8153,6 @@ public interface parametriGenerali {
 			"Zevio",
 			"Zimella",};
 	
-	//Le seguenti mappe contengono il nome della Regione/Provincia e le/i rispettive/i Provincie/Comuni - vengono inizializzate nel main all'avvio di j2web
-	Map<String,String[]> regioneProvincie =  new Hashtable<String,String[]>();
-	Map<String,String[]> provinciaComuni =  new Hashtable<String,String[]>();
+
 	
 }

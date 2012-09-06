@@ -1,4 +1,7 @@
 import java.awt.EventQueue;
+import java.util.Hashtable;
+import java.util.Map;
+
 import javax.swing.UIManager;
 
 
@@ -30,13 +33,19 @@ public class j2web implements parametriGenerali {
 			}
 		});
 		
-		//Inizializzo alcune strutture dati relative alle provincie e ai comuni
+		//Popolo le mappe degli indirizzi
 		inizializzaMappaRegioneProvincia();
-		inizializzaMappaProvinciaComuni();	
+		inizializzaMappaProvinciaComuni();
+		
+		//Popolo la mappa dei limiti di caratteri per i campi testuali
+		inizializzaMappaLimiteCaratteri();
+
 	}
 	
+	
+	
 	//Inizializza la mappa delle regioni e provincie
-	static void inizializzaMappaRegioneProvincia() {		
+	public static void inizializzaMappaRegioneProvincia() {		
 		regioneProvincie.put("Abruzzo", provincieAbruzzo);
 		regioneProvincie.put("Basilicata", provincieBasilicata);
 		regioneProvincie.put("Calabria", provincieCalabria);
@@ -168,5 +177,16 @@ public class j2web implements parametriGenerali {
 		provinciaComuni.put("Verona", comuniVerona);
 	}
 	
-	
+	//Inizializza la mappa delle regioni e provincie
+	public static void inizializzaMappaLimiteCaratteri() {	
+		maxCaratteri.put("txtCodiceInserzione", 10);
+		maxCaratteri.put("textTitoloAnnuncio", 150);
+		maxCaratteri.put("textFieldCap", 7);
+		maxCaratteri.put("textFieldIndirizzoLocalita", 70);
+		maxCaratteri.put("textAreaTestoAnnuncio", 2000);
+		maxCaratteri.put("textSuperficieImmobile", 10);
+		maxCaratteri.put("textFieldPrezzoImmobile", 15);
+		maxCaratteri.put("textFieldAnnoCostruzione", 4);
+		maxCaratteri.put("textFieldNumeroTotalePiani", 2);
+	}
 }
