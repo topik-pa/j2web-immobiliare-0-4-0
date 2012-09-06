@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -24,6 +26,9 @@ import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
 
 
 public class j2web_GUI extends JFrame implements parametriGenerali {
@@ -158,6 +163,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		txtCodiceInserzione.setHorizontalAlignment(SwingConstants.LEFT);
 		txtCodiceInserzione.setToolTipText("Inserire un codice per identificare univocamente l'annuncio");
 		txtCodiceInserzione.setColumns(10);
+		txtCodiceInserzione.addKeyListener(new KeyAdapter() {   
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9')  || (c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) ||  (c == KeyEvent.VK_MINUS)  || (c == KeyEvent.VK_DELETE)) || txtCodiceInserzione.getText().length()>=maxCaratteri.get("txtCodiceInserzione")) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
 		lblCodiceInserzione.setLabelFor(txtCodiceInserzione);
 		
 		JPanel panelTitoloAnnuncio = new JPanel();
@@ -175,6 +189,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblTitoloAnnuncio.setLabelFor(textTitoloAnnuncio);
 		panelTitoloAnnuncio.add(textTitoloAnnuncio, "2, 1, left, default");
 		textTitoloAnnuncio.setToolTipText("Inserire un titolo per l'annuncio");
+		textTitoloAnnuncio.addKeyListener(new KeyAdapter() {     
+            public void keyTyped(KeyEvent e) {
+                if (textTitoloAnnuncio.getText().length()>=150) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
 		textTitoloAnnuncio.setColumns(23);
 		
 		JPanel panelRegProvCom = new JPanel();
@@ -252,6 +274,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblCap.setLabelFor(textFieldCap);
 		panelCap.add(textFieldCap, "2, 1, left, default");
 		textFieldCap.setToolTipText("Inserire il CAP");
+		textFieldCap.addKeyListener(new KeyAdapter() {     //Ascoltatore interno al JTextField per impedire l'immissione di caratteri non validi
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || textFieldCap.getText().length()>=maxCaratteri.get("textFieldCap")) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
 		textFieldCap.setColumns(10);
 		
 		JPanel panelIndirizzo = new JPanel();
@@ -270,6 +301,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelIndirizzo.add(textFieldIndirizzoLocalita, "2, 1, left, default");
 		textFieldIndirizzoLocalita.setToolTipText("Specificare un indirizzo completo o la località dell'immobile");
 		textFieldIndirizzoLocalita.setColumns(23);
+		textFieldIndirizzoLocalita.addKeyListener(new KeyAdapter() {     
+            public void keyTyped(KeyEvent e) {
+                if (textFieldIndirizzoLocalita.getText().length()>=maxCaratteri.get("textFieldIndirizzoLocalita")) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
 		
 		
 		JLabel lblTestoDellaScheda = new JLabel("Testo dell'annuncio");
@@ -279,10 +318,18 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		JScrollPane scrollPaneTestoScheda = new JScrollPane();
 		panelTabDatiObbligatori.add(scrollPaneTestoScheda, "1, 13, fill, fill");
 		
-		JTextArea textAreaTestoAnnuncio = new JTextArea();
+		final JTextArea textAreaTestoAnnuncio = new JTextArea();
 		textAreaTestoAnnuncio.setTabSize(4);
 		lblTestoDellaScheda.setLabelFor(textAreaTestoAnnuncio);
 		textAreaTestoAnnuncio.setToolTipText("Inserire il testo dell'annuncio");
+		textAreaTestoAnnuncio.addKeyListener(new KeyAdapter() {     
+            public void keyTyped(KeyEvent e) {
+                if (textAreaTestoAnnuncio.getText().length()>=maxCaratteri.get("textAreaTestoAnnuncio")) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
 		scrollPaneTestoScheda.setViewportView(textAreaTestoAnnuncio);
 		
 		JPanel panelCategoriaTipologia = new JPanel();
@@ -341,6 +388,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelSuperficie.add(textSuperficieImmobile, "2, 1, left, default");
 		textSuperficieImmobile.setToolTipText("Inserire la superficie dell'immobile in metri quadrati");
 		textSuperficieImmobile.setColumns(10);
+		textSuperficieImmobile.addKeyListener(new KeyAdapter() {     //Ascoltatore interno al JTextField per impedire l'immissione di caratteri non validi
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))  || textSuperficieImmobile.getText().length()>=maxCaratteri.get("textSuperficieImmobile")) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
 		
 		JPanel panelTipologiaContratto = new JPanel();
 		panelTabDatiObbligatori.add(panelTipologiaContratto, "1, 19, fill, fill");
@@ -378,6 +434,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelPrezzo.add(textFieldPrezzoImmobile, "2, 1, left, default");
 		textFieldPrezzoImmobile.setToolTipText("Inserire il prezzo di vendita o affitto dell'immobile");
 		textFieldPrezzoImmobile.setColumns(10);
+		textFieldPrezzoImmobile.addKeyListener(new KeyAdapter() {     //Ascoltatore interno al JTextField per impedire l'immissione di caratteri non validi
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || textFieldPrezzoImmobile.getText().length()>=maxCaratteri.get("textFieldPrezzoImmobile")) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
 		
 		JPanel panelPulsantiCreazioneScheda = new JPanel();
 		panelTabDatiObbligatori.add(panelPulsantiCreazioneScheda, "1, 23, fill, fill");
@@ -443,6 +508,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnImmagine1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 1");
+				selezionaImmagine(textFieldImmagine1);
 			}
 		});
 		btnImmagine1.setToolTipText("Inserimento immagine 1");
@@ -457,6 +523,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnImmagine2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 2");
+				selezionaImmagine(textFieldImmagine2);
 			}
 		});
 		btnImmagine2.setToolTipText("Inserimento immagine 2");
@@ -471,6 +538,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnImmagine3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 3");
+				selezionaImmagine(textFieldImmagine3);
 			}
 		});
 		btnImmagine3.setToolTipText("Inserimento immagine 3");
@@ -485,6 +553,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnImmagine4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 4");
+				selezionaImmagine(textFieldImmagine4);
 			}
 		});
 		btnImmagine4.setToolTipText("Inserimento immagine 4");
@@ -499,6 +568,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnImmagine5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 5");
+				selezionaImmagine(textFieldImmagine5);
 			}
 		});
 		btnImmagine5.setToolTipText("Inserimento immagine 5");
@@ -513,6 +583,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnImmagine6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 6");
+				selezionaImmagine(textFieldImmagine6);
 			}
 		});
 		btnImmagine6.setToolTipText("Inserimento immagine 6");
@@ -527,6 +598,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnImmagine7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 7");
+				selezionaImmagine(textFieldImmagine7);
 			}
 		});
 		btnImmagine7.setToolTipText("Inserimento immagine 7");
@@ -541,6 +613,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnImmagine8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 8");
+				selezionaImmagine(textFieldImmagine8);
 			}
 		});
 		btnImmagine8.setToolTipText("Inserimento immagine 8");
@@ -555,6 +628,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnImmagine9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 9");
+				selezionaImmagine(textFieldImmagine9);
 			}
 		});
 		btnImmagine9.setToolTipText("Inserimento immagine 9");
@@ -569,6 +643,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btImmagine10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 10");
+				selezionaImmagine(textFieldImmagine10);
 			}
 		});
 		btImmagine10.setToolTipText("Inserimento immagine 10");
@@ -693,6 +768,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		textFieldNumeroTotalePiani.setToolTipText("Indicare il numero totale dei piani dell'immobile");
 		panelTabDatiSecondari.add(textFieldNumeroTotalePiani, "2, 14, left, default");
 		textFieldNumeroTotalePiani.setColumns(10);
+		textFieldNumeroTotalePiani.addKeyListener(new KeyAdapter() {     //Ascoltatore interno al JTextField per impedire l'immissione di caratteri non validi
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || textFieldNumeroTotalePiani.getText().length()>=maxCaratteri.get("textFieldNumeroTotalePiani")) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
 		
 		JLabel lblCertificazioniEnergetiche = new JLabel("Certificazioni energetiche");
 		lblCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
@@ -741,6 +825,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblAnnoCostruzione.setLabelFor(textFieldAnnoCostruzione);
 		panelTabDatiSecondari.add(textFieldAnnoCostruzione, "2, 24, left, default");
 		textFieldAnnoCostruzione.setColumns(10);
+		textFieldAnnoCostruzione.addKeyListener(new KeyAdapter() {     //Ascoltatore interno al JTextField per impedire l'immissione di caratteri non validi
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || textFieldAnnoCostruzione.getText().length()>=maxCaratteri.get("textFieldAnnoCostruzione")) {
+                    getToolkit().beep();
+                    e.consume();
+                }
+            }
+        });
 		
 		JLabel lblGiardino = new JLabel("Giardino");
 		lblGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
@@ -844,6 +937,29 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
     	    default:
     	    	comboBoxTipologiaImmobile.removeAllItems();            	    	
         	}
+	}
+	
+	//Seleziona e carica le immagini nella form
+	static void selezionaImmagine(JTextField relatedTextField) {
+		JFileChooser dlgFile;
+        String absPath;
+        
+        //Selezione del file immagine
+        dlgFile = new JFileChooser();
+        if (dlgFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        	//Controllo il formato del file
+        	File selectedFile = dlgFile.getSelectedFile(); 
+        	Long fileSize = selectedFile.length();                    	
+        	String selectedFileName = selectedFile.getName().toLowerCase();                   	
+            if(selectedFile.isFile() && selectedFileName.endsWith(format) && fileSize<=maxFileSize) {
+                absPath = selectedFile.getAbsolutePath();
+                relatedTextField.setText(absPath);
+                relatedTextField.setEnabled(false);
+            }
+            else {
+            	JOptionPane.showMessageDialog(null, "Formato di file non valido: le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega.");
+            }	
+        }
 	}
 
 }
