@@ -1,6 +1,4 @@
 import java.awt.EventQueue;
-import java.util.Hashtable;
-import java.util.Map;
 
 import javax.swing.UIManager;
 
@@ -39,6 +37,7 @@ public class j2web implements parametriGenerali {
 		
 		//Popolo la mappa dei limiti di caratteri per i campi testuali
 		inizializzaMappaLimiteCaratteri();
+		
 
 	}
 	

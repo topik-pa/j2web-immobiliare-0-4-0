@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.JTextComponent;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -29,38 +31,80 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ListIterator;
 
 
 public class j2web_GUI extends JFrame implements parametriGenerali {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	private JTextField txtCodiceInserzione;
-	private JTextField textTitoloAnnuncio;
-	private JTextField textFieldCap;
-	private JTextField textFieldIndirizzoLocalita;
-	private JTextField textSuperficieImmobile;
-	private JTextField textFieldPrezzoImmobile;
-	private JTextField textFieldImmagine1;
-	private JTextField textFieldImmagine2;
-	private JTextField textFieldImmagine3;
-	private JTextField textFieldImmagine4;
-	private JTextField textFieldImmagine5;
-	private JTextField textFieldImmagine6;
-	private JTextField textFieldNumeroTotalePiani;
-	private JTextField textFieldAnnoCostruzione;
-	private JTextField textFieldImmagine7;
-	private JTextField textFieldImmagine8;
-	private JTextField textFieldImmagine9;
-	private JTextField textFieldImmagine10;
 	
 	//Alcuni campi devono essere inseriti al di fuori del costruttore per essere visibili all'intera classe
+	private static final long serialVersionUID = 1L;
+	
+	//Campi testuali
+	private static JTextField txtCodiceInserzione;
+	private static JTextField textTitoloAnnuncio;
+	private static JTextField textFieldCap;
+	private static JTextField textFieldIndirizzoLocalita;
+	private static JTextField textSuperficieImmobile;
+	private static JTextField textFieldPrezzoImmobile;
+	private static JTextField textFieldImmagine1;
+	private static JTextField textFieldImmagine2;
+	private static JTextField textFieldImmagine3;
+	private static JTextField textFieldImmagine4;
+	private static JTextField textFieldImmagine5;
+	private static JTextField textFieldImmagine6;	
+	private static JTextField textFieldImmagine7;
+	private static JTextField textFieldImmagine8;
+	private static JTextField textFieldImmagine9;
+	private static JTextField textFieldImmagine10;
+	private static JTextField textFieldNumeroTotalePiani;
+	private static JTextField textFieldAnnoCostruzione; //18
+	//Textarea
+	private static JTextArea textAreaTestoAnnuncio; //1
+	//Combobox
+	private static JComboBox<String> comboBoxRegione;
 	private static JComboBox<String> comboBoxProvincia;
 	private static JComboBox<String> comboBoxComune;
 	private static JComboBox<String> comboBoxCategoriaImmobile;
 	private static JComboBox<String> comboBoxTipologiaImmobile;
+	private static JComboBox<String> comboBoxTipologiaContratto; //6
 	
+	private static JComboBox<String> comboBoxNumeroLocali;
+	private static JComboBox<String> comboBoxNumeroCamere;
+	private static JComboBox<String> comboBoxNumeroBagni;
+	private static JComboBox<String> comboBoxStatoImmobile;
+	private static JComboBox<String> comboBoxArredamenti;
+	private static JComboBox<String> comboBoxPiano;
+	private static JComboBox<String> comboBoxCertificazioniEnergetiche;
+	private static JComboBox<String> comboBoxTipologiaRiscaldamento;
+	private static JComboBox<String> comboBoxClima;
+	private static JComboBox<String> comboBoxParcheggio;
+	private static JComboBox<String> comboBoxGiardino; //11
+	//Pulsanti
+	private static JButton btnImmagine1;
+	private static JButton btnImmagine2;
+	private static JButton btnImmagine3;
+	private static JButton btnImmagine4;
+	private static JButton btnImmagine5;
+	private static JButton btnImmagine6;
+	private static JButton btnImmagine7;
+	private static JButton btnImmagine8;
+	private static JButton btnImmagine9;
+	private static JButton btnImmagine10; //10
+	//Checkbox
+	private static JCheckBox chckbxBandaLarga;
+	private static JCheckBox chckbxAscensore;
+	private static JCheckBox chckbxCasaEcologica;
+	private static JCheckBox chckbxVicinanzeBus;
+	private static JCheckBox chckbxVistaDiPregio;
+	private static JCheckBox chckbxSatellite;
+	private static JCheckBox chckbxSistemaDiAllarme;
+	private static JCheckBox chckbxCancelloElettrico;
+	private static JCheckBox chckbxVicinanzeMetro;
+	private static JCheckBox chckbxRampePerDisabili;  //10
+	//TOT:56
 
 
 	/**
@@ -159,6 +203,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelCodiceInserzione.add(lblCodiceInserzione, "1, 1, left, fill");
 		
 		txtCodiceInserzione = new JTextField();
+		campiForm.put("txtCodiceInserzione", txtCodiceInserzione);
+		listCampiForm.add(txtCodiceInserzione);
 		panelCodiceInserzione.add(txtCodiceInserzione, "2, 1, left, default");
 		txtCodiceInserzione.setHorizontalAlignment(SwingConstants.LEFT);
 		txtCodiceInserzione.setToolTipText("Inserire un codice per identificare univocamente l'annuncio");
@@ -186,6 +232,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTitoloAnnuncio.add(lblTitoloAnnuncio, "1, 1, fill, fill");
 		
 		textTitoloAnnuncio = new JTextField();
+		campiForm.put("textTitoloAnnuncio", textTitoloAnnuncio);
+		listCampiForm.add(textTitoloAnnuncio);
 		lblTitoloAnnuncio.setLabelFor(textTitoloAnnuncio);
 		panelTitoloAnnuncio.add(textTitoloAnnuncio, "2, 1, left, default");
 		textTitoloAnnuncio.setToolTipText("Inserire un titolo per l'annuncio");
@@ -214,7 +262,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		JLabel lblRegione = new JLabel("Regione");
 		panelRegProvCom.add(lblRegione, "1, 1, fill, fill");
 		
-		final JComboBox<String> comboBoxRegione = new JComboBox<String>();
+		comboBoxRegione = new JComboBox<String>();
+		campiForm.put("comboBoxRegione", comboBoxRegione);
+		listCampiForm.add(comboBoxRegione);
 		comboBoxRegione.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Regione");
@@ -232,6 +282,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblProvincia.setToolTipText("Selezionare la provincia");
 		
 		comboBoxProvincia = new JComboBox<String>();
+		campiForm.put("comboBoxProvincia", comboBoxProvincia);
+		listCampiForm.add(comboBoxProvincia);
 		comboBoxProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Provincia");
@@ -250,6 +302,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		
 		
 		comboBoxComune = new JComboBox<String>();
+		campiForm.put("comboBoxComune", comboBoxComune);
+		listCampiForm.add(comboBoxComune);
 		comboBoxComune.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Comune");
@@ -271,6 +325,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelCap.add(lblCap, "1, 1, fill, fill");
 		
 		textFieldCap = new JTextField();
+		campiForm.put("textFieldCap", textFieldCap);
+		listCampiForm.add(textFieldCap);
 		lblCap.setLabelFor(textFieldCap);
 		panelCap.add(textFieldCap, "2, 1, left, default");
 		textFieldCap.setToolTipText("Inserire il CAP");
@@ -297,6 +353,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelIndirizzo.add(lblIndirizzoLocalita, "1, 1, fill, fill");
 		
 		textFieldIndirizzoLocalita = new JTextField();
+		campiForm.put("textFieldIndirizzoLocalita", textFieldIndirizzoLocalita);
+		listCampiForm.add(textFieldIndirizzoLocalita);
 		lblIndirizzoLocalita.setLabelFor(textFieldIndirizzoLocalita);
 		panelIndirizzo.add(textFieldIndirizzoLocalita, "2, 1, left, default");
 		textFieldIndirizzoLocalita.setToolTipText("Specificare un indirizzo completo o la località dell'immobile");
@@ -318,7 +376,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		JScrollPane scrollPaneTestoScheda = new JScrollPane();
 		panelTabDatiObbligatori.add(scrollPaneTestoScheda, "1, 13, fill, fill");
 		
-		final JTextArea textAreaTestoAnnuncio = new JTextArea();
+		textAreaTestoAnnuncio = new JTextArea();
+		campiForm.put("textAreaTestoAnnuncio", textAreaTestoAnnuncio);
+		listCampiForm.add(textAreaTestoAnnuncio);
 		textAreaTestoAnnuncio.setTabSize(4);
 		lblTestoDellaScheda.setLabelFor(textAreaTestoAnnuncio);
 		textAreaTestoAnnuncio.setToolTipText("Inserire il testo dell'annuncio");
@@ -347,6 +407,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		
 		
 		comboBoxCategoriaImmobile = new JComboBox<String>();
+		campiForm.put("comboBoxCategoriaImmobile", comboBoxCategoriaImmobile);
+		listCampiForm.add(comboBoxCategoriaImmobile);
 		comboBoxCategoriaImmobile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Select: Seleziona Categoria immobile");
@@ -365,6 +427,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		
 		
 		comboBoxTipologiaImmobile = new JComboBox<String>();
+		campiForm.put("comboBoxTipologiaImmobile", comboBoxTipologiaImmobile);
+		listCampiForm.add(comboBoxTipologiaImmobile);
 		//comboBoxTipologiaImmobile.setModel(new DefaultComboBoxModel<String>(arrayCategorieImmobili ));
 		lblTipologiaImmobile.setLabelFor(comboBoxTipologiaImmobile);
 		comboBoxTipologiaImmobile.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -384,6 +448,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelSuperficie.add(lblSuperficieImmmobile, "1, 1, fill, fill");
 		
 		textSuperficieImmobile = new JTextField();
+		campiForm.put("textSuperficieImmobile", textSuperficieImmobile);
+		listCampiForm.add(textSuperficieImmobile);
 		lblSuperficieImmmobile.setLabelFor(textSuperficieImmobile);
 		panelSuperficie.add(textSuperficieImmobile, "2, 1, left, default");
 		textSuperficieImmobile.setToolTipText("Inserire la superficie dell'immobile in metri quadrati");
@@ -411,7 +477,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblTipologiaContratto.setToolTipText("");
 		
 		
-		JComboBox<String> comboBoxTipologiaContratto = new JComboBox<String>();
+		comboBoxTipologiaContratto = new JComboBox<String>();
+		campiForm.put("comboBoxTipologiaContratto", comboBoxTipologiaContratto);
+		listCampiForm.add(comboBoxTipologiaContratto);
 		comboBoxTipologiaContratto.setModel(new DefaultComboBoxModel<String>(arrayTipologieContratto));
 		lblTipologiaContratto.setLabelFor(comboBoxTipologiaContratto);
 		comboBoxTipologiaContratto.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -430,6 +498,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelPrezzo.add(lblPrezzoImmobile, "1, 1, fill, fill");
 		
 		textFieldPrezzoImmobile = new JTextField();
+		campiForm.put("textFieldPrezzoImmobile", textFieldPrezzoImmobile);
+		listCampiForm.add(textFieldPrezzoImmobile);
 		lblPrezzoImmobile.setLabelFor(textFieldPrezzoImmobile);
 		panelPrezzo.add(textFieldPrezzoImmobile, "2, 1, left, default");
 		textFieldPrezzoImmobile.setToolTipText("Inserire il prezzo di vendita o affitto dell'immobile");
@@ -471,6 +541,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnResettaPannelloCreazioneScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Click: Resetta");
+				resettaForm();
 			}
 		});
 		btnResettaPannelloCreazioneScheda.setToolTipText("Resetta il pannello di creazione scheda");
@@ -504,7 +575,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JButton btnImmagine1 = new JButton("Immagine1");
+		btnImmagine1 = new JButton("Immagine1");
+		campiForm.put("btnImmagine1", btnImmagine1);
+		listCampiForm.add(btnImmagine1);
 		btnImmagine1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 1");
@@ -515,11 +588,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine1, "1, 2");
 		
 		textFieldImmagine1 = new JTextField();
+		campiForm.put("textFieldImmagine1", textFieldImmagine1);
+		listCampiForm.add(textFieldImmagine1);
 		textFieldImmagine1.setToolTipText("Inserimento immagine 1");
 		panelTabImmagini.add(textFieldImmagine1, "3, 2, left, default");
 		textFieldImmagine1.setColumns(23);
 		
-		JButton btnImmagine2 = new JButton("Immagine 2");
+		btnImmagine2 = new JButton("Immagine 2");
+		campiForm.put("btnImmagine2", btnImmagine2);
+		listCampiForm.add(btnImmagine2);
 		btnImmagine2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 2");
@@ -530,11 +607,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine2, "1, 4, default, fill");
 		
 		textFieldImmagine2 = new JTextField();
+		campiForm.put("textFieldImmagine2", textFieldImmagine2);
+		listCampiForm.add(textFieldImmagine2);
 		textFieldImmagine2.setToolTipText("Inserimento immagine 2");
 		panelTabImmagini.add(textFieldImmagine2, "3, 4, left, default");
 		textFieldImmagine2.setColumns(23);
 		
-		JButton btnImmagine3 = new JButton("Immagine 3");
+		btnImmagine3 = new JButton("Immagine 3");
+		campiForm.put("btnImmagine3", btnImmagine3);
+		listCampiForm.add(btnImmagine3);
 		btnImmagine3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 3");
@@ -545,11 +626,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine3, "1, 6, default, fill");
 		
 		textFieldImmagine3 = new JTextField();
+		campiForm.put("textFieldImmagine3", textFieldImmagine3);
+		listCampiForm.add(textFieldImmagine3);
 		textFieldImmagine3.setToolTipText("Inserimento immagine 3");
 		panelTabImmagini.add(textFieldImmagine3, "3, 6, left, default");
 		textFieldImmagine3.setColumns(23);
 		
-		JButton btnImmagine4 = new JButton("Immagine 4");
+		btnImmagine4 = new JButton("Immagine 4");
+		campiForm.put("btnImmagine4", btnImmagine4);
+		listCampiForm.add(btnImmagine4);
 		btnImmagine4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 4");
@@ -560,11 +645,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine4, "1, 8, default, fill");
 		
 		textFieldImmagine4 = new JTextField();
+		campiForm.put("textFieldImmagine4", textFieldImmagine4);
+		listCampiForm.add(textFieldImmagine4);
 		textFieldImmagine4.setToolTipText("Inserimento immagine 4");
 		panelTabImmagini.add(textFieldImmagine4, "3, 8, left, default");
 		textFieldImmagine4.setColumns(23);
 		
-		JButton btnImmagine5 = new JButton("Immagine 5");
+		btnImmagine5 = new JButton("Immagine 5");
+		campiForm.put("btnImmagine5", btnImmagine5);
+		listCampiForm.add(btnImmagine5);
 		btnImmagine5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 5");
@@ -575,11 +664,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine5, "1, 10, default, fill");
 		
 		textFieldImmagine5 = new JTextField();
+		campiForm.put("textFieldImmagine5", textFieldImmagine5);
+		listCampiForm.add(textFieldImmagine5);
 		textFieldImmagine5.setToolTipText("Inserimento immagine 5");
 		panelTabImmagini.add(textFieldImmagine5, "3, 10, left, default");
 		textFieldImmagine5.setColumns(23);
 		
-		JButton btnImmagine6 = new JButton("Immagine 6");
+		btnImmagine6 = new JButton("Immagine 6");
+		campiForm.put("btnImmagine6", btnImmagine6);
+		listCampiForm.add(btnImmagine6);
 		btnImmagine6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 6");
@@ -590,11 +683,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine6, "1, 12, default, fill");
 		
 		textFieldImmagine6 = new JTextField();
+		campiForm.put("textFieldImmagine6", textFieldImmagine6);
+		listCampiForm.add(textFieldImmagine6);
 		textFieldImmagine6.setToolTipText("Inserimento immagine 6");
 		panelTabImmagini.add(textFieldImmagine6, "3, 12, left, default");
 		textFieldImmagine6.setColumns(23);
 		
-		JButton btnImmagine7 = new JButton("Immagine 7");
+		btnImmagine7 = new JButton("Immagine 7");
+		campiForm.put("btnImmagine7", btnImmagine7);
+		listCampiForm.add(btnImmagine7);
 		btnImmagine7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 7");
@@ -605,11 +702,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine7, "1, 14");
 		
 		textFieldImmagine7 = new JTextField();
+		campiForm.put("textFieldImmagine7", textFieldImmagine7);
+		listCampiForm.add(textFieldImmagine7);
 		textFieldImmagine7.setToolTipText("Inserimento immagine 7");
 		panelTabImmagini.add(textFieldImmagine7, "3, 14, left, default");
 		textFieldImmagine7.setColumns(23);
 		
-		JButton btnImmagine8 = new JButton("Immagine 8");
+		btnImmagine8 = new JButton("Immagine 8");
+		campiForm.put("btnImmagine8", btnImmagine8);
+		listCampiForm.add(btnImmagine8);
 		btnImmagine8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 8");
@@ -620,11 +721,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine8, "1, 16");
 		
 		textFieldImmagine8 = new JTextField();
+		campiForm.put("textFieldImmagine8", textFieldImmagine8);
+		listCampiForm.add(textFieldImmagine8);
 		textFieldImmagine8.setToolTipText("Inserimento immagine 8");
 		panelTabImmagini.add(textFieldImmagine8, "3, 16, left, default");
 		textFieldImmagine8.setColumns(23);
 		
-		JButton btnImmagine9 = new JButton("Immagine 9");
+		btnImmagine9 = new JButton("Immagine 9");
+		campiForm.put("btnImmagine9", btnImmagine9);
+		listCampiForm.add(btnImmagine9);
 		btnImmagine9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 9");
@@ -635,21 +740,27 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine9, "1, 18");
 		
 		textFieldImmagine9 = new JTextField();
+		campiForm.put("textFieldImmagine9", textFieldImmagine9);
+		listCampiForm.add(textFieldImmagine9);
 		textFieldImmagine9.setToolTipText("Inserimento immagine 9");
 		panelTabImmagini.add(textFieldImmagine9, "3, 18, left, default");
 		textFieldImmagine9.setColumns(23);
 		
-		JButton btImmagine10 = new JButton("Immagine 10");
-		btImmagine10.addActionListener(new ActionListener() {
+		btnImmagine10 = new JButton("Immagine 10");
+		campiForm.put("btnImmagine10", btnImmagine10);
+		listCampiForm.add(btnImmagine10);
+		btnImmagine10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Click: Immmagine 10");
 				selezionaImmagine(textFieldImmagine10);
 			}
 		});
-		btImmagine10.setToolTipText("Inserimento immagine 10");
-		panelTabImmagini.add(btImmagine10, "1, 20");
+		btnImmagine10.setToolTipText("Inserimento immagine 10");
+		panelTabImmagini.add(btnImmagine10, "1, 20");
 		
 		textFieldImmagine10 = new JTextField();
+		campiForm.put("textFieldImmagine10", textFieldImmagine10);
+		listCampiForm.add(textFieldImmagine10);
 		textFieldImmagine10.setToolTipText("Inserimento immagine 10");
 		panelTabImmagini.add(textFieldImmagine10, "3, 20, left, default");
 		textFieldImmagine10.setColumns(23);
@@ -703,7 +814,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblNumeroLocali.setToolTipText("Selezionare il numero dei locali dell'immobile");
 		panelTabDatiSecondari.add(lblNumeroLocali, "1, 2, left, default");
 		
-		JComboBox<String> comboBoxNumeroLocali = new JComboBox<String>();
+		comboBoxNumeroLocali = new JComboBox<String>();
+		campiForm.put("comboBoxNumeroLocali", comboBoxNumeroLocali);
+		listCampiForm.add(comboBoxNumeroLocali);
 		comboBoxNumeroLocali.setModel(new DefaultComboBoxModel<String>(arrayNumeroLocali));
 		comboBoxNumeroLocali.setToolTipText("Selezionare il numero dei locali dell'immobile");
 		lblNumeroLocali.setLabelFor(comboBoxNumeroLocali);
@@ -713,7 +826,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblNumeroCamere.setToolTipText("Selezionare il numero di camere da letto disponibili");
 		panelTabDatiSecondari.add(lblNumeroCamere, "1, 4");
 		
-		JComboBox<String> comboBoxNumeroCamere = new JComboBox<String>();
+		comboBoxNumeroCamere = new JComboBox<String>();
+		campiForm.put("comboBoxNumeroCamere", comboBoxNumeroCamere);
+		listCampiForm.add(comboBoxNumeroCamere);
 		comboBoxNumeroCamere.setModel(new DefaultComboBoxModel<String>(arrayNumeroCamere));
 		comboBoxNumeroCamere.setToolTipText("Selezionare il numero di camere da letto disponibili");
 		lblNumeroCamere.setLabelFor(comboBoxNumeroCamere);
@@ -723,7 +838,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblNumeroBagni.setToolTipText("Selezionare il numero di bagni disponibili");
 		panelTabDatiSecondari.add(lblNumeroBagni, "1, 6");
 		
-		JComboBox<String> comboBoxNumeroBagni = new JComboBox<String>();
+		comboBoxNumeroBagni = new JComboBox<String>();
+		campiForm.put("comboBoxNumeroBagni", comboBoxNumeroBagni);
+		listCampiForm.add(comboBoxNumeroBagni);
 		comboBoxNumeroBagni.setModel(new DefaultComboBoxModel<String>(arrayNumeroBagni));
 		comboBoxNumeroBagni.setToolTipText("Selezionare il numero di bagni disponibili");
 		lblNumeroBagni.setLabelFor(comboBoxNumeroBagni);
@@ -733,7 +850,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblStatoImmobile.setToolTipText("Selezionare lo stato attuale dell'immobile");
 		panelTabDatiSecondari.add(lblStatoImmobile, "1, 8");
 		
-		JComboBox<String> comboBoxStatoImmobile = new JComboBox<String>();
+		comboBoxStatoImmobile = new JComboBox<String>();
+		campiForm.put("comboBoxStatoImmobile", comboBoxStatoImmobile);
+		listCampiForm.add(comboBoxStatoImmobile);
 		comboBoxStatoImmobile.setModel(new DefaultComboBoxModel<String>(arrayStatoImmobile));
 		comboBoxStatoImmobile.setToolTipText("Selezionare lo stato attuale dell'immobile");
 		lblStatoImmobile.setLabelFor(comboBoxStatoImmobile);
@@ -743,7 +862,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblArredamenti.setToolTipText("Selezionr la condizione attuale dell'arredamento");
 		panelTabDatiSecondari.add(lblArredamenti, "1, 10");
 		
-		JComboBox<String> comboBoxArredamenti = new JComboBox<String>();
+		comboBoxArredamenti = new JComboBox<String>();
+		campiForm.put("comboBoxArredamenti", comboBoxArredamenti);
+		listCampiForm.add(comboBoxArredamenti);
 		comboBoxArredamenti.setModel(new DefaultComboBoxModel<String>(arrayArredamenti));
 		comboBoxArredamenti.setToolTipText("Selezionr la condizione attuale dell'arredamento");
 		lblArredamenti.setLabelFor(comboBoxArredamenti);
@@ -753,7 +874,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblPiano.setToolTipText("Selezionare il piano in cui è situato l'immobile");
 		panelTabDatiSecondari.add(lblPiano, "1, 12");
 		
-		JComboBox<String> comboBoxPiano = new JComboBox<String>();
+		comboBoxPiano = new JComboBox<String>();
+		campiForm.put("comboBoxPiano", comboBoxPiano);
+		listCampiForm.add(comboBoxPiano);
 		comboBoxPiano.setModel(new DefaultComboBoxModel<String>(arrayPiano));
 		comboBoxPiano.setToolTipText("Selezionare il piano in cui è situato l'immobile");
 		lblPiano.setLabelFor(comboBoxPiano);
@@ -765,6 +888,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblNumeroTotalePiani.setLabelFor(textFieldNumeroTotalePiani);
 		
 		textFieldNumeroTotalePiani = new JTextField();
+		campiForm.put("textFieldNumeroTotalePiani", textFieldNumeroTotalePiani);
+		listCampiForm.add(textFieldNumeroTotalePiani);
 		textFieldNumeroTotalePiani.setToolTipText("Indicare il numero totale dei piani dell'immobile");
 		panelTabDatiSecondari.add(textFieldNumeroTotalePiani, "2, 14, left, default");
 		textFieldNumeroTotalePiani.setColumns(10);
@@ -782,7 +907,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
 		panelTabDatiSecondari.add(lblCertificazioniEnergetiche, "1, 16");
 		
-		JComboBox<String> comboBoxCertificazioniEnergetiche = new JComboBox<String>();
+		comboBoxCertificazioniEnergetiche = new JComboBox<String>();
+		campiForm.put("comboBoxCertificazioniEnergetiche", comboBoxCertificazioniEnergetiche);
+		listCampiForm.add(comboBoxCertificazioniEnergetiche);
 		comboBoxCertificazioniEnergetiche.setModel(new DefaultComboBoxModel<String>(arrayCertificazioniEnergetiche));
 		comboBoxCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
 		lblCertificazioniEnergetiche.setLabelFor(comboBoxCertificazioniEnergetiche);
@@ -792,7 +919,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lbTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
 		panelTabDatiSecondari.add(lbTipologiaRiscaldamento, "1, 18");
 		
-		JComboBox<String> comboBoxTipologiaRiscaldamento = new JComboBox<String>();
+		comboBoxTipologiaRiscaldamento = new JComboBox<String>();
+		campiForm.put("comboBoxTipologiaRiscaldamento", comboBoxTipologiaRiscaldamento);
+		listCampiForm.add(comboBoxTipologiaRiscaldamento);
 		comboBoxTipologiaRiscaldamento.setModel(new DefaultComboBoxModel<String>(arrayTipologieRiscaldamento));
 		comboBoxTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
 		panelTabDatiSecondari.add(comboBoxTipologiaRiscaldamento, "2, 18");
@@ -801,7 +930,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
 		panelTabDatiSecondari.add(lblClima, "1, 20");
 		
-		JComboBox<String> comboBoxClima = new JComboBox<String>();
+		comboBoxClima = new JComboBox<String>();
+		campiForm.put("comboBoxClima", comboBoxClima);
+		listCampiForm.add(comboBoxClima);
 		comboBoxClima.setModel(new DefaultComboBoxModel<String>(arrayClima));
 		comboBoxClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
 		panelTabDatiSecondari.add(comboBoxClima, "2, 20");
@@ -810,7 +941,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblParcheggio.setToolTipText("Selezionare la tipologia di parcheggio disponibile");
 		panelTabDatiSecondari.add(lblParcheggio, "1, 22");
 		
-		JComboBox<String> comboBoxParcheggio = new JComboBox<String>();
+		comboBoxParcheggio = new JComboBox<String>();
+		campiForm.put("comboBoxParcheggio", comboBoxParcheggio);
+		listCampiForm.add(comboBoxParcheggio);
 		comboBoxParcheggio.setModel(new DefaultComboBoxModel<String>(arrayParcheggio));
 		comboBoxParcheggio.setToolTipText("Selezionare la tipologia di parcheggio disponibile");
 		panelTabDatiSecondari.add(comboBoxParcheggio, "2, 22");
@@ -821,6 +954,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblAnnoCostruzione, "1, 24");
 		
 		textFieldAnnoCostruzione = new JTextField();
+		campiForm.put("textFieldAnnoCostruzione", textFieldAnnoCostruzione);
+		listCampiForm.add(textFieldAnnoCostruzione);
 		textFieldAnnoCostruzione.setToolTipText("Inserire l'anno di costruzione dell'immobile");
 		lblAnnoCostruzione.setLabelFor(textFieldAnnoCostruzione);
 		panelTabDatiSecondari.add(textFieldAnnoCostruzione, "2, 24, left, default");
@@ -839,50 +974,72 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
 		panelTabDatiSecondari.add(lblGiardino, "1, 26");
 		
-		JComboBox<String> comboBoxGiardino = new JComboBox<String>();
+		comboBoxGiardino = new JComboBox<String>();
+		campiForm.put("comboBoxGiardino", comboBoxGiardino);
+		listCampiForm.add(comboBoxGiardino);
 		comboBoxGiardino.setModel(new DefaultComboBoxModel<String>(arrayGiardino));
 		comboBoxGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
 		panelTabDatiSecondari.add(comboBoxGiardino, "2, 26");
 		
-		JCheckBox chckbxBandaLarga = new JCheckBox("Banda larga");
+		chckbxBandaLarga = new JCheckBox("Banda larga");
+		campiForm.put("chckbxBandaLarga", chckbxBandaLarga);
+		listCampiForm.add(chckbxBandaLarga);
 		chckbxBandaLarga.setToolTipText("Banda larga");
 		panelTabDatiSecondari.add(chckbxBandaLarga, "1, 30");
 		
-		JCheckBox chckbxSatellite = new JCheckBox("Satellite");
+		chckbxSatellite = new JCheckBox("Satellite");
+		campiForm.put("chckbxSatellite", chckbxSatellite);
+		listCampiForm.add(chckbxSatellite);
 		chckbxSatellite.setToolTipText("Satellite");
 		panelTabDatiSecondari.add(chckbxSatellite, "2, 30");
 		
-		JCheckBox chckbxAscensore = new JCheckBox("Ascensore");
+		chckbxAscensore = new JCheckBox("Ascensore");
+		campiForm.put("chckbxAscensore", chckbxAscensore);
+		listCampiForm.add(chckbxAscensore);
 		chckbxAscensore.setToolTipText("Ascensore");
 		panelTabDatiSecondari.add(chckbxAscensore, "1, 32");
 		
-		JCheckBox chckbxAllarme = new JCheckBox("Sistema di allarme");
-		chckbxAllarme.setToolTipText("Sistema di allarme");
-		panelTabDatiSecondari.add(chckbxAllarme, "2, 32");
+		chckbxSistemaDiAllarme = new JCheckBox("Sistema di allarme");
+		campiForm.put("chckbxSistemaDiAllarme", chckbxSistemaDiAllarme);
+		listCampiForm.add(chckbxSistemaDiAllarme);
+		chckbxSistemaDiAllarme.setToolTipText("Sistema di allarme");
+		panelTabDatiSecondari.add(chckbxSistemaDiAllarme, "2, 32");
 		
-		JCheckBox chckbxCasaEcologica = new JCheckBox("Casa ecologica");
+		chckbxCasaEcologica = new JCheckBox("Casa ecologica");
+		campiForm.put("chckbxCasaEcologica", chckbxCasaEcologica);
+		listCampiForm.add(chckbxCasaEcologica);
 		chckbxCasaEcologica.setToolTipText("Casa ecologica");
 		panelTabDatiSecondari.add(chckbxCasaEcologica, "1, 34");
 		
-		JCheckBox chckbxCancelloElettrico = new JCheckBox("Cancello elettrico");
+		chckbxCancelloElettrico = new JCheckBox("Cancello elettrico");
+		campiForm.put("chckbxCancelloElettrico", chckbxCancelloElettrico);
+		listCampiForm.add(chckbxCancelloElettrico);
 		chckbxCancelloElettrico.setToolTipText("Cancello elettrico");
 		panelTabDatiSecondari.add(chckbxCancelloElettrico, "2, 34");
 		
-		JCheckBox chckbxVicinanzeBus = new JCheckBox("Vicinanze bus");
+		chckbxVicinanzeBus = new JCheckBox("Vicinanze bus");
+		campiForm.put("chckbxVicinanzeBus", chckbxVicinanzeBus);
+		listCampiForm.add(chckbxVicinanzeBus);
 		chckbxVicinanzeBus.setToolTipText("Vicinanze bus");
 		panelTabDatiSecondari.add(chckbxVicinanzeBus, "1, 36");
 		
-		JCheckBox chckbxVicinanzeMetro = new JCheckBox("Vicinanze metro");
+		chckbxVicinanzeMetro = new JCheckBox("Vicinanze metro");
+		campiForm.put("chckbxVicinanzeMetro", chckbxVicinanzeMetro);
+		listCampiForm.add(chckbxVicinanzeMetro);
 		chckbxVicinanzeMetro.setToolTipText("Vicinanze metro");
 		panelTabDatiSecondari.add(chckbxVicinanzeMetro, "2, 36");
 		
-		JCheckBox chckbxVistaDiPregio = new JCheckBox("Vista di pregio");
+		chckbxVistaDiPregio = new JCheckBox("Vista di pregio");
+		campiForm.put("chckbxVistaDiPregio", chckbxVistaDiPregio);
+		listCampiForm.add(chckbxVistaDiPregio);
 		chckbxVistaDiPregio.setToolTipText("Vista di pregio");
 		panelTabDatiSecondari.add(chckbxVistaDiPregio, "1, 38");
 		
-		JCheckBox chckbxRampeDisabili = new JCheckBox("Rampe per disabili");
-		chckbxRampeDisabili.setToolTipText("Rampe per disabili");
-		panelTabDatiSecondari.add(chckbxRampeDisabili, "2, 38");
+		chckbxRampePerDisabili = new JCheckBox("Rampe per disabili");
+		campiForm.put("chckbxRampePerDisabili", chckbxRampePerDisabili);
+		listCampiForm.add(chckbxRampePerDisabili);
+		chckbxRampePerDisabili.setToolTipText("Rampe per disabili");
+		panelTabDatiSecondari.add(chckbxRampePerDisabili, "2, 38");
 		
 		JPanel panelListaSchedeImmobile = new JPanel();
 		getContentPane().add(panelListaSchedeImmobile);
@@ -904,17 +1061,18 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	//Popola la combobox Provincia quando viene modificata la Regione
 	static void popolaComboBoxProvincia(String regione) {
 		//Rimuovo tutte le opzioni della select Provincia
+		//comboBoxProvincia.removeAllItems();
+		//Rimuovo tutte le opzioni della select Comune
 		comboBoxComune.removeAllItems();
-		if(!regione.equals("Seleziona")) {
+		if(!regione.equals("Seleziona la Regione")) {
 			System.out.println("Regione: " + regione);
 			comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get(regione)));
 		}	
 	}
-	
-	
+		
 	//Popola la combobox Comune quando viene modificata la Provincia
 	static void popolaComboBoxComune(String provincia) {
-		if(!provincia.equals("Seleziona")) {
+		if(!provincia.equals("Seleziona la Provincia")) {
 			System.out.println("Provincia: " + provincia);
 			comboBoxComune.setModel(new DefaultComboBoxModel<String>(provinciaComuni.get(provincia)));
 		}
@@ -962,4 +1120,38 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
         }
 	}
 
+	//Resetta la form
+	static void resettaForm() {
+		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
+		while(iteratorListCampiForm.hasNext()) {
+			JComponent campoCorrente = (JComponent)iteratorListCampiForm.next();
+			switch (campoCorrente.getClass().getName())
+			{
+			    case "javax.swing.JTextField": //Campo testuale
+			    	((JTextComponent) campoCorrente).setText("");
+			    	campoCorrente.setEnabled(true);
+			        break;
+			    case "javax.swing.JTextArea": //Text Area
+			    	((JTextComponent) campoCorrente).setText("");
+			        break;
+			    case "javax.swing.JComboBox": //Select
+			    	if(extracted(campoCorrente).getItemCount()>0) {
+			    		extracted(campoCorrente).setSelectedIndex(0);
+			    	}
+			        break;
+			    case "javax.swing.JButton": //Pulsante
+			    	((JButton) campoCorrente).setEnabled(true);
+			        break;
+			    case "javax.swing.JCheckBox": //Checkbox
+			    	((JCheckBox) campoCorrente).setSelected(false);
+			        break;
+			    default://
+			}
+		}
+		
+	}
+
+	private static JComboBox<String> extracted(JComponent campoCorrente) {
+		return (JComboBox<String>) campoCorrente;
+	}
 }

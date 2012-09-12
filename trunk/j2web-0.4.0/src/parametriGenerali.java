@@ -1,8 +1,11 @@
 import java.awt.Image;
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 
 public interface parametriGenerali {
 	
@@ -46,6 +49,11 @@ public interface parametriGenerali {
   	
   	//Mappa che contiene il limite di caratteri immessi per certi campi testuali
     Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>();
+    
+    //Mappa che contiene tutti i campi della form soggetti a lettura/scrittura o modifiche varie a runtime
+    Map<String,JComponent> campiForm =  new Hashtable<String,JComponent>();
+    public LinkedList<JComponent> listCampiForm = new LinkedList<JComponent>();
+    ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 	
 	//Tutti gli array che compongono le combo box
     final String[] arrayCategorieImmobili = {"Seleziona la categoria", "Residenziale", "Commerciale", "Industriale"};
