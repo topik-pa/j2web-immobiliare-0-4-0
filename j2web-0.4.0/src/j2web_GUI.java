@@ -43,11 +43,11 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	private static final long serialVersionUID = 1L;
 	
 	//Campi testuali
-	private static JTextField txtCodiceInserzione;
-	private static JTextField textTitoloAnnuncio;
+	private static JTextField textFieldCodiceInserzione;
+	private static JTextField textFieldTitoloAnnuncio;
 	private static JTextField textFieldCap;
 	private static JTextField textFieldIndirizzoLocalita;
-	private static JTextField textSuperficieImmobile;
+	private static JTextField textFieldSuperficieImmobile;
 	private static JTextField textFieldPrezzoImmobile;
 	private static JTextField textFieldImmagine1;
 	private static JTextField textFieldImmagine2;
@@ -202,23 +202,23 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblCodiceInserzione.setToolTipText("");
 		panelCodiceInserzione.add(lblCodiceInserzione, "1, 1, left, fill");
 		
-		txtCodiceInserzione = new JTextField();
-		campiForm.put("txtCodiceInserzione", txtCodiceInserzione);
-		listCampiForm.add(txtCodiceInserzione);
-		panelCodiceInserzione.add(txtCodiceInserzione, "2, 1, left, default");
-		txtCodiceInserzione.setHorizontalAlignment(SwingConstants.LEFT);
-		txtCodiceInserzione.setToolTipText("Inserire un codice per identificare univocamente l'annuncio");
-		txtCodiceInserzione.setColumns(10);
-		txtCodiceInserzione.addKeyListener(new KeyAdapter() {   
+		textFieldCodiceInserzione = new JTextField();
+		mapCampiForm.put("textFieldCodiceInserzione", textFieldCodiceInserzione);
+		listCampiForm.add(textFieldCodiceInserzione);
+		panelCodiceInserzione.add(textFieldCodiceInserzione, "2, 1, left, default");
+		textFieldCodiceInserzione.setHorizontalAlignment(SwingConstants.LEFT);
+		textFieldCodiceInserzione.setToolTipText("Inserire un codice per identificare univocamente l'annuncio");
+		textFieldCodiceInserzione.setColumns(10);
+		textFieldCodiceInserzione.addKeyListener(new KeyAdapter() {   
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
-                if (!((c >= '0') && (c <= '9')  || (c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) ||  (c == KeyEvent.VK_MINUS)  || (c == KeyEvent.VK_DELETE)) || txtCodiceInserzione.getText().length()>=maxCaratteri.get("txtCodiceInserzione")) {
+                if (!((c >= '0') && (c <= '9')  || (c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) ||  (c == KeyEvent.VK_MINUS)  || (c == KeyEvent.VK_DELETE)) || textFieldCodiceInserzione.getText().length()>=maxCaratteri.get("txtCodiceInserzione")) {
                     getToolkit().beep();
                     e.consume();
                 }
             }
         });
-		lblCodiceInserzione.setLabelFor(txtCodiceInserzione);
+		lblCodiceInserzione.setLabelFor(textFieldCodiceInserzione);
 		
 		JPanel panelTitoloAnnuncio = new JPanel();
 		panelTabDatiObbligatori.add(panelTitoloAnnuncio, "1, 4, fill, fill");
@@ -231,21 +231,21 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		JLabel lblTitoloAnnuncio = new JLabel("Titolo annuncio");
 		panelTitoloAnnuncio.add(lblTitoloAnnuncio, "1, 1, fill, fill");
 		
-		textTitoloAnnuncio = new JTextField();
-		campiForm.put("textTitoloAnnuncio", textTitoloAnnuncio);
-		listCampiForm.add(textTitoloAnnuncio);
-		lblTitoloAnnuncio.setLabelFor(textTitoloAnnuncio);
-		panelTitoloAnnuncio.add(textTitoloAnnuncio, "2, 1, left, default");
-		textTitoloAnnuncio.setToolTipText("Inserire un titolo per l'annuncio");
-		textTitoloAnnuncio.addKeyListener(new KeyAdapter() {     
+		textFieldTitoloAnnuncio = new JTextField();
+		mapCampiForm.put("textFieldTitoloAnnuncio", textFieldTitoloAnnuncio);
+		listCampiForm.add(textFieldTitoloAnnuncio);
+		lblTitoloAnnuncio.setLabelFor(textFieldTitoloAnnuncio);
+		panelTitoloAnnuncio.add(textFieldTitoloAnnuncio, "2, 1, left, default");
+		textFieldTitoloAnnuncio.setToolTipText("Inserire un titolo per l'annuncio");
+		textFieldTitoloAnnuncio.addKeyListener(new KeyAdapter() {     
             public void keyTyped(KeyEvent e) {
-                if (textTitoloAnnuncio.getText().length()>=150) {
+                if (textFieldTitoloAnnuncio.getText().length()>=150) {
                     getToolkit().beep();
                     e.consume();
                 }
             }
         });
-		textTitoloAnnuncio.setColumns(23);
+		textFieldTitoloAnnuncio.setColumns(23);
 		
 		JPanel panelRegProvCom = new JPanel();
 		panelTabDatiObbligatori.add(panelRegProvCom, "1, 6, fill, fill");
@@ -263,7 +263,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelRegProvCom.add(lblRegione, "1, 1, fill, fill");
 		
 		comboBoxRegione = new JComboBox<String>();
-		campiForm.put("comboBoxRegione", comboBoxRegione);
+		mapCampiForm.put("comboBoxRegione", comboBoxRegione);
 		listCampiForm.add(comboBoxRegione);
 		comboBoxRegione.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -282,7 +282,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblProvincia.setToolTipText("Selezionare la provincia");
 		
 		comboBoxProvincia = new JComboBox<String>();
-		campiForm.put("comboBoxProvincia", comboBoxProvincia);
+		mapCampiForm.put("comboBoxProvincia", comboBoxProvincia);
 		listCampiForm.add(comboBoxProvincia);
 		comboBoxProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -302,7 +302,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		
 		
 		comboBoxComune = new JComboBox<String>();
-		campiForm.put("comboBoxComune", comboBoxComune);
+		mapCampiForm.put("comboBoxComune", comboBoxComune);
 		listCampiForm.add(comboBoxComune);
 		comboBoxComune.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -325,7 +325,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelCap.add(lblCap, "1, 1, fill, fill");
 		
 		textFieldCap = new JTextField();
-		campiForm.put("textFieldCap", textFieldCap);
+		mapCampiForm.put("textFieldCap", textFieldCap);
 		listCampiForm.add(textFieldCap);
 		lblCap.setLabelFor(textFieldCap);
 		panelCap.add(textFieldCap, "2, 1, left, default");
@@ -353,7 +353,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelIndirizzo.add(lblIndirizzoLocalita, "1, 1, fill, fill");
 		
 		textFieldIndirizzoLocalita = new JTextField();
-		campiForm.put("textFieldIndirizzoLocalita", textFieldIndirizzoLocalita);
+		mapCampiForm.put("textFieldIndirizzoLocalita", textFieldIndirizzoLocalita);
 		listCampiForm.add(textFieldIndirizzoLocalita);
 		lblIndirizzoLocalita.setLabelFor(textFieldIndirizzoLocalita);
 		panelIndirizzo.add(textFieldIndirizzoLocalita, "2, 1, left, default");
@@ -377,7 +377,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiObbligatori.add(scrollPaneTestoScheda, "1, 13, fill, fill");
 		
 		textAreaTestoAnnuncio = new JTextArea();
-		campiForm.put("textAreaTestoAnnuncio", textAreaTestoAnnuncio);
+		mapCampiForm.put("textAreaTestoAnnuncio", textAreaTestoAnnuncio);
 		listCampiForm.add(textAreaTestoAnnuncio);
 		textAreaTestoAnnuncio.setTabSize(4);
 		lblTestoDellaScheda.setLabelFor(textAreaTestoAnnuncio);
@@ -407,7 +407,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		
 		
 		comboBoxCategoriaImmobile = new JComboBox<String>();
-		campiForm.put("comboBoxCategoriaImmobile", comboBoxCategoriaImmobile);
+		mapCampiForm.put("comboBoxCategoriaImmobile", comboBoxCategoriaImmobile);
 		listCampiForm.add(comboBoxCategoriaImmobile);
 		comboBoxCategoriaImmobile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -427,7 +427,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		
 		
 		comboBoxTipologiaImmobile = new JComboBox<String>();
-		campiForm.put("comboBoxTipologiaImmobile", comboBoxTipologiaImmobile);
+		mapCampiForm.put("comboBoxTipologiaImmobile", comboBoxTipologiaImmobile);
 		listCampiForm.add(comboBoxTipologiaImmobile);
 		//comboBoxTipologiaImmobile.setModel(new DefaultComboBoxModel<String>(arrayCategorieImmobili ));
 		lblTipologiaImmobile.setLabelFor(comboBoxTipologiaImmobile);
@@ -447,17 +447,17 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		JLabel lblSuperficieImmmobile = new JLabel("Superficie (mq)");
 		panelSuperficie.add(lblSuperficieImmmobile, "1, 1, fill, fill");
 		
-		textSuperficieImmobile = new JTextField();
-		campiForm.put("textSuperficieImmobile", textSuperficieImmobile);
-		listCampiForm.add(textSuperficieImmobile);
-		lblSuperficieImmmobile.setLabelFor(textSuperficieImmobile);
-		panelSuperficie.add(textSuperficieImmobile, "2, 1, left, default");
-		textSuperficieImmobile.setToolTipText("Inserire la superficie dell'immobile in metri quadrati");
-		textSuperficieImmobile.setColumns(10);
-		textSuperficieImmobile.addKeyListener(new KeyAdapter() {     //Ascoltatore interno al JTextField per impedire l'immissione di caratteri non validi
+		textFieldSuperficieImmobile = new JTextField();
+		mapCampiForm.put("textFieldSuperficieImmobile", textFieldSuperficieImmobile);
+		listCampiForm.add(textFieldSuperficieImmobile);
+		lblSuperficieImmmobile.setLabelFor(textFieldSuperficieImmobile);
+		panelSuperficie.add(textFieldSuperficieImmobile, "2, 1, left, default");
+		textFieldSuperficieImmobile.setToolTipText("Inserire la superficie dell'immobile in metri quadrati");
+		textFieldSuperficieImmobile.setColumns(10);
+		textFieldSuperficieImmobile.addKeyListener(new KeyAdapter() {     //Ascoltatore interno al JTextField per impedire l'immissione di caratteri non validi
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
-                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))  || textSuperficieImmobile.getText().length()>=maxCaratteri.get("textSuperficieImmobile")) {
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))  || textFieldSuperficieImmobile.getText().length()>=maxCaratteri.get("textSuperficieImmobile")) {
                     getToolkit().beep();
                     e.consume();
                 }
@@ -478,7 +478,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		
 		
 		comboBoxTipologiaContratto = new JComboBox<String>();
-		campiForm.put("comboBoxTipologiaContratto", comboBoxTipologiaContratto);
+		mapCampiForm.put("comboBoxTipologiaContratto", comboBoxTipologiaContratto);
 		listCampiForm.add(comboBoxTipologiaContratto);
 		comboBoxTipologiaContratto.setModel(new DefaultComboBoxModel<String>(arrayTipologieContratto));
 		lblTipologiaContratto.setLabelFor(comboBoxTipologiaContratto);
@@ -498,7 +498,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelPrezzo.add(lblPrezzoImmobile, "1, 1, fill, fill");
 		
 		textFieldPrezzoImmobile = new JTextField();
-		campiForm.put("textFieldPrezzoImmobile", textFieldPrezzoImmobile);
+		mapCampiForm.put("textFieldPrezzoImmobile", textFieldPrezzoImmobile);
 		listCampiForm.add(textFieldPrezzoImmobile);
 		lblPrezzoImmobile.setLabelFor(textFieldPrezzoImmobile);
 		panelPrezzo.add(textFieldPrezzoImmobile, "2, 1, left, default");
@@ -528,6 +528,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnCreaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Click: Crea scheda");
+				creaScheda();
 			}
 		});
 		btnCreaScheda.setToolTipText("Crea la scheda e la inserisce nela pannello schede");
@@ -576,7 +577,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		btnImmagine1 = new JButton("Immagine1");
-		campiForm.put("btnImmagine1", btnImmagine1);
+		mapCampiForm.put("btnImmagine1", btnImmagine1);
 		listCampiForm.add(btnImmagine1);
 		btnImmagine1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -588,14 +589,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine1, "1, 2");
 		
 		textFieldImmagine1 = new JTextField();
-		campiForm.put("textFieldImmagine1", textFieldImmagine1);
+		mapCampiForm.put("textFieldImmagine1", textFieldImmagine1);
 		listCampiForm.add(textFieldImmagine1);
 		textFieldImmagine1.setToolTipText("Inserimento immagine 1");
 		panelTabImmagini.add(textFieldImmagine1, "3, 2, left, default");
 		textFieldImmagine1.setColumns(23);
 		
 		btnImmagine2 = new JButton("Immagine 2");
-		campiForm.put("btnImmagine2", btnImmagine2);
+		mapCampiForm.put("btnImmagine2", btnImmagine2);
 		listCampiForm.add(btnImmagine2);
 		btnImmagine2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -607,14 +608,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine2, "1, 4, default, fill");
 		
 		textFieldImmagine2 = new JTextField();
-		campiForm.put("textFieldImmagine2", textFieldImmagine2);
+		mapCampiForm.put("textFieldImmagine2", textFieldImmagine2);
 		listCampiForm.add(textFieldImmagine2);
 		textFieldImmagine2.setToolTipText("Inserimento immagine 2");
 		panelTabImmagini.add(textFieldImmagine2, "3, 4, left, default");
 		textFieldImmagine2.setColumns(23);
 		
 		btnImmagine3 = new JButton("Immagine 3");
-		campiForm.put("btnImmagine3", btnImmagine3);
+		mapCampiForm.put("btnImmagine3", btnImmagine3);
 		listCampiForm.add(btnImmagine3);
 		btnImmagine3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -626,14 +627,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine3, "1, 6, default, fill");
 		
 		textFieldImmagine3 = new JTextField();
-		campiForm.put("textFieldImmagine3", textFieldImmagine3);
+		mapCampiForm.put("textFieldImmagine3", textFieldImmagine3);
 		listCampiForm.add(textFieldImmagine3);
 		textFieldImmagine3.setToolTipText("Inserimento immagine 3");
 		panelTabImmagini.add(textFieldImmagine3, "3, 6, left, default");
 		textFieldImmagine3.setColumns(23);
 		
 		btnImmagine4 = new JButton("Immagine 4");
-		campiForm.put("btnImmagine4", btnImmagine4);
+		mapCampiForm.put("btnImmagine4", btnImmagine4);
 		listCampiForm.add(btnImmagine4);
 		btnImmagine4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -645,14 +646,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine4, "1, 8, default, fill");
 		
 		textFieldImmagine4 = new JTextField();
-		campiForm.put("textFieldImmagine4", textFieldImmagine4);
+		mapCampiForm.put("textFieldImmagine4", textFieldImmagine4);
 		listCampiForm.add(textFieldImmagine4);
 		textFieldImmagine4.setToolTipText("Inserimento immagine 4");
 		panelTabImmagini.add(textFieldImmagine4, "3, 8, left, default");
 		textFieldImmagine4.setColumns(23);
 		
 		btnImmagine5 = new JButton("Immagine 5");
-		campiForm.put("btnImmagine5", btnImmagine5);
+		mapCampiForm.put("btnImmagine5", btnImmagine5);
 		listCampiForm.add(btnImmagine5);
 		btnImmagine5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -664,14 +665,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine5, "1, 10, default, fill");
 		
 		textFieldImmagine5 = new JTextField();
-		campiForm.put("textFieldImmagine5", textFieldImmagine5);
+		mapCampiForm.put("textFieldImmagine5", textFieldImmagine5);
 		listCampiForm.add(textFieldImmagine5);
 		textFieldImmagine5.setToolTipText("Inserimento immagine 5");
 		panelTabImmagini.add(textFieldImmagine5, "3, 10, left, default");
 		textFieldImmagine5.setColumns(23);
 		
 		btnImmagine6 = new JButton("Immagine 6");
-		campiForm.put("btnImmagine6", btnImmagine6);
+		mapCampiForm.put("btnImmagine6", btnImmagine6);
 		listCampiForm.add(btnImmagine6);
 		btnImmagine6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -683,14 +684,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine6, "1, 12, default, fill");
 		
 		textFieldImmagine6 = new JTextField();
-		campiForm.put("textFieldImmagine6", textFieldImmagine6);
+		mapCampiForm.put("textFieldImmagine6", textFieldImmagine6);
 		listCampiForm.add(textFieldImmagine6);
 		textFieldImmagine6.setToolTipText("Inserimento immagine 6");
 		panelTabImmagini.add(textFieldImmagine6, "3, 12, left, default");
 		textFieldImmagine6.setColumns(23);
 		
 		btnImmagine7 = new JButton("Immagine 7");
-		campiForm.put("btnImmagine7", btnImmagine7);
+		mapCampiForm.put("btnImmagine7", btnImmagine7);
 		listCampiForm.add(btnImmagine7);
 		btnImmagine7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -702,14 +703,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine7, "1, 14");
 		
 		textFieldImmagine7 = new JTextField();
-		campiForm.put("textFieldImmagine7", textFieldImmagine7);
+		mapCampiForm.put("textFieldImmagine7", textFieldImmagine7);
 		listCampiForm.add(textFieldImmagine7);
 		textFieldImmagine7.setToolTipText("Inserimento immagine 7");
 		panelTabImmagini.add(textFieldImmagine7, "3, 14, left, default");
 		textFieldImmagine7.setColumns(23);
 		
 		btnImmagine8 = new JButton("Immagine 8");
-		campiForm.put("btnImmagine8", btnImmagine8);
+		mapCampiForm.put("btnImmagine8", btnImmagine8);
 		listCampiForm.add(btnImmagine8);
 		btnImmagine8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -721,14 +722,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine8, "1, 16");
 		
 		textFieldImmagine8 = new JTextField();
-		campiForm.put("textFieldImmagine8", textFieldImmagine8);
+		mapCampiForm.put("textFieldImmagine8", textFieldImmagine8);
 		listCampiForm.add(textFieldImmagine8);
 		textFieldImmagine8.setToolTipText("Inserimento immagine 8");
 		panelTabImmagini.add(textFieldImmagine8, "3, 16, left, default");
 		textFieldImmagine8.setColumns(23);
 		
 		btnImmagine9 = new JButton("Immagine 9");
-		campiForm.put("btnImmagine9", btnImmagine9);
+		mapCampiForm.put("btnImmagine9", btnImmagine9);
 		listCampiForm.add(btnImmagine9);
 		btnImmagine9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -740,14 +741,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine9, "1, 18");
 		
 		textFieldImmagine9 = new JTextField();
-		campiForm.put("textFieldImmagine9", textFieldImmagine9);
+		mapCampiForm.put("textFieldImmagine9", textFieldImmagine9);
 		listCampiForm.add(textFieldImmagine9);
 		textFieldImmagine9.setToolTipText("Inserimento immagine 9");
 		panelTabImmagini.add(textFieldImmagine9, "3, 18, left, default");
 		textFieldImmagine9.setColumns(23);
 		
 		btnImmagine10 = new JButton("Immagine 10");
-		campiForm.put("btnImmagine10", btnImmagine10);
+		mapCampiForm.put("btnImmagine10", btnImmagine10);
 		listCampiForm.add(btnImmagine10);
 		btnImmagine10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -759,7 +760,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(btnImmagine10, "1, 20");
 		
 		textFieldImmagine10 = new JTextField();
-		campiForm.put("textFieldImmagine10", textFieldImmagine10);
+		mapCampiForm.put("textFieldImmagine10", textFieldImmagine10);
 		listCampiForm.add(textFieldImmagine10);
 		textFieldImmagine10.setToolTipText("Inserimento immagine 10");
 		panelTabImmagini.add(textFieldImmagine10, "3, 20, left, default");
@@ -815,7 +816,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblNumeroLocali, "1, 2, left, default");
 		
 		comboBoxNumeroLocali = new JComboBox<String>();
-		campiForm.put("comboBoxNumeroLocali", comboBoxNumeroLocali);
+		mapCampiForm.put("comboBoxNumeroLocali", comboBoxNumeroLocali);
 		listCampiForm.add(comboBoxNumeroLocali);
 		comboBoxNumeroLocali.setModel(new DefaultComboBoxModel<String>(arrayNumeroLocali));
 		comboBoxNumeroLocali.setToolTipText("Selezionare il numero dei locali dell'immobile");
@@ -827,7 +828,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblNumeroCamere, "1, 4");
 		
 		comboBoxNumeroCamere = new JComboBox<String>();
-		campiForm.put("comboBoxNumeroCamere", comboBoxNumeroCamere);
+		mapCampiForm.put("comboBoxNumeroCamere", comboBoxNumeroCamere);
 		listCampiForm.add(comboBoxNumeroCamere);
 		comboBoxNumeroCamere.setModel(new DefaultComboBoxModel<String>(arrayNumeroCamere));
 		comboBoxNumeroCamere.setToolTipText("Selezionare il numero di camere da letto disponibili");
@@ -839,7 +840,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblNumeroBagni, "1, 6");
 		
 		comboBoxNumeroBagni = new JComboBox<String>();
-		campiForm.put("comboBoxNumeroBagni", comboBoxNumeroBagni);
+		mapCampiForm.put("comboBoxNumeroBagni", comboBoxNumeroBagni);
 		listCampiForm.add(comboBoxNumeroBagni);
 		comboBoxNumeroBagni.setModel(new DefaultComboBoxModel<String>(arrayNumeroBagni));
 		comboBoxNumeroBagni.setToolTipText("Selezionare il numero di bagni disponibili");
@@ -851,7 +852,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblStatoImmobile, "1, 8");
 		
 		comboBoxStatoImmobile = new JComboBox<String>();
-		campiForm.put("comboBoxStatoImmobile", comboBoxStatoImmobile);
+		mapCampiForm.put("comboBoxStatoImmobile", comboBoxStatoImmobile);
 		listCampiForm.add(comboBoxStatoImmobile);
 		comboBoxStatoImmobile.setModel(new DefaultComboBoxModel<String>(arrayStatoImmobile));
 		comboBoxStatoImmobile.setToolTipText("Selezionare lo stato attuale dell'immobile");
@@ -863,7 +864,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblArredamenti, "1, 10");
 		
 		comboBoxArredamenti = new JComboBox<String>();
-		campiForm.put("comboBoxArredamenti", comboBoxArredamenti);
+		mapCampiForm.put("comboBoxArredamenti", comboBoxArredamenti);
 		listCampiForm.add(comboBoxArredamenti);
 		comboBoxArredamenti.setModel(new DefaultComboBoxModel<String>(arrayArredamenti));
 		comboBoxArredamenti.setToolTipText("Selezionr la condizione attuale dell'arredamento");
@@ -875,7 +876,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblPiano, "1, 12");
 		
 		comboBoxPiano = new JComboBox<String>();
-		campiForm.put("comboBoxPiano", comboBoxPiano);
+		mapCampiForm.put("comboBoxPiano", comboBoxPiano);
 		listCampiForm.add(comboBoxPiano);
 		comboBoxPiano.setModel(new DefaultComboBoxModel<String>(arrayPiano));
 		comboBoxPiano.setToolTipText("Selezionare il piano in cui è situato l'immobile");
@@ -888,7 +889,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		lblNumeroTotalePiani.setLabelFor(textFieldNumeroTotalePiani);
 		
 		textFieldNumeroTotalePiani = new JTextField();
-		campiForm.put("textFieldNumeroTotalePiani", textFieldNumeroTotalePiani);
+		mapCampiForm.put("textFieldNumeroTotalePiani", textFieldNumeroTotalePiani);
 		listCampiForm.add(textFieldNumeroTotalePiani);
 		textFieldNumeroTotalePiani.setToolTipText("Indicare il numero totale dei piani dell'immobile");
 		panelTabDatiSecondari.add(textFieldNumeroTotalePiani, "2, 14, left, default");
@@ -908,7 +909,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblCertificazioniEnergetiche, "1, 16");
 		
 		comboBoxCertificazioniEnergetiche = new JComboBox<String>();
-		campiForm.put("comboBoxCertificazioniEnergetiche", comboBoxCertificazioniEnergetiche);
+		mapCampiForm.put("comboBoxCertificazioniEnergetiche", comboBoxCertificazioniEnergetiche);
 		listCampiForm.add(comboBoxCertificazioniEnergetiche);
 		comboBoxCertificazioniEnergetiche.setModel(new DefaultComboBoxModel<String>(arrayCertificazioniEnergetiche));
 		comboBoxCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
@@ -920,7 +921,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lbTipologiaRiscaldamento, "1, 18");
 		
 		comboBoxTipologiaRiscaldamento = new JComboBox<String>();
-		campiForm.put("comboBoxTipologiaRiscaldamento", comboBoxTipologiaRiscaldamento);
+		mapCampiForm.put("comboBoxTipologiaRiscaldamento", comboBoxTipologiaRiscaldamento);
 		listCampiForm.add(comboBoxTipologiaRiscaldamento);
 		comboBoxTipologiaRiscaldamento.setModel(new DefaultComboBoxModel<String>(arrayTipologieRiscaldamento));
 		comboBoxTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
@@ -931,7 +932,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblClima, "1, 20");
 		
 		comboBoxClima = new JComboBox<String>();
-		campiForm.put("comboBoxClima", comboBoxClima);
+		mapCampiForm.put("comboBoxClima", comboBoxClima);
 		listCampiForm.add(comboBoxClima);
 		comboBoxClima.setModel(new DefaultComboBoxModel<String>(arrayClima));
 		comboBoxClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
@@ -942,7 +943,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblParcheggio, "1, 22");
 		
 		comboBoxParcheggio = new JComboBox<String>();
-		campiForm.put("comboBoxParcheggio", comboBoxParcheggio);
+		mapCampiForm.put("comboBoxParcheggio", comboBoxParcheggio);
 		listCampiForm.add(comboBoxParcheggio);
 		comboBoxParcheggio.setModel(new DefaultComboBoxModel<String>(arrayParcheggio));
 		comboBoxParcheggio.setToolTipText("Selezionare la tipologia di parcheggio disponibile");
@@ -954,7 +955,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblAnnoCostruzione, "1, 24");
 		
 		textFieldAnnoCostruzione = new JTextField();
-		campiForm.put("textFieldAnnoCostruzione", textFieldAnnoCostruzione);
+		mapCampiForm.put("textFieldAnnoCostruzione", textFieldAnnoCostruzione);
 		listCampiForm.add(textFieldAnnoCostruzione);
 		textFieldAnnoCostruzione.setToolTipText("Inserire l'anno di costruzione dell'immobile");
 		lblAnnoCostruzione.setLabelFor(textFieldAnnoCostruzione);
@@ -975,68 +976,68 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabDatiSecondari.add(lblGiardino, "1, 26");
 		
 		comboBoxGiardino = new JComboBox<String>();
-		campiForm.put("comboBoxGiardino", comboBoxGiardino);
+		mapCampiForm.put("comboBoxGiardino", comboBoxGiardino);
 		listCampiForm.add(comboBoxGiardino);
 		comboBoxGiardino.setModel(new DefaultComboBoxModel<String>(arrayGiardino));
 		comboBoxGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
 		panelTabDatiSecondari.add(comboBoxGiardino, "2, 26");
 		
 		chckbxBandaLarga = new JCheckBox("Banda larga");
-		campiForm.put("chckbxBandaLarga", chckbxBandaLarga);
+		mapCampiForm.put("chckbxBandaLarga", chckbxBandaLarga);
 		listCampiForm.add(chckbxBandaLarga);
 		chckbxBandaLarga.setToolTipText("Banda larga");
 		panelTabDatiSecondari.add(chckbxBandaLarga, "1, 30");
 		
 		chckbxSatellite = new JCheckBox("Satellite");
-		campiForm.put("chckbxSatellite", chckbxSatellite);
+		mapCampiForm.put("chckbxSatellite", chckbxSatellite);
 		listCampiForm.add(chckbxSatellite);
 		chckbxSatellite.setToolTipText("Satellite");
 		panelTabDatiSecondari.add(chckbxSatellite, "2, 30");
 		
 		chckbxAscensore = new JCheckBox("Ascensore");
-		campiForm.put("chckbxAscensore", chckbxAscensore);
+		mapCampiForm.put("chckbxAscensore", chckbxAscensore);
 		listCampiForm.add(chckbxAscensore);
 		chckbxAscensore.setToolTipText("Ascensore");
 		panelTabDatiSecondari.add(chckbxAscensore, "1, 32");
 		
 		chckbxSistemaDiAllarme = new JCheckBox("Sistema di allarme");
-		campiForm.put("chckbxSistemaDiAllarme", chckbxSistemaDiAllarme);
+		mapCampiForm.put("chckbxSistemaDiAllarme", chckbxSistemaDiAllarme);
 		listCampiForm.add(chckbxSistemaDiAllarme);
 		chckbxSistemaDiAllarme.setToolTipText("Sistema di allarme");
 		panelTabDatiSecondari.add(chckbxSistemaDiAllarme, "2, 32");
 		
 		chckbxCasaEcologica = new JCheckBox("Casa ecologica");
-		campiForm.put("chckbxCasaEcologica", chckbxCasaEcologica);
+		mapCampiForm.put("chckbxCasaEcologica", chckbxCasaEcologica);
 		listCampiForm.add(chckbxCasaEcologica);
 		chckbxCasaEcologica.setToolTipText("Casa ecologica");
 		panelTabDatiSecondari.add(chckbxCasaEcologica, "1, 34");
 		
 		chckbxCancelloElettrico = new JCheckBox("Cancello elettrico");
-		campiForm.put("chckbxCancelloElettrico", chckbxCancelloElettrico);
+		mapCampiForm.put("chckbxCancelloElettrico", chckbxCancelloElettrico);
 		listCampiForm.add(chckbxCancelloElettrico);
 		chckbxCancelloElettrico.setToolTipText("Cancello elettrico");
 		panelTabDatiSecondari.add(chckbxCancelloElettrico, "2, 34");
 		
 		chckbxVicinanzeBus = new JCheckBox("Vicinanze bus");
-		campiForm.put("chckbxVicinanzeBus", chckbxVicinanzeBus);
+		mapCampiForm.put("chckbxVicinanzeBus", chckbxVicinanzeBus);
 		listCampiForm.add(chckbxVicinanzeBus);
 		chckbxVicinanzeBus.setToolTipText("Vicinanze bus");
 		panelTabDatiSecondari.add(chckbxVicinanzeBus, "1, 36");
 		
 		chckbxVicinanzeMetro = new JCheckBox("Vicinanze metro");
-		campiForm.put("chckbxVicinanzeMetro", chckbxVicinanzeMetro);
+		mapCampiForm.put("chckbxVicinanzeMetro", chckbxVicinanzeMetro);
 		listCampiForm.add(chckbxVicinanzeMetro);
 		chckbxVicinanzeMetro.setToolTipText("Vicinanze metro");
 		panelTabDatiSecondari.add(chckbxVicinanzeMetro, "2, 36");
 		
 		chckbxVistaDiPregio = new JCheckBox("Vista di pregio");
-		campiForm.put("chckbxVistaDiPregio", chckbxVistaDiPregio);
+		mapCampiForm.put("chckbxVistaDiPregio", chckbxVistaDiPregio);
 		listCampiForm.add(chckbxVistaDiPregio);
 		chckbxVistaDiPregio.setToolTipText("Vista di pregio");
 		panelTabDatiSecondari.add(chckbxVistaDiPregio, "1, 38");
 		
 		chckbxRampePerDisabili = new JCheckBox("Rampe per disabili");
-		campiForm.put("chckbxRampePerDisabili", chckbxRampePerDisabili);
+		mapCampiForm.put("chckbxRampePerDisabili", chckbxRampePerDisabili);
 		listCampiForm.add(chckbxRampePerDisabili);
 		chckbxRampePerDisabili.setToolTipText("Rampe per disabili");
 		panelTabDatiSecondari.add(chckbxRampePerDisabili, "2, 38");
@@ -1121,6 +1122,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	}
 
 	//Resetta la form
+	@SuppressWarnings("unchecked")
 	static void resettaForm() {
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 		while(iteratorListCampiForm.hasNext()) {
@@ -1135,8 +1137,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 			    	((JTextComponent) campoCorrente).setText("");
 			        break;
 			    case "javax.swing.JComboBox": //Select
-			    	if(extracted(campoCorrente).getItemCount()>0) {
-			    		extracted(campoCorrente).setSelectedIndex(0);
+			    	if(((JComboBox<String>) campoCorrente).getItemCount()>0) {
+			    		((JComboBox<String>) campoCorrente).setSelectedIndex(0);
 			    	}
 			        break;
 			    case "javax.swing.JButton": //Pulsante
@@ -1147,11 +1149,84 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 			        break;
 			    default://
 			}
+		}	
+	}
+		
+	//Verifica la validità della form
+	@SuppressWarnings("unchecked")
+	static boolean isFormValid() {
+		
+		String comboContent;
+		boolean campiObbligatoriCompilati = true;
+		
+		//Controllo i campi testuali
+		if(((JTextField)mapCampiForm.get("textFieldCodiceInserzione")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
 		}
+		if(((JTextField)mapCampiForm.get("textFieldTitoloAnnuncio")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		if(((JTextField)mapCampiForm.get("textFieldCap")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		if(((JTextField)mapCampiForm.get("textFieldIndirizzoLocalita")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		if(((JTextField)mapCampiForm.get("textFieldSuperficieImmobile")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		if(((JTextField)mapCampiForm.get("textFieldPrezzoImmobile")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		
+		//Controllo la text area
+		if(((JTextArea)mapCampiForm.get("textAreaTestoAnnuncio")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		
+		//Controllo le checkbox
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxRegione")).getSelectedItem());
+		if(comboContent.isEmpty() || comboContent.equals(arrayRegioni[0])) {
+			campiObbligatoriCompilati = false;
+		}
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxProvincia")).getSelectedItem());
+		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayProvincie[0])) {
+			campiObbligatoriCompilati = false;
+		}
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxComune")).getSelectedItem());
+		if(comboContent==null || comboContent.isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxCategoriaImmobile")).getSelectedItem());
+		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayCategorieImmobili[0])) {
+			campiObbligatoriCompilati = false;
+		}
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxTipologiaImmobile")).getSelectedItem());
+		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayTipologie[0])) {
+			campiObbligatoriCompilati = false;
+		}
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxTipologiaContratto")).getSelectedItem());
+		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayTipologie[0])) {
+			campiObbligatoriCompilati = false;
+		}
+		
+		//Se tutti i campi obbligatori hanno dati validi
+       if(campiObbligatoriCompilati) {  	
+           return true;
+       }
+       else {               	           
+           return false;
+       }
 		
 	}
 
-	private static JComboBox<String> extracted(JComponent campoCorrente) {
-		return (JComboBox<String>) campoCorrente;
+	//Crea la scheda
+	static void creaScheda() {
+		if(isFormValid()) { 
+			System.out.println("form valido");
+		}
+		else {
+			System.out.println("form nonn valido");
+		}
 	}
 }

@@ -51,16 +51,17 @@ public interface parametriGenerali {
     Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>();
     
     //Mappa che contiene tutti i campi della form soggetti a lettura/scrittura o modifiche varie a runtime
-    Map<String,JComponent> campiForm =  new Hashtable<String,JComponent>();
+    Map<String,JComponent> mapCampiForm =  new Hashtable<String,JComponent>();
     public LinkedList<JComponent> listCampiForm = new LinkedList<JComponent>();
     ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 	
 	//Tutti gli array che compongono le combo box
     final String[] arrayCategorieImmobili = {"Seleziona la categoria", "Residenziale", "Commerciale", "Industriale"};
-    final String[] arrayTipologieImmobiliResidenziali = {"Seleziona la tipologia", "Appartamento", "Attico", "Bifamiliare", "Casa", "Garage", "Palazzo", "Rustico", "Terreno agricolo", "Terreno edificabile", "Villa", "Villaschiera"};
-    final String[] arrayTipologieImmobiliCommerciali = {"Seleziona la tipologia", "Agriturismo", "Albergo", "Bar", "Negozio", "Ristorante", "Ufficio"};
-    final String[] arrayTipologieImmobiliIndustriali = {"Seleziona la tipologia", "Capannone", "Laboratorio", "Magazzino"};
-	final String[] arrayTipologieContratto = {"Affitto", "Vendita"};
+    final String[] arrayTipologie = {"Seleziona la tipologia"};
+    final String[] arrayTipologieImmobiliResidenziali = {arrayTipologie[0], "Appartamento", "Attico", "Bifamiliare", "Casa", "Garage", "Palazzo", "Rustico", "Terreno agricolo", "Terreno edificabile", "Villa", "Villaschiera"};
+    final String[] arrayTipologieImmobiliCommerciali = {arrayTipologie[0], "Agriturismo", "Albergo", "Bar", "Negozio", "Ristorante", "Ufficio"};
+    final String[] arrayTipologieImmobiliIndustriali = {arrayTipologie[0], "Capannone", "Laboratorio", "Magazzino"};
+	final String[] arrayTipologieContratto = {arrayTipologie[0], "Affitto", "Vendita"};
 	final String[] arrayNumeroLocali = {"Seleziona", "1", "2", "3", "4", "5", "6", "7", ">7"};
 	final String[] arrayNumeroCamere = {"Seleziona", "1", "2", "3", "4", "5", ">5"};
 	final String[] arrayNumeroBagni = {"Seleziona", "1", "2", "3", "4", "5", ">5"};
@@ -75,26 +76,27 @@ public interface parametriGenerali {
     //Array delle Regioni
 	final String[] arrayRegioni = {"Seleziona la Regione", "Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"};
 	//Array delle Provincie
-	final String[] provincieAbruzzo = {"Seleziona la Provincia", "L'Aquila", "Chieti", "Pescara", "Teramo"};
-	final String[] provincieBasilicata = {"Seleziona la Provincia", "Matera", "Potenza"};
-	final String[] provincieCalabria = {"Seleziona la Provincia", "Cosenza", "Catanzaro", "Crotone", "Reggio Calabria", "Vibo Valentia"};
-	final String[] provincieCampania = {"Seleziona la Provincia", "Avellino", "Benevento", "Caserta", "Napoli", "Salerno"};
-	final String[] provincieEmiliaRomagna = {"Seleziona la Provincia", "Bologna", "Forlì-Cesena", "Ferrara", "Modena", "Piacenza", "Parma", "Ravenna", "Reggio Emilia", "Rimini"};
-	final String[] provincieFriuliVeneziaGiulia = {"Seleziona la Provincia", "Gorizia", "Pordenone", "Trieste", "Udine"};
-	final String[] provincieLazio = {"Seleziona la Provincia", "Frosinone", "Latina", "Rieti", "Roma", "Viterbo"};
-	final String[] provincieLiguria = {"Seleziona la Provincia", "Genova", "Imperia", "La Spezia", "Savona"};
-	final String[] provincieLombardia = {"Seleziona la Provincia", "Bergamo", "Brescia", "Como", "Cremona", "Lecco", "Milano", "Mantova", "Pavia", "Sondrio", "Varese"};
-	final String[] provincieMarche = {"Seleziona la Provincia", "Ancona", "Ascoli Piceno", "Massa Carrara", "Pesaro e Urbino"};
-	final String[] provincieMolise = {"Seleziona la Provincia", "Campobasso", "Isernia"};
-	final String[] provinciePiemonte = {"Seleziona la Provincia", "Alessandria", "Asti", "Biella", "Cuneo", "Novara", "Torino", "Verbano-Cusio-Ossola", "Vercelli"};
-	final String[] provinciePuglia = {"Seleziona la Provincia", "Bari", "Brindisi", "Foggia", "Lecce", "Taranto"};
-	final String[] provincieSardegna = {"Seleziona la Provincia", "Olbia-Tempio", "Ogliastra", "Medio Campidano", "Carbonia Iglesias", "Cagliari", "Nuoro", "Oristano", "Sassari"};
-	final String[] provincieSicilia = {"Seleziona la Provincia", "Agrigento", "Caltanissetta", "Catania", "Enna", "Messina", "Palermo", "Ragusa", "Siracusa", "Trapani"};
-	final String[] provincieToscana = {"Seleziona la Provincia", "Arezzo", "Firenze", "Grosseto", "Livorno", "Lucca", "Massa-Carrara", "Pisa", "Prato", "Pistoia", "Siena"};
-	final String[] provincieTrentinoAltoAdige = {"Seleziona la Provincia", "Bolzano", "Trento"};
-	final String[] provincieUmbria = {"Seleziona la Provincia", "Perugia", "Terni"};
-	final String[] provincieValleDAosta = {"Seleziona la Provincia", "Aosta"};
-	final String[] provincieVeneto = {"Seleziona la Provincia", "Belluno", "Padova", "Rovigo", "Treviso", "Venezia", "Vicenza", "Verona"};
+	final String[] arrayProvincie = {"Seleziona la Provincia"};
+	final String[] provincieAbruzzo = {arrayProvincie[0], "L'Aquila", "Chieti", "Pescara", "Teramo"};
+	final String[] provincieBasilicata = {arrayProvincie[0], "Matera", "Potenza"};
+	final String[] provincieCalabria = {arrayProvincie[0], "Cosenza", "Catanzaro", "Crotone", "Reggio Calabria", "Vibo Valentia"};
+	final String[] provincieCampania = {arrayProvincie[0], "Avellino", "Benevento", "Caserta", "Napoli", "Salerno"};
+	final String[] provincieEmiliaRomagna = {arrayProvincie[0], "Bologna", "Forlì-Cesena", "Ferrara", "Modena", "Piacenza", "Parma", "Ravenna", "Reggio Emilia", "Rimini"};
+	final String[] provincieFriuliVeneziaGiulia = {arrayProvincie[0], "Gorizia", "Pordenone", "Trieste", "Udine"};
+	final String[] provincieLazio = {arrayProvincie[0], "Frosinone", "Latina", "Rieti", "Roma", "Viterbo"};
+	final String[] provincieLiguria = {arrayProvincie[0], "Genova", "Imperia", "La Spezia", "Savona"};
+	final String[] provincieLombardia = {arrayProvincie[0], "Bergamo", "Brescia", "Como", "Cremona", "Lecco", "Milano", "Mantova", "Pavia", "Sondrio", "Varese"};
+	final String[] provincieMarche = {arrayProvincie[0], "Ancona", "Ascoli Piceno", "Massa Carrara", "Pesaro e Urbino"};
+	final String[] provincieMolise = {arrayProvincie[0], "Campobasso", "Isernia"};
+	final String[] provinciePiemonte = {arrayProvincie[0], "Alessandria", "Asti", "Biella", "Cuneo", "Novara", "Torino", "Verbano-Cusio-Ossola", "Vercelli"};
+	final String[] provinciePuglia = {arrayProvincie[0], "Bari", "Brindisi", "Foggia", "Lecce", "Taranto"};
+	final String[] provincieSardegna = {arrayProvincie[0], "Olbia-Tempio", "Ogliastra", "Medio Campidano", "Carbonia Iglesias", "Cagliari", "Nuoro", "Oristano", "Sassari"};
+	final String[] provincieSicilia = {arrayProvincie[0], "Agrigento", "Caltanissetta", "Catania", "Enna", "Messina", "Palermo", "Ragusa", "Siracusa", "Trapani"};
+	final String[] provincieToscana = {arrayProvincie[0], "Arezzo", "Firenze", "Grosseto", "Livorno", "Lucca", "Massa-Carrara", "Pisa", "Prato", "Pistoia", "Siena"};
+	final String[] provincieTrentinoAltoAdige = {arrayProvincie[0], "Bolzano", "Trento"};
+	final String[] provincieUmbria = {arrayProvincie[0], "Perugia", "Terni"};
+	final String[] provincieValleDAosta = {arrayProvincie[0], "Aosta"};
+	final String[] provincieVeneto = {arrayProvincie[0], "Belluno", "Padova", "Rovigo", "Treviso", "Venezia", "Vicenza", "Verona"};
 	//Array dei Comuni
 	final String[] comuniLAquila = {"Acciano",
 			"Aielli",
