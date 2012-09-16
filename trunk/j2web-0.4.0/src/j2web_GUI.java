@@ -528,7 +528,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnCreaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Click: Crea scheda");
-				creaScheda();
+				if(isFormValid()) { 
+					System.out.println("Form valido");
+					disabilitaCampiForm();
+             	   	SchedaImmobile nuovaSchedaImmobile = new SchedaImmobile(); 
+				}
+				else {
+					System.out.println("Form non valido");
+					JOptionPane.showMessageDialog(null, "Alcuni campi obbligatori non sono stati compilati.");
+				}
 			}
 		});
 		btnCreaScheda.setToolTipText("Crea la scheda e la inserisce nela pannello schede");
@@ -1135,23 +1143,55 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 			        break;
 			    case "javax.swing.JTextArea": //Text Area
 			    	((JTextComponent) campoCorrente).setText("");
+			    	((JTextComponent) campoCorrente).setEnabled(true);
 			        break;
 			    case "javax.swing.JComboBox": //Select
-			    	if(((JComboBox<String>) campoCorrente).getItemCount()>0) {
+			    	if(((JComboBox<String>) campoCorrente).getItemCount()>0) {	//se la checkbox è popolata...
 			    		((JComboBox<String>) campoCorrente).setSelectedIndex(0);
 			    	}
+			    	((JComboBox<String>) campoCorrente).setEnabled(true);
 			        break;
 			    case "javax.swing.JButton": //Pulsante
 			    	((JButton) campoCorrente).setEnabled(true);
 			        break;
 			    case "javax.swing.JCheckBox": //Checkbox
 			    	((JCheckBox) campoCorrente).setSelected(false);
+			    	((JCheckBox) campoCorrente).setEnabled(true);
 			        break;
 			    default://
 			}
 		}	
 	}
-		
+	
+	//Disabilita i campi della form
+	//@SuppressWarnings("unchecked")
+	static void disabilitaCampiForm() {
+		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
+		while(iteratorListCampiForm.hasNext()) {
+			JComponent campoCorrente = (JComponent)iteratorListCampiForm.next();
+			campoCorrente.setEnabled(false);
+			/*switch (campoCorrente.getClass().getName())
+			{
+			    case "javax.swing.JTextField": //Campo testuale
+			    	((JTextComponent) campoCorrente).setEnabled(false);
+			        break;
+			    case "javax.swing.JTextArea": //Text Area
+			    	((JTextComponent) campoCorrente).setEnabled(false);
+			        break;
+			    case "javax.swing.JComboBox": //Select
+			    	((JComboBox<String>) campoCorrente).setEnabled(false);
+			        break;
+			    case "javax.swing.JButton": //Pulsante
+			    	((JButton) campoCorrente).setEnabled(false);
+			        break;
+			    case "javax.swing.JCheckBox": //Checkbox
+			    	((JCheckBox) campoCorrente).setEnabled(false);
+			        break;
+			    default://
+			}*/
+		}
+	}
+	
 	//Verifica la validità della form
 	@SuppressWarnings("unchecked")
 	static boolean isFormValid() {
@@ -1222,11 +1262,6 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 
 	//Crea la scheda
 	static void creaScheda() {
-		if(isFormValid()) { 
-			System.out.println("form valido");
-		}
-		else {
-			System.out.println("form nonn valido");
-		}
+		
 	}
 }
