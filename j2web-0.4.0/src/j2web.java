@@ -37,7 +37,6 @@ public class j2web implements parametriGenerali {
 		
 		//Popolo la mappa dei limiti di caratteri per i campi testuali
 		inizializzaMappaLimiteCaratteri();
-		
 
 	}
 	

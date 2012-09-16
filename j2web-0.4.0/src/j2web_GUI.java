@@ -31,6 +31,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ListIterator;
 
 
@@ -531,7 +535,14 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				if(isFormValid()) { 
 					System.out.println("Form valido");
 					disabilitaCampiForm();
-             	   	SchedaImmobile nuovaSchedaImmobile = new SchedaImmobile(); 
+             	   	SchedaImmobile schedaImmobile = new SchedaImmobile();
+             	   	aggiungiSchedaInDat(schedaImmobile);
+             	 
+             	   	//Il pannello centrale viene ridisegnato
+             	    //Main.imaginationGUI.pannelloSchedeImmobili.updatePanello();
+             	   
+             	    //Il pannello di destra viene ridisegnato
+             	    //Main.imaginationGUI.pannelloInserimento.updatePanello();
 				}
 				else {
 					System.out.println("Form non valido");
@@ -1260,8 +1271,34 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		
 	}
 
-	//Crea la scheda
-	static void creaScheda() {
+	//Il nuovo oggetto scheda immobile viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
+	static void aggiungiSchedaInDat(SchedaImmobile scheda) {
+	
+	//Aggiorno la lista delle schede immobile
+	listSchedeImmobile.add(scheda);
 		
+	//Aggiorno il file dat delle schede
+    try {
+	   File file = new File(datFilePath);
+    	if(file.exists()) {
+    		System.out.println("File .dat trovato.");
+    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+				outputFile.writeObject(listSchedeImmobile);
+				outputFile.close();
+    	}
+    	else {
+				FileOutputStream newFile = new FileOutputStream(datFilePath);
+				ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+				outputFile.writeObject(listSchedeImmobile);
+				outputFile.close();
+				System.out.println("File .dat non trovato. Creazione del file...: " + newFile.toString());
+    	}
+		} catch (FileNotFoundException e0) {
+            JOptionPane.showMessageDialog(null, "File .dat non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
+            e0.printStackTrace();
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
+			e1.printStackTrace();
+		}
 	}
 }
