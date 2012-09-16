@@ -50,6 +50,12 @@ public interface parametriGenerali {
   	//Mappa che contiene il limite di caratteri immessi per certi campi testuali
     Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>();
     
+    //La struttura dati che contiene le schede immobile create
+  	public LinkedList<SchedaImmobile> listSchedeImmobile = new LinkedList<SchedaImmobile>();
+  	
+  	//Percorso file dat per le schede
+  	String datFilePath = "./schede/schede.dat";
+    
     //Mappa che contiene tutti i campi della form soggetti a lettura/scrittura o modifiche varie a runtime
     Map<String,JComponent> mapCampiForm =  new Hashtable<String,JComponent>();
     public LinkedList<JComponent> listCampiForm = new LinkedList<JComponent>();

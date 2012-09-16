@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 
 
@@ -87,8 +88,8 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	boolean rampePerDisabili;  //10
 	//TOT:46
 	
-	//Percorso file dat
-	String datPath = "./schede/" + codiceInserzione + "-" + idScheda + ".dat";
+	//Percorso file dat per la scheda
+	String schedaDatPath = "./schede/" + codiceInserzione + "-" + idScheda + ".dat";
 
 	//Una scheda immobile può essere ospitata in diversi portali, la seguente tabella hash contiene i codici dei portali(key) e il codice di inserimento(value) in cui la scheda è attualmente inserita
 	Map<String,String> mappaPortaliOspitanti = new Hashtable<String,String>();
@@ -143,7 +144,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		immagine9 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine9")).getText());
 		immagine10 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine10")).getText());
 		//TextArea
-		testoAnnuncio = (String)((JTextField)mapCampiForm.get("textAreaTestoAnnuncio")).getText().trim();
+		testoAnnuncio = (String)((JTextArea)mapCampiForm.get("textAreaTestoAnnuncio")).getText().trim();
 		if(testoAnnuncio.length()>2000) {
 			testoAnnuncio.substring(0, 1999);
 		}
@@ -187,9 +188,9 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	public void caricaMappaPortaliOspitanti() {
 		
 		//Lettura schede dal file .dat
-        File file = new File(datPath);
+        File file = new File(schedaDatPath);
     	if(file.exists()) {
-    		System.out.println("File .dat scheda trovato." + datPath);
+    		System.out.println("File .dat scheda trovato." + schedaDatPath);
     		try {
     			if(file.length()!=0) {
     				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
@@ -209,7 +210,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
     	else {
     		System.out.println("File hash non trovato.");
     		try {
-				FileOutputStream newFile = new FileOutputStream(datPath);
+				FileOutputStream newFile = new FileOutputStream(schedaDatPath);
 				System.out.println("File hash non trovato. Creazione del file...: " + newFile.toString());
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(null, "File hash non trovato: impossibile caricare la hash table", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -239,7 +240,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 				
 		//Salvataggio tabella
         try {
- 		   File file = new File(datPath);
+ 		   File file = new File(schedaDatPath);
  	    	if(file.exists()) {
  	    		System.out.println("File hash scheda trovato.");
  	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
@@ -266,7 +267,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		
 		//Salvataggio tabella
         try {
- 		   File file = new File(datPath);
+ 		   File file = new File(schedaDatPath);
  	    	if(file.exists()) {
  	    		System.out.println("File hash scheda trovato.");
  	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
