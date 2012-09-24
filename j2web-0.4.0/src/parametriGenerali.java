@@ -53,6 +53,9 @@ public interface parametriGenerali {
     //La struttura dati che contiene le schede immobile create
   	public LinkedList<SchedaImmobile> listSchedeImmobile = new LinkedList<SchedaImmobile>();
   	
+  	//La struttura dati che contiene i portali attivati
+  	public LinkedList<PortaleImmobiliare> listPortaliImmobiliari = new LinkedList<PortaleImmobiliare>(); 
+  	
   	//Percorso file dat per le schede
   	String datFilePath = "./schede/schede.dat";
     

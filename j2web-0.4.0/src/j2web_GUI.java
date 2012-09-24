@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.LayoutManager;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -15,6 +17,7 @@ import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -36,6 +39,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ListIterator;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import javax.swing.JRadioButton;
+import javax.swing.border.EtchedBorder;
 
 
 public class j2web_GUI extends JFrame implements parametriGenerali {
@@ -109,6 +117,13 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	private static JCheckBox chckbxVicinanzeMetro;
 	private static JCheckBox chckbxRampePerDisabili;  //10
 	//TOT:56
+	
+	private static PannelloListaSchedeImmobili panelListaSchedeImmobile;
+	private static PanelInserimentoImmobiliInPortali panelInserimentoImmobiliInPortali;
+	/*private JPanel panel;
+	private JRadioButton rdbtnTest;
+	private JLabel lblTitoloDellaScheda;
+	private JButton btnNewButton;*/
 
 
 	/**
@@ -539,10 +554,10 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
              	   	aggiungiSchedaInDat(schedaImmobile);
              	 
              	   	//Il pannello centrale viene ridisegnato
-             	    //Main.imaginationGUI.pannelloSchedeImmobili.updatePanello();
+             	   panelListaSchedeImmobile.updatePanello();
              	   
              	    //Il pannello di destra viene ridisegnato
-             	    //Main.imaginationGUI.pannelloInserimento.updatePanello();
+             	   panelInserimentoImmobiliInPortali.updatePanello();
 				}
 				else {
 					System.out.println("Form non valido");
@@ -1061,21 +1076,36 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		chckbxRampePerDisabili.setToolTipText("Rampe per disabili");
 		panelTabDatiSecondari.add(chckbxRampePerDisabili, "2, 38");
 		
-		JPanel panelListaSchedeImmobile = new JPanel();
+		panelListaSchedeImmobile = new PannelloListaSchedeImmobili();
+		panelListaSchedeImmobile.setBorder(new TitledBorder(null, "Lista schede create", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getContentPane().add(panelListaSchedeImmobile);
-		panelListaSchedeImmobile.setLayout(new GridLayout(0, 1, 0, 0));
+		panelListaSchedeImmobile.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JScrollPane scrollPaneListaSchedeImmobile = new JScrollPane();
-		scrollPaneListaSchedeImmobile.setViewportBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Schede immobile create", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelListaSchedeImmobile.add(scrollPaneListaSchedeImmobile);
+		panelInserimentoImmobiliInPortali = new PanelInserimentoImmobiliInPortali();
+		panelInserimentoImmobiliInPortali.setBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		getContentPane().add(panelInserimentoImmobiliInPortali);
+		panelInserimentoImmobiliInPortali.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JPanel panelInserimentoSchedeImmobile = new JPanel();
+		/*panel = new JPanel();
+		panel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		panelListaSchedeImmobile.add(panel);
+		
+		rdbtnTest = new JRadioButton("test");
+		panel.add(rdbtnTest);
+		
+		lblTitoloDellaScheda = new JLabel("titolo della scheda");
+		panel.add(lblTitoloDellaScheda);
+		
+		btnNewButton = new JButton("New button");
+		panel.add(btnNewButton);*/
+		
+		/*JPanel panelInserimentoSchedeImmobile = new JPanel();
 		getContentPane().add(panelInserimentoSchedeImmobile);
 		panelInserimentoSchedeImmobile.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JScrollPane scrollPaneInserimentoSchede = new JScrollPane();
 		scrollPaneInserimentoSchede.setViewportBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelInserimentoSchedeImmobile.add(scrollPaneInserimentoSchede);
+		panelInserimentoSchedeImmobile.add(scrollPaneInserimentoSchede);*/
 	}
 	
 	//Popola la combobox Provincia quando viene modificata la Regione
