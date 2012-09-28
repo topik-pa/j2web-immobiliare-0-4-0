@@ -46,8 +46,8 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         	//PortaleImmobiliare bancaDelleCase = new BancaDelleCase("./img/banca_delle_case.gif", "2 - bancadellecase.it", "003");
         	//listPortaliImmobiliari.add(bancaDelleCase);
         	
-        	//PortaleImmobiliare case24 = new Case24("./img/case24.gif", "3 - case24.it", "004");
-        	//listPortaliImmobiliari.add(case24);      	
+        	PortaleImmobiliare case24 = new Case24("./img/case24.gif", "3 - case24.it", "004");
+        	listPortaliImmobiliari.add(case24);      	
         	
         	//PortaleImmobiliare pagineCasa = new PagineCasa("./img/paginecasa.gif", "4 - paginecasa.it", "005");
         	//listPortaliImmobiliari.add(pagineCasa);
