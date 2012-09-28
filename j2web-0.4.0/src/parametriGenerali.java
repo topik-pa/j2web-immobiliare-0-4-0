@@ -4,7 +4,12 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public interface parametriGenerali {
 	
@@ -28,7 +33,7 @@ public interface parametriGenerali {
 	final String nomeGUI = "J2Web - Immobiliare" + " " + j2web_version;
 	
 	//Dimensioni di default della GUI 
-	final int[] GUI_bounds = {100, 100, 1024, 600};
+	final int[] GUI_bounds = {30, 30, 1024, 700};
 	
 	//Icona della finestra principale
     final Image frameIcon = new ImageIcon("./images/imaginationLogo.png").getImage();
@@ -57,6 +62,8 @@ public interface parametriGenerali {
   	
   	//Percorso file dat per le schede
   	String datFilePath = "./schede/schede.dat";
+  	
+  	
     
     //Mappa che contiene tutti i campi della form soggetti a lettura/scrittura o modifiche varie a runtime
     Map<String,JComponent> mapCampiForm =  new Hashtable<String,JComponent>();
