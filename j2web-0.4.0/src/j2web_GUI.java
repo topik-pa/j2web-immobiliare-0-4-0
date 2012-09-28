@@ -1,6 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.LayoutManager;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -17,7 +15,6 @@ import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -39,11 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ListIterator;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
 import java.awt.FlowLayout;
-import javax.swing.JRadioButton;
-import javax.swing.border.EtchedBorder;
 
 
 public class j2web_GUI extends JFrame implements parametriGenerali {
@@ -118,24 +111,20 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	private static JCheckBox chckbxRampePerDisabili;  //10
 	//TOT:56
 	
-	private static PannelloListaSchedeImmobili panelListaSchedeImmobile;
-	private static PanelInserimentoImmobiliInPortali panelInserimentoImmobiliInPortali;
-	/*private JPanel panel;
-	private JRadioButton rdbtnTest;
-	private JLabel lblTitoloDellaScheda;
-	private JButton btnNewButton;*/
-
+	
+	static PannelloListaSchedeImmobili panelListaSchedeImmobile;
+	static PanelInserimentoImmobiliInPortali panelInserimentoImmobiliInPortali;
 
 	/**
 	 * Create the frame.
 	 */
 	public j2web_GUI() {
 				
+		//Proprietà della GUI
 	    setIconImage(frameIcon);    
 	    setTitle(nomeGUI);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(GUI_bounds[0], GUI_bounds[1], GUI_bounds[2], GUI_bounds[3]);
-		
+		setBounds(GUI_bounds[0], GUI_bounds[1], GUI_bounds[2], GUI_bounds[3]);	
 		
 		/*Menu... in stand-by*/
 		JMenuBar menuBar_1 = new JMenuBar();
@@ -168,10 +157,10 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		JMenuItem mntmNewMenuItem_5 = new JMenuItem("New menu item");
 		mnNewMenu_2.add(mntmNewMenuItem_5);
 		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
-		/*Menu*/
+		/*Menu*/	
 		
 		
-		
+		//Pannello SX - "Creazione scheda immobile"
 		JPanel panelCreazioneScheda = new JPanel();
 		panelCreazioneScheda.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Creazione schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getContentPane().add(panelCreazioneScheda);
@@ -180,6 +169,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		JTabbedPane tabbedPaneCreazioneSchede = new JTabbedPane(JTabbedPane.TOP);
 		panelCreazioneScheda.add(tabbedPaneCreazioneSchede, BorderLayout.NORTH);
 		
+		//Tab "Dati obbligatori"
 		JPanel panelTabDatiObbligatori = new JPanel();
 		tabbedPaneCreazioneSchede.addTab("Dati obbligatori", null, panelTabDatiObbligatori, null);
 		panelTabDatiObbligatori.setLayout(new FormLayout(new ColumnSpec[] {
@@ -582,6 +572,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		btnResettaPannelloCreazioneScheda.setToolTipText("Resetta il pannello di creazione scheda");
 		panelPulsantiCreazioneScheda.add(btnResettaPannelloCreazioneScheda, "3, 1");
 		
+		//Tab "Immagini"
 		JPanel panelTabImmagini = new JPanel();
 		tabbedPaneCreazioneSchede.addTab("Immagini", null, panelTabImmagini, null);
 		panelTabImmagini.setLayout(new FormLayout(new ColumnSpec[] {
@@ -800,6 +791,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		panelTabImmagini.add(textFieldImmagine10, "3, 20, left, default");
 		textFieldImmagine10.setColumns(23);
 		
+		//Tab "Dati secondari"
 		JPanel panelTabDatiSecondari = new JPanel();
 		tabbedPaneCreazioneSchede.addTab("Dati secondari", null, panelTabDatiSecondari, null);
 		panelTabDatiSecondari.setLayout(new FormLayout(new ColumnSpec[] {
@@ -1076,36 +1068,18 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		chckbxRampePerDisabili.setToolTipText("Rampe per disabili");
 		panelTabDatiSecondari.add(chckbxRampePerDisabili, "2, 38");
 		
+		//Pannello MID - "Lista schede create"
 		panelListaSchedeImmobile = new PannelloListaSchedeImmobili();
 		panelListaSchedeImmobile.setBorder(new TitledBorder(null, "Lista schede create", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getContentPane().add(panelListaSchedeImmobile);
 		panelListaSchedeImmobile.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		//Pannello DX - "Inserimento schede immobile"
 		panelInserimentoImmobiliInPortali = new PanelInserimentoImmobiliInPortali();
 		panelInserimentoImmobiliInPortali.setBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		getContentPane().add(panelInserimentoImmobiliInPortali);
 		panelInserimentoImmobiliInPortali.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		/*panel = new JPanel();
-		panel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panelListaSchedeImmobile.add(panel);
-		
-		rdbtnTest = new JRadioButton("test");
-		panel.add(rdbtnTest);
-		
-		lblTitoloDellaScheda = new JLabel("titolo della scheda");
-		panel.add(lblTitoloDellaScheda);
-		
-		btnNewButton = new JButton("New button");
-		panel.add(btnNewButton);*/
-		
-		/*JPanel panelInserimentoSchedeImmobile = new JPanel();
-		getContentPane().add(panelInserimentoSchedeImmobile);
-		panelInserimentoSchedeImmobile.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		JScrollPane scrollPaneInserimentoSchede = new JScrollPane();
-		scrollPaneInserimentoSchede.setViewportBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelInserimentoSchedeImmobile.add(scrollPaneInserimentoSchede);*/
 	}
 	
 	//Popola la combobox Provincia quando viene modificata la Regione

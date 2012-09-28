@@ -19,6 +19,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 //import org.apache.http.NameValuePair;
+import org.apache.http.NameValuePair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -255,14 +256,14 @@ public abstract class PortaleImmobiliare implements parametriGenerali{
     }
     
     //Stampa dei parametri inviati
-    /*public static void printSentParameters(List<NameValuePair> sentParameters) {
+    public static void printSentParameters(List<NameValuePair> sentParameters) {
     	System.out.println("Parametri inviati...");
     	Iterator<NameValuePair> iterator = sentParameters.iterator();
     	while(iterator.hasNext()) {
     		NameValuePair currentParam = (NameValuePair) iterator.next();
     		System.out.println("Nome: " + currentParam.getName() + "\tValore: " + currentParam.getValue() + "\n");
     	}
-    }*/
+    }
     
     //Metodo per ottenere le coordinate della città
   	public String getCoord(String indirizzo, String comune, String provincia, String regione) throws ParserConfigurationException, SAXException, IOException {

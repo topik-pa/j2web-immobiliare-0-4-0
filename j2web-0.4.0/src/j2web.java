@@ -13,6 +13,19 @@ public class j2web implements parametriGenerali {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		//Popolo le mappe degli indirizzi
+		System.out.print("Popolo le mappe degli indirizzi...");
+		inizializzaMappaRegioneProvincia();
+		inizializzaMappaProvinciaComuni();
+		System.out.print(" fatto." + "\n");
+		
+		//Popolo la mappa dei limiti di caratteri per i campi testuali
+		System.out.print("Popolo la mappa dei limiti di caratteri per i campi testuali...");
+		inizializzaMappaLimiteCaratteri();
+		System.out.print(" fatto." + "\n");
+			
+		System.out.print("Lancio la GUI...");
 		try {
 			//Definisce il Look and Feel della GUI
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -30,17 +43,9 @@ public class j2web implements parametriGenerali {
 				}
 			}
 		});
-		
-		//Popolo le mappe degli indirizzi
-		inizializzaMappaRegioneProvincia();
-		inizializzaMappaProvinciaComuni();
-		
-		//Popolo la mappa dei limiti di caratteri per i campi testuali
-		inizializzaMappaLimiteCaratteri();
-
+		System.out.print(" fatto." + "\n");
 	}
-	
-	
+		
 	
 	//Inizializza la mappa delle regioni e provincie
 	public static void inizializzaMappaRegioneProvincia() {		

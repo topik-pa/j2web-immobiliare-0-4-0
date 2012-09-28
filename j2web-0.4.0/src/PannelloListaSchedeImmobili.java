@@ -156,13 +156,13 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
 		 schedaRadio.addActionListener(new ActionListener() {
 			 //Clicco su una radio button di una scheda
              public void actionPerformed(ActionEvent e) {
-                 //System.out.println("Scheda selezionata: " + scheda.codice); 
+                 System.out.println("Scheda selezionata: " + scheda.codiceInserzione); 
                  
                  //Devo caricare la relativa hashtable contenente i portali in cui è inserita e glòi associati codici di inserimento
                  scheda.caricaMappaPortaliOspitanti();
                  
                  //Il pannello di destra (inserimento) deve essere aggiornato
-                 //Main.imaginationGUI.pannelloInserimento.updatePanello(scheda);
+                 j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello();
                  
                  //Il pannello Form deve mostrari i dati relativi a tale scheda
                  //Main.imaginationGUI.pannelloForm.mostraSchedaSalvata(scheda);
@@ -235,9 +235,10 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
             	            	
             	//Aggiornamento del pannello centrale, la scheda corrente è stata cancellata
             	//Main.imaginationGUI.pannelloSchedeImmobili.updatePanello();
+            	j2web_GUI.panelListaSchedeImmobile.updatePanello();
             	
             	//Aggiornamento del pannello di destra, la scheda corrente è stata cancellata
-            	//Main.imaginationGUI.pannelloInserimento.updatePanello();
+            	j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello();
             }
          });
          add(btnCancellaScheda);

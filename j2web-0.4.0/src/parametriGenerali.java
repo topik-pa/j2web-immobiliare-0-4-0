@@ -3,7 +3,6 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
-
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
@@ -61,10 +60,11 @@ public interface parametriGenerali {
     
     //Mappa che contiene tutti i campi della form soggetti a lettura/scrittura o modifiche varie a runtime
     Map<String,JComponent> mapCampiForm =  new Hashtable<String,JComponent>();
-    public LinkedList<JComponent> listCampiForm = new LinkedList<JComponent>();
+    //Lista concatenata che contiene tutti i campi della form soggetti a lettura/scrittura o modifiche varie a runtime
+    LinkedList<JComponent> listCampiForm = new LinkedList<JComponent>();
     ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 	
-	//Tutti gli array che compongono le combo box
+	//Tutti gli array<String> che definiscono le combo box
     final String[] arrayCategorieImmobili = {"Seleziona la categoria", "Residenziale", "Commerciale", "Industriale"};
     final String[] arrayTipologie = {"Seleziona la tipologia"};
     final String[] arrayTipologieImmobiliResidenziali = {arrayTipologie[0], "Appartamento", "Attico", "Bifamiliare", "Casa", "Garage", "Palazzo", "Rustico", "Terreno agricolo", "Terreno edificabile", "Villa", "Villaschiera"};
@@ -8171,7 +8171,5 @@ public interface parametriGenerali {
 			"Villafranca Di Verona",
 			"Zevio",
 			"Zimella",};
-	
-
 	
 }
