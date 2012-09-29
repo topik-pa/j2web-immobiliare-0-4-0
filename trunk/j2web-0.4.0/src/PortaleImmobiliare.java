@@ -17,8 +17,6 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-//import org.apache.http.NameValuePair;
 import org.apache.http.NameValuePair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -105,8 +103,6 @@ public abstract class PortaleImmobiliare implements parametriGenerali{
 		}
 	}
 	
-	
-	
 	//printStackTrace into String
     public static String readStackTrace(Exception e) {
         StringWriter sw = new StringWriter();
@@ -114,9 +110,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali{
         e.printStackTrace(pw);
         return sw.toString();
     }
-    
-    
-    
+     
     //Invio mail di conferma inserzione
   	static void sendConfirmationMail(SchedaImmobile scheda, String nomePortale, String codInserzione)   {
   				

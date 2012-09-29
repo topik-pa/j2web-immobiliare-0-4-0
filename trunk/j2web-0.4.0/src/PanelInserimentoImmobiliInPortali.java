@@ -11,6 +11,7 @@
  */
 
 import java.awt.Cursor;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ListIterator;
@@ -33,7 +34,10 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         JButton btnInserisci, btnVisualizza, btnCancella;
 
         //Costruttore - definisce la prima visualizzazione del pannello
-        public PanelInserimentoImmobiliInPortali() {	
+        public PanelInserimentoImmobiliInPortali() {
+        	
+        	setBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        	setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         	
         	//Gestisco la lista concatenata che contiene le informazioni sui portali immobiliari
         	//E' qui che inserisco i portali abilitati attualmente nel programma

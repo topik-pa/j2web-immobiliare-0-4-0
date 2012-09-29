@@ -10,15 +10,14 @@
  */
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -31,20 +30,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 
 //Pannello per la gestione delle schede immobile create dall'utente
 public class PannelloListaSchedeImmobili extends JPanel implements parametriGenerali {
 	private static final long serialVersionUID = 1L;
-
-	//La struttura dati che contiene le schede immobile create
-	//public LinkedList<SchedaImmobile> listSchedeImmobile = new LinkedList<SchedaImmobile>();
 	
 	public ButtonGroup radioGrpSchede = new ButtonGroup();	//Serve per raggruppare i radio button in una struttura coerente 
 
-	//Costruttore del pannello - all'avvio del programma vengono eseguite le seguenti istruzioni
+	//Costruttore del pannello
 	public PannelloListaSchedeImmobili() {
-        //setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
+		setBorder(new TitledBorder(null, "Lista schede create", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         
         //Lettura schede dal file .dat 
         /*File file = new File(datFilePath);
@@ -234,7 +233,6 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
             	}
             	            	
             	//Aggiornamento del pannello centrale, la scheda corrente è stata cancellata
-            	//Main.imaginationGUI.pannelloSchedeImmobili.updatePanello();
             	j2web_GUI.panelListaSchedeImmobile.updatePanello();
             	
             	//Aggiornamento del pannello di destra, la scheda corrente è stata cancellata
