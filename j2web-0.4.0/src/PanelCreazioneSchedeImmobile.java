@@ -167,7 +167,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 				RowSpec.decode("default:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("default:grow"),
-				RowSpec.decode("7dlu:grow(14)"),
+				RowSpec.decode("2dlu:grow(4)"),
 				RowSpec.decode("default:grow"),}));
 		
 		//Codice inserzione
