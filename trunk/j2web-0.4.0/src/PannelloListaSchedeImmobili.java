@@ -10,7 +10,6 @@
  */
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,7 +45,9 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
 	public PannelloListaSchedeImmobili() {
 		
 		setBorder(new TitledBorder(null, "Lista schede create", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		//setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
         
         //Lettura schede dal file .dat 
         File file = new File(datFilePath);
@@ -77,7 +78,7 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	if(j2web_GUI.listSchedeImmobile.isEmpty()) {
     		System.out.println("listSchedeImmobile vuota");
     		JPanel panelNessunaScheda = new JPanel();
-    		add(Box.createVerticalStrut(48));
+    		//add(Box.createVerticalStrut(48));
             JLabel lblNessunaScheda = new JLabel("Non \u00e8 stata inserita alcuna scheda immobile");                
             panelNessunaScheda.add(lblNessunaScheda);
             add(panelNessunaScheda);
@@ -85,7 +86,7 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	//Pannello con schede
     	else {
     		System.out.println("listSchedeImmobile con schede");
-            add(Box.createVerticalStrut(48));
+            //add(Box.createVerticalStrut(48));
     		ListIterator<SchedaImmobile> iterator = j2web_GUI.listSchedeImmobile.listIterator();
         	while(iterator.hasNext()) {
         		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
@@ -109,7 +110,7 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	if(j2web_GUI.listSchedeImmobile.isEmpty()) {
     		System.out.println("Linkedlist vuota");
     		JPanel panelNessunaScheda = new JPanel();
-    		add(Box.createVerticalStrut(48));
+    		//add(Box.createVerticalStrut(48));
             JLabel lblNessunaScheda = new JLabel("Non \u00e8 stata inserita alcuna scheda immobile");                
             panelNessunaScheda.add(lblNessunaScheda);
             add(panelNessunaScheda);
@@ -117,7 +118,7 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	//Pannello con schede
     	else {
     		System.out.println("Linkedlist con schede");
-            add(Box.createVerticalStrut(48));
+            //add(Box.createVerticalStrut(48));
     		ListIterator<SchedaImmobile> iterator = j2web_GUI.listSchedeImmobile.listIterator();
         	while(iterator.hasNext()) {
         		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
@@ -173,13 +174,13 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
 		 add(schedaRadio);
 		 
 		 //La label delle schede
-		 String labelScheda = " " + scheda.codiceInserzione + " - " + scheda.titoloAnnuncio + " - " + scheda.provincia + " - " + scheda.comune + " - " + scheda.testoAnnuncio;
-		 if(labelScheda.length()>30) {
+		 String labelScheda = scheda.codiceInserzione + "-" + scheda.titoloAnnuncio + "-" + scheda.provincia + "-" + scheda.comune + "-" + scheda.testoAnnuncio;
+		 if(labelScheda.length()>31) {
 			 labelScheda = labelScheda.substring(0, 30); 
 		 }		 
 		 labelScheda+="...";
 		 JLabel label = new JLabel(labelScheda);
-		 Font font = new Font("Monospaced", Font.PLAIN, 12);
+		 Font font = new Font("Monospaced", Font.PLAIN, 11);
 		 label.setFont(font);
 		 add(label);
 		 		 

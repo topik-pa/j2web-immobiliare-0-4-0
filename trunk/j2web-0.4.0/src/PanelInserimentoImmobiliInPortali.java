@@ -87,7 +87,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         	
         	//Gestione del pannello - prima visualizzazione di questo pannello
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            add(Box.createVerticalStrut(10));
+            //add(Box.createVerticalStrut(10));
             
             //Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizzi: non hanno alcuna funzionalità )
             ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
@@ -153,7 +153,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         	//Rimuovo tutti gli elementi dal pannello
         	removeAll();  
         	
-        	add(Box.createVerticalStrut(10));
+        	//add(Box.createVerticalStrut(10));
         	
 	    	//Ciclo ogni oggetto PortaleImmobiliare presente nella lista concatenata e per ognuno aggiorno il sottopannello
 	    	ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
@@ -258,7 +258,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         public void updatePanello() {
         	removeAll(); 
         	
-        	add(Box.createVerticalStrut(10));
+        	//add(Box.createVerticalStrut(10));
                           
             ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
          	while(iterator.hasNext()) {

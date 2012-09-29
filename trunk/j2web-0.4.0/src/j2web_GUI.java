@@ -1,10 +1,10 @@
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import java.util.LinkedList;
-
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
 
 
 public class j2web_GUI extends JFrame implements parametriGenerali {
@@ -15,9 +15,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	private static final long serialVersionUID = 1L;
 
 	//I tre pannelli principali
-	static PanelCreazioneSchedeImmobile panelCreazioneSchedeImmobile;
-	static PannelloListaSchedeImmobili panelListaSchedeImmobile;
-	static PanelInserimentoImmobiliInPortali panelInserimentoImmobiliInPortali;
+	static PanelCreazioneSchedeImmobile panelCreazioneSchedeImmobile;	//SX
+	static PannelloListaSchedeImmobili panelListaSchedeImmobile;	//MID
+	static PanelInserimentoImmobiliInPortali panelInserimentoImmobiliInPortali;	//DX
 	
 	//La struttura dati che contiene le schede immobile create
   	public static LinkedList<SchedaImmobile> listSchedeImmobile = new LinkedList<SchedaImmobile>();
@@ -75,11 +75,11 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		
 		//Pannello MID - "Lista schede create"
 		panelListaSchedeImmobile = new PannelloListaSchedeImmobili();
-		getContentPane().add(panelListaSchedeImmobile);
+		getContentPane().add(new JScrollPane(panelListaSchedeImmobile));
 		
 		//Pannello DX - "Inserimento schede immobile"
 		panelInserimentoImmobiliInPortali = new PanelInserimentoImmobiliInPortali();
-		getContentPane().add(panelInserimentoImmobiliInPortali);
+		getContentPane().add(new JScrollPane(panelInserimentoImmobiliInPortali));
 		
 	}
 	
