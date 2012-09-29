@@ -77,15 +77,15 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	if(j2web_GUI.listSchedeImmobile.isEmpty()) {
     		System.out.println("listSchedeImmobile vuota");
     		JPanel panelNessunaScheda = new JPanel();
+    		add(Box.createVerticalStrut(48));
             JLabel lblNessunaScheda = new JLabel("Non \u00e8 stata inserita alcuna scheda immobile");                
             panelNessunaScheda.add(lblNessunaScheda);
-            add(Box.createVerticalStrut(10));
             add(panelNessunaScheda);
     	}
     	//Pannello con schede
     	else {
     		System.out.println("listSchedeImmobile con schede");
-            add(Box.createVerticalStrut(10));
+            add(Box.createVerticalStrut(48));
     		ListIterator<SchedaImmobile> iterator = j2web_GUI.listSchedeImmobile.listIterator();
         	while(iterator.hasNext()) {
         		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
@@ -109,15 +109,15 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	if(j2web_GUI.listSchedeImmobile.isEmpty()) {
     		System.out.println("Linkedlist vuota");
     		JPanel panelNessunaScheda = new JPanel();
+    		add(Box.createVerticalStrut(48));
             JLabel lblNessunaScheda = new JLabel("Non \u00e8 stata inserita alcuna scheda immobile");                
             panelNessunaScheda.add(lblNessunaScheda);
-            add(Box.createVerticalStrut(10));
             add(panelNessunaScheda);
     	}
     	//Pannello con schede
     	else {
     		System.out.println("Linkedlist con schede");
-            add(Box.createVerticalStrut(10));
+            add(Box.createVerticalStrut(48));
     		ListIterator<SchedaImmobile> iterator = j2web_GUI.listSchedeImmobile.listIterator();
         	while(iterator.hasNext()) {
         		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
@@ -164,7 +164,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
                  scheda.caricaMappaPortaliOspitanti();
                  
                  //Il pannello di destra (inserimento) deve essere aggiornato
-                 j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello();
+                 j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda);
                  
                  //Il pannello Form deve mostrari i dati relativi a tale scheda
                  j2web_GUI.panelCreazioneSchedeImmobile.mostraSchedaSalvata(scheda);

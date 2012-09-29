@@ -89,23 +89,23 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	//TOT:46
 	
 	//Gli indici delle combobox 
-	int comboBoxRegioneIndex=0;
-	int comboBoxProvinciaIndex=0;
-	int comboBoxComuneIndex=0;
-	int comboBoxCategoriaImmobileIndex=0;
-	int comboBoxTipologiaImmobileIndex=0;
-	int comboBoxTipologiaContrattoIndex=0;
-	int comboBoxNumeroLocaliIndex=0;
-	int comboBoxNumeroCamereIndex=0;
-	int comboBoxNumeroBagniIndex=0;
-	int comboBoxStatoImmobileIndex=0;
-	int comboBoxArredamentiIndex=0;
-	int comboBoxPianoIndex=0;
-	int comboBoxCertificazioniEnergeticheIndex=0;
-	int comboBoxTipologiaRiscaldamentoIndex=0;
-	int comboBoxClimaIndex=0;
-	int comboBoxParcheggioIndex=0;
-	int comboBoxGiardinoIndex=0;
+	int comboBoxRegioneIndex;
+	int comboBoxProvinciaIndex;
+	int comboBoxComuneIndex;
+	int comboBoxCategoriaImmobileIndex;
+	int comboBoxTipologiaImmobileIndex;
+	int comboBoxTipologiaContrattoIndex;
+	int comboBoxNumeroLocaliIndex;
+	int comboBoxNumeroCamereIndex;
+	int comboBoxNumeroBagniIndex;
+	int comboBoxStatoImmobileIndex;
+	int comboBoxArredamentiIndex;
+	int comboBoxPianoIndex;
+	int comboBoxCertificazioniEnergeticheIndex;
+	int comboBoxTipologiaRiscaldamentoIndex;
+	int comboBoxClimaIndex;
+	int comboBoxParcheggioIndex;
+	int comboBoxGiardinoIndex;
 
 	//Percorso file dat per la scheda
 	String schedaDatPath;

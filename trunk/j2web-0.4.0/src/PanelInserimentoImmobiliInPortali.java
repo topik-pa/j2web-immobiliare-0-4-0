@@ -15,16 +15,19 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ListIterator;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 
-public class PanelInserimentoImmobiliInPortali extends JPanel implements parametriGenerali {
+public class PanelInserimentoImmobiliInPortali extends JPanel {
 		private static final long serialVersionUID = 1L;
 	
 		//Pannello per l'inserimento dati nei portali immobiliari
@@ -39,8 +42,18 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         	setBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         	setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	/*--------------------------------------------------------------------------------*/
         	//Gestisco la lista concatenata che contiene le informazioni sui portali immobiliari
         	//E' qui che inserisco i portali abilitati attualmente nel programma
+        	
         	//PortaleImmobiliare immobiliarePuntoIt = new ImmobiliarePuntoIt("./img/immobiliarePuntoIt.gif", "1 - immobiliare.it", "001");
         	//listPortaliImmobiliari.add(immobiliarePuntoIt);
         	
@@ -50,7 +63,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         	//PortaleImmobiliare bancaDelleCase = new BancaDelleCase("./img/banca_delle_case.gif", "2 - bancadellecase.it", "003");
         	//listPortaliImmobiliari.add(bancaDelleCase);
         	
-        	PortaleImmobiliare case24 = new Case24("./img/case24.gif", "3 - case24.it", "004");
+        	PortaleImmobiliare case24 = new Case24("./images/case24.gif", "1 - case24.it", "001");
         	j2web_GUI.listPortaliImmobiliari.add(case24);      	
         	
         	//PortaleImmobiliare pagineCasa = new PagineCasa("./img/paginecasa.gif", "4 - paginecasa.it", "005");
@@ -61,12 +74,22 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         	
         	//PortaleImmobiliare caseFvg = new CaseFvg("./img/casefvg.gif", "7 - casefvg.it", "007");
         	//listPortaliImmobiliari.add(caseFvg);
+        	/*--------------------------------------------------------------------------------*/
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
         	
         	//Gestione del pannello - prima visualizzazione di questo pannello
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            add(Box.createVerticalStrut(20));
+            add(Box.createVerticalStrut(10));
             
-            //Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fitizzi: non hanno alcuna funzionalità )
+            //Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizzi: non hanno alcuna funzionalità )
             ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
         	while(iterator.hasNext()) {        		
         		PortaleImmobiliare portaleCorrente = iterator.next();
@@ -88,7 +111,13 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
                 JLabel labelPortale = new JLabel(iconPortale, JLabel.CENTER);
                 inserimentoPortale = new JPanel();
                 inserimentoPortale.setLayout(new BoxLayout(inserimentoPortale, BoxLayout.X_AXIS));
-                inserimentoPortale.setBorder(new TitledBorder(portaleCorrente.valoreLabel));
+                
+                //Bordo del pannello
+                Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+                TitledBorder title = BorderFactory.createTitledBorder(loweredetched, portaleCorrente.valoreLabel);
+                title.setTitleJustification(TitledBorder.RIGHT);
+                inserimentoPortale.setBorder(title);
+                
                 inserimentoPortale.add(labelPortale);
                 inserimentoPortale.add(new JLabel("  "));
                 inserimentoPortale.add(btnInserisci);
@@ -121,13 +150,14 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         //Update del pannello, eseguito alla selezione di una scheda sul pannello centrale e dopo l'inserimento/rimozione di una scheda in un portale
         public void updatePanello(final SchedaImmobile scheda) {
 
+        	//Rimuovo tutti gli elementi dal pannello
         	removeAll();  
         	
-        	add(Box.createVerticalStrut(20));
+        	add(Box.createVerticalStrut(10));
         	
-	    	 //Ciclo ogni oggetto PortaleImmobiliare presente nella lista concatenata
-	    	 ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
-	     	 while(iterator.hasNext()) {
+	    	//Ciclo ogni oggetto PortaleImmobiliare presente nella lista concatenata e per ognuno aggiorno il sottopannello
+	    	ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
+	     	while(iterator.hasNext()) {
 	     		
 	     		final PortaleImmobiliare portaleCorrente = iterator.next();
 	     		
@@ -177,7 +207,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
 	     		
 	     		//Pulsante Cancella
 	     		btnCancella = new JButton("Cancella");
-	     		//Controllo se la scheda Ã¨ inserita nel portale corrente
+	     		//Controllo se la scheda è inserita nel portale corrente
 	     		if(scheda.isOnThisPortal(portaleCorrente.idPortale)){
 	     			btnCancella.setEnabled(true);
 	     		}
@@ -201,7 +231,13 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
 	            JLabel labelPortale = new JLabel(iconPortale, JLabel.CENTER);
 	            inserimentoPortale = new JPanel();
 	            inserimentoPortale.setLayout(new BoxLayout(inserimentoPortale, BoxLayout.X_AXIS));
-	            inserimentoPortale.setBorder(new TitledBorder(portaleCorrente.valoreLabel));
+	            
+	            //Bordo del pannello
+                Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+                TitledBorder title = BorderFactory.createTitledBorder(loweredetched, portaleCorrente.valoreLabel);
+                title.setTitleJustification(TitledBorder.RIGHT);
+                inserimentoPortale.setBorder(title);
+                
 	            inserimentoPortale.add(labelPortale);
 	            inserimentoPortale.add(new JLabel("  "));
 	            inserimentoPortale.add(btnInserisci);
@@ -222,7 +258,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         public void updatePanello() {
         	removeAll(); 
         	
-        	add(Box.createVerticalStrut(20));
+        	add(Box.createVerticalStrut(10));
                           
             ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
          	while(iterator.hasNext()) {
@@ -246,7 +282,15 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
                 JLabel labelPortale = new JLabel(iconPortale, JLabel.CENTER);
                 inserimentoPortale = new JPanel();
                 inserimentoPortale.setLayout(new BoxLayout(inserimentoPortale, BoxLayout.X_AXIS));
-                inserimentoPortale.setBorder(new TitledBorder(portaleCorrente.valoreLabel));
+                //inserimentoPortale.setBorder(new LineBorder(new Color(255, 140, 32)));
+                //inserimentoPortale.setBorder(new TitledBorder(portaleCorrente.valoreLabel));
+                
+                //Bordo del pannello
+                Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+                TitledBorder title = BorderFactory.createTitledBorder(loweredetched, portaleCorrente.valoreLabel);
+                title.setTitleJustification(TitledBorder.RIGHT);
+                inserimentoPortale.setBorder(title);
+                
                 inserimentoPortale.add(labelPortale);
                 inserimentoPortale.add(new JLabel("  "));
                 inserimentoPortale.add(btnInserisci);
