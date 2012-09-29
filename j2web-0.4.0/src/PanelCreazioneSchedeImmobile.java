@@ -125,6 +125,21 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JTabbedPane tabbedPaneCreazioneSchede = new JTabbedPane(JTabbedPane.TOP);
 		add(tabbedPaneCreazioneSchede, BorderLayout.NORTH);
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*-----------------------------------------------------------------------------------------*/
 		//Tab "Dati obbligatori"
 		JPanel panelTabDatiObbligatori = new JPanel();
 		tabbedPaneCreazioneSchede.addTab("Dati obbligatori", null, panelTabDatiObbligatori, null);
@@ -490,7 +505,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
              	   	aggiungiSchedaInDat(schedaImmobile);
              	 
              	   	//Il pannello centrale viene ridisegnato
-             	   j2web_GUI.panelListaSchedeImmobile.updatePanello();
+             	    j2web_GUI.panelListaSchedeImmobile.updatePanello();
              	   
              	    //Il pannello di destra viene ridisegnato
              	    j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello();
@@ -517,9 +532,22 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		});
 		btnResettaPannelloCreazioneScheda.setToolTipText("Resetta il pannello di creazione scheda");
 		panelPulsantiCreazioneScheda.add(btnResettaPannelloCreazioneScheda, "3, 1");
+		/*-----------------------------------------------------------------------------------------*/
 		
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*-----------------------------------------------------------------------------------------*/
 		//Tab "Immagini"
 		JPanel panelTabImmagini = new JPanel();
 		tabbedPaneCreazioneSchede.addTab("Immagini", null, panelTabImmagini, null);
@@ -728,9 +756,22 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		textFieldImmagine10.setToolTipText("Inserimento immagine 10");
 		panelTabImmagini.add(textFieldImmagine10, "3, 20, left, default");
 		textFieldImmagine10.setColumns(23);
+		/*-----------------------------------------------------------------------------------------*/
 		
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*-----------------------------------------------------------------------------------------*/
 		//Tab "Dati secondari"
 		JPanel panelTabDatiSecondari = new JPanel();
 		tabbedPaneCreazioneSchede.addTab("Dati secondari", null, panelTabDatiSecondari, null);
@@ -1007,6 +1048,21 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(chckbxRampePerDisabili);
 		chckbxRampePerDisabili.setToolTipText("Rampe per disabili");
 		panelTabDatiSecondari.add(chckbxRampePerDisabili, "2, 38");
+		/*-----------------------------------------------------------------------------------------*/
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 			
     }	//Fine costruttore 
 	
@@ -1050,170 +1106,294 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	}
 	
 	//Seleziona e carica le immagini nella form
-		static void selezionaImmagine(JTextField relatedTextField) {
-			JFileChooser dlgFile;
-	        String absPath;
-	        
-	        //Selezione del file immagine
-	        dlgFile = new JFileChooser();
-	        if (dlgFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-	        	//Controllo il formato del file
-	        	File selectedFile = dlgFile.getSelectedFile(); 
-	        	Long fileSize = selectedFile.length();                    	
-	        	String selectedFileName = selectedFile.getName().toLowerCase();                   	
-	            if(selectedFile.isFile() && selectedFileName.endsWith(format) && fileSize<=maxFileSize) {
-	                absPath = selectedFile.getAbsolutePath();
-	                relatedTextField.setText(absPath);
-	                relatedTextField.setEnabled(false);
-	            }
-	            else {
-	            	JOptionPane.showMessageDialog(null, "Formato di file non valido: le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega.");
-	            }	
-	        }
-		}
+	static void selezionaImmagine(JTextField relatedTextField) {
+		JFileChooser dlgFile;
+        String absPath;
+        
+        //Selezione del file immagine
+        dlgFile = new JFileChooser();
+        if (dlgFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        	//Controllo il formato del file
+        	File selectedFile = dlgFile.getSelectedFile(); 
+        	Long fileSize = selectedFile.length();                    	
+        	String selectedFileName = selectedFile.getName().toLowerCase();                   	
+            if(selectedFile.isFile() && selectedFileName.endsWith(format) && fileSize<=maxFileSize) {
+                absPath = selectedFile.getAbsolutePath();
+                relatedTextField.setText(absPath);
+                relatedTextField.setEnabled(false);
+            }
+            else {
+            	JOptionPane.showMessageDialog(null, "Formato di file non valido: le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega.");
+            }	
+        }
+	}
 
-		//Resetta la form
-		@SuppressWarnings("unchecked")
-		static void resettaForm() {
-			ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
-			while(iteratorListCampiForm.hasNext()) {
-				JComponent campoCorrente = (JComponent)iteratorListCampiForm.next();
-				switch (campoCorrente.getClass().getName())
-				{
-				    case "javax.swing.JTextField": //Campo testuale
-				    	((JTextComponent) campoCorrente).setText("");
-				    	campoCorrente.setEnabled(true);
-				        break;
-				    case "javax.swing.JTextArea": //Text Area
-				    	((JTextComponent) campoCorrente).setText("");
-				    	((JTextComponent) campoCorrente).setEnabled(true);
-				        break;
-				    case "javax.swing.JComboBox": //Select
-				    	if(((JComboBox<String>) campoCorrente).getItemCount()>0) {	//se la checkbox è popolata...
-				    		((JComboBox<String>) campoCorrente).setSelectedIndex(0);
-				    	}
-				    	((JComboBox<String>) campoCorrente).setEnabled(true);
-				        break;
-				    case "javax.swing.JButton": //Pulsante
-				    	((JButton) campoCorrente).setEnabled(true);
-				        break;
-				    case "javax.swing.JCheckBox": //Checkbox
-				    	((JCheckBox) campoCorrente).setSelected(false);
-				    	((JCheckBox) campoCorrente).setEnabled(true);
-				        break;
-				    default://
-				}
-			}	
+	//Resetta la form
+	@SuppressWarnings("unchecked")
+	static void resettaForm() {
+		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
+		while(iteratorListCampiForm.hasNext()) {
+			JComponent campoCorrente = (JComponent)iteratorListCampiForm.next();
+			switch (campoCorrente.getClass().getName())
+			{
+			    case "javax.swing.JTextField": //Campo testuale
+			    	((JTextComponent) campoCorrente).setText("");
+			    	campoCorrente.setEnabled(true);
+			        break;
+			    case "javax.swing.JTextArea": //Text Area
+			    	((JTextComponent) campoCorrente).setText("");
+			    	((JTextComponent) campoCorrente).setEnabled(true);
+			        break;
+			    case "javax.swing.JComboBox": //Select
+			    	if(((JComboBox<String>) campoCorrente).getItemCount()>0) {	//se la checkbox è popolata...
+			    		((JComboBox<String>) campoCorrente).setSelectedIndex(0);
+			    	}
+			    	((JComboBox<String>) campoCorrente).setEnabled(true);
+			        break;
+			    case "javax.swing.JButton": //Pulsante
+			    	((JButton) campoCorrente).setEnabled(true);
+			        break;
+			    case "javax.swing.JCheckBox": //Checkbox
+			    	((JCheckBox) campoCorrente).setSelected(false);
+			    	((JCheckBox) campoCorrente).setEnabled(true);
+			        break;
+			    default://
+			}
+		}	
+	}
+		
+	//Disabilita i campi della form
+	//@SuppressWarnings("unchecked")
+	static void disabilitaCampiForm() {
+		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
+		while(iteratorListCampiForm.hasNext()) {
+			JComponent campoCorrente = (JComponent)iteratorListCampiForm.next();
+			campoCorrente.setEnabled(false);
+		}
+	}
+		
+	//Verifica la validità della form
+	@SuppressWarnings("unchecked")
+	static boolean isFormValid() {
+		
+		String comboContent;
+		boolean campiObbligatoriCompilati = true;
+		
+		//Controllo i campi testuali
+		if(((JTextField)mapCampiForm.get("textFieldCodiceInserzione")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		if(((JTextField)mapCampiForm.get("textFieldTitoloAnnuncio")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		if(((JTextField)mapCampiForm.get("textFieldCap")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		if(((JTextField)mapCampiForm.get("textFieldIndirizzoLocalita")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		if(((JTextField)mapCampiForm.get("textFieldSuperficieImmobile")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		if(((JTextField)mapCampiForm.get("textFieldPrezzoImmobile")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
 		}
 		
-		//Disabilita i campi della form
-		//@SuppressWarnings("unchecked")
-		static void disabilitaCampiForm() {
-			ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
-			while(iteratorListCampiForm.hasNext()) {
-				JComponent campoCorrente = (JComponent)iteratorListCampiForm.next();
-				campoCorrente.setEnabled(false);
-			}
+		//Controllo la text area
+		if(((JTextArea)mapCampiForm.get("textAreaTestoAnnuncio")).getText().isEmpty()) {
+			campiObbligatoriCompilati = false;
 		}
 		
-		//Verifica la validità della form
-		@SuppressWarnings("unchecked")
-		static boolean isFormValid() {
-			
-			String comboContent;
-			boolean campiObbligatoriCompilati = true;
-			
-			//Controllo i campi testuali
-			if(((JTextField)mapCampiForm.get("textFieldCodiceInserzione")).getText().isEmpty()) {
-				campiObbligatoriCompilati = false;
-			}
-			if(((JTextField)mapCampiForm.get("textFieldTitoloAnnuncio")).getText().isEmpty()) {
-				campiObbligatoriCompilati = false;
-			}
-			if(((JTextField)mapCampiForm.get("textFieldCap")).getText().isEmpty()) {
-				campiObbligatoriCompilati = false;
-			}
-			if(((JTextField)mapCampiForm.get("textFieldIndirizzoLocalita")).getText().isEmpty()) {
-				campiObbligatoriCompilati = false;
-			}
-			if(((JTextField)mapCampiForm.get("textFieldSuperficieImmobile")).getText().isEmpty()) {
-				campiObbligatoriCompilati = false;
-			}
-			if(((JTextField)mapCampiForm.get("textFieldPrezzoImmobile")).getText().isEmpty()) {
-				campiObbligatoriCompilati = false;
-			}
-			
-			//Controllo la text area
-			if(((JTextArea)mapCampiForm.get("textAreaTestoAnnuncio")).getText().isEmpty()) {
-				campiObbligatoriCompilati = false;
-			}
-			
-			//Controllo le checkbox
-			comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxRegione")).getSelectedItem());
-			if(comboContent.isEmpty() || comboContent.equals(arrayRegioni[0])) {
-				campiObbligatoriCompilati = false;
-			}
-			comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxProvincia")).getSelectedItem());
-			if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayProvincie[0])) {
-				campiObbligatoriCompilati = false;
-			}
-			comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxComune")).getSelectedItem());
-			if(comboContent==null || comboContent.isEmpty()) {
-				campiObbligatoriCompilati = false;
-			}
-			comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxCategoriaImmobile")).getSelectedItem());
-			if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayCategorieImmobili[0])) {
-				campiObbligatoriCompilati = false;
-			}
-			comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxTipologiaImmobile")).getSelectedItem());
-			if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayTipologie[0])) {
-				campiObbligatoriCompilati = false;
-			}
-			comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxTipologiaContratto")).getSelectedItem());
-			if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayTipologie[0])) {
-				campiObbligatoriCompilati = false;
-			}
-			
-			//Se tutti i campi obbligatori hanno dati validi
-	       if(campiObbligatoriCompilati) {  	
-	           return true;
-	       }
-	       else {               	           
-	           return false;
-	       }
-			
+		//Controllo le checkbox
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxRegione")).getSelectedItem());
+		if(comboContent.isEmpty() || comboContent.equals(arrayRegioni[0])) {
+			campiObbligatoriCompilati = false;
 		}
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxProvincia")).getSelectedItem());
+		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayProvincie[0])) {
+			campiObbligatoriCompilati = false;
+		}
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxComune")).getSelectedItem());
+		if(comboContent==null || comboContent.isEmpty()) {
+			campiObbligatoriCompilati = false;
+		}
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxCategoriaImmobile")).getSelectedItem());
+		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayCategorieImmobili[0])) {
+			campiObbligatoriCompilati = false;
+		}
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxTipologiaImmobile")).getSelectedItem());
+		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayTipologie[0])) {
+			campiObbligatoriCompilati = false;
+		}
+		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxTipologiaContratto")).getSelectedItem());
+		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayTipologie[0])) {
+			campiObbligatoriCompilati = false;
+		}
+		
+		//Se tutti i campi obbligatori hanno dati validi
+       if(campiObbligatoriCompilati) {  	
+           return true;
+       }
+       else {               	           
+           return false;
+       }
+		
+	}
 
-		//Il nuovo oggetto scheda immobile viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
-		static void aggiungiSchedaInDat(SchedaImmobile scheda) {
+	//Il nuovo oggetto scheda immobile viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
+	static void aggiungiSchedaInDat(SchedaImmobile scheda) {
+	
+	//Aggiorno la lista delle schede immobile
+	j2web_GUI.listSchedeImmobile.add(scheda);
 		
-		//Aggiorno la lista delle schede immobile
-		listSchedeImmobile.add(scheda);
-			
-		//Aggiorno il file dat delle schede
-	    try {
-		   File file = new File(datFilePath);
-	    	if(file.exists()) {
-	    		System.out.println("File .dat trovato.");
-	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-					outputFile.writeObject(listSchedeImmobile);
-					outputFile.close();
-	    	}
-	    	else {
-					FileOutputStream newFile = new FileOutputStream(datFilePath);
-					ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-					outputFile.writeObject(listSchedeImmobile);
-					outputFile.close();
-					System.out.println("File .dat non trovato. Creazione del file...: " + newFile.toString());
-	    	}
-			} catch (FileNotFoundException e0) {
-	            JOptionPane.showMessageDialog(null, "File .dat non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-	            e0.printStackTrace();
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-				e1.printStackTrace();
-			}
+	//Aggiorno il file dat delle schede
+    try {
+	   File file = new File(datFilePath);
+    	if(file.exists()) {
+    		System.out.println("File .dat schede trovato.");
+    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+				outputFile.writeObject(j2web_GUI.listSchedeImmobile);
+				outputFile.close();
+    	}
+    	else {
+				FileOutputStream newFile = new FileOutputStream(datFilePath);
+				ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+				outputFile.writeObject(j2web_GUI.listSchedeImmobile);
+				outputFile.close();
+				System.out.println("File .dat schede non trovato. Creazione del file...: " + newFile.toString());
+    	}
+		} catch (FileNotFoundException e0) {
+            JOptionPane.showMessageDialog(null, "File .dat schede non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
+            e0.printStackTrace();
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat schede: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
+			e1.printStackTrace();
 		}
+	}
+	
+	
+	// Metodo per ricompilare i dati della form con quelli presenti in una scheda data
+	public void mostraSchedaSalvata(SchedaImmobile scheda) {
+		
+		resettaForm();		
+		
+		//Campi testuali
+	  	textFieldCodiceInserzione.setText(scheda.codiceInserzione);
+	  	textFieldTitoloAnnuncio.setText(scheda.titoloAnnuncio);
+	  	textFieldCap.setText(scheda.cap);
+	  	textFieldIndirizzoLocalita.setText(scheda.indirizzoLocalita);
+	  	textFieldSuperficieImmobile.setText(scheda.superficieImmobile);
+	  	textFieldPrezzoImmobile.setText(scheda.prezzoImmobile);
+	  	textFieldImmagine1.setText(scheda.immagine1.getPath());
+	  	textFieldImmagine2.setText(scheda.immagine2.getPath());
+	  	textFieldImmagine3.setText(scheda.immagine3.getPath());
+	  	textFieldImmagine4.setText(scheda.immagine4.getPath());
+	  	textFieldImmagine5.setText(scheda.immagine5.getPath());
+	  	textFieldImmagine6.setText(scheda.immagine6.getPath());
+	  	textFieldImmagine7.setText(scheda.immagine7.getPath());
+	  	textFieldImmagine8.setText(scheda.immagine8.getPath());
+	  	textFieldImmagine9.setText(scheda.immagine9.getPath());
+	  	textFieldImmagine10.setText(scheda.immagine10.getPath());
+	  	textFieldNumeroTotalePiani.setText(scheda.numeroTotalePiani);
+	  	textFieldAnnoCostruzione.setText(scheda.annoCostruzione);//18
+	  	//Textarea
+	  	textAreaTestoAnnuncio.setText(scheda.testoAnnuncio); //1
+	  	//Combobox
+	  	comboBoxRegione.setSelectedIndex(scheda.comboBoxRegioneIndex);
+	  	comboBoxProvincia.setSelectedIndex(scheda.comboBoxProvinciaIndex);
+	  	comboBoxComune.setSelectedIndex(scheda.comboBoxComuneIndex);
+	  	comboBoxCategoriaImmobile.setSelectedIndex(scheda.comboBoxCategoriaImmobileIndex);
+	  	comboBoxTipologiaImmobile.setSelectedIndex(scheda.comboBoxTipologiaImmobileIndex);
+	  	comboBoxTipologiaContratto.setSelectedIndex(scheda.comboBoxTipologiaContrattoIndex); //6
+	  	
+	  	comboBoxNumeroLocali.setSelectedIndex(scheda.comboBoxNumeroLocaliIndex);
+	  	comboBoxNumeroCamere.setSelectedIndex(scheda.comboBoxNumeroCamereIndex);
+	  	comboBoxNumeroBagni.setSelectedIndex(scheda.comboBoxNumeroBagniIndex);
+	  	comboBoxStatoImmobile.setSelectedIndex(scheda.comboBoxStatoImmobileIndex);
+	  	comboBoxArredamenti.setSelectedIndex(scheda.comboBoxArredamentiIndex);
+	  	comboBoxPiano.setSelectedIndex(scheda.comboBoxPianoIndex);
+	  	comboBoxCertificazioniEnergetiche.setSelectedIndex(scheda.comboBoxCertificazioniEnergeticheIndex);
+	  	comboBoxTipologiaRiscaldamento.setSelectedIndex(scheda.comboBoxTipologiaRiscaldamentoIndex);
+	  	comboBoxClima.setSelectedIndex(scheda.comboBoxClimaIndex);
+	  	comboBoxParcheggio.setSelectedIndex(scheda.comboBoxParcheggioIndex);
+	  	comboBoxGiardino.setSelectedIndex(scheda.comboBoxGiardinoIndex); //11
+	  	
+	  	//Checkbox
+		if (scheda.bandaLarga) {
+			chckbxBandaLarga.setSelected(true);
+		}
+		else {
+			chckbxBandaLarga.setSelected(false);
+		}
+		
+		if (scheda.ascensore) {
+			chckbxAscensore.setSelected(true);
+		}
+		else {
+			chckbxAscensore.setSelected(false);
+		}
+		
+		if (scheda.casaEcologica) {
+			chckbxCasaEcologica.setSelected(true);
+		}
+		else {
+			chckbxCasaEcologica.setSelected(false);
+		}
+		
+		if (scheda.vicinanzeBus) {
+			chckbxVicinanzeBus.setSelected(true);
+		}
+		else {
+			chckbxVicinanzeBus.setSelected(false);
+		}
+		
+		if (scheda.vistaDiPregio) {
+			chckbxVistaDiPregio.setSelected(true);
+		}
+		else {
+			chckbxVistaDiPregio.setSelected(false);
+		}
+		
+		if (scheda.satellite) {
+			chckbxSatellite.setSelected(true);
+		}
+		else {
+			chckbxSatellite.setSelected(false);
+		}
+		
+		if (scheda.sistemaDiAllarme) {
+			chckbxSistemaDiAllarme.setSelected(true);
+		}
+		else {
+			chckbxSistemaDiAllarme.setSelected(false);
+		}
+		
+		if (scheda.cancelloElettrico) {
+			chckbxCancelloElettrico.setSelected(true);
+		}
+		else {
+			chckbxCancelloElettrico.setSelected(false);
+		}
+		
+		if (scheda.vicinanzeMetro) {
+			chckbxVicinanzeMetro.setSelected(true);
+		}
+		else {
+			chckbxVicinanzeMetro.setSelected(false);
+		}
+		
+		if (scheda.rampePerDisabili) {
+			chckbxRampePerDisabili.setSelected(true);
+		}
+		else {
+			chckbxRampePerDisabili.setSelected(false);
+		}
+	  	//TOT:56
+
+	    disabilitaCampiForm();
+	    
+	    
+	}   //Fine metodo mostraSchedaSalvata
         
 
 }   //Fine 

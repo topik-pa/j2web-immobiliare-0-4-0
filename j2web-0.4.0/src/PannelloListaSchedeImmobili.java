@@ -15,9 +15,11 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -40,19 +42,20 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
 	public ButtonGroup radioGrpSchede = new ButtonGroup();	//Serve per raggruppare i radio button in una struttura coerente 
 
 	//Costruttore del pannello
+	@SuppressWarnings("unchecked")
 	public PannelloListaSchedeImmobili() {
 		
 		setBorder(new TitledBorder(null, "Lista schede create", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         
         //Lettura schede dal file .dat 
-        /*File file = new File(datFilePath);
+        File file = new File(datFilePath);
     	if(file.exists()) {
     		System.out.println("File .dat trovato.");
     		if(file.length()!=0) {
     			try {
     				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
-    				listSchedeImmobile = (LinkedList<SchedaImmobile>)inputFile.readObject();
+    				j2web_GUI.listSchedeImmobile = (LinkedList<SchedaImmobile>)inputFile.readObject();
     				inputFile.close();
     			} catch (FileNotFoundException e) {
     				JOptionPane.showMessageDialog(null, "File .dat non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -67,11 +70,11 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	}
     	else {
     		System.out.println("File .dat non trovato.");
-    	}*/
+    	}
     	
     	//Aggiorno il pannello con il contenuto della LinkedList che contiene le schede immobile
     	//Pannello senza schede   	
-    	if(listSchedeImmobile.isEmpty()) {
+    	if(j2web_GUI.listSchedeImmobile.isEmpty()) {
     		System.out.println("listSchedeImmobile vuota");
     		JPanel panelNessunaScheda = new JPanel();
             JLabel lblNessunaScheda = new JLabel("Non \u00e8 stata inserita alcuna scheda immobile");                
@@ -83,11 +86,11 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	else {
     		System.out.println("listSchedeImmobile con schede");
             add(Box.createVerticalStrut(10));
-    		ListIterator<SchedaImmobile> iterator = listSchedeImmobile.listIterator();
+    		ListIterator<SchedaImmobile> iterator = j2web_GUI.listSchedeImmobile.listIterator();
         	while(iterator.hasNext()) {
         		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
         		//I sottopannelli sono istanze di una classe comune definita più sotto
-        		JPanel pannelloSchedaImmobile = new PannelloSchedaImmobile(schedaCorrente, listSchedeImmobile, radioGrpSchede);            
+        		JPanel pannelloSchedaImmobile = new PannelloSchedaImmobile(schedaCorrente, j2web_GUI.listSchedeImmobile, radioGrpSchede);            
         		add(pannelloSchedaImmobile);
         		add(Box.createVerticalStrut(5));
         	}
@@ -103,7 +106,7 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	
     	//Aggiorno il pannello con il contenuto della LinkedList che contiene le schede immobile
     	//Pannello senza schede
-    	if(listSchedeImmobile.isEmpty()) {
+    	if(j2web_GUI.listSchedeImmobile.isEmpty()) {
     		System.out.println("Linkedlist vuota");
     		JPanel panelNessunaScheda = new JPanel();
             JLabel lblNessunaScheda = new JLabel("Non \u00e8 stata inserita alcuna scheda immobile");                
@@ -115,11 +118,11 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	else {
     		System.out.println("Linkedlist con schede");
             add(Box.createVerticalStrut(10));
-    		ListIterator<SchedaImmobile> iterator = listSchedeImmobile.listIterator();
+    		ListIterator<SchedaImmobile> iterator = j2web_GUI.listSchedeImmobile.listIterator();
         	while(iterator.hasNext()) {
         		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
         		//I sottopannelli sono istanze di una classe comune definita più sotto
-        		JPanel pannelloSchedaImmobile = new PannelloSchedaImmobile(schedaCorrente, listSchedeImmobile, radioGrpSchede);            
+        		JPanel pannelloSchedaImmobile = new PannelloSchedaImmobile(schedaCorrente, j2web_GUI.listSchedeImmobile, radioGrpSchede);            
         		add(pannelloSchedaImmobile);
         		add(Box.createVerticalStrut(5));
         	}
@@ -164,7 +167,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
                  j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello();
                  
                  //Il pannello Form deve mostrari i dati relativi a tale scheda
-                 //Main.imaginationGUI.pannelloForm.mostraSchedaSalvata(scheda);
+                 j2web_GUI.panelCreazioneSchedeImmobile.mostraSchedaSalvata(scheda);
              }
 		 });
 		 add(schedaRadio);
@@ -204,7 +207,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
          	    	if(file.exists()) {
          	    		System.out.println("File .dat trovato.");
          	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-						outputFile.writeObject(listSchedeImmobile);
+						outputFile.writeObject(j2web_GUI.listSchedeImmobile);
 						outputFile.close();
 						System.out.println("File .dat aggiornato");
          	    	}
