@@ -10,26 +10,18 @@
  */
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.LinkedList;
 import java.util.ListIterator;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -39,27 +31,25 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
-
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 
-//Pannello per la gestione delle schede immobile create dall'utente
+//Pannello per la creazione delle schede immobile
 public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGenerali {
 	private static final long serialVersionUID = 1L;
 
+	//Tutti i campi della form soggetti ad interazione
 	//Campi testuali
   	private static JTextField textFieldCodiceInserzione = new JTextField();
   	private static JTextField textFieldTitoloAnnuncio = new JTextField();
@@ -127,8 +117,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	//Costruttore del pannello
 	public PanelCreazioneSchedeImmobile() {
 		
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));		
+		//Proprieta del  pannello
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Creazione schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
+		//Sottopannello a schede (tab)
 		JTabbedPane tabbedPaneCreazioneSchede = new JTabbedPane(JTabbedPane.TOP);
 		add(tabbedPaneCreazioneSchede, BorderLayout.NORTH);
 		
@@ -162,6 +155,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 				RowSpec.decode("7dlu:grow(14)"),
 				RowSpec.decode("default:grow"),}));
 		
+		//Codice inserzione
 		JPanel panelCodiceInserzione = new JPanel();
 		panelTabDatiObbligatori.add(panelCodiceInserzione, "1, 2, fill, fill");
 		panelCodiceInserzione.setLayout(new FormLayout(new ColumnSpec[] {
@@ -174,7 +168,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblCodiceInserzione.setToolTipText("");
 		panelCodiceInserzione.add(lblCodiceInserzione, "1, 1, left, fill");
 		
-		//textFieldCodiceInserzione = new JTextField();
 		mapCampiForm.put("textFieldCodiceInserzione", textFieldCodiceInserzione);
 		listCampiForm.add(textFieldCodiceInserzione);
 		panelCodiceInserzione.add(textFieldCodiceInserzione, "2, 1, left, default");
@@ -192,6 +185,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
         });
 		lblCodiceInserzione.setLabelFor(textFieldCodiceInserzione);
 		
+		//Titolo annuncio
 		JPanel panelTitoloAnnuncio = new JPanel();
 		panelTabDatiObbligatori.add(panelTitoloAnnuncio, "1, 4, fill, fill");
 		panelTitoloAnnuncio.setLayout(new FormLayout(new ColumnSpec[] {
@@ -203,7 +197,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JLabel lblTitoloAnnuncio = new JLabel("Titolo annuncio");
 		panelTitoloAnnuncio.add(lblTitoloAnnuncio, "1, 1, fill, fill");
 		
-		//textFieldTitoloAnnuncio = new JTextField();
 		mapCampiForm.put("textFieldTitoloAnnuncio", textFieldTitoloAnnuncio);
 		listCampiForm.add(textFieldTitoloAnnuncio);
 		lblTitoloAnnuncio.setLabelFor(textFieldTitoloAnnuncio);
@@ -219,6 +212,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
         });
 		textFieldTitoloAnnuncio.setColumns(23);
 		
+		//Regione-Provincia-Commune
 		JPanel panelRegProvCom = new JPanel();
 		panelTabDatiObbligatori.add(panelRegProvCom, "1, 6, fill, fill");
 		panelRegProvCom.setLayout(new FormLayout(new ColumnSpec[] {
@@ -234,7 +228,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JLabel lblRegione = new JLabel("Regione");
 		panelRegProvCom.add(lblRegione, "1, 1, fill, fill");
 		
-		//comboBoxRegione = new JComboBox<String>();
 		mapCampiForm.put("comboBoxRegione", comboBoxRegione);
 		listCampiForm.add(comboBoxRegione);
 		comboBoxRegione.addActionListener(new ActionListener() {
@@ -253,7 +246,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		panelRegProvCom.add(lblProvincia, "1, 3, fill, fill");
 		lblProvincia.setToolTipText("Selezionare la provincia");
 		
-		//comboBoxProvincia = new JComboBox<String>();
 		mapCampiForm.put("comboBoxProvincia", comboBoxProvincia);
 		listCampiForm.add(comboBoxProvincia);
 		comboBoxProvincia.addActionListener(new ActionListener() {
@@ -266,14 +258,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblProvincia.setLabelFor(comboBoxProvincia);
 		panelRegProvCom.add(comboBoxProvincia, "2, 3, left, default");
 		comboBoxProvincia.setToolTipText("Selezionare la provincia");
-		
-		
+			
 		JLabel lblComune = new JLabel("Comune");
 		panelRegProvCom.add(lblComune, "1, 5, fill, fill");
 		lblComune.setToolTipText("Selezionare il comune");
 		
-		
-		//comboBoxComune = new JComboBox<String>();
 		mapCampiForm.put("comboBoxComune", comboBoxComune);
 		listCampiForm.add(comboBoxComune);
 		comboBoxComune.addActionListener(new ActionListener() {
@@ -285,6 +274,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		panelRegProvCom.add(comboBoxComune, "2, 5, left, default");
 		comboBoxComune.setToolTipText("Selezionare il comune");
 		
+		//CAP
 		JPanel panelCap = new JPanel();
 		panelTabDatiObbligatori.add(panelCap, "1, 8, fill, fill");
 		panelCap.setLayout(new FormLayout(new ColumnSpec[] {
@@ -296,7 +286,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JLabel lblCap = new JLabel("CAP");
 		panelCap.add(lblCap, "1, 1, fill, fill");
 		
-		//textFieldCap = new JTextField();
 		mapCampiForm.put("textFieldCap", textFieldCap);
 		listCampiForm.add(textFieldCap);
 		lblCap.setLabelFor(textFieldCap);
@@ -313,6 +302,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
         });
 		textFieldCap.setColumns(10);
 		
+		//Indirizzo
 		JPanel panelIndirizzo = new JPanel();
 		panelTabDatiObbligatori.add(panelIndirizzo, "1, 10, fill, fill");
 		panelIndirizzo.setLayout(new FormLayout(new ColumnSpec[] {
@@ -324,7 +314,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JLabel lblIndirizzoLocalita = new JLabel("Indirizzo/Località");
 		panelIndirizzo.add(lblIndirizzoLocalita, "1, 1, fill, fill");
 		
-		//textFieldIndirizzoLocalita = new JTextField();
 		mapCampiForm.put("textFieldIndirizzoLocalita", textFieldIndirizzoLocalita);
 		listCampiForm.add(textFieldIndirizzoLocalita);
 		lblIndirizzoLocalita.setLabelFor(textFieldIndirizzoLocalita);
@@ -340,7 +329,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
             }
         });
 		
-		
+		//Testo scheda
 		JLabel lblTestoDellaScheda = new JLabel("Testo dell'annuncio");
 		lblTestoDellaScheda.setToolTipText("");
 		panelTabDatiObbligatori.add(lblTestoDellaScheda, "1, 12, default, fill");
@@ -348,7 +337,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JScrollPane scrollPaneTestoScheda = new JScrollPane();
 		panelTabDatiObbligatori.add(scrollPaneTestoScheda, "1, 13, fill, fill");
 		
-		//textAreaTestoAnnuncio = new JTextArea();
 		mapCampiForm.put("textAreaTestoAnnuncio", textAreaTestoAnnuncio);
 		listCampiForm.add(textAreaTestoAnnuncio);
 		textAreaTestoAnnuncio.setTabSize(4);
@@ -364,6 +352,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
         });
 		scrollPaneTestoScheda.setViewportView(textAreaTestoAnnuncio);
 		
+		//Categoria e tipologia di immobile
 		JPanel panelCategoriaTipologia = new JPanel();
 		panelTabDatiObbligatori.add(panelCategoriaTipologia, "1, 15, fill, default");
 		panelCategoriaTipologia.setLayout(new FormLayout(new ColumnSpec[] {
@@ -377,8 +366,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JLabel lblCategoriaImmobile = new JLabel("Categoria immobile");
 		panelCategoriaTipologia.add(lblCategoriaImmobile, "1, 1, fill, fill");
 		
-		
-		//comboBoxCategoriaImmobile = new JComboBox<String>();
 		mapCampiForm.put("comboBoxCategoriaImmobile", comboBoxCategoriaImmobile);
 		listCampiForm.add(comboBoxCategoriaImmobile);
 		comboBoxCategoriaImmobile.addActionListener(new ActionListener() {
@@ -397,11 +384,8 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JLabel lblTipologiaImmobile = new JLabel("Tipologia immobile");
 		panelCategoriaTipologia.add(lblTipologiaImmobile, "1, 3, fill, fill");
 		
-		
-		//comboBoxTipologiaImmobile = new JComboBox<String>();
 		mapCampiForm.put("comboBoxTipologiaImmobile", comboBoxTipologiaImmobile);
 		listCampiForm.add(comboBoxTipologiaImmobile);
-		//comboBoxTipologiaImmobile.setModel(new DefaultComboBoxModel<String>(arrayCategorieImmobili ));
 		lblTipologiaImmobile.setLabelFor(comboBoxTipologiaImmobile);
 		comboBoxTipologiaImmobile.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panelCategoriaTipologia.add(comboBoxTipologiaImmobile, "2, 3, left, default");
@@ -415,11 +399,10 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 			new RowSpec[] {
 				RowSpec.decode("20px"),}));
 		
-		
+		//Superficie immobile
 		JLabel lblSuperficieImmmobile = new JLabel("Superficie (mq)");
 		panelSuperficie.add(lblSuperficieImmmobile, "1, 1, fill, fill");
 		
-		//textFieldSuperficieImmobile = new JTextField();
 		mapCampiForm.put("textFieldSuperficieImmobile", textFieldSuperficieImmobile);
 		listCampiForm.add(textFieldSuperficieImmobile);
 		lblSuperficieImmmobile.setLabelFor(textFieldSuperficieImmobile);
@@ -436,6 +419,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
             }
         });
 		
+		//Tipologia contratto
 		JPanel panelTipologiaContratto = new JPanel();
 		panelTabDatiObbligatori.add(panelTipologiaContratto, "1, 19, fill, fill");
 		panelTipologiaContratto.setLayout(new FormLayout(new ColumnSpec[] {
@@ -448,8 +432,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		panelTipologiaContratto.add(lblTipologiaContratto, "1, 1, fill, fill");
 		lblTipologiaContratto.setToolTipText("");
 		
-		
-		//comboBoxTipologiaContratto = new JComboBox<String>();
 		mapCampiForm.put("comboBoxTipologiaContratto", comboBoxTipologiaContratto);
 		listCampiForm.add(comboBoxTipologiaContratto);
 		comboBoxTipologiaContratto.setModel(new DefaultComboBoxModel<String>(arrayTipologieContratto));
@@ -458,6 +440,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		panelTipologiaContratto.add(comboBoxTipologiaContratto, "2, 1, left, default");
 		comboBoxTipologiaContratto.setToolTipText("");
 		
+		//Prezzo
 		JPanel panelPrezzo = new JPanel();
 		panelTabDatiObbligatori.add(panelPrezzo, "1, 21, fill, fill");
 		panelPrezzo.setLayout(new FormLayout(new ColumnSpec[] {
@@ -469,7 +452,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JLabel lblPrezzoImmobile = new JLabel("Prezzo");
 		panelPrezzo.add(lblPrezzoImmobile, "1, 1, fill, fill");
 		
-		//textFieldPrezzoImmobile = new JTextField();
 		mapCampiForm.put("textFieldPrezzoImmobile", textFieldPrezzoImmobile);
 		listCampiForm.add(textFieldPrezzoImmobile);
 		lblPrezzoImmobile.setLabelFor(textFieldPrezzoImmobile);
@@ -486,6 +468,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
             }
         });
 		
+		//Pulsanti Creazione e Resetta 
 		JPanel panelPulsantiCreazioneScheda = new JPanel();
 		panelTabDatiObbligatori.add(panelPulsantiCreazioneScheda, "1, 23, fill, fill");
 		panelPulsantiCreazioneScheda.setLayout(new FormLayout(new ColumnSpec[] {
@@ -535,6 +518,8 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnResettaPannelloCreazioneScheda.setToolTipText("Resetta il pannello di creazione scheda");
 		panelPulsantiCreazioneScheda.add(btnResettaPannelloCreazioneScheda, "3, 1");
 		
+		
+		
 		//Tab "Immagini"
 		JPanel panelTabImmagini = new JPanel();
 		tabbedPaneCreazioneSchede.addTab("Immagini", null, panelTabImmagini, null);
@@ -564,7 +549,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		//btnImmagine1 = new JButton("Immagine1");
+		//Pulsante immmagine 1
 		mapCampiForm.put("btnImmagine1", btnImmagine1);
 		listCampiForm.add(btnImmagine1);
 		btnImmagine1.addActionListener(new ActionListener() {
@@ -576,14 +561,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnImmagine1.setToolTipText("Inserimento immagine 1");
 		panelTabImmagini.add(btnImmagine1, "1, 2");
 		
-		//textFieldImmagine1 = new JTextField();
 		mapCampiForm.put("textFieldImmagine1", textFieldImmagine1);
 		listCampiForm.add(textFieldImmagine1);
 		textFieldImmagine1.setToolTipText("Inserimento immagine 1");
 		panelTabImmagini.add(textFieldImmagine1, "3, 2, left, default");
 		textFieldImmagine1.setColumns(23);
 		
-		//btnImmagine2 = new JButton("Immagine 2");
+		//Pulsante immmagine 2
 		mapCampiForm.put("btnImmagine2", btnImmagine2);
 		listCampiForm.add(btnImmagine2);
 		btnImmagine2.addActionListener(new ActionListener() {
@@ -595,14 +579,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnImmagine2.setToolTipText("Inserimento immagine 2");
 		panelTabImmagini.add(btnImmagine2, "1, 4, default, fill");
 		
-		//textFieldImmagine2 = new JTextField();
 		mapCampiForm.put("textFieldImmagine2", textFieldImmagine2);
 		listCampiForm.add(textFieldImmagine2);
 		textFieldImmagine2.setToolTipText("Inserimento immagine 2");
 		panelTabImmagini.add(textFieldImmagine2, "3, 4, left, default");
 		textFieldImmagine2.setColumns(23);
 		
-		//btnImmagine3 = new JButton("Immagine 3");
+		//Pulsante immmagine 3
 		mapCampiForm.put("btnImmagine3", btnImmagine3);
 		listCampiForm.add(btnImmagine3);
 		btnImmagine3.addActionListener(new ActionListener() {
@@ -614,14 +597,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnImmagine3.setToolTipText("Inserimento immagine 3");
 		panelTabImmagini.add(btnImmagine3, "1, 6, default, fill");
 		
-		//textFieldImmagine3 = new JTextField();
 		mapCampiForm.put("textFieldImmagine3", textFieldImmagine3);
 		listCampiForm.add(textFieldImmagine3);
 		textFieldImmagine3.setToolTipText("Inserimento immagine 3");
 		panelTabImmagini.add(textFieldImmagine3, "3, 6, left, default");
 		textFieldImmagine3.setColumns(23);
 		
-		//btnImmagine4 = new JButton("Immagine 4");
+		//Pulsante immmagine 4
 		mapCampiForm.put("btnImmagine4", btnImmagine4);
 		listCampiForm.add(btnImmagine4);
 		btnImmagine4.addActionListener(new ActionListener() {
@@ -633,14 +615,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnImmagine4.setToolTipText("Inserimento immagine 4");
 		panelTabImmagini.add(btnImmagine4, "1, 8, default, fill");
 		
-		//textFieldImmagine4 = new JTextField();
 		mapCampiForm.put("textFieldImmagine4", textFieldImmagine4);
 		listCampiForm.add(textFieldImmagine4);
 		textFieldImmagine4.setToolTipText("Inserimento immagine 4");
 		panelTabImmagini.add(textFieldImmagine4, "3, 8, left, default");
 		textFieldImmagine4.setColumns(23);
 		
-		//btnImmagine5 = new JButton("Immagine 5");
+		//Pulsante immmagine 5
 		mapCampiForm.put("btnImmagine5", btnImmagine5);
 		listCampiForm.add(btnImmagine5);
 		btnImmagine5.addActionListener(new ActionListener() {
@@ -652,14 +633,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnImmagine5.setToolTipText("Inserimento immagine 5");
 		panelTabImmagini.add(btnImmagine5, "1, 10, default, fill");
 		
-		//textFieldImmagine5 = new JTextField();
 		mapCampiForm.put("textFieldImmagine5", textFieldImmagine5);
 		listCampiForm.add(textFieldImmagine5);
 		textFieldImmagine5.setToolTipText("Inserimento immagine 5");
 		panelTabImmagini.add(textFieldImmagine5, "3, 10, left, default");
 		textFieldImmagine5.setColumns(23);
 		
-		//btnImmagine6 = new JButton("Immagine 6");
+		//Pulsante immmagine 6
 		mapCampiForm.put("btnImmagine6", btnImmagine6);
 		listCampiForm.add(btnImmagine6);
 		btnImmagine6.addActionListener(new ActionListener() {
@@ -671,14 +651,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnImmagine6.setToolTipText("Inserimento immagine 6");
 		panelTabImmagini.add(btnImmagine6, "1, 12, default, fill");
 		
-		//textFieldImmagine6 = new JTextField();
 		mapCampiForm.put("textFieldImmagine6", textFieldImmagine6);
 		listCampiForm.add(textFieldImmagine6);
 		textFieldImmagine6.setToolTipText("Inserimento immagine 6");
 		panelTabImmagini.add(textFieldImmagine6, "3, 12, left, default");
 		textFieldImmagine6.setColumns(23);
 		
-		//btnImmagine7 = new JButton("Immagine 7");
+		//Pulsante immmagine 7
 		mapCampiForm.put("btnImmagine7", btnImmagine7);
 		listCampiForm.add(btnImmagine7);
 		btnImmagine7.addActionListener(new ActionListener() {
@@ -690,14 +669,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnImmagine7.setToolTipText("Inserimento immagine 7");
 		panelTabImmagini.add(btnImmagine7, "1, 14");
 		
-		//textFieldImmagine7 = new JTextField();
 		mapCampiForm.put("textFieldImmagine7", textFieldImmagine7);
 		listCampiForm.add(textFieldImmagine7);
 		textFieldImmagine7.setToolTipText("Inserimento immagine 7");
 		panelTabImmagini.add(textFieldImmagine7, "3, 14, left, default");
 		textFieldImmagine7.setColumns(23);
 		
-		//btnImmagine8 = new JButton("Immagine 8");
+		//Pulsante immmagine 8
 		mapCampiForm.put("btnImmagine8", btnImmagine8);
 		listCampiForm.add(btnImmagine8);
 		btnImmagine8.addActionListener(new ActionListener() {
@@ -709,14 +687,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnImmagine8.setToolTipText("Inserimento immagine 8");
 		panelTabImmagini.add(btnImmagine8, "1, 16");
 		
-		//textFieldImmagine8 = new JTextField();
 		mapCampiForm.put("textFieldImmagine8", textFieldImmagine8);
 		listCampiForm.add(textFieldImmagine8);
 		textFieldImmagine8.setToolTipText("Inserimento immagine 8");
 		panelTabImmagini.add(textFieldImmagine8, "3, 16, left, default");
 		textFieldImmagine8.setColumns(23);
 		
-		//btnImmagine9 = new JButton("Immagine 9");
+		//Pulsante immmagine 9
 		mapCampiForm.put("btnImmagine9", btnImmagine9);
 		listCampiForm.add(btnImmagine9);
 		btnImmagine9.addActionListener(new ActionListener() {
@@ -728,14 +705,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnImmagine9.setToolTipText("Inserimento immagine 9");
 		panelTabImmagini.add(btnImmagine9, "1, 18");
 		
-		//textFieldImmagine9 = new JTextField();
 		mapCampiForm.put("textFieldImmagine9", textFieldImmagine9);
 		listCampiForm.add(textFieldImmagine9);
 		textFieldImmagine9.setToolTipText("Inserimento immagine 9");
 		panelTabImmagini.add(textFieldImmagine9, "3, 18, left, default");
 		textFieldImmagine9.setColumns(23);
 		
-		//btnImmagine10 = new JButton("Immagine 10");
+		//Pulsante immmagine 10
 		mapCampiForm.put("btnImmagine10", btnImmagine10);
 		listCampiForm.add(btnImmagine10);
 		btnImmagine10.addActionListener(new ActionListener() {
@@ -747,12 +723,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnImmagine10.setToolTipText("Inserimento immagine 10");
 		panelTabImmagini.add(btnImmagine10, "1, 20");
 		
-		//textFieldImmagine10 = new JTextField();
 		mapCampiForm.put("textFieldImmagine10", textFieldImmagine10);
 		listCampiForm.add(textFieldImmagine10);
 		textFieldImmagine10.setToolTipText("Inserimento immagine 10");
 		panelTabImmagini.add(textFieldImmagine10, "3, 20, left, default");
 		textFieldImmagine10.setColumns(23);
+		
+		
 		
 		//Tab "Dati secondari"
 		JPanel panelTabDatiSecondari = new JPanel();
@@ -800,11 +777,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
+		//Numero locali
 		JLabel lblNumeroLocali = new JLabel("Numero locali");
 		lblNumeroLocali.setToolTipText("Selezionare il numero dei locali dell'immobile");
 		panelTabDatiSecondari.add(lblNumeroLocali, "1, 2, left, default");
 		
-		//comboBoxNumeroLocali = new JComboBox<String>();
 		mapCampiForm.put("comboBoxNumeroLocali", comboBoxNumeroLocali);
 		listCampiForm.add(comboBoxNumeroLocali);
 		comboBoxNumeroLocali.setModel(new DefaultComboBoxModel<String>(arrayNumeroLocali));
@@ -812,11 +789,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblNumeroLocali.setLabelFor(comboBoxNumeroLocali);
 		panelTabDatiSecondari.add(comboBoxNumeroLocali, "2, 2, left, default");
 		
+		//Numero camere
 		JLabel lblNumeroCamere = new JLabel("Numero camere da letto");
 		lblNumeroCamere.setToolTipText("Selezionare il numero di camere da letto disponibili");
 		panelTabDatiSecondari.add(lblNumeroCamere, "1, 4");
 		
-		//comboBoxNumeroCamere = new JComboBox<String>();
 		mapCampiForm.put("comboBoxNumeroCamere", comboBoxNumeroCamere);
 		listCampiForm.add(comboBoxNumeroCamere);
 		comboBoxNumeroCamere.setModel(new DefaultComboBoxModel<String>(arrayNumeroCamere));
@@ -824,11 +801,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblNumeroCamere.setLabelFor(comboBoxNumeroCamere);
 		panelTabDatiSecondari.add(comboBoxNumeroCamere, "2, 4, left, default");
 		
+		//Numero bagni
 		JLabel lblNumeroBagni = new JLabel("Numero bagni");
 		lblNumeroBagni.setToolTipText("Selezionare il numero di bagni disponibili");
 		panelTabDatiSecondari.add(lblNumeroBagni, "1, 6");
 		
-		//comboBoxNumeroBagni = new JComboBox<String>();
 		mapCampiForm.put("comboBoxNumeroBagni", comboBoxNumeroBagni);
 		listCampiForm.add(comboBoxNumeroBagni);
 		comboBoxNumeroBagni.setModel(new DefaultComboBoxModel<String>(arrayNumeroBagni));
@@ -836,11 +813,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblNumeroBagni.setLabelFor(comboBoxNumeroBagni);
 		panelTabDatiSecondari.add(comboBoxNumeroBagni, "2, 6, left, default");
 		
+		//Stato dell'immmobile
 		JLabel lblStatoImmobile = new JLabel("Stato dell'immobile");
 		lblStatoImmobile.setToolTipText("Selezionare lo stato attuale dell'immobile");
 		panelTabDatiSecondari.add(lblStatoImmobile, "1, 8");
 		
-		//comboBoxStatoImmobile = new JComboBox<String>();
 		mapCampiForm.put("comboBoxStatoImmobile", comboBoxStatoImmobile);
 		listCampiForm.add(comboBoxStatoImmobile);
 		comboBoxStatoImmobile.setModel(new DefaultComboBoxModel<String>(arrayStatoImmobile));
@@ -848,11 +825,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblStatoImmobile.setLabelFor(comboBoxStatoImmobile);
 		panelTabDatiSecondari.add(comboBoxStatoImmobile, "2, 8");
 		
+		//Arredamenti
 		JLabel lblArredamenti = new JLabel("Arredamenti");
-		lblArredamenti.setToolTipText("Selezionr la condizione attuale dell'arredamento");
+		lblArredamenti.setToolTipText("Selezionare la condizione attuale dell'arredamento");
 		panelTabDatiSecondari.add(lblArredamenti, "1, 10");
 		
-		//comboBoxArredamenti = new JComboBox<String>();
 		mapCampiForm.put("comboBoxArredamenti", comboBoxArredamenti);
 		listCampiForm.add(comboBoxArredamenti);
 		comboBoxArredamenti.setModel(new DefaultComboBoxModel<String>(arrayArredamenti));
@@ -860,11 +837,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblArredamenti.setLabelFor(comboBoxArredamenti);
 		panelTabDatiSecondari.add(comboBoxArredamenti, "2, 10");
 		
+		//Piano
 		JLabel lblPiano = new JLabel("Piano");
 		lblPiano.setToolTipText("Selezionare il piano in cui è situato l'immobile");
 		panelTabDatiSecondari.add(lblPiano, "1, 12");
 		
-		//comboBoxPiano = new JComboBox<String>();
 		mapCampiForm.put("comboBoxPiano", comboBoxPiano);
 		listCampiForm.add(comboBoxPiano);
 		comboBoxPiano.setModel(new DefaultComboBoxModel<String>(arrayPiano));
@@ -872,12 +849,12 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblPiano.setLabelFor(comboBoxPiano);
 		panelTabDatiSecondari.add(comboBoxPiano, "2, 12");
 		
+		//Tot piani
 		JLabel lblNumeroTotalePiani = new JLabel("Numero totale di piani");
 		lblNumeroTotalePiani.setToolTipText("Indicare il numero totale dei piani dell'immobile");
 		panelTabDatiSecondari.add(lblNumeroTotalePiani, "1, 14");
 		lblNumeroTotalePiani.setLabelFor(textFieldNumeroTotalePiani);
 		
-		//textFieldNumeroTotalePiani = new JTextField();
 		mapCampiForm.put("textFieldNumeroTotalePiani", textFieldNumeroTotalePiani);
 		listCampiForm.add(textFieldNumeroTotalePiani);
 		textFieldNumeroTotalePiani.setToolTipText("Indicare il numero totale dei piani dell'immobile");
@@ -893,11 +870,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
             }
         });
 		
+		//Certificazioni energetiche
 		JLabel lblCertificazioniEnergetiche = new JLabel("Certificazioni energetiche");
 		lblCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
 		panelTabDatiSecondari.add(lblCertificazioniEnergetiche, "1, 16");
 		
-		//comboBoxCertificazioniEnergetiche = new JComboBox<String>();
 		mapCampiForm.put("comboBoxCertificazioniEnergetiche", comboBoxCertificazioniEnergetiche);
 		listCampiForm.add(comboBoxCertificazioniEnergetiche);
 		comboBoxCertificazioniEnergetiche.setModel(new DefaultComboBoxModel<String>(arrayCertificazioniEnergetiche));
@@ -905,33 +882,33 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblCertificazioniEnergetiche.setLabelFor(comboBoxCertificazioniEnergetiche);
 		panelTabDatiSecondari.add(comboBoxCertificazioniEnergetiche, "2, 16");
 		
+		//Tipologia riscaldamento
 		JLabel lbTipologiaRiscaldamento = new JLabel("Tipologia riscaldamento");
 		lbTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
 		panelTabDatiSecondari.add(lbTipologiaRiscaldamento, "1, 18");
 		
-		//comboBoxTipologiaRiscaldamento = new JComboBox<String>();
 		mapCampiForm.put("comboBoxTipologiaRiscaldamento", comboBoxTipologiaRiscaldamento);
 		listCampiForm.add(comboBoxTipologiaRiscaldamento);
 		comboBoxTipologiaRiscaldamento.setModel(new DefaultComboBoxModel<String>(arrayTipologieRiscaldamento));
 		comboBoxTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
 		panelTabDatiSecondari.add(comboBoxTipologiaRiscaldamento, "2, 18");
 		
+		//Clima
 		JLabel lblClima = new JLabel("Clima");
 		lblClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
 		panelTabDatiSecondari.add(lblClima, "1, 20");
 		
-		//comboBoxClima = new JComboBox<String>();
 		mapCampiForm.put("comboBoxClima", comboBoxClima);
 		listCampiForm.add(comboBoxClima);
 		comboBoxClima.setModel(new DefaultComboBoxModel<String>(arrayClima));
 		comboBoxClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
 		panelTabDatiSecondari.add(comboBoxClima, "2, 20");
 		
+		//Parcheggio
 		JLabel lblParcheggio = new JLabel("Parcheggio");
 		lblParcheggio.setToolTipText("Selezionare la tipologia di parcheggio disponibile");
 		panelTabDatiSecondari.add(lblParcheggio, "1, 22");
 		
-		//comboBoxParcheggio = new JComboBox<String>();
 		mapCampiForm.put("comboBoxParcheggio", comboBoxParcheggio);
 		listCampiForm.add(comboBoxParcheggio);
 		comboBoxParcheggio.setModel(new DefaultComboBoxModel<String>(arrayParcheggio));
@@ -939,11 +916,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		panelTabDatiSecondari.add(comboBoxParcheggio, "2, 22");
 		lblParcheggio.setLabelFor(comboBoxParcheggio);
 		
+		//Anno costruzione
 		JLabel lblAnnoCostruzione = new JLabel("Anno costruzione");
 		lblAnnoCostruzione.setToolTipText("Inserire l'anno di costruzione dell'immobile");
 		panelTabDatiSecondari.add(lblAnnoCostruzione, "1, 24");
 		
-		//textFieldAnnoCostruzione = new JTextField();
 		mapCampiForm.put("textFieldAnnoCostruzione", textFieldAnnoCostruzione);
 		listCampiForm.add(textFieldAnnoCostruzione);
 		textFieldAnnoCostruzione.setToolTipText("Inserire l'anno di costruzione dell'immobile");
@@ -960,79 +937,77 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
             }
         });
 		
+		//Giardino
 		JLabel lblGiardino = new JLabel("Giardino");
 		lblGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
 		panelTabDatiSecondari.add(lblGiardino, "1, 26");
 		
-		//comboBoxGiardino = new JComboBox<String>();
 		mapCampiForm.put("comboBoxGiardino", comboBoxGiardino);
 		listCampiForm.add(comboBoxGiardino);
 		comboBoxGiardino.setModel(new DefaultComboBoxModel<String>(arrayGiardino));
 		comboBoxGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
 		panelTabDatiSecondari.add(comboBoxGiardino, "2, 26");
 		
-		//chckbxBandaLarga = new JCheckBox("Banda larga");
+		//Banda larga
 		mapCampiForm.put("chckbxBandaLarga", chckbxBandaLarga);
 		listCampiForm.add(chckbxBandaLarga);
 		chckbxBandaLarga.setToolTipText("Banda larga");
 		panelTabDatiSecondari.add(chckbxBandaLarga, "1, 30");
 		
-		//chckbxSatellite = new JCheckBox("Satellite");
+		//Satellite
 		mapCampiForm.put("chckbxSatellite", chckbxSatellite);
 		listCampiForm.add(chckbxSatellite);
 		chckbxSatellite.setToolTipText("Satellite");
 		panelTabDatiSecondari.add(chckbxSatellite, "2, 30");
 		
-		//chckbxAscensore = new JCheckBox("Ascensore");
+		//Ascensore
 		mapCampiForm.put("chckbxAscensore", chckbxAscensore);
 		listCampiForm.add(chckbxAscensore);
 		chckbxAscensore.setToolTipText("Ascensore");
 		panelTabDatiSecondari.add(chckbxAscensore, "1, 32");
 		
-		//chckbxSistemaDiAllarme = new JCheckBox("Sistema di allarme");
+		//Sistema di allarme
 		mapCampiForm.put("chckbxSistemaDiAllarme", chckbxSistemaDiAllarme);
 		listCampiForm.add(chckbxSistemaDiAllarme);
 		chckbxSistemaDiAllarme.setToolTipText("Sistema di allarme");
 		panelTabDatiSecondari.add(chckbxSistemaDiAllarme, "2, 32");
 		
-		//chckbxCasaEcologica = new JCheckBox("Casa ecologica");
+		//Casa ecologica
 		mapCampiForm.put("chckbxCasaEcologica", chckbxCasaEcologica);
 		listCampiForm.add(chckbxCasaEcologica);
 		chckbxCasaEcologica.setToolTipText("Casa ecologica");
 		panelTabDatiSecondari.add(chckbxCasaEcologica, "1, 34");
 		
-		//chckbxCancelloElettrico = new JCheckBox("Cancello elettrico");
+		//Cancello elettrico
 		mapCampiForm.put("chckbxCancelloElettrico", chckbxCancelloElettrico);
 		listCampiForm.add(chckbxCancelloElettrico);
 		chckbxCancelloElettrico.setToolTipText("Cancello elettrico");
 		panelTabDatiSecondari.add(chckbxCancelloElettrico, "2, 34");
 		
-		//chckbxVicinanzeBus = new JCheckBox("Vicinanze bus");
+		//Vicinanze bus
 		mapCampiForm.put("chckbxVicinanzeBus", chckbxVicinanzeBus);
 		listCampiForm.add(chckbxVicinanzeBus);
 		chckbxVicinanzeBus.setToolTipText("Vicinanze bus");
 		panelTabDatiSecondari.add(chckbxVicinanzeBus, "1, 36");
 		
-		//chckbxVicinanzeMetro = new JCheckBox("Vicinanze metro");
+		//Vicinanze metro
 		mapCampiForm.put("chckbxVicinanzeMetro", chckbxVicinanzeMetro);
 		listCampiForm.add(chckbxVicinanzeMetro);
 		chckbxVicinanzeMetro.setToolTipText("Vicinanze metro");
 		panelTabDatiSecondari.add(chckbxVicinanzeMetro, "2, 36");
 		
-		//chckbxVistaDiPregio = new JCheckBox("Vista di pregio");
+		//Vista di pregio
 		mapCampiForm.put("chckbxVistaDiPregio", chckbxVistaDiPregio);
 		listCampiForm.add(chckbxVistaDiPregio);
 		chckbxVistaDiPregio.setToolTipText("Vista di pregio");
 		panelTabDatiSecondari.add(chckbxVistaDiPregio, "1, 38");
 		
-		//chckbxRampePerDisabili = new JCheckBox("Rampe per disabili");
+		//Rampe per disabili
 		mapCampiForm.put("chckbxRampePerDisabili", chckbxRampePerDisabili);
 		listCampiForm.add(chckbxRampePerDisabili);
 		chckbxRampePerDisabili.setToolTipText("Rampe per disabili");
 		panelTabDatiSecondari.add(chckbxRampePerDisabili, "2, 38");
-		
-		
-		
+			
     }	//Fine costruttore 
 	
 	//Popola la combobox Provincia quando viene modificata la Regione
@@ -1138,25 +1113,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 			while(iteratorListCampiForm.hasNext()) {
 				JComponent campoCorrente = (JComponent)iteratorListCampiForm.next();
 				campoCorrente.setEnabled(false);
-				/*switch (campoCorrente.getClass().getName())
-				{
-				    case "javax.swing.JTextField": //Campo testuale
-				    	((JTextComponent) campoCorrente).setEnabled(false);
-				        break;
-				    case "javax.swing.JTextArea": //Text Area
-				    	((JTextComponent) campoCorrente).setEnabled(false);
-				        break;
-				    case "javax.swing.JComboBox": //Select
-				    	((JComboBox<String>) campoCorrente).setEnabled(false);
-				        break;
-				    case "javax.swing.JButton": //Pulsante
-				    	((JButton) campoCorrente).setEnabled(false);
-				        break;
-				    case "javax.swing.JCheckBox": //Checkbox
-				    	((JCheckBox) campoCorrente).setEnabled(false);
-				        break;
-				    default://
-				}*/
 			}
 		}
 		
