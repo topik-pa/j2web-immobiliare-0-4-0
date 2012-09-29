@@ -174,7 +174,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
 		 add(schedaRadio);
 		 
 		 //La label delle schede
-		 String labelScheda = scheda.codiceInserzione + "-" + scheda.titoloAnnuncio + "-" + scheda.provincia + "-" + scheda.comune + "-" + scheda.testoAnnuncio;
+		 String labelScheda = scheda.codiceInserzione + "-" + scheda.titoloAnnuncio + "-" + scheda.provincia + "-" + scheda.comune + "-" + scheda.regione + "-" + scheda.testoAnnuncio;
 		 if(labelScheda.length()>31) {
 			 labelScheda = labelScheda.substring(0, 30); 
 		 }		 
