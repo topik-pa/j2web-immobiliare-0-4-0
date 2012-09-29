@@ -497,12 +497,14 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnCreaScheda.setIcon(icoProcedi);
 		btnCreaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Click: Crea scheda");
+				System.out.println("Click: Crea scheda");				
 				if(isFormValid()) { 
 					System.out.println("Form valido");
+					
 					disabilitaCampiForm();
+					
              	   	SchedaImmobile schedaImmobile = new SchedaImmobile();
-             	   	aggiungiSchedaInDat(schedaImmobile);
+             	   	aggiungiScheda(schedaImmobile);
              	 
              	   	//Il pannello centrale viene ridisegnato
              	    j2web_GUI.panelListaSchedeImmobile.updatePanello();
@@ -1072,7 +1074,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		//comboBoxProvincia.removeAllItems();
 		//Rimuovo tutte le opzioni della select Comune
 		comboBoxComune.removeAllItems();
-		if(!regione.equals("Seleziona la Regione")) {
+		if(!regione.equals(arrayRegioni[0])) {
 			System.out.println("Regione: " + regione);
 			comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get(regione)));
 		}	
@@ -1080,7 +1082,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	
 	//Popola la combobox Comune quando viene modificata la Provincia
 	static void popolaComboBoxComune(String provincia) {
-		if(!provincia.equals("Seleziona la Provincia")) {
+		if(!provincia.equals(arrayProvincie[0])) {
 			System.out.println("Provincia: " + provincia);
 			comboBoxComune.setModel(new DefaultComboBoxModel<String>(provinciaComuni.get(provincia)));
 		}
@@ -1241,7 +1243,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	}
 
 	//Il nuovo oggetto scheda immobile viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
-	static void aggiungiSchedaInDat(SchedaImmobile scheda) {
+	static void aggiungiScheda(SchedaImmobile scheda) {
 	
 	//Aggiorno la lista delle schede immobile
 	j2web_GUI.listSchedeImmobile.add(scheda);

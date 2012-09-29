@@ -187,15 +187,15 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		giardino = ((String)((JComboBox)mapCampiForm.get("comboBoxGiardino")).getSelectedItem());
 		//Check box
 		bandaLarga = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
-		ascensore = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
-		casaEcologica = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
-		vicinanzeBus = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
-		vistaDiPregio = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
-		satellite = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
-		sistemaDiAllarme = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
-		cancelloElettrico = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
-		vicinanzeMetro = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
-		rampePerDisabili = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
+		ascensore = (((JCheckBox) mapCampiForm.get("chckbxAscensore")).isSelected())?true:false;
+		casaEcologica = (((JCheckBox) mapCampiForm.get("chckbxCasaEcologica")).isSelected())?true:false;
+		vicinanzeBus = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeBus")).isSelected())?true:false;
+		vistaDiPregio = (((JCheckBox) mapCampiForm.get("chckbxVistaDiPregio")).isSelected())?true:false;
+		satellite = (((JCheckBox) mapCampiForm.get("chckbxSatellite")).isSelected())?true:false;
+		sistemaDiAllarme = (((JCheckBox) mapCampiForm.get("chckbxSistemaDiAllarme")).isSelected())?true:false;
+		cancelloElettrico = (((JCheckBox) mapCampiForm.get("chckbxCancelloElettrico")).isSelected())?true:false;
+		vicinanzeMetro = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeMetro")).isSelected())?true:false;
+		rampePerDisabili = (((JCheckBox) mapCampiForm.get("chckbxRampePerDisabili")).isSelected())?true:false;
 		
 		//Inizializzo il path per il file hash di questa scheda
 		schedaDatPath = ".\\schede\\" + codiceInserzione + "-" + idScheda + ".dat";
