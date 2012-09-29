@@ -47,9 +47,9 @@ public class Case24 extends PortaleImmobiliare {
     //Parametri generali
 	private final String NOMEPORTALE = "case24.it";
 	private final String URL_ROOT = "http://www.case24.it";
-	private final String USERNAME = "info@cividalecasa.it";
-    private final String PASSWORD = "m193evro";
-    private final String CODICE_CLIENTE ="1332323000";
+	private final String USERNAME = "vgltoove@sharklasers.com";
+    private final String PASSWORD = "nki9stjl";
+    private final String CODICE_CLIENTE ="1340103900";
     private final String USER_AGENT = "Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20100101 Firefox/12.0";
     private String SESSIONCOOKIE_HEADER = "";
     private String SESSIONCOOKIE_NAME = "";
@@ -517,7 +517,7 @@ public class Case24 extends PortaleImmobiliare {
     	
     
     //POST di inserimento immmagine
-  	/*private void connessione_6(String index, File image) throws IOException {
+  	private void connessione_6(String index, File image) throws IOException {
   		System.out.println("\n\n\n");
     	System.out.println("######################\n######################\n######################");
     	System.out.println("\n\n\n");
@@ -596,7 +596,6 @@ public class Case24 extends PortaleImmobiliare {
         connessione6.getResponseHeaders();
   	}
 
-    */
   	
     //POST dello step 1 (ed unico...)
     private void connessione_7(HttpPost httppost) throws IOException, HttpResponseException, WrongPostDataException {
@@ -1523,9 +1522,12 @@ public class Case24 extends PortaleImmobiliare {
 		prezzo = scheda.prezzoImmobile;
 		System.out.println("prezzo: " + prezzo);
 		
-		/*switch (scheda.numeroCamere)
+		switch (scheda.comboBoxNumeroCamereIndex)
 		{
-		    case 1:
+			case 0:
+				numero_camere_bis = "";
+				break;
+			case 1:
 		    	numero_camere_bis = "1";
 		        break;
 		    case 2:
@@ -1542,7 +1544,7 @@ public class Case24 extends PortaleImmobiliare {
 		    	break;
 		    default:
 		    	numero_camere_bis = "6";
-		}*/
+		}
 	    System.out.println("numero_camere_bis: " + numero_camere_bis);
 		
 	    switch (scheda.numeroBagni)
@@ -1567,8 +1569,8 @@ public class Case24 extends PortaleImmobiliare {
 		}
 	    System.out.println("numero_bagni: " + numero_bagni);
 		
-	    //descrizione = scheda.descrEstesa;
-		//System.out.println("descrizione: " + descrizione);
+	    descrizione = scheda.testoAnnuncio;
+		System.out.println("descrizione: " + descrizione);
 			
 		switch (scheda.statoImmobile)
     	{
