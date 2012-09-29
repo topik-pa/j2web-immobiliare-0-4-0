@@ -1,5 +1,7 @@
 import javax.swing.JFrame;
 import java.awt.GridLayout;
+import java.util.LinkedList;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -16,7 +18,13 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	static PanelCreazioneSchedeImmobile panelCreazioneSchedeImmobile;
 	static PannelloListaSchedeImmobili panelListaSchedeImmobile;
 	static PanelInserimentoImmobiliInPortali panelInserimentoImmobiliInPortali;
-
+	
+	//La struttura dati che contiene le schede immobile create
+  	public static LinkedList<SchedaImmobile> listSchedeImmobile = new LinkedList<SchedaImmobile>();
+  	
+  	//La struttura dati che contiene i portali attivati
+  	public static LinkedList<PortaleImmobiliare> listPortaliImmobiliari = new LinkedList<PortaleImmobiliare>();
+	
 	/**
 	 * Create the frame.
 	 */

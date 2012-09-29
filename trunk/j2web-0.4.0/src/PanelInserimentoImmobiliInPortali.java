@@ -51,7 +51,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         	//listPortaliImmobiliari.add(bancaDelleCase);
         	
         	PortaleImmobiliare case24 = new Case24("./img/case24.gif", "3 - case24.it", "004");
-        	listPortaliImmobiliari.add(case24);      	
+        	j2web_GUI.listPortaliImmobiliari.add(case24);      	
         	
         	//PortaleImmobiliare pagineCasa = new PagineCasa("./img/paginecasa.gif", "4 - paginecasa.it", "005");
         	//listPortaliImmobiliari.add(pagineCasa);
@@ -67,7 +67,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
             add(Box.createVerticalStrut(20));
             
             //Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fitizzi: non hanno alcuna funzionalità )
-            ListIterator<PortaleImmobiliare> iterator = listPortaliImmobiliari.listIterator();
+            ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
         	while(iterator.hasNext()) {        		
         		PortaleImmobiliare portaleCorrente = iterator.next();
         		
@@ -126,7 +126,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         	add(Box.createVerticalStrut(20));
         	
 	    	 //Ciclo ogni oggetto PortaleImmobiliare presente nella lista concatenata
-	    	 ListIterator<PortaleImmobiliare> iterator = listPortaliImmobiliari.listIterator();
+	    	 ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
 	     	 while(iterator.hasNext()) {
 	     		
 	     		final PortaleImmobiliare portaleCorrente = iterator.next();
@@ -224,7 +224,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         	
         	add(Box.createVerticalStrut(20));
                           
-            ListIterator<PortaleImmobiliare> iterator = listPortaliImmobiliari.listIterator();
+            ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
          	while(iterator.hasNext()) {
          		
          		PortaleImmobiliare portaleCorrente = iterator.next();

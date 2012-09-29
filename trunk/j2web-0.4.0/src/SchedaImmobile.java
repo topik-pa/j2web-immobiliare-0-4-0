@@ -88,8 +88,27 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	boolean rampePerDisabili;  //10
 	//TOT:46
 	
+	//Gli indici delle combobox 
+	int comboBoxRegioneIndex=0;
+	int comboBoxProvinciaIndex=0;
+	int comboBoxComuneIndex=0;
+	int comboBoxCategoriaImmobileIndex=0;
+	int comboBoxTipologiaImmobileIndex=0;
+	int comboBoxTipologiaContrattoIndex=0;
+	int comboBoxNumeroLocaliIndex=0;
+	int comboBoxNumeroCamereIndex=0;
+	int comboBoxNumeroBagniIndex=0;
+	int comboBoxStatoImmobileIndex=0;
+	int comboBoxArredamentiIndex=0;
+	int comboBoxPianoIndex=0;
+	int comboBoxCertificazioniEnergeticheIndex=0;
+	int comboBoxTipologiaRiscaldamentoIndex=0;
+	int comboBoxClimaIndex=0;
+	int comboBoxParcheggioIndex=0;
+	int comboBoxGiardinoIndex=0;
+
 	//Percorso file dat per la scheda
-	String schedaDatPath = "./schede/" + codiceInserzione + "-" + idScheda + ".dat";
+	String schedaDatPath;
 
 	//Una scheda immobile può essere ospitata in diversi portali, la seguente tabella hash contiene i codici dei portali(key) e il codice di inserimento(value) in cui la scheda è attualmente inserita
 	Map<String,String> mappaPortaliOspitanti = new Hashtable<String,String>();
@@ -177,7 +196,28 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		cancelloElettrico = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
 		vicinanzeMetro = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
 		rampePerDisabili = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
-		    
+		
+		//Inizializzo il path per il file hash di questa scheda
+		schedaDatPath = ".\\schede\\" + codiceInserzione + "-" + idScheda + ".dat";
+		
+		//Salvo gli indici delle select
+		comboBoxRegioneIndex=((int)((JComboBox)mapCampiForm.get("comboBoxRegione")).getSelectedIndex());
+		comboBoxProvinciaIndex=((int)((JComboBox)mapCampiForm.get("comboBoxProvincia")).getSelectedIndex());
+		comboBoxComuneIndex=((int)((JComboBox)mapCampiForm.get("comboBoxComune")).getSelectedIndex());
+		comboBoxCategoriaImmobileIndex=((int)((JComboBox)mapCampiForm.get("comboBoxCategoriaImmobile")).getSelectedIndex());
+		comboBoxTipologiaImmobileIndex=((int)((JComboBox)mapCampiForm.get("comboBoxTipologiaImmobile")).getSelectedIndex());
+		comboBoxTipologiaContrattoIndex=((int)((JComboBox)mapCampiForm.get("comboBoxTipologiaContratto")).getSelectedIndex());
+		comboBoxNumeroLocaliIndex=((int)((JComboBox)mapCampiForm.get("comboBoxNumeroLocali")).getSelectedIndex());
+		comboBoxNumeroCamereIndex=((int)((JComboBox)mapCampiForm.get("comboBoxNumeroCamere")).getSelectedIndex());
+		comboBoxNumeroBagniIndex=((int)((JComboBox)mapCampiForm.get("comboBoxNumeroBagni")).getSelectedIndex());
+		comboBoxStatoImmobileIndex=((int)((JComboBox)mapCampiForm.get("comboBoxStatoImmobile")).getSelectedIndex());
+		comboBoxArredamentiIndex=((int)((JComboBox)mapCampiForm.get("comboBoxArredamenti")).getSelectedIndex());
+		comboBoxPianoIndex=((int)((JComboBox)mapCampiForm.get("comboBoxPiano")).getSelectedIndex());
+		comboBoxCertificazioniEnergeticheIndex=((int)((JComboBox)mapCampiForm.get("comboBoxCertificazioniEnergetiche")).getSelectedIndex());
+		comboBoxTipologiaRiscaldamentoIndex=((int)((JComboBox)mapCampiForm.get("comboBoxTipologiaRiscaldamento")).getSelectedIndex());
+		comboBoxClimaIndex=((int)((JComboBox)mapCampiForm.get("comboBoxClima")).getSelectedIndex());
+		comboBoxParcheggioIndex=((int)((JComboBox)mapCampiForm.get("comboBoxParcheggio")).getSelectedIndex());
+		comboBoxGiardinoIndex=((int)((JComboBox)mapCampiForm.get("comboBoxGiardino")).getSelectedIndex());
 	}
 
 	
