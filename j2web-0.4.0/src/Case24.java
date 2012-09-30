@@ -1006,7 +1006,7 @@ public class Case24 extends PortaleImmobiliare {
     		scheda.aggiungiInserimentoPortale(idPortale, CODICEINSERZIONE);
             
         	//Aggiorna i pulsanti del pannello inserimento 	
-    		j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda);
+    		j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
         	
         	//Invio mail di conferma inserimento 
         	sendConfirmationMail(scheda, NOMEPORTALE, CODICEINSERZIONE);
@@ -1070,7 +1070,7 @@ public class Case24 extends PortaleImmobiliare {
   		scheda.eliminaInserimentoPortale(idPortale);			
   	
   		//Aggiorno i pulsanti del pannello inserimento
-  		j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda);
+  		j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
   		
   		System.out.println("Eliminata da: " + NOMEPORTALE);
   	

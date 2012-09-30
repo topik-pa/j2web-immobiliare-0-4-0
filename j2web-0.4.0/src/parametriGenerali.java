@@ -29,7 +29,7 @@ public interface parametriGenerali {
 	final String nomeGUI = "J2Web - Immobiliare" + " " + j2web_version;
 	
 	//Dimensioni di default della GUI 
-	final int[] GUI_bounds = {20, 20, 1130, 600};
+	final int[] GUI_bounds = {20, 20, 1200, 630};
 	
 	//Icona della finestra principale
     final Image frameIcon = new ImageIcon("./images/imaginationLogo.png").getImage();

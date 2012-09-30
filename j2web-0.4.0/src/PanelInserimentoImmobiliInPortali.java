@@ -11,7 +11,7 @@
  */
 
 import java.awt.Cursor;
-import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ListIterator;
@@ -20,6 +20,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -33,19 +34,38 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
 		//Pannello per l'inserimento dati nei portali immobiliari
         
 		//Elementi del pannello
+		JPanel panelControlloPortali;
 		JPanel inserimentoPortale;
         JButton btnInserisci, btnVisualizza, btnCancella;
+        JButton btnSelezionaTuttiIPortali;
 
         //Costruttore - definisce la prima visualizzazione del pannello
         public PanelInserimentoImmobiliInPortali() {
         	
         	setBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        	setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); 
         	
+        	add(Box.createVerticalStrut(20));
         	
-        	
-        	
-        	
+        	//Pannello controllo portali
+            panelControlloPortali = new JPanel();
+            panelControlloPortali.setLayout(new BoxLayout(panelControlloPortali, BoxLayout.X_AXIS));  
+            
+            //Pulsante seleziona tutti 
+            btnSelezionaTuttiIPortali = new JButton("Inserisci i portali selezionati");
+            btnSelezionaTuttiIPortali.setEnabled(false);
+            panelControlloPortali.add(btnSelezionaTuttiIPortali);
+            
+            panelControlloPortali.add(new JLabel("      ")); 
+            
+            //Checkbox seleziona tutti
+            JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona tutti i portali");
+            checkboxSelezionaTutti.setEnabled(false);
+            panelControlloPortali.add(checkboxSelezionaTutti);      		
+            
+            add(panelControlloPortali);
+            
+            add(Box.createVerticalStrut(20));	//spaziatore tra il pannello superiore e i vari pannelli portale         
         	
         	
         	
@@ -64,7 +84,20 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         	//listPortaliImmobiliari.add(bancaDelleCase);
         	
         	PortaleImmobiliare case24 = new Case24("./images/case24.gif", "1 - case24.it", "001");
-        	j2web_GUI.listPortaliImmobiliari.add(case24);      	
+        	j2web_GUI.listPortaliImmobiliari.add(case24);   
+        	
+        	PortaleImmobiliare case24bis = new Case24("./images/case24.gif", "1 - case24.it", "001");
+        	j2web_GUI.listPortaliImmobiliari.add(case24bis);
+        	
+        	PortaleImmobiliare case24tris = new Case24("./images/case24.gif", "1 - case24.it", "001");
+        	j2web_GUI.listPortaliImmobiliari.add(case24tris);
+        	
+        	PortaleImmobiliare case24bis2 = new Case24("./images/case24.gif", "1 - case24.it", "001");
+        	j2web_GUI.listPortaliImmobiliari.add(case24bis2);
+        	
+        	PortaleImmobiliare case24bis3 = new Case24("./images/case24.gif", "1 - case24.it", "001");
+        	j2web_GUI.listPortaliImmobiliari.add(case24bis3);
+    
         	
         	//PortaleImmobiliare pagineCasa = new PagineCasa("./img/paginecasa.gif", "4 - paginecasa.it", "005");
         	//listPortaliImmobiliari.add(pagineCasa);
@@ -86,8 +119,6 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         	
         	
         	//Gestione del pannello - prima visualizzazione di questo pannello
-            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            //add(Box.createVerticalStrut(10));
             
             //Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizzi: non hanno alcuna funzionalità )
             ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
@@ -105,30 +136,34 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         		//Pulsante Cancella
          		btnCancella= new JButton("Cancella");
          		btnCancella.setEnabled(false);
-        		
+         		
+         		        		
         		//Pannello
         		ImageIcon iconPortale = new ImageIcon(portaleCorrente.urlIcona);
                 JLabel labelPortale = new JLabel(iconPortale, JLabel.CENTER);
                 inserimentoPortale = new JPanel();
-                inserimentoPortale.setLayout(new BoxLayout(inserimentoPortale, BoxLayout.X_AXIS));
+                inserimentoPortale.setLayout(new GridLayout(2,3,5,5));
                 
-                //Bordo del pannello
                 Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
                 TitledBorder title = BorderFactory.createTitledBorder(loweredetched, portaleCorrente.valoreLabel);
                 title.setTitleJustification(TitledBorder.RIGHT);
-                inserimentoPortale.setBorder(title);
+                inserimentoPortale.setBorder(title);    
                 
                 inserimentoPortale.add(labelPortale);
-                inserimentoPortale.add(new JLabel("  "));
+                inserimentoPortale.add(new JLabel("  "));             
+                JCheckBox checkboxSelezionaPortale = new JCheckBox("Seleziona portale");
+                checkboxSelezionaPortale.setEnabled(false);
+                inserimentoPortale.add(checkboxSelezionaPortale);      		
                 inserimentoPortale.add(btnInserisci);
-                inserimentoPortale.add(new JLabel("  "));
+                //inserimentoPortale.add(new JLabel("  "));
                 inserimentoPortale.add(btnVisualizza);
-                inserimentoPortale.add(new JLabel("  "));
+                //inserimentoPortale.add(new JLabel("  "));
                 inserimentoPortale.add(btnCancella);
                 add(inserimentoPortale);
                 
                 add(Box.createVerticalStrut(20));   //spaziatore tra i pannelli
-        	}
+        	}        	
+
                        
             //PANNELLO VUOTO
             /*JPanel fakePanel5 = new JPanel();
@@ -138,9 +173,11 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
             fakePanel5.add(new JLabel("                     "));
             fakePanel5.add(new JLabel("                     "));
             fakePanel5.add(new JLabel("                     "));
-            add(fakePanel5);
+            add(fakePanel5);*/
 
-            add(Box.createVerticalStrut(20));   //spaziatore tra i pannelli*/
+        	for(int i=0; i<1; i++) {
+        		//add(Box.createVerticalGlue());
+        	}
 
 
         }    //Fine costruttore PannelloInserimento
@@ -148,12 +185,55 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         
         
         //Update del pannello, eseguito alla selezione di una scheda sul pannello centrale e dopo l'inserimento/rimozione di una scheda in un portale
-        public void updatePanello(final SchedaImmobile scheda) {
+        public void updatePanello(final SchedaImmobile scheda, final boolean selectAll) {
 
         	//Rimuovo tutti gli elementi dal pannello
-        	removeAll();  
+        	removeAll();
         	
-        	//add(Box.createVerticalStrut(10));
+        	add(Box.createVerticalStrut(20));
+        	
+        	
+        	//Pannello controllo portali
+            panelControlloPortali = new JPanel();
+            panelControlloPortali.setLayout(new BoxLayout(panelControlloPortali, BoxLayout.X_AXIS));  
+            
+            //Pulsante seleziona tutti 
+            btnSelezionaTuttiIPortali = new JButton("Inserisci i portali selezionati");
+            btnSelezionaTuttiIPortali.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Click: Inserisci i portali selezionati");    
+                }
+             });
+            panelControlloPortali.add(btnSelezionaTuttiIPortali);
+            
+            panelControlloPortali.add(new JLabel("      ")); 
+            
+            //Checkbox seleziona tutti
+            final JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona tutti i portali");
+            if(selectAll) {
+            	checkboxSelezionaTutti.setSelected(true);
+            }
+            else {
+            	checkboxSelezionaTutti.setSelected(false);
+            }
+            checkboxSelezionaTutti.addActionListener(new ActionListener() {
+      			 //Clicco su una radio button di una scheda
+                   public void actionPerformed(ActionEvent e) {
+                       System.out.println("Checkbox: seleziona tutti i portali");
+                       if(checkboxSelezionaTutti.isSelected()) {
+                    	   updatePanello(scheda, true);
+                       }
+                       else {
+                    	   updatePanello(scheda, false);
+                       }
+                       
+                   }
+      		 });
+            panelControlloPortali.add(checkboxSelezionaTutti);      		
+            
+            add(panelControlloPortali);
+            
+            add(Box.createVerticalStrut(20));	//spaziatore tra il pannello superiore e i vari pannelli portale        	
         	
 	    	//Ciclo ogni oggetto PortaleImmobiliare presente nella lista concatenata e per ognuno aggiorno il sottopannello
 	    	ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
@@ -227,28 +307,43 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
 	     		});
 	     		
 	     		//Pannello
-	     		ImageIcon iconPortale = new ImageIcon(portaleCorrente.urlIcona);
-	            JLabel labelPortale = new JLabel(iconPortale, JLabel.CENTER);
-	            inserimentoPortale = new JPanel();
-	            inserimentoPortale.setLayout(new BoxLayout(inserimentoPortale, BoxLayout.X_AXIS));
-	            
-	            //Bordo del pannello
+        		ImageIcon iconPortale = new ImageIcon(portaleCorrente.urlIcona);
+                JLabel labelPortale = new JLabel(iconPortale, JLabel.CENTER);
+                inserimentoPortale = new JPanel();
+                inserimentoPortale.setLayout(new GridLayout(2,3,5,5));
+                
                 Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
                 TitledBorder title = BorderFactory.createTitledBorder(loweredetched, portaleCorrente.valoreLabel);
                 title.setTitleJustification(TitledBorder.RIGHT);
-                inserimentoPortale.setBorder(title);
+                inserimentoPortale.setBorder(title);    
                 
-	            inserimentoPortale.add(labelPortale);
-	            inserimentoPortale.add(new JLabel("  "));
-	            inserimentoPortale.add(btnInserisci);
-	            inserimentoPortale.add(new JLabel("  "));
-	            inserimentoPortale.add(btnVisualizza);
-	            inserimentoPortale.add(new JLabel("  "));
-	            inserimentoPortale.add(btnCancella);
-	            add(inserimentoPortale);
-	             
-	            add(Box.createVerticalStrut(20));   //spaziatore tra i pannelli
+                inserimentoPortale.add(labelPortale);
+                inserimentoPortale.add(new JLabel("  "));             
+                JCheckBox checkboxSelezionaPortale = new JCheckBox("Seleziona portale");
+                checkboxSelezionaPortale.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Checkbox: seleziona il portale"); 
+                        
+                    }
+       		 	});
+                if(selectAll) {
+                	checkboxSelezionaPortale.setSelected(true);
+                }
+                else {
+                	checkboxSelezionaPortale.setSelected(false);
+                }
+                inserimentoPortale.add(checkboxSelezionaPortale);      		
+                inserimentoPortale.add(btnInserisci);
+                inserimentoPortale.add(btnVisualizza);
+                inserimentoPortale.add(btnCancella);
+                add(inserimentoPortale);
+                
+                add(Box.createVerticalStrut(20));   //spaziatore tra i pannelli
 	     	}
+	     	
+	     	for(int i=0; i<1; i++) {
+        		add(Box.createVerticalGlue());
+        	}
 	     	 
 	     	updateUI();
         }
@@ -256,9 +351,30 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         
         //Update del pannello eseguito al momento in cui viene cancellata una scheda sul pannello centrale o inserita una dal pannello Form: nessuna scheda selezionata
         public void updatePanello() {
-        	removeAll(); 
         	
-        	//add(Box.createVerticalStrut(10));
+        	removeAll();
+        	
+        	add(Box.createVerticalStrut(20));
+        	
+        	//Pannello controllo portali
+            panelControlloPortali = new JPanel();
+            panelControlloPortali.setLayout(new BoxLayout(panelControlloPortali, BoxLayout.X_AXIS));  
+            
+            //Pulsante seleziona tutti 
+            btnSelezionaTuttiIPortali = new JButton("Inserisci i portali selezionati");
+            btnSelezionaTuttiIPortali.setEnabled(false);
+            panelControlloPortali.add(btnSelezionaTuttiIPortali);
+            
+            panelControlloPortali.add(new JLabel("      ")); 
+            
+            //Checkbox seleziona tutti
+            JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona tutti i portali");
+            checkboxSelezionaTutti.setEnabled(false);
+            panelControlloPortali.add(checkboxSelezionaTutti);      		
+            
+            add(panelControlloPortali);
+            
+            add(Box.createVerticalStrut(20));	//spaziatore tra il pannello superiore e i vari pannelli portale 
                           
             ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
          	while(iterator.hasNext()) {
@@ -278,30 +394,34 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
          		btnCancella.setEnabled(false);
          		
          		//Pannello
-         		ImageIcon iconPortale = new ImageIcon(portaleCorrente.urlIcona);
+        		ImageIcon iconPortale = new ImageIcon(portaleCorrente.urlIcona);
                 JLabel labelPortale = new JLabel(iconPortale, JLabel.CENTER);
                 inserimentoPortale = new JPanel();
-                inserimentoPortale.setLayout(new BoxLayout(inserimentoPortale, BoxLayout.X_AXIS));
-                //inserimentoPortale.setBorder(new LineBorder(new Color(255, 140, 32)));
-                //inserimentoPortale.setBorder(new TitledBorder(portaleCorrente.valoreLabel));
+                inserimentoPortale.setLayout(new GridLayout(2,3,5,5));
                 
-                //Bordo del pannello
                 Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
                 TitledBorder title = BorderFactory.createTitledBorder(loweredetched, portaleCorrente.valoreLabel);
                 title.setTitleJustification(TitledBorder.RIGHT);
-                inserimentoPortale.setBorder(title);
+                inserimentoPortale.setBorder(title);    
                 
                 inserimentoPortale.add(labelPortale);
-                inserimentoPortale.add(new JLabel("  "));
+                inserimentoPortale.add(new JLabel("  "));             
+                JCheckBox checkboxSelezionaPortale = new JCheckBox("Seleziona portale");
+                checkboxSelezionaPortale.setEnabled(false);
+                inserimentoPortale.add(checkboxSelezionaPortale);      		
                 inserimentoPortale.add(btnInserisci);
-                inserimentoPortale.add(new JLabel("  "));
+                //inserimentoPortale.add(new JLabel("  "));
                 inserimentoPortale.add(btnVisualizza);
-                inserimentoPortale.add(new JLabel("  "));
+                //inserimentoPortale.add(new JLabel("  "));
                 inserimentoPortale.add(btnCancella);
                 add(inserimentoPortale);
-                 
-                 add(Box.createVerticalStrut(20));   //spaziatore tra i pannelli
+                
+                add(Box.createVerticalStrut(20));   //spaziatore tra i pannelli
          	}
+         	
+         	for(int i=0; i<1; i++) {
+        		add(Box.createVerticalGlue());
+        	}
          	
          	updateUI();
         	
