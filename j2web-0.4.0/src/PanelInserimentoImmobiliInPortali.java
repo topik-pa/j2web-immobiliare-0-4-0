@@ -186,6 +186,9 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         
         //Update del pannello, eseguito alla selezione di una scheda sul pannello centrale e dopo l'inserimento/rimozione di una scheda in un portale
         public void updatePanello(final SchedaImmobile scheda, final boolean selectAll) {
+        	
+        	//Rimuovo tutti i portali dalla lista di inserimento sequenziale
+        	j2web_GUI.mapPortaliInserimentoSequenziale.clear();
 
         	//Rimuovo tutti gli elementi dal pannello
         	removeAll();
@@ -201,7 +204,18 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
             btnSelezionaTuttiIPortali = new JButton("Inserisci i portali selezionati");
             btnSelezionaTuttiIPortali.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Click: Inserisci i portali selezionati");    
+                    System.out.println("Click: Inserisci i portali selezionati");
+                    
+                    //Chiamo i metodo di inserimento 
+                    /*ListIterator<SchedaImmobile> iterator = listaSchedeImmobile.listIterator();
+                	while(iterator.hasNext()) {
+                		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
+                		//La rimozione avviene confrontando l'id univoco della scheda immobile
+                		if(schedaCorrente.idScheda==idScheda) {
+                			iterator.remove();
+                			System.out.println("Scheda rimossa dalla linkedlist");
+                		}
+                	}*/
                 }
              });
             panelControlloPortali.add(btnSelezionaTuttiIPortali);
@@ -319,18 +333,37 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
                 
                 inserimentoPortale.add(labelPortale);
                 inserimentoPortale.add(new JLabel("  "));             
-                JCheckBox checkboxSelezionaPortale = new JCheckBox("Seleziona portale");
+                final JCheckBox checkboxSelezionaPortale = new JCheckBox("Seleziona portale");
                 checkboxSelezionaPortale.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Checkbox: seleziona il portale"); 
-                        
+                        //Aggiungo il portale alla lista dei portali ad inserimento sequenziale
+                        if(checkboxSelezionaPortale.isSelected()) {
+                        	if(scheda.isOnThisPortal(portaleCorrente.idPortale)) {
+                        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, true);
+                        	}
+                        	else {
+                        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, false);
+                        	}
+                        }
+                        else {
+                        	j2web_GUI.mapPortaliInserimentoSequenziale.remove(portaleCorrente);                	
+                        }
+                        System.out.println("tot: " + j2web_GUI.mapPortaliInserimentoSequenziale.size()); 
                     }
        		 	});
+                
                 if(selectAll) {
                 	checkboxSelezionaPortale.setSelected(true);
-                }
+                	if(scheda.isOnThisPortal(portaleCorrente.idPortale)) {
+                		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, true);
+                	}
+                	else {
+                		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, false);
+                	}                }
                 else {
                 	checkboxSelezionaPortale.setSelected(false);
+                	j2web_GUI.mapPortaliInserimentoSequenziale.remove(portaleCorrente); 
                 }
                 inserimentoPortale.add(checkboxSelezionaPortale);      		
                 inserimentoPortale.add(btnInserisci);
@@ -346,6 +379,8 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         	}
 	     	 
 	     	updateUI();
+	     	
+	     	System.out.println("TOT: " + j2web_GUI.mapPortaliInserimentoSequenziale.size());
         }
         
         
