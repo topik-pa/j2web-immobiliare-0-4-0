@@ -38,6 +38,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
 		JPanel inserimentoPortale;
         JButton btnInserisci, btnVisualizza, btnCancella;
         JButton btnSelezionaTuttiIPortali;
+        JButton btnCancellaTuttiIPortali;
 
         //Costruttore - definisce la prima visualizzazione del pannello
         public PanelInserimentoImmobiliInPortali() {
@@ -51,15 +52,20 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
             panelControlloPortali = new JPanel();
             panelControlloPortali.setLayout(new BoxLayout(panelControlloPortali, BoxLayout.X_AXIS));  
             
-            //Pulsante seleziona tutti 
-            btnSelezionaTuttiIPortali = new JButton("Inserisci i portali selezionati");
+            //Pulsante inserisci tutti i selezionati
+            btnSelezionaTuttiIPortali = new JButton("Inserisci nei selezionati");
             btnSelezionaTuttiIPortali.setEnabled(false);
             panelControlloPortali.add(btnSelezionaTuttiIPortali);
             
-            panelControlloPortali.add(new JLabel("      ")); 
+            //Pulsante elimina tutti i selezionati
+            btnCancellaTuttiIPortali = new JButton("Cancella dai selezionati");
+            btnCancellaTuttiIPortali.setEnabled(false);
+            panelControlloPortali.add(btnCancellaTuttiIPortali);
+            
+            panelControlloPortali.add(new JLabel("   ")); 
             
             //Checkbox seleziona tutti
-            JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona tutti i portali");
+            JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona");
             checkboxSelezionaTutti.setEnabled(false);
             panelControlloPortali.add(checkboxSelezionaTutti);      		
             
@@ -201,29 +207,37 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
             panelControlloPortali.setLayout(new BoxLayout(panelControlloPortali, BoxLayout.X_AXIS));  
             
             //Pulsante seleziona tutti 
-            btnSelezionaTuttiIPortali = new JButton("Inserisci i portali selezionati");
+            btnSelezionaTuttiIPortali = new JButton("Inserisci nei selezionati");
             btnSelezionaTuttiIPortali.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Click: Inserisci i portali selezionati");
                     
-                    //Chiamo i metodo di inserimento 
-                    /*ListIterator<SchedaImmobile> iterator = listaSchedeImmobile.listIterator();
-                	while(iterator.hasNext()) {
-                		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
-                		//La rimozione avviene confrontando l'id univoco della scheda immobile
-                		if(schedaCorrente.idScheda==idScheda) {
-                			iterator.remove();
-                			System.out.println("Scheda rimossa dalla linkedlist");
-                		}
-                	}*/
+                    
+                    
+                    
+                    for(PortaleImmobiliare currentPortal : j2web_GUI.mapPortaliInserimentoSequenziale.keySet()) {
+                    	System.out.println("Inserimento");
+                    	if(j2web_GUI.mapPortaliInserimentoSequenziale.get(currentPortal)==false) {
+                    		//currentPortal.inserisciScheda(scheda);
+                    		System.out.println("Scheda inserita in: " + currentPortal.idPortale);
+                    	}
+                    	
+                        //String value = j2web_GUI.mapPortaliInserimentoSequenziale.get(key);
+                        //System.out.printf("%s = %s%n", key, value);
+                    }
                 }
              });
             panelControlloPortali.add(btnSelezionaTuttiIPortali);
             
-            panelControlloPortali.add(new JLabel("      ")); 
+            //Pulsante elimina tutti i selezionati
+            btnCancellaTuttiIPortali = new JButton("Cancella dai selezionati");
+            //btnCancellaTuttiIPortali.setEnabled(false);
+            panelControlloPortali.add(btnCancellaTuttiIPortali);
+            
+            panelControlloPortali.add(new JLabel("   ")); 
             
             //Checkbox seleziona tutti
-            final JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona tutti i portali");
+            final JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona");
             if(selectAll) {
             	checkboxSelezionaTutti.setSelected(true);
             }
@@ -340,10 +354,10 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
                         //Aggiungo il portale alla lista dei portali ad inserimento sequenziale
                         if(checkboxSelezionaPortale.isSelected()) {
                         	if(scheda.isOnThisPortal(portaleCorrente.idPortale)) {
-                        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, true);
+                        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, false);
                         	}
                         	else {
-                        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, false);
+                        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, true);
                         	}
                         }
                         else {
@@ -360,7 +374,8 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
                 	}
                 	else {
                 		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, false);
-                	}                }
+                		}       
+                	}
                 else {
                 	checkboxSelezionaPortale.setSelected(false);
                 	j2web_GUI.mapPortaliInserimentoSequenziale.remove(portaleCorrente); 
@@ -396,14 +411,19 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
             panelControlloPortali.setLayout(new BoxLayout(panelControlloPortali, BoxLayout.X_AXIS));  
             
             //Pulsante seleziona tutti 
-            btnSelezionaTuttiIPortali = new JButton("Inserisci i portali selezionati");
+            btnSelezionaTuttiIPortali = new JButton("Inserisci nei selezionati");
             btnSelezionaTuttiIPortali.setEnabled(false);
             panelControlloPortali.add(btnSelezionaTuttiIPortali);
             
-            panelControlloPortali.add(new JLabel("      ")); 
+            //Pulsante elimina tutti i selezionati
+            btnCancellaTuttiIPortali = new JButton("Cancella dai selezionati");
+            btnCancellaTuttiIPortali.setEnabled(false);
+            panelControlloPortali.add(btnCancellaTuttiIPortali);
+            
+            panelControlloPortali.add(new JLabel("   ")); 
             
             //Checkbox seleziona tutti
-            JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona tutti i portali");
+            JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona tutti");
             checkboxSelezionaTutti.setEnabled(false);
             panelControlloPortali.add(checkboxSelezionaTutti);      		
             

@@ -30,6 +30,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
   	
   	//La struttura dati che contiene i portali selezionati per l'inserimento sequenziale
   	public static Map<PortaleImmobiliare, Boolean> mapPortaliInserimentoSequenziale = new Hashtable<PortaleImmobiliare, Boolean>();
+  	
+    //La struttura dati che contiene i portali selezionati per l'eliminazione sequenziale
+  	public static Map<PortaleImmobiliare, Boolean> mapPortaliCancellazioneSequenziale = new Hashtable<PortaleImmobiliare, Boolean>();
 	
 	/**
 	 * Create the frame.
