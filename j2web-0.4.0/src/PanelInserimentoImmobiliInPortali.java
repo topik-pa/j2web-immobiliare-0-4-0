@@ -31,213 +31,85 @@ import javax.swing.border.TitledBorder;
 public class PanelInserimentoImmobiliInPortali extends JPanel {
 		private static final long serialVersionUID = 1L;
 	
-		//Pannello per l'inserimento dati nei portali immobiliari
+		//Pannello per l'inserimento schede nei portali immobiliari
         
 		//Elementi del pannello
 		JPanel panelControlloPortali;
 		JPanel inserimentoPortale;
         JButton btnInserisci, btnVisualizza, btnCancella;
-        JButton btnSelezionaTuttiIPortali;
+        JButton btnInserisciTuttiIPortali;
         JButton btnCancellaTuttiIPortali;
-
+        
         //Costruttore - definisce la prima visualizzazione del pannello
         public PanelInserimentoImmobiliInPortali() {
         	
-        	setBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); 
-        	
-        	add(Box.createVerticalStrut(20));
-        	
-        	//Pannello controllo portali
-            panelControlloPortali = new JPanel();
-            panelControlloPortali.setLayout(new BoxLayout(panelControlloPortali, BoxLayout.X_AXIS));  
-            
-            //Pulsante inserisci tutti i selezionati
-            btnSelezionaTuttiIPortali = new JButton("Inserisci nei selezionati");
-            btnSelezionaTuttiIPortali.setEnabled(false);
-            panelControlloPortali.add(btnSelezionaTuttiIPortali);
-            
-            //Pulsante elimina tutti i selezionati
-            btnCancellaTuttiIPortali = new JButton("Cancella dai selezionati");
-            btnCancellaTuttiIPortali.setEnabled(false);
-            panelControlloPortali.add(btnCancellaTuttiIPortali);
-            
-            panelControlloPortali.add(new JLabel("   ")); 
-            
-            //Checkbox seleziona tutti
-            JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona");
-            checkboxSelezionaTutti.setEnabled(false);
-            panelControlloPortali.add(checkboxSelezionaTutti);      		
-            
-            add(panelControlloPortali);
-            
-            add(Box.createVerticalStrut(20));	//spaziatore tra il pannello superiore e i vari pannelli portale         
-        	
-        	
-        	
-        	
-        	/*--------------------------------------------------------------------------------*/
         	//Gestisco la lista concatenata che contiene le informazioni sui portali immobiliari
-        	//E' qui che inserisco i portali abilitati attualmente nel programma
+        	inizializzaPortaliAttivi();
         	
-        	//PortaleImmobiliare immobiliarePuntoIt = new ImmobiliarePuntoIt("./img/immobiliarePuntoIt.gif", "1 - immobiliare.it", "001");
-        	//listPortaliImmobiliari.add(immobiliarePuntoIt);
-        	
-        	//PortaleImmobiliare casaPuntoIt = new casaPuntoIt("./img/casaPuntoIt.png", "2 - casa.it", "002");
-        	//listPortaliImmobiliari.add(casaPuntoIt);
-        	
-        	//PortaleImmobiliare bancaDelleCase = new BancaDelleCase("./img/banca_delle_case.gif", "2 - bancadellecase.it", "003");
-        	//listPortaliImmobiliari.add(bancaDelleCase);
-        	
-        	PortaleImmobiliare case24 = new Case24("./images/case24.gif", "1 - case24.it", "001");
-        	j2web_GUI.listPortaliImmobiliari.add(case24);   
-        	
-        	PortaleImmobiliare case24bis = new Case24("./images/case24.gif", "1 - case24.it", "001");
-        	j2web_GUI.listPortaliImmobiliari.add(case24bis);
-        	
-        	PortaleImmobiliare case24tris = new Case24("./images/case24.gif", "1 - case24.it", "001");
-        	j2web_GUI.listPortaliImmobiliari.add(case24tris);
-        	
-        	PortaleImmobiliare case24bis2 = new Case24("./images/case24.gif", "1 - case24.it", "001");
-        	j2web_GUI.listPortaliImmobiliari.add(case24bis2);
-        	
-        	PortaleImmobiliare case24bis3 = new Case24("./images/case24.gif", "1 - case24.it", "001");
-        	j2web_GUI.listPortaliImmobiliari.add(case24bis3);
-    
-        	
-        	//PortaleImmobiliare pagineCasa = new PagineCasa("./img/paginecasa.gif", "4 - paginecasa.it", "005");
-        	//listPortaliImmobiliari.add(pagineCasa);
-        	
-        	/*PortaleImmobiliare cuboCasa = new CuboCasa("./img/cubocasa.gif", "5 - cubocasa.it", "005");
-        	listPortaliImmobiliari.add(cuboCasa);*/
-        	
-        	//PortaleImmobiliare caseFvg = new CaseFvg("./img/casefvg.gif", "7 - casefvg.it", "007");
-        	//listPortaliImmobiliari.add(caseFvg);
-        	/*--------------------------------------------------------------------------------*/
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	//Gestione del pannello - prima visualizzazione di questo pannello
-            
-            //Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizzi: non hanno alcuna funzionalità )
-            ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
-        	while(iterator.hasNext()) {        		
-        		PortaleImmobiliare portaleCorrente = iterator.next();
-        		
-        		//Pulsante Inserisci
-        		btnInserisci = new JButton("Inserisci");
-        		btnInserisci.setEnabled(false);
-        		
-        		//Pulsante Visualizza
-        		btnVisualizza = new JButton("Visualizza");
-        		btnVisualizza.setEnabled(false);
-        		
-        		//Pulsante Cancella
-         		btnCancella= new JButton("Cancella");
-         		btnCancella.setEnabled(false);
-         		
-         		        		
-        		//Pannello
-        		ImageIcon iconPortale = new ImageIcon(portaleCorrente.urlIcona);
-                JLabel labelPortale = new JLabel(iconPortale, JLabel.CENTER);
-                inserimentoPortale = new JPanel();
-                inserimentoPortale.setLayout(new GridLayout(2,3,5,5));
-                
-                Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-                TitledBorder title = BorderFactory.createTitledBorder(loweredetched, portaleCorrente.valoreLabel);
-                title.setTitleJustification(TitledBorder.RIGHT);
-                inserimentoPortale.setBorder(title);    
-                
-                inserimentoPortale.add(labelPortale);
-                inserimentoPortale.add(new JLabel("  "));             
-                JCheckBox checkboxSelezionaPortale = new JCheckBox("Seleziona portale");
-                checkboxSelezionaPortale.setEnabled(false);
-                inserimentoPortale.add(checkboxSelezionaPortale);      		
-                inserimentoPortale.add(btnInserisci);
-                //inserimentoPortale.add(new JLabel("  "));
-                inserimentoPortale.add(btnVisualizza);
-                //inserimentoPortale.add(new JLabel("  "));
-                inserimentoPortale.add(btnCancella);
-                add(inserimentoPortale);
-                
-                add(Box.createVerticalStrut(20));   //spaziatore tra i pannelli
-        	}        	
+        	//Visualizzo il pannello nella sua configurazione di default
+        	panelInserimentoInDefaultMode();
 
-                       
-            //PANNELLO VUOTO
-            /*JPanel fakePanel5 = new JPanel();
-            fakePanel5.setLayout(new BoxLayout(fakePanel5, BoxLayout.X_AXIS));
-            fakePanel5.setBorder(new LineBorder(new Color(184,208,229)));
-            fakePanel5.add(new JLabel(new ImageIcon("./img/fake.jpeg")));
-            fakePanel5.add(new JLabel("                     "));
-            fakePanel5.add(new JLabel("                     "));
-            fakePanel5.add(new JLabel("                     "));
-            add(fakePanel5);*/
-
-        	for(int i=0; i<1; i++) {
-        		//add(Box.createVerticalGlue());
-        	}
-
-
-        }    //Fine costruttore PannelloInserimento
+        }   //Fine costruttore PannelloInserimento
         
         
         
         //Update del pannello, eseguito alla selezione di una scheda sul pannello centrale e dopo l'inserimento/rimozione di una scheda in un portale
         public void updatePanello(final SchedaImmobile scheda, final boolean selectAll) {
         	
-        	//Rimuovo tutti i portali dalla lista di inserimento sequenziale
+        	//Rimuovo tutti i portali dalle liste sequenziali
         	j2web_GUI.mapPortaliInserimentoSequenziale.clear();
+        	j2web_GUI.mapPortaliCancellazioneSequenziale.clear();
 
         	//Rimuovo tutti gli elementi dal pannello
         	removeAll();
-        	
+        	      	
+        	//Disegno il pannello nella configurazione attiva
         	add(Box.createVerticalStrut(20));
-        	
-        	
+        	   	
         	//Pannello controllo portali
             panelControlloPortali = new JPanel();
             panelControlloPortali.setLayout(new BoxLayout(panelControlloPortali, BoxLayout.X_AXIS));  
             
-            //Pulsante seleziona tutti 
-            btnSelezionaTuttiIPortali = new JButton("Inserisci nei selezionati");
-            btnSelezionaTuttiIPortali.addActionListener(new ActionListener() {
+            //Pulsante inserisci tutti i selezionati
+            btnInserisciTuttiIPortali = new JButton("Inserisci nei selezionati");
+            btnInserisciTuttiIPortali.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Click: Inserisci i portali selezionati");
-                    
-                    
-                    
-                    
+            
                     for(PortaleImmobiliare currentPortal : j2web_GUI.mapPortaliInserimentoSequenziale.keySet()) {
                     	System.out.println("Inserimento");
                     	if(j2web_GUI.mapPortaliInserimentoSequenziale.get(currentPortal)==false) {
                     		//currentPortal.inserisciScheda(scheda);
                     		System.out.println("Scheda inserita in: " + currentPortal.idPortale);
                     	}
-                    	
-                        //String value = j2web_GUI.mapPortaliInserimentoSequenziale.get(key);
-                        //System.out.printf("%s = %s%n", key, value);
                     }
+                    
                 }
              });
-            panelControlloPortali.add(btnSelezionaTuttiIPortali);
+            panelControlloPortali.add(btnInserisciTuttiIPortali);
             
             //Pulsante elimina tutti i selezionati
             btnCancellaTuttiIPortali = new JButton("Cancella dai selezionati");
-            //btnCancellaTuttiIPortali.setEnabled(false);
+            btnCancellaTuttiIPortali.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Click: Elimina i portali selezionati");
+       
+                    for(PortaleImmobiliare currentPortal : j2web_GUI.mapPortaliCancellazioneSequenziale.keySet()) {
+                    	System.out.println("Cancellazione");
+                    	if(j2web_GUI.mapPortaliInserimentoSequenziale.get(currentPortal)==false) {
+                    		//currentPortal.inserisciScheda(scheda);
+                    		System.out.println("Scheda cancellata da: " + currentPortal.idPortale);
+                    	}
+                    }
+                    
+                }
+             });
             panelControlloPortali.add(btnCancellaTuttiIPortali);
             
             panelControlloPortali.add(new JLabel("   ")); 
             
             //Checkbox seleziona tutti
-            final JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona");
+            final JCheckBox checkboxSelezionaTutti = new JCheckBox("<html><div style=\"text-align:center;\">Seleziona <br/> tutti</div></html>");
             if(selectAll) {
             	checkboxSelezionaTutti.setSelected(true);
             }
@@ -246,16 +118,16 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
             }
             checkboxSelezionaTutti.addActionListener(new ActionListener() {
       			 //Clicco su una radio button di una scheda
-                   public void actionPerformed(ActionEvent e) {
-                       System.out.println("Checkbox: seleziona tutti i portali");
-                       if(checkboxSelezionaTutti.isSelected()) {
-                    	   updatePanello(scheda, true);
-                       }
-                       else {
-                    	   updatePanello(scheda, false);
-                       }
-                       
-                   }
+	               public void actionPerformed(ActionEvent e) {
+	                   System.out.println("Checkbox: seleziona tutti i portali");
+	                   if(checkboxSelezionaTutti.isSelected()) {
+	                	   updatePanello(scheda, true);
+	                   }
+	                   else {
+	                	   updatePanello(scheda, false);
+	                   }
+	                   
+	               }
       		 });
             panelControlloPortali.add(checkboxSelezionaTutti);      		
             
@@ -354,14 +226,17 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
                         //Aggiungo il portale alla lista dei portali ad inserimento sequenziale
                         if(checkboxSelezionaPortale.isSelected()) {
                         	if(scheda.isOnThisPortal(portaleCorrente.idPortale)) {
-                        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, false);
+                        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, true);
+                        		j2web_GUI.mapPortaliCancellazioneSequenziale.put(portaleCorrente, false);
                         	}
                         	else {
-                        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, true);
+                        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, false);
+                        		j2web_GUI.mapPortaliCancellazioneSequenziale.put(portaleCorrente, true);
                         	}
                         }
                         else {
-                        	j2web_GUI.mapPortaliInserimentoSequenziale.remove(portaleCorrente);                	
+                        	j2web_GUI.mapPortaliInserimentoSequenziale.remove(portaleCorrente);
+                        	j2web_GUI.mapPortaliCancellazioneSequenziale.remove(portaleCorrente);
                         }
                         System.out.println("tot: " + j2web_GUI.mapPortaliInserimentoSequenziale.size()); 
                     }
@@ -371,14 +246,17 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
                 	checkboxSelezionaPortale.setSelected(true);
                 	if(scheda.isOnThisPortal(portaleCorrente.idPortale)) {
                 		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, true);
+                		j2web_GUI.mapPortaliCancellazioneSequenziale.put(portaleCorrente, false);
                 	}
                 	else {
                 		j2web_GUI.mapPortaliInserimentoSequenziale.put(portaleCorrente, false);
+                		j2web_GUI.mapPortaliCancellazioneSequenziale.put(portaleCorrente, true);
                 		}       
                 	}
                 else {
                 	checkboxSelezionaPortale.setSelected(false);
-                	j2web_GUI.mapPortaliInserimentoSequenziale.remove(portaleCorrente); 
+                	j2web_GUI.mapPortaliInserimentoSequenziale.remove(portaleCorrente);
+                	j2web_GUI.mapPortaliCancellazioneSequenziale.remove(portaleCorrente);
                 }
                 inserimentoPortale.add(checkboxSelezionaPortale);      		
                 inserimentoPortale.add(btnInserisci);
@@ -387,15 +265,12 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
                 add(inserimentoPortale);
                 
                 add(Box.createVerticalStrut(20));   //spaziatore tra i pannelli
-	     	}
-	     	
-	     	for(int i=0; i<1; i++) {
+	     	}	     	
         		add(Box.createVerticalGlue());
-        	}
+        	//Disegno il pannello nella configurazione attiva
 	     	 
 	     	updateUI();
 	     	
-	     	System.out.println("TOT: " + j2web_GUI.mapPortaliInserimentoSequenziale.size());
         }
         
         
@@ -403,17 +278,61 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         public void updatePanello() {
         	
         	removeAll();
+        	        	
+        	panelInserimentoInDefaultMode();
+        	        	
+         	updateUI();        	
+        }
+
+        public void inizializzaPortaliAttivi() {
+        	//PortaleImmobiliare immobiliarePuntoIt = new ImmobiliarePuntoIt("./img/immobiliarePuntoIt.gif", "1 - immobiliare.it", "001");
+        	//listPortaliImmobiliari.add(immobiliarePuntoIt);
+        	
+        	//PortaleImmobiliare casaPuntoIt = new casaPuntoIt("./img/casaPuntoIt.png", "2 - casa.it", "002");
+        	//listPortaliImmobiliari.add(casaPuntoIt);
+        	
+        	//PortaleImmobiliare bancaDelleCase = new BancaDelleCase("./img/banca_delle_case.gif", "2 - bancadellecase.it", "003");
+        	//listPortaliImmobiliari.add(bancaDelleCase);
+        	
+        	PortaleImmobiliare case24 = new Case24("./images/case24.gif", "1 - case24.it", "001");
+        	j2web_GUI.listPortaliImmobiliari.add(case24);   
+        	
+        	PortaleImmobiliare case24bis = new Case24("./images/case24.gif", "1 - case24.it", "002");
+        	j2web_GUI.listPortaliImmobiliari.add(case24bis);
+        	
+        	PortaleImmobiliare case24tris = new Case24("./images/case24.gif", "1 - case24.it", "003");
+        	j2web_GUI.listPortaliImmobiliari.add(case24tris);
+        	
+        	PortaleImmobiliare case24bis2 = new Case24("./images/case24.gif", "1 - case24.it", "004");
+        	j2web_GUI.listPortaliImmobiliari.add(case24bis2);
+        	
+        	PortaleImmobiliare case24bis3 = new Case24("./images/case24.gif", "1 - case24.it", "005");
+        	j2web_GUI.listPortaliImmobiliari.add(case24bis3);
+         	
+        	//PortaleImmobiliare pagineCasa = new PagineCasa("./img/paginecasa.gif", "4 - paginecasa.it", "005");
+        	//listPortaliImmobiliari.add(pagineCasa);
+        	
+        	/*PortaleImmobiliare cuboCasa = new CuboCasa("./img/cubocasa.gif", "5 - cubocasa.it", "005");
+        	listPortaliImmobiliari.add(cuboCasa);*/
+        	
+        	//PortaleImmobiliare caseFvg = new CaseFvg("./img/casefvg.gif", "7 - casefvg.it", "007");
+        	//listPortaliImmobiliari.add(caseFvg);
+        }
+
+        public void panelInserimentoInDefaultMode() {
+        	setBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); 
         	
         	add(Box.createVerticalStrut(20));
         	
-        	//Pannello controllo portali
+        	//Pannello controllo portali (primo in alto)
             panelControlloPortali = new JPanel();
             panelControlloPortali.setLayout(new BoxLayout(panelControlloPortali, BoxLayout.X_AXIS));  
             
-            //Pulsante seleziona tutti 
-            btnSelezionaTuttiIPortali = new JButton("Inserisci nei selezionati");
-            btnSelezionaTuttiIPortali.setEnabled(false);
-            panelControlloPortali.add(btnSelezionaTuttiIPortali);
+            //Pulsante inserisci tutti i selezionati
+            btnInserisciTuttiIPortali = new JButton("Inserisci nei selezionati");
+            btnInserisciTuttiIPortali.setEnabled(false);
+            panelControlloPortali.add(btnInserisciTuttiIPortali);
             
             //Pulsante elimina tutti i selezionati
             btnCancellaTuttiIPortali = new JButton("Cancella dai selezionati");
@@ -423,32 +342,35 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
             panelControlloPortali.add(new JLabel("   ")); 
             
             //Checkbox seleziona tutti
-            JCheckBox checkboxSelezionaTutti = new JCheckBox("Seleziona tutti");
+            JCheckBox checkboxSelezionaTutti = new JCheckBox("<html><div style=\"text-align:center;\">Seleziona <br/> tutti</div></html>");
             checkboxSelezionaTutti.setEnabled(false);
             panelControlloPortali.add(checkboxSelezionaTutti);      		
             
             add(panelControlloPortali);
             
             add(Box.createVerticalStrut(20));	//spaziatore tra il pannello superiore e i vari pannelli portale 
-                          
+            //Pannello controllo portali (primo in alto)
+        	
+     	            
+            //Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizzi: non hanno alcuna funzionalità )
             ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
-         	while(iterator.hasNext()) {
-         		
-         		PortaleImmobiliare portaleCorrente = iterator.next();
-         		
-         		//Pulsante Inserisci
-         		btnInserisci = new JButton("Inserisci");
-         		btnInserisci.setEnabled(false);
-         		
-         		//Pulsante Visualizza
-         		btnVisualizza = new JButton("Visualizza");
-         		btnVisualizza.setEnabled(false);
-         		
-         		//Pulsante Cancella
-         		btnCancella = new JButton("Cancella");
+        	while(iterator.hasNext()) {        		
+        		PortaleImmobiliare portaleCorrente = iterator.next();
+        		
+        		//Pulsante Inserisci
+        		btnInserisci = new JButton("Inserisci");
+        		btnInserisci.setEnabled(false);
+        		
+        		//Pulsante Visualizza
+        		btnVisualizza = new JButton("Visualizza");
+        		btnVisualizza.setEnabled(false);
+        		
+        		//Pulsante Cancella
+         		btnCancella= new JButton("Cancella");
          		btnCancella.setEnabled(false);
          		
-         		//Pannello
+         		        		
+        		//Pannello
         		ImageIcon iconPortale = new ImageIcon(portaleCorrente.urlIcona);
                 JLabel labelPortale = new JLabel(iconPortale, JLabel.CENTER);
                 inserimentoPortale = new JPanel();
@@ -472,14 +394,8 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
                 add(inserimentoPortale);
                 
                 add(Box.createVerticalStrut(20));   //spaziatore tra i pannelli
-         	}
-         	
-         	for(int i=0; i<1; i++) {
+        	}        	
         		add(Box.createVerticalGlue());
-        	}
-         	
-         	updateUI();
-        	
         }
 
 }   //Fine PannelloInserimento
