@@ -8,6 +8,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class j2web_GUI extends JFrame implements parametriGenerali {
@@ -46,35 +48,32 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		setBounds(GUI_bounds[0], GUI_bounds[1], GUI_bounds[2], GUI_bounds[3]);	
 		
 		/*Menu... in stand-by*/
-		JMenuBar menuBar_1 = new JMenuBar();
-		setJMenuBar(menuBar_1);
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
 		
-		JMenu mnNewMenu = new JMenu("New menu");
-		menuBar_1.add(mnNewMenu);
+		JMenu menu1 = new JMenu("J2Web");
+		menuBar.add(menu1);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("New menu item");
-		mnNewMenu.add(mntmNewMenuItem_1);
+		JMenuItem menu1_menuItem1 = new JMenuItem("Chiudi");
+		menu1_menuItem1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: Chiudi programma");
+				System.exit(0);
+			}
+		});
+		menu1.add(menu1_menuItem1);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("New menu item");
-		mnNewMenu.add(mntmNewMenuItem_2);
+		JMenu menu2 = new JMenu("Schede");
+		menuBar.add(menu2);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("New menu item");
-		mnNewMenu.add(mntmNewMenuItem);
+		JMenuItem menu1_menuItem = new JMenuItem("Ordina per...");
+		menu2.add(menu1_menuItem);
 		
-		JMenu mnNewMenu_1 = new JMenu("New menu");
-		menuBar_1.add(mnNewMenu_1);
+		JMenu menu3 = new JMenu("Portali");
+		menuBar.add(menu3);
 		
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("New menu item");
-		mnNewMenu_1.add(mntmNewMenuItem_4);
-		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("New menu item");
-		mnNewMenu_1.add(mntmNewMenuItem_3);
-		
-		JMenu mnNewMenu_2 = new JMenu("New menu");
-		menuBar_1.add(mnNewMenu_2);
-		
-		JMenuItem mntmNewMenuItem_5 = new JMenuItem("New menu item");
-		mnNewMenu_2.add(mntmNewMenuItem_5);
+		JMenuItem menu3_menuItem1 = new JMenuItem("Elimina tutti");
+		menu3.add(menu3_menuItem1);
 		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		/*Menu*/	
 		
