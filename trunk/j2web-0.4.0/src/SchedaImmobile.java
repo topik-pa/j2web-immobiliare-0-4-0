@@ -30,6 +30,7 @@ import javax.swing.JComboBox;
 
 
 public class SchedaImmobile implements Serializable, parametriGenerali  {
+	
 	private static final long serialVersionUID = 1L;
 	
 	//Attributi della scheda immobile	
@@ -119,39 +120,48 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	public SchedaImmobile () {	 	
 	
 		//Al momento dell'istanziazione, una scheda immobile inizializza i propri campi prendendone il valore da quelli inseriti nel pannello Form
+		
 		//Textfield
 		codiceInserzione = (String)((JTextField)mapCampiForm.get("textFieldCodiceInserzione")).getText().trim();
 		if(codiceInserzione.length()>10) {
 			codiceInserzione.substring(0, 9);
 		}
+		
 		titoloAnnuncio = (String)((JTextField)mapCampiForm.get("textFieldTitoloAnnuncio")).getText().trim();
 		if(titoloAnnuncio.length()>150) {
 			titoloAnnuncio.substring(0, 149);
 		}
+		
 		cap = (String)((JTextField)mapCampiForm.get("textFieldCap")).getText().trim();
 		if(cap.length()>7) {
 			cap.substring(0, 6);
 		}
+		
 		indirizzoLocalita = (String)((JTextField)mapCampiForm.get("textFieldIndirizzoLocalita")).getText().trim();
 		if(indirizzoLocalita.length()>70) {
 			indirizzoLocalita.substring(0, 69);
 		}
+		
 		superficieImmobile = (String)((JTextField)mapCampiForm.get("textFieldSuperficieImmobile")).getText().trim();
 		if(superficieImmobile.length()>10) {
 			superficieImmobile.substring(0, 14);
 		}
+		
 		prezzoImmobile = (String)((JTextField)mapCampiForm.get("textFieldPrezzoImmobile")).getText().trim();
 		if(prezzoImmobile.length()>15) {
 			prezzoImmobile.substring(0, 14);
 		}
+		
 		numeroTotalePiani = (String)((JTextField)mapCampiForm.get("textFieldNumeroTotalePiani")).getText().trim();
 		if(numeroTotalePiani.length()>2) {
 			numeroTotalePiani.substring(0, 1);
 		}
+		
 		annoCostruzione = (String)((JTextField)mapCampiForm.get("textFieldAnnoCostruzione")).getText().trim();
 		if(annoCostruzione.length()>4) {
 			annoCostruzione.substring(0, 3);
 		}
+		
 		//Immagini
 		immagine1 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine1")).getText());
 		immagine2 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine2")).getText());
@@ -163,40 +173,69 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		immagine8 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine8")).getText());
 		immagine9 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine9")).getText());
 		immagine10 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine10")).getText());
+		
 		//TextArea
 		testoAnnuncio = (String)((JTextArea)mapCampiForm.get("textAreaTestoAnnuncio")).getText().trim();
 		if(testoAnnuncio.length()>2000) {
 			testoAnnuncio.substring(0, 1999);
 		}
+		
 		//Combo box
 		regione = ((String)((JComboBox)mapCampiForm.get("comboBoxRegione")).getSelectedItem());
+		
 		provincia = ((String)((JComboBox)mapCampiForm.get("comboBoxProvincia")).getSelectedItem());
+		
 		comune = ((String)((JComboBox)mapCampiForm.get("comboBoxComune")).getSelectedItem());
+		
 		categoriaImmobile = ((String)((JComboBox)mapCampiForm.get("comboBoxCategoriaImmobile")).getSelectedItem());
+		
 		tipologiaImmobile = ((String)((JComboBox)mapCampiForm.get("comboBoxTipologiaImmobile")).getSelectedItem());
+		
 		tipologiaContratto = ((String)((JComboBox)mapCampiForm.get("comboBoxTipologiaContratto")).getSelectedItem());
+		
 		numeroLocali = ((String)((JComboBox)mapCampiForm.get("comboBoxNumeroLocali")).getSelectedItem());
+		
 		numeroCamere = ((String)((JComboBox)mapCampiForm.get("comboBoxNumeroCamere")).getSelectedItem());
+		
 		numeroBagni = ((String)((JComboBox)mapCampiForm.get("comboBoxNumeroBagni")).getSelectedItem());
+		
 		statoImmobile = ((String)((JComboBox)mapCampiForm.get("comboBoxStatoImmobile")).getSelectedItem());
+		
 		arredamenti = ((String)((JComboBox)mapCampiForm.get("comboBoxArredamenti")).getSelectedItem());
+		
 		piano = ((String)((JComboBox)mapCampiForm.get("comboBoxPiano")).getSelectedItem());
+		
 		certificazioniEnergetiche = ((String)((JComboBox)mapCampiForm.get("comboBoxCertificazioniEnergetiche")).getSelectedItem());
+		
 		tipologiaRiscaldamento = ((String)((JComboBox)mapCampiForm.get("comboBoxTipologiaRiscaldamento")).getSelectedItem());
+		
 		clima = ((String)((JComboBox)mapCampiForm.get("comboBoxClima")).getSelectedItem());
+		
 		parcheggio = ((String)((JComboBox)mapCampiForm.get("comboBoxParcheggio")).getSelectedItem());
+		
 		giardino = ((String)((JComboBox)mapCampiForm.get("comboBoxGiardino")).getSelectedItem());
+		
 		//Check box
 		bandaLarga = (((JCheckBox) mapCampiForm.get("chckbxBandaLarga")).isSelected())?true:false;
+		
 		ascensore = (((JCheckBox) mapCampiForm.get("chckbxAscensore")).isSelected())?true:false;
+		
 		casaEcologica = (((JCheckBox) mapCampiForm.get("chckbxCasaEcologica")).isSelected())?true:false;
+		
 		vicinanzeBus = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeBus")).isSelected())?true:false;
+		
 		vistaDiPregio = (((JCheckBox) mapCampiForm.get("chckbxVistaDiPregio")).isSelected())?true:false;
+		
 		satellite = (((JCheckBox) mapCampiForm.get("chckbxSatellite")).isSelected())?true:false;
+		
 		sistemaDiAllarme = (((JCheckBox) mapCampiForm.get("chckbxSistemaDiAllarme")).isSelected())?true:false;
+		
 		cancelloElettrico = (((JCheckBox) mapCampiForm.get("chckbxCancelloElettrico")).isSelected())?true:false;
+		
 		vicinanzeMetro = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeMetro")).isSelected())?true:false;
+		
 		rampePerDisabili = (((JCheckBox) mapCampiForm.get("chckbxRampePerDisabili")).isSelected())?true:false;
+		
 		
 		//Inizializzo il path per il file hash di questa scheda
 		schedaDatPath = ".\\schede\\" + codiceInserzione + "-" + idScheda + ".dat";
@@ -263,7 +302,6 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	
 	//Verifico la presenza della scheda immobile in un dato portale
 	public boolean isOnThisPortal(String idPortale) {
-		System.out.println("idportale: " + idPortale);
 		if(mappaPortaliOspitanti.containsKey(idPortale)) {
 			System.out.println("Scheda presente nel portale: " + idPortale);
 			return true; 
@@ -339,12 +377,20 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 			
 }
 
-class IdComparator implements Comparator<SchedaImmobile>
-{
 
-    public int compare(SchedaImmobile s1, SchedaImmobile s2)
-    {
 
+
+
+
+
+
+
+
+
+//Classi Comparator per l'ordinamento delle schede secondo specifici criteri
+class IdComparator implements Comparator<SchedaImmobile> {
+
+    public int compare(SchedaImmobile s1, SchedaImmobile s2) {
         if (s1.idScheda > s2.idScheda)
             return 1;
         else if (s1.idScheda < s2.idScheda)
@@ -352,17 +398,12 @@ class IdComparator implements Comparator<SchedaImmobile>
         else
             return 0;
     }
-
 }
 
-class CodeComparator implements Comparator<SchedaImmobile>
-{
+
+class CodeComparator implements Comparator<SchedaImmobile>  {
 	
-    public int compare(SchedaImmobile s1, SchedaImmobile s2)
-    {
-    	System.out.println("Sorting...");
-    	
-    	System.out.println(s1.codiceInserzione + "-" + s2.codiceInserzione);
+    public int compare(SchedaImmobile s1, SchedaImmobile s2) { 	
     	int i = s1.codiceInserzione.compareTo(s2.codiceInserzione); 
     	System.out.println("i:" + i);
         if (i > 0)
@@ -372,15 +413,12 @@ class CodeComparator implements Comparator<SchedaImmobile>
         else
             return 0;
     }
-
 }
 
 
-class CityComparator implements Comparator<SchedaImmobile>
-{
+class CityComparator implements Comparator<SchedaImmobile>	{
 	
-    public int compare(SchedaImmobile s1, SchedaImmobile s2)
-    {    	
+    public int compare(SchedaImmobile s1, SchedaImmobile s2) {    	
     	int i = s1.comune.compareTo(s2.comune); 
         if (i > 0)
             return 1;
@@ -389,14 +427,12 @@ class CityComparator implements Comparator<SchedaImmobile>
         else
             return 0;
     }
-
 }
 
-class ProvinceComparator implements Comparator<SchedaImmobile>
-{
+
+class ProvinceComparator implements Comparator<SchedaImmobile>	{
 	
-    public int compare(SchedaImmobile s1, SchedaImmobile s2)
-    {    	
+    public int compare(SchedaImmobile s1, SchedaImmobile s2) {    	
     	int i = s1.provincia.compareTo(s2.provincia); 
         if (i > 0)
             return 1;
@@ -405,14 +441,12 @@ class ProvinceComparator implements Comparator<SchedaImmobile>
         else
             return 0;
     }
-
 }
 
-class RegionComparator implements Comparator<SchedaImmobile>
-{
+
+class RegionComparator implements Comparator<SchedaImmobile>	{
 	
-    public int compare(SchedaImmobile s1, SchedaImmobile s2)
-    {    	
+    public int compare(SchedaImmobile s1, SchedaImmobile s2) {    	
     	int i = s1.regione.compareTo(s2.regione); 
         if (i > 0)
             return 1;
@@ -421,5 +455,4 @@ class RegionComparator implements Comparator<SchedaImmobile>
         else
             return 0;
     }
-
 }

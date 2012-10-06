@@ -1,4 +1,3 @@
-
 public class WrongPostDataException extends Exception {
 	
 	/**

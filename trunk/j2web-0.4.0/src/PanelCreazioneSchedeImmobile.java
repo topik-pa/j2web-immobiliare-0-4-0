@@ -555,7 +555,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		tabbedPaneCreazioneSchede.addTab("Immagini", null, panelTabImmagini, null);
 		panelTabImmagini.setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("max(54dlu;default)"),
-				ColumnSpec.decode("max(0dlu;min)"),
+				ColumnSpec.decode("max(12dlu;default)"),
 				ColumnSpec.decode("right:80px:grow"),},
 			new RowSpec[] {
 				FormFactory.LINE_GAP_ROWSPEC,

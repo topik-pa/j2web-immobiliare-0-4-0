@@ -1,4 +1,3 @@
-
 public class HttpResponseException extends Exception {
 	
 	/**

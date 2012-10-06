@@ -35,8 +35,8 @@ public class j2web implements parametriGenerali {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					j2web_GUI frame = new j2web_GUI();
-					frame.setVisible(true);
+					j2web_GUI imagination = new j2web_GUI();
+					imagination.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
