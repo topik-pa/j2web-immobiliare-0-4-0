@@ -129,30 +129,41 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 			menu1_menuItem_2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					System.out.println("Click: Elimina tutte le schede");
-					j2web_GUI.listSchedeImmobile.clear();
-					try {
-						   File file = new File(datFilePath);
-					    	if(file.exists()) {
-					    		System.out.println("File .dat schede trovato.");
-					    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-									outputFile.writeObject(j2web_GUI.listSchedeImmobile);
-									outputFile.close();
-					    	}
-					    	else {
-									FileOutputStream newFile = new FileOutputStream(datFilePath);
-									ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-									outputFile.writeObject(j2web_GUI.listSchedeImmobile);
-									outputFile.close();
-									System.out.println("File .dat schede non trovato. Creazione del file...: " + newFile.toString());
-					    	}
-							} catch (FileNotFoundException e0) {
-					            JOptionPane.showMessageDialog(null, "File .dat schede non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-					            e0.printStackTrace();
-							} catch (IOException e1) {
-								JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat schede: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-								e1.printStackTrace();
-							}
-					j2web_GUI.panelListaSchedeImmobile.updatePanello();
+					
+					int response = JOptionPane.showConfirmDialog(null, "Eliminare tutte le schede immobile dal pannello?", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					if (response == JOptionPane.NO_OPTION) {
+					      System.out.println("No button clicked");
+					    } else if (response == JOptionPane.YES_OPTION) {
+					    	
+					      System.out.println("Yes button clicked");
+					      j2web_GUI.listSchedeImmobile.clear();
+							try {
+							   File file = new File(datFilePath);
+						    	if(file.exists()) {
+						    		System.out.println("File .dat schede trovato.");
+						    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+										outputFile.writeObject(j2web_GUI.listSchedeImmobile);
+										outputFile.close();
+						    	}
+						    	else {
+										FileOutputStream newFile = new FileOutputStream(datFilePath);
+										ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+										outputFile.writeObject(j2web_GUI.listSchedeImmobile);
+										outputFile.close();
+										System.out.println("File .dat schede non trovato. Creazione del file...: " + newFile.toString());
+						    	}
+								} catch (FileNotFoundException e0) {
+						            JOptionPane.showMessageDialog(null, "File .dat schede non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
+						            e0.printStackTrace();
+								} catch (IOException e1) {
+									JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat schede: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
+									e1.printStackTrace();
+								}
+							j2web_GUI.panelListaSchedeImmobile.updatePanello();
+							
+					    } else if (response == JOptionPane.CLOSED_OPTION) {
+					      System.out.println("JOptionPane closed");
+					    }
 				}
 			});
 			menu2.add(menu1_menuItem_2);
