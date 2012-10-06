@@ -66,14 +66,59 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		JMenu menu2 = new JMenu("Schede");
 		menuBar.add(menu2);
 		
-		JMenuItem menu1_menuItem = new JMenuItem("Ordina per...");
+		JMenu menu1_menuItem = new JMenu("Ordina per");
 		menu2.add(menu1_menuItem);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Data di inserimento");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: Ordina per data di inserimento");
+			}
+		});
+		menu1_menuItem.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Codice");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: Ordina per codice");
+			}
+		});
+		menu1_menuItem.add(mntmNewMenuItem_1);
+		
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Provincia");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: Ordina per provincia");
+			}
+		});
+		menu1_menuItem.add(mntmNewMenuItem_2);
 		
 		JMenu menu3 = new JMenu("Portali");
 		menuBar.add(menu3);
 		
-		JMenuItem menu3_menuItem1 = new JMenuItem("Elimina tutti");
+		JMenuItem menu3_menuItem1 = new JMenuItem("Seleziona tutti");
+		menu3_menuItem1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: Seleziona tutti");
+			}
+		});
 		menu3.add(menu3_menuItem1);
+		
+		JMenuItem menu3_menuItem2 = new JMenuItem("Inserisci scheda nei selezionati");
+		menu3_menuItem2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: inserisci in selezionati");
+			}
+		});
+		menu3.add(menu3_menuItem2);
+		
+		JMenuItem menu3_menuItem3 = new JMenuItem("Elimina scheda dai selezionati");
+		menu3_menuItem3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: elimina in selezionati");
+			}
+		});
+		menu3.add(menu3_menuItem3);
 		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		/*Menu*/	
 		
