@@ -4,10 +4,27 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 
 public interface parametriGenerali {
+	
+	/**/
+	
+	//Elementi del pannello
+	        
+	        String labelBtnInserisciTutti = "<html><p style=\"text-align:center;\">Inserisci scheda <br/>nei portali selezionati</p></html>";
+	        String labelBtnCancellaTutti = "<html><p style=\"text-align:center;\">Cancella scheda <br/> dai portali selezionati</p></html>";
+	        String labelCheckboxSelezionaTutti = "<html><div style=\"text-align:center;\">Seleziona tutti</div></html>";
+	        String labelCheckboxSelezionaPortale = "Seleziona portale";
+	        String labelBtnInserisci = "Inserisci";
+	        String labelBtnVisualizza = "Visualizza";
+	        String labelBtnCancella = "Cancella";
+	        String labelSpaziatore = "   ";
+	
+	/**/
 	
 	//Versione di J2Web
 	final String  j2web_version = "0.4.0";
