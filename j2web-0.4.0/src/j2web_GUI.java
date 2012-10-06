@@ -1,5 +1,6 @@
 import javax.swing.JFrame;
 import java.awt.GridLayout;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
@@ -7,9 +8,15 @@ import java.util.Map;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 
 public class j2web_GUI extends JFrame implements parametriGenerali {
@@ -73,6 +80,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Click: Ordina per data di inserimento");
+				Collections.sort(j2web_GUI.listSchedeImmobile, new IdComparator());
+				j2web_GUI.panelListaSchedeImmobile.updatePanello();
 			}
 		});
 		menu1_menuItem.add(mntmNewMenuItem);
@@ -81,19 +90,76 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Click: Ordina per codice");
+				Collections.sort(j2web_GUI.listSchedeImmobile, new CodeComparator());
+				j2web_GUI.panelListaSchedeImmobile.updatePanello();
 			}
 		});
 		menu1_menuItem.add(mntmNewMenuItem_1);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Provincia");
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Comune");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Click: Ordina per provincia");
+				System.out.println("Click: Ordina per comune");
+				Collections.sort(j2web_GUI.listSchedeImmobile, new CityComparator());
+				j2web_GUI.panelListaSchedeImmobile.updatePanello();
 			}
 		});
 		menu1_menuItem.add(mntmNewMenuItem_2);
 		
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Provincia");
+		mntmNewMenuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: Ordina per provincia");
+				Collections.sort(j2web_GUI.listSchedeImmobile, new ProvinceComparator());
+				j2web_GUI.panelListaSchedeImmobile.updatePanello();
+			}
+		});
+		menu1_menuItem.add(mntmNewMenuItem_3);
+		
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Regione");
+		mntmNewMenuItem_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: Ordina per regione");
+				Collections.sort(j2web_GUI.listSchedeImmobile, new RegionComparator());
+				j2web_GUI.panelListaSchedeImmobile.updatePanello();
+			}
+		});
+		menu1_menuItem.add(mntmNewMenuItem_4);
+		
+		JMenuItem menu1_menuItem_2 = new JMenuItem("Elimina tutte");
+		menu1_menuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click: Elimina tutte le schede");
+				j2web_GUI.listSchedeImmobile.clear();
+				try {
+					   File file = new File(datFilePath);
+				    	if(file.exists()) {
+				    		System.out.println("File .dat schede trovato.");
+				    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+								outputFile.writeObject(j2web_GUI.listSchedeImmobile);
+								outputFile.close();
+				    	}
+				    	else {
+								FileOutputStream newFile = new FileOutputStream(datFilePath);
+								ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+								outputFile.writeObject(j2web_GUI.listSchedeImmobile);
+								outputFile.close();
+								System.out.println("File .dat schede non trovato. Creazione del file...: " + newFile.toString());
+				    	}
+						} catch (FileNotFoundException e0) {
+				            JOptionPane.showMessageDialog(null, "File .dat schede non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
+				            e0.printStackTrace();
+						} catch (IOException e1) {
+							JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat schede: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
+							e1.printStackTrace();
+						}
+				j2web_GUI.panelListaSchedeImmobile.updatePanello();
+			}
+		});
+		menu2.add(menu1_menuItem_2);
+		
 		JMenu menu3 = new JMenu("Portali");
+		menu3.setEnabled(false);
 		menuBar.add(menu3);
 		
 		JMenuItem menu3_menuItem1 = new JMenuItem("Seleziona tutti");

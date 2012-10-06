@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
@@ -336,4 +337,89 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		return codiceInserimento;
 	}
 			
+}
+
+class IdComparator implements Comparator<SchedaImmobile>
+{
+
+    public int compare(SchedaImmobile s1, SchedaImmobile s2)
+    {
+
+        if (s1.idScheda > s2.idScheda)
+            return 1;
+        else if (s1.idScheda < s2.idScheda)
+            return -1;
+        else
+            return 0;
+    }
+
+}
+
+class CodeComparator implements Comparator<SchedaImmobile>
+{
+	
+    public int compare(SchedaImmobile s1, SchedaImmobile s2)
+    {
+    	System.out.println("Sorting...");
+    	
+    	System.out.println(s1.codiceInserzione + "-" + s2.codiceInserzione);
+    	int i = s1.codiceInserzione.compareTo(s2.codiceInserzione); 
+    	System.out.println("i:" + i);
+        if (i > 0)
+            return 1;
+        else if (i < 0)
+            return -1;
+        else
+            return 0;
+    }
+
+}
+
+
+class CityComparator implements Comparator<SchedaImmobile>
+{
+	
+    public int compare(SchedaImmobile s1, SchedaImmobile s2)
+    {    	
+    	int i = s1.comune.compareTo(s2.comune); 
+        if (i > 0)
+            return 1;
+        else if (i < 0)
+            return -1;
+        else
+            return 0;
+    }
+
+}
+
+class ProvinceComparator implements Comparator<SchedaImmobile>
+{
+	
+    public int compare(SchedaImmobile s1, SchedaImmobile s2)
+    {    	
+    	int i = s1.provincia.compareTo(s2.provincia); 
+        if (i > 0)
+            return 1;
+        else if (i < 0)
+            return -1;
+        else
+            return 0;
+    }
+
+}
+
+class RegionComparator implements Comparator<SchedaImmobile>
+{
+	
+    public int compare(SchedaImmobile s1, SchedaImmobile s2)
+    {    	
+    	int i = s1.regione.compareTo(s2.regione); 
+        if (i > 0)
+            return 1;
+        else if (i < 0)
+            return -1;
+        else
+            return 0;
+    }
+
 }

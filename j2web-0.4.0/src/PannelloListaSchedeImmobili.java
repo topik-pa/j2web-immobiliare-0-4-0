@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.swing.Box;
@@ -84,7 +85,8 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	}
     	//Pannello con schede
     	else {
-    		System.out.println("listSchedeImmobile con schede");
+    		System.out.println("listSchedeImmobile con schede");    		    	
+    		
     		ListIterator<SchedaImmobile> iterator = j2web_GUI.listSchedeImmobile.listIterator();
         	while(iterator.hasNext()) {
         		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
