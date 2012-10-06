@@ -8,32 +8,22 @@ import javax.swing.JComponent;
 
 
 public interface parametriGenerali {
-	
-	//Elementi del pannello di DX        
-    String labelBtnInserisciTutti = "<html><p style=\"text-align:center;\">Inserisci scheda <br/>nei portali selezionati</p></html>";
-    String labelBtnCancellaTutti = "<html><p style=\"text-align:center;\">Cancella scheda <br/> dai portali selezionati</p></html>";
-    String labelCheckboxSelezionaTutti = "<html><div style=\"text-align:center;\">Seleziona tutti</div></html>";
-    String labelCheckboxSelezionaPortale = "Seleziona portale";
-    String labelBtnInserisci = "Inserisci";
-    String labelBtnVisualizza = "Visualizza";
-    String labelBtnCancella = "Cancella";
-    String labelSpaziatore = "   ";
-	
+
 	//Versione di J2Web
 	final String  j2web_version = "0.4.0";
 	
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
 	
-	//Mail dell'utente
-	final String EMAIL_1 ="marcopavan.mp@gmail.com";
-	final String EMAIL_1_DOMAIN ="@gmail.com";
-	final String EMAIL_1_PSW ="IsMPsd80";
-	final String EMAIL_1_SMTP_HOST ="smtp.gmail.com";
-	final int EMAIL_1_SMTP_PORT =465;
+	//Mail dell back end
+	final String BACKEND_EMAIL ="marcopavan.mp@gmail.com";
+	final String BACKEND_EMAIL_DOMAIN ="@gmail.com";
+	final String BACKEND_EMAIL_PSW ="IsMPsd80";
+	final String BACKEND_EMAIL_SMTP_HOST ="smtp.gmail.com";
+	final int BACKEND_EMAIL_SMTP_PORT =465;
 	
-	//Mail del backend
-	final String EMAIL_BACKEND ="marco--pavan@libero.it";
+	//Mail dell'utente
+	final String EMAIL_UTENTE ="marco--pavan@libero.it";
 	
 	//Nome della GUI
 	final String nomeGUI = "J2Web - Immobiliare" + " " + j2web_version;
@@ -52,6 +42,20 @@ public interface parametriGenerali {
     final int maxFileSize = 1048576;
     //Formato immagini consentito
     final String format=".jpg";
+    
+    String labelSpaziatore = "   ";
+    
+    //Elementi del pannello di DX        
+    String labelBtnInserisciTutti = "<html><p style=\"text-align:center;\">Inserisci scheda <br/>nei portali selezionati</p></html>";
+    String labelBtnCancellaTutti = "<html><p style=\"text-align:center;\">Cancella scheda <br/> dai portali selezionati</p></html>";
+    String labelCheckboxSelezionaTutti = "<html><div style=\"text-align:center;\">Seleziona tutti</div></html>";
+    String labelCheckboxSelezionaPortale = "Seleziona portale";
+    String labelBtnInserisci = "Inserisci";
+    String labelBtnVisualizza = "Visualizza";
+    String labelBtnCancella = "Cancella";  
+    
+    //Elementi del pannello MID
+    String labelNessunaScheda ="Non \u00e8 stata inserita alcuna scheda immobile";
     
     //Le seguenti mappe contengono il nome della Regione/Provincia e le/i rispettive/i Provincie/Comuni - vengono inizializzate nel main all'avvio di j2web
   	Map<String,String[]> regioneProvincie = new Hashtable<String,String[]>();

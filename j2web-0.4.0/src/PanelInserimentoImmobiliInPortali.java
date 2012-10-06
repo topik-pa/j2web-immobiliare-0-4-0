@@ -343,7 +343,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
  		}
  		else {
  			//Pulsante disabilitato
- 			btnInserisci.setEnabled(false);
+ 			btnInserisci.setEnabled(true);
  		}
  		
  			     		

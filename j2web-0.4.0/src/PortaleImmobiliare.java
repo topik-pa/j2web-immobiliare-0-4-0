@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
  * @author marco - marcopavan.mp@gmail.com 
  */
 
-public abstract class PortaleImmobiliare implements parametriGenerali{
+public abstract class PortaleImmobiliare implements parametriGenerali {
 
 	//Attributi
 	String urlIcona;
@@ -70,16 +70,16 @@ public abstract class PortaleImmobiliare implements parametriGenerali{
 	//Invio mail in caso di errori runtime
 	static void sendErrorMail(String stackTrace, String errorCode)   {
 				
-		final String USERNAME = "marcopavan.mp@gmail.com";
-		final String PASSWORD = "IsMPsd80";
-		final String RECIPENTS = "marcopavan.mp@gmail.com";
+		final String USERNAME = BACKEND_EMAIL;
+		final String PASSWORD = BACKEND_EMAIL_PSW;
+		final String RECIPENTS = BACKEND_EMAIL;
 		final String SUBJECT = "Runtime error in imagination. Code: " + errorCode;
 		
-	    final String GMAIL_SMTP_HOST = "smtp.gmail.com";
-	    final int GMAIL_SMTP_PORT = 465;
+	    final String SMTP_HOST = BACKEND_EMAIL_SMTP_HOST;
+	    final int SMTP_PORT = BACKEND_EMAIL_SMTP_PORT;
 	    final Session session = Session.getInstance(System.getProperties(), null);
 	    final Message msg = new MimeMessage(session);
-	    final String senderEmail = USERNAME.contains("@") ? USERNAME : (USERNAME + "@gmail.com");
+	    final String senderEmail = USERNAME.contains("@") ? USERNAME : (USERNAME + BACKEND_EMAIL_DOMAIN);
 	    try {
 			msg.setFrom(new InternetAddress(senderEmail));
 			final Address[] recipientAddresses = InternetAddress.parse(RECIPENTS);
@@ -90,7 +90,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali{
 		    msg.setText("Errore runtime, see the report: \n\n" + stackTrace);
 		
 		    final Transport transport = session.getTransport("smtps");
-		    transport.connect(GMAIL_SMTP_HOST, GMAIL_SMTP_PORT, USERNAME, PASSWORD);
+		    transport.connect(SMTP_HOST, SMTP_PORT, USERNAME, PASSWORD);
 		    transport.sendMessage(msg, recipientAddresses);
 		    transport.close();
 			
@@ -114,34 +114,33 @@ public abstract class PortaleImmobiliare implements parametriGenerali{
     //Invio mail di conferma inserzione
   	static void sendConfirmationMail(SchedaImmobile scheda, String nomePortale, String codInserzione)   {
   				
-  		final String USERNAME = EMAIL_1;
-  		final String PASSWORD = EMAIL_1_PSW;
-  		final String RECIPENTS = EMAIL_1 + "," + EMAIL_BACKEND;
+  		final String USERNAME = BACKEND_EMAIL;
+  		final String PASSWORD = BACKEND_EMAIL_PSW;
+  		final String RECIPENTS = BACKEND_EMAIL + "," + EMAIL_UTENTE;
   		final String SUBJECT = "Scheda immobile inserita: " + scheda.codiceInserzione + " " + scheda.titoloAnnuncio;
   		
-  	    final String GMAIL_SMTP_HOST = EMAIL_1_SMTP_HOST;
-  	    final int GMAIL_SMTP_PORT = EMAIL_1_SMTP_PORT;
+  	    final String SMTP_HOST = BACKEND_EMAIL_SMTP_HOST;
+  	    final int SMTP_PORT = BACKEND_EMAIL_SMTP_PORT;
   	    final Session session = Session.getInstance(System.getProperties(), null);
   	    final Message msg = new MimeMessage(session);
-  	    final String senderEmail = USERNAME.contains("@") ? USERNAME : (USERNAME + EMAIL_1_DOMAIN);
+  	    final String senderEmail = USERNAME.contains("@") ? USERNAME : (USERNAME + BACKEND_EMAIL_DOMAIN);
   	    
   	    String textBody = "";
-  	    /*textBody += "\nProvincia: " + scheda.provincia + "\n";
+  	    textBody += "\nProvincia: " + scheda.provincia + "\n";
   	    textBody += "Comune: " + scheda.comune + "\n";
   	    textBody += "CAP: " + scheda.cap + "\n";
-	  	textBody += "Via/Piazza/Località: " + scheda.via + "\n";
-	  	textBody += "Descrizione breve: " + scheda.descrSintetica + "\n";
-	  	textBody += "Descrizione: " + scheda.descrEstesa + "\n";
-	  	textBody += "Categoria: " + scheda.categoria + "\n";
-	  	textBody += "Tipologia: " + scheda.tipologia + "\n";
-	  	textBody += "Contratto: " + scheda.contratto + "\n";
-	  	textBody += "Nr. locali: " + scheda.numLocali + "\n";
-	  	textBody += "Nr. bagni: " + scheda.numBagni + "\n";
-	  	textBody += "Nr. camere: " + scheda.numCamere + "\n";
-	  	textBody += "Superficie abitazione: " + scheda.supAbitazione + "\n";
-	  	textBody += "Riscaldamento: " + scheda.riscaldamento + "\n";
+	  	textBody += "Via/Piazza/Località: " + scheda.indirizzoLocalita + "\n";
+	  	textBody += "Descrizione: " + scheda.testoAnnuncio + "\n";
+	  	textBody += "Categoria: " + scheda.categoriaImmobile + "\n";
+	  	textBody += "Tipologia: " + scheda.tipologiaImmobile + "\n";
+	  	textBody += "Contratto: " + scheda.tipologiaContratto + "\n";
+	  	textBody += "Nr. locali: " + scheda.numeroLocali + "\n";
+	  	textBody += "Nr. bagni: " + scheda.numeroBagni + "\n";
+	  	textBody += "Nr. camere: " + scheda.numeroCamere + "\n";
+	  	textBody += "Superficie abitazione: " + scheda.superficieImmobile + "\n";
+	  	textBody += "Riscaldamento: " + scheda.tipologiaRiscaldamento + "\n";
 	  	textBody += "Clima: " + scheda.clima + "\n";
-	  	textBody += "Certificazione: " + scheda.certificazioni + "\n";
+	  	textBody += "Certificazione: " + scheda.certificazioniEnergetiche + "\n";
 	  	textBody += "Giardino: " + scheda.giardino + "\n";
 	  	textBody += "Parcheggio: " + scheda.parcheggio + "\n";
 	  	if(scheda.immagine1!=null) {
@@ -162,10 +161,21 @@ public abstract class PortaleImmobiliare implements parametriGenerali{
 	  	if(scheda.immagine6!=null) {
 	  		textBody += "Immagine : " + scheda.immagine6.getName() + "\n";
 	  	}
-	  	textBody += "Provvigione: " + scheda.provvigione + "\n";
-	  	textBody += "Prezzo: " + scheda.prezzo + "\n";
+	  	if(scheda.immagine7!=null) {
+	  		textBody += "Immagine : " + scheda.immagine7.getName() + "\n";
+	  	}
+	  	if(scheda.immagine8!=null) {
+	  		textBody += "Immagine : " + scheda.immagine8.getName() + "\n";
+	  	}
+	  	if(scheda.immagine9!=null) {
+	  		textBody += "Immagine : " + scheda.immagine9.getName() + "\n";
+	  	}
+	  	if(scheda.immagine10!=null) {
+	  		textBody += "Immagine : " + scheda.immagine10.getName() + "\n";
+	  	}
+	  	textBody += "Prezzo: " + scheda.prezzoImmobile + "\n";
 	  	
-	  	textBody += "Scheda inserita in: " + nomePortale + " " + "con codice " + codInserzione;*/
+	  	textBody += "Scheda inserita in: " + nomePortale + " " + "con codice " + codInserzione;
   	    
   	    
   	    try {
@@ -179,7 +189,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali{
   		    msg.setText("Dati scheda: \n\n " + textBody);
   		
   		    final Transport transport = session.getTransport("smtps");
-  		    transport.connect(GMAIL_SMTP_HOST, GMAIL_SMTP_PORT, USERNAME, PASSWORD);
+  		    transport.connect(SMTP_HOST, SMTP_PORT, USERNAME, PASSWORD);
   		    transport.sendMessage(msg, recipientAddresses);
   		    transport.close();
   			

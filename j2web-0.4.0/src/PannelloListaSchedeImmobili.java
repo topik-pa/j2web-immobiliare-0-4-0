@@ -20,7 +20,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.swing.Box;
@@ -79,7 +78,7 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	if(j2web_GUI.listSchedeImmobile.isEmpty()) {
     		System.out.println("listSchedeImmobile vuota");
     		JPanel panelNessunaScheda = new JPanel();
-            JLabel lblNessunaScheda = new JLabel("Non \u00e8 stata inserita alcuna scheda immobile");                
+            JLabel lblNessunaScheda = new JLabel(labelNessunaScheda);                
             panelNessunaScheda.add(lblNessunaScheda);
             add(panelNessunaScheda);
     	}
@@ -112,7 +111,7 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
     	if(j2web_GUI.listSchedeImmobile.isEmpty()) {
     		System.out.println("Linkedlist vuota");
     		JPanel panelNessunaScheda = new JPanel();
-            JLabel lblNessunaScheda = new JLabel("Non \u00e8 stata inserita alcuna scheda immobile");                
+            JLabel lblNessunaScheda = new JLabel(labelNessunaScheda);                
             panelNessunaScheda.add(lblNessunaScheda);
             add(panelNessunaScheda);
     	}
@@ -138,6 +137,7 @@ public class PannelloListaSchedeImmobili extends JPanel implements parametriGene
 
 //Questa classe definisce tutti i sottopannelli presenti quando esistono schede immobile
 class PannelloSchedaImmobile extends JPanel implements parametriGenerali {  
+	
 	private static final long serialVersionUID = 1L;
 	
 	SchedaImmobile scheda;
@@ -184,7 +184,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
 		 label.setFont(font);
 		 add(label);
 		 		 
-		 add(new JLabel("  "));
+		 add(new JLabel(labelSpaziatore));
 		 
 		 //Pulsante "Cancella"
 		 btnCancellaScheda = new JButton("Cancella");
@@ -245,7 +245,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
          });
          add(btnCancellaScheda);
          
-         add(new JLabel(" "));        
+         add(new JLabel(labelSpaziatore));        
 	 }
 	
 }
