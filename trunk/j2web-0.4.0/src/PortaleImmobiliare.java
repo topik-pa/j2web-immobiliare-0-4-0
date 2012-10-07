@@ -201,9 +201,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
   			e.printStackTrace();
   		}
   	}
-    
-  	
-  	
+		
   	//Valutazione similarità tra stringhe
   	public static List<char[]> bigram(String input)
     {
@@ -216,8 +214,8 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
             bigram.add(chars);
         }
         return bigram;
-    }  
-    public static double dice(List<char[]> bigram1, List<char[]> bigram2)
+    }      
+  	public static double dice(List<char[]> bigram1, List<char[]> bigram2)
     {
         List<char[]> copy = new ArrayList<char[]>(bigram2);
         int matches = 0;

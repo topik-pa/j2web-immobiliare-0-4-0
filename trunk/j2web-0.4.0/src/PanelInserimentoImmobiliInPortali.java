@@ -14,12 +14,10 @@ import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.ListIterator;
-
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;

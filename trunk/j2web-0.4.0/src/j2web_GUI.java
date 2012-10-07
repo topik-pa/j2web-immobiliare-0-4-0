@@ -9,17 +9,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.File;
+/*import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.ObjectOutputStream;*/
 
 
 public class j2web_GUI extends JFrame implements parametriGenerali {
-	/**
-	 * 
-	 */
 	
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +24,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	static PanelCreazioneSchedeImmobile panelCreazioneSchedeImmobile;	//SX
 	static PannelloListaSchedeImmobili panelListaSchedeImmobile;	//MID
 	static PanelInserimentoImmobiliInPortali panelInserimentoImmobiliInPortali;	//DX
+	
+	//Inizializzo le principali strutture dati
 	
 	//La struttura dati che contiene le schede immobile create
   	public static LinkedList<SchedaImmobile> listSchedeImmobile = new LinkedList<SchedaImmobile>();
@@ -36,11 +35,9 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
   	
   	//La struttura dati che contiene i portali selezionati per l'inserimento sequenziale
   	public static LinkedList<PortaleImmobiliare> listPortaliInserimentoSequenziale = new LinkedList<PortaleImmobiliare>();
-  	//public static Map<PortaleImmobiliare, Boolean> mapPortaliInserimentoSequenziale = new Hashtable<PortaleImmobiliare, Boolean>();
   	
     //La struttura dati che contiene i portali selezionati per l'eliminazione sequenziale
   	public static LinkedList<PortaleImmobiliare> listPortaliCancellazioneSequenziale = new LinkedList<PortaleImmobiliare>();
-  	//public static Map<PortaleImmobiliare, Boolean> mapPortaliCancellazioneSequenziale = new Hashtable<PortaleImmobiliare, Boolean>();
 	
 	/**
 	 * Create the frame.
@@ -63,7 +60,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 			JMenuItem menu1_menuItem1 = new JMenuItem("Chiudi");
 			menu1_menuItem1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					System.out.println("Menu: chiudi programma");
+					System.out.println("Menu - Chiudi J2Web");
 					System.exit(0);
 				}
 			});
@@ -78,7 +75,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				JMenuItem mntmNewMenuItem = new JMenuItem("Data di inserimento");
 				mntmNewMenuItem.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						System.out.println("Click: Ordina per data di inserimento");
+						System.out.println("Menu - Ordina schede per data di inserimento");
 						Collections.sort(j2web_GUI.listSchedeImmobile, new IdComparator());
 						j2web_GUI.panelListaSchedeImmobile.updatePanello();
 					}
@@ -88,7 +85,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				JMenuItem mntmNewMenuItem_1 = new JMenuItem("Codice");
 				mntmNewMenuItem_1.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						System.out.println("Click: Ordina per codice");
+						System.out.println("Menu - Ordina schede per codice");
 						Collections.sort(j2web_GUI.listSchedeImmobile, new CodeComparator());
 						j2web_GUI.panelListaSchedeImmobile.updatePanello();
 					}
@@ -98,7 +95,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				JMenuItem mntmNewMenuItem_2 = new JMenuItem("Comune");
 				mntmNewMenuItem_2.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						System.out.println("Click: Ordina per comune");
+						System.out.println("Menu - Ordina schede per Comune");
 						Collections.sort(j2web_GUI.listSchedeImmobile, new CityComparator());
 						j2web_GUI.panelListaSchedeImmobile.updatePanello();
 					}
@@ -108,7 +105,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				JMenuItem mntmNewMenuItem_3 = new JMenuItem("Provincia");
 				mntmNewMenuItem_3.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						System.out.println("Click: Ordina per provincia");
+						System.out.println("Menu - Ordina schede per Provincia");
 						Collections.sort(j2web_GUI.listSchedeImmobile, new ProvinceComparator());
 						j2web_GUI.panelListaSchedeImmobile.updatePanello();
 					}
@@ -118,7 +115,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				JMenuItem mntmNewMenuItem_4 = new JMenuItem("Regione");
 				mntmNewMenuItem_4.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						System.out.println("Click: Ordina per regione");
+						System.out.println("Menu - Ordina schede per Regione");
 						Collections.sort(j2web_GUI.listSchedeImmobile, new RegionComparator());
 						j2web_GUI.panelListaSchedeImmobile.updatePanello();
 					}
@@ -128,16 +125,15 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 			JMenuItem menu1_menuItem_2 = new JMenuItem("Elimina tutte");
 			menu1_menuItem_2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					System.out.println("Click: Elimina tutte le schede");
+					System.out.println("Menu - Elimina tutte le schede");
 					
-					int response = JOptionPane.showConfirmDialog(null, "Eliminare tutte le schede immobile dal pannello?", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					int response = JOptionPane.showConfirmDialog(null, ModalWindowsDialogs[0], "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (response == JOptionPane.NO_OPTION) {
-					      System.out.println("No button clicked");
 					    } else if (response == JOptionPane.YES_OPTION) {
-					    	
-					      System.out.println("Yes button clicked");
-					      j2web_GUI.listSchedeImmobile.clear();
-							try {
+					    	//Elimino tutte le schede e salvo su dat
+					    	j2web_GUI.listSchedeImmobile.clear();
+					    	j2web.salvaListPortaliSuDat(datFilePath, j2web_GUI.listSchedeImmobile);
+							/*try {
 							   File file = new File(datFilePath);
 						    	if(file.exists()) {
 						    		System.out.println("File .dat schede trovato.");
@@ -158,11 +154,11 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 								} catch (IOException e1) {
 									JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat schede: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
 									e1.printStackTrace();
-								}
+								}*/
 							j2web_GUI.panelListaSchedeImmobile.updatePanello();
 							
 					    } else if (response == JOptionPane.CLOSED_OPTION) {
-					      System.out.println("JOptionPane closed");
+					    	
 					    }
 				}
 			});
@@ -175,7 +171,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 			JMenuItem menu3_menuItem1 = new JMenuItem("Seleziona tutti");
 			menu3_menuItem1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					System.out.println("Click: Seleziona tutti");
+					System.out.println("Menu - Seleziona tutti");
 				}
 			});
 			menu3.add(menu3_menuItem1);
@@ -183,7 +179,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 			JMenuItem menu3_menuItem2 = new JMenuItem("Inserisci scheda nei selezionati");
 			menu3_menuItem2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					System.out.println("Click: inserisci in selezionati");
+					System.out.println("Menu - Inserisci in selezionati");
 				}
 			});
 			menu3.add(menu3_menuItem2);
@@ -191,7 +187,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 			JMenuItem menu3_menuItem3 = new JMenuItem("Elimina scheda dai selezionati");
 			menu3_menuItem3.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					System.out.println("Click: elimina in selezionati");
+					System.out.println("Menu - Elimina in selezionati");
 				}
 			});
 			menu3.add(menu3_menuItem3);

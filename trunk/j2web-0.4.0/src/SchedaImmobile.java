@@ -265,35 +265,36 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	
 	//Carica tabella quando premi il radio button relativo alla scheda
 	@SuppressWarnings("unchecked")
-	public void caricaMappaPortaliOspitanti() {
+	public void caricaTabellaHash() {
 		
 		//Lettura schede dal file .dat
         File file = new File(schedaDatPath);
     	if(file.exists()) {
-    		System.out.println("File .dat scheda trovato." + schedaDatPath);
+    		System.out.print("File hash scheda trovato. Lettura dati da " + schedaDatPath);
     		try {
     			if(file.length()!=0) {
     				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
     				mappaPortaliOspitanti = (Hashtable<String,String>)inputFile.readObject();
-					inputFile.close();
+					inputFile.close();					
     			}
+    			System.out.print(" fatto." + "\n");
 			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(null, "File hash non trovato: impossibile caricare la hashtable", "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[3], "Errore", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, "Impossibile accedere al file hash: impossibile caricare la hashtable", "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[4], "Errore", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				JOptionPane.showMessageDialog(null, "Errore generico", "Errore", JOptionPane.ERROR_MESSAGE);
-			}   		
+				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[5], "Errore", JOptionPane.ERROR_MESSAGE);
+			} 		
     	}
     	else {
-    		System.out.println("File hash non trovato.");
     		try {
 				FileOutputStream newFile = new FileOutputStream(schedaDatPath);
-				System.out.println("File hash non trovato. Creazione del file...: " + newFile.toString());
+				System.out.print("File hash non trovato. Creazione di un nuovo file hash per questa scheda..." + newFile.toString());
+				System.out.print(" fatto." + "\n");
 			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(null, "File hash non trovato: impossibile caricare la hash table", "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[3], "Errore", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
     	}
@@ -303,7 +304,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	//Verifico la presenza della scheda immobile in un dato portale
 	public boolean isOnThisPortal(String idPortale) {
 		if(mappaPortaliOspitanti.containsKey(idPortale)) {
-			System.out.println("Scheda presente nel portale: " + idPortale);
+			System.out.println("La scheda è presente nel portale: " + idPortale);
 			return true; 
 		}
 		else {
@@ -317,25 +318,28 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	public void aggiungiInserimentoPortale(String idPortale, String codiceInserzione) {
 		mappaPortaliOspitanti.put(idPortale, codiceInserzione);
 				
-		//Salvataggio tabella
-        try {
+		//Salvataggio tabella hash
+		salvaTabellaHash(schedaDatPath, mappaPortaliOspitanti);
+        /*try {
  		   File file = new File(schedaDatPath);
- 	    	if(file.exists()) {
- 	    		System.out.println("File hash scheda trovato.");
- 	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-					outputFile.writeObject(mappaPortaliOspitanti);
-					outputFile.close();
- 	    	}
- 	    	else {
- 	    		System.out.println("File hash scheda non trovato.");
- 	    	}
-			} catch (FileNotFoundException e0) {
-	            JOptionPane.showMessageDialog(null, "File hash scheda non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-	            e0.printStackTrace();
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(null, "Impossibile accedere al file hash scheda: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-				e1.printStackTrace();
-			}	
+	    	if(file.exists()) {
+	    		System.out.print("File hash scheda trovato. Salvataggio dati su " + schedaDatPath);
+	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+				outputFile.writeObject(mappaPortaliOspitanti);
+				outputFile.close();
+				System.out.print(" fatto." + "\n");
+	    	}
+	    	else {
+	    		//La tabella hash è creata in ogni caso al momento della prima lettura della stessa
+	    		System.out.println("File hash scheda non trovato.");
+	    	}
+		} catch (FileNotFoundException e0) {		
+	        JOptionPane.showMessageDialog(null, ModalWindowsDialogs[6], "Errore", JOptionPane.ERROR_MESSAGE);
+	        e0.printStackTrace();
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(null, ModalWindowsDialogs[7], "Errore", JOptionPane.ERROR_MESSAGE);
+			e1.printStackTrace();
+		}*/	
 	}
 
 	
@@ -345,7 +349,9 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		mappaPortaliOspitanti.remove(idPortale);
 		
 		//Salvataggio tabella
-        try {
+		salvaTabellaHash(schedaDatPath, mappaPortaliOspitanti);
+		
+        /*try {
  		   File file = new File(schedaDatPath);
  	    	if(file.exists()) {
  	    		System.out.println("File hash scheda trovato.");
@@ -362,7 +368,30 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(null, "Impossibile accedere al file .hash scheda: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
 				e1.printStackTrace();
-			}      
+			}*/      
+	}
+	
+	public void salvaTabellaHash(String schedaDatPath, Map<String,String> mappaPortaliOspitanti) {
+		try {
+ 		   File file = new File(schedaDatPath);
+	    	if(file.exists()) {
+	    		System.out.print("File hash scheda trovato. Salvataggio dati su " + schedaDatPath);
+	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+				outputFile.writeObject(mappaPortaliOspitanti);
+				outputFile.close();
+				System.out.print(" fatto." + "\n");
+	    	}
+	    	else {
+	    		//La tabella hash è creata in ogni caso al momento della prima lettura della stessa
+	    		System.out.println("File hash scheda non trovato.");
+	    	}
+		} catch (FileNotFoundException e0) {		
+	        JOptionPane.showMessageDialog(null, ModalWindowsDialogs[6], "Errore", JOptionPane.ERROR_MESSAGE);
+	        e0.printStackTrace();
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(null, ModalWindowsDialogs[7], "Errore", JOptionPane.ERROR_MESSAGE);
+			e1.printStackTrace();
+		}	
 	}
 	
 	
