@@ -863,7 +863,7 @@ public class Case24 extends PortaleImmobiliare {
 
 
     //Metodo per l'inserimento della scheda immobile nel portale immobiliare
-    public void inserisciScheda(SchedaImmobile scheda) {
+    public void inserisciScheda(SchedaImmobile scheda) throws HttpCommunicationException {
     	System.out.println("Inserimento scheda: " + scheda.codiceInserzione + "...");
     	
     	//Inizializzazione parametri
@@ -878,8 +878,9 @@ public class Case24 extends PortaleImmobiliare {
         try {
 			connessione_0(new HttpGet(URL_ROOT));
 		} catch (IOException | HttpResponseException e ) {
-			manageErrors(e, 1);
-            return;
+			throw new HttpCommunicationException(e);
+			//manageErrors(e, 1);
+            //return;
 		}
         
         
@@ -1024,7 +1025,7 @@ public class Case24 extends PortaleImmobiliare {
     
     
     //Metodo per la visualizzazione della scheda immobile nel portale immobiliare
-	public void visualizzaScheda(SchedaImmobile scheda) {
+	public void visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
 		//Apro il browser e inserisco credenziali		
 		try {
@@ -1040,7 +1041,7 @@ public class Case24 extends PortaleImmobiliare {
 	
 	
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
-	public void cancellaScheda(SchedaImmobile scheda) {		
+	public void cancellaScheda(SchedaImmobile scheda) throws HttpCommunicationException {		
 		System.out.println("Eliminazione scheda: " + scheda.codiceInserzione + "...");
 		CODICEINSERZIONE = scheda.getCodiceInserimento(idPortale);
 	
