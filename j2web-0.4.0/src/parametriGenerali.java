@@ -34,6 +34,19 @@ public interface parametriGenerali {
 	//Icona della finestra principale
     final Image frameIcon = new ImageIcon("./images/imaginationLogo.png").getImage();
     
+    //Messaggi delle finestre modali
+    String[] ModalWindowsDialogs = {
+    		"Eliminare tutte le schede immobile dal pannello?", 
+    		"File .dat schede non trovato: impossibile caricare le schede precedentemente inserite", 
+    		"Impossibile accedere al file .dat schede: impossibile caricare le schede precedentemente inserite", 
+    		"File hash non trovato: impossibile caricare la hashtable per questa scheda immobile", 
+    		"Impossibile accedere al file hash: impossibile caricare la hashtable di questa scheda immobile", 
+    		"Errore durante l'accesso al file hash: impossibile caricare la hashtable di questa scheda immobile",
+    		"File hash non trovato: impossibile salvare la hashtable per questa scheda immobile", 
+    		"Impossibile accedere al file hash: impossibile salvare la hashtable di questa scheda immobile", 
+    		
+    };
+    
     //icone dei pulsanti
     final ImageIcon icoProcedi = new ImageIcon("./images/forward.png");
     final ImageIcon icoResetta = new ImageIcon("./images/refresh.png");

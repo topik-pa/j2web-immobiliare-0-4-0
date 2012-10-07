@@ -1,4 +1,11 @@
 import java.awt.EventQueue;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.LinkedList;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 
@@ -44,7 +51,39 @@ public class j2web implements parametriGenerali {
 		});
 		System.out.print(" fatto." + "\n");
 	}
-		
+	
+	
+	//Salvataggio su dat
+	public static void salvaListPortaliSuDat(String datFilePath, LinkedList<SchedaImmobile> listSchedeImmobile) {
+		try {
+		   File file = new File(datFilePath);
+	    	if(file.exists()) {
+	    		System.out.print("File .dat schede trovato. Salvataggio dati...");
+	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+				outputFile.writeObject(listSchedeImmobile);
+				outputFile.close();
+				System.out.print(" fatto." + "\n");
+	    	}
+	    	else {	    		
+				FileOutputStream newFile = new FileOutputStream(datFilePath);
+				System.out.print("File .dat non schede trovato. Creazione del file..." + newFile.toString());
+				ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+				outputFile.writeObject(listSchedeImmobile);
+				outputFile.close();
+				System.out.print(" fatto." + "\n");
+	    	}
+		}
+		catch (FileNotFoundException e) {		
+	        JOptionPane.showMessageDialog(null, ModalWindowsDialogs[1], "Errore", JOptionPane.ERROR_MESSAGE);
+	        e.printStackTrace();
+		}
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, ModalWindowsDialogs[2], "Errore", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+	}
+
+	//public static void 
 	
 	//Inizializza la mappa delle regioni e provincie
 	public static void inizializzaMappaRegioneProvincia() {		

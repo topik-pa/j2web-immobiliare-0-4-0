@@ -162,7 +162,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
                  System.out.println("Scheda selezionata: " + scheda.codiceInserzione); 
                  
                  //Devo caricare la relativa hashtable contenente i portali in cui è inserita e glòi associati codici di inserimento
-                 scheda.caricaMappaPortaliOspitanti();
+                 scheda.caricaTabellaHash();
                  
                  //Il pannello di destra (inserimento) deve essere aggiornato
                  j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
