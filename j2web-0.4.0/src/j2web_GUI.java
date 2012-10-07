@@ -1,9 +1,7 @@
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.LinkedList;
-import java.util.Map;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -37,10 +35,12 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
   	public static LinkedList<PortaleImmobiliare> listPortaliImmobiliari = new LinkedList<PortaleImmobiliare>();
   	
   	//La struttura dati che contiene i portali selezionati per l'inserimento sequenziale
-  	public static Map<PortaleImmobiliare, Boolean> mapPortaliInserimentoSequenziale = new Hashtable<PortaleImmobiliare, Boolean>();
+  	public static LinkedList<PortaleImmobiliare> listPortaliInserimentoSequenziale = new LinkedList<PortaleImmobiliare>();
+  	//public static Map<PortaleImmobiliare, Boolean> mapPortaliInserimentoSequenziale = new Hashtable<PortaleImmobiliare, Boolean>();
   	
     //La struttura dati che contiene i portali selezionati per l'eliminazione sequenziale
-  	public static Map<PortaleImmobiliare, Boolean> mapPortaliCancellazioneSequenziale = new Hashtable<PortaleImmobiliare, Boolean>();
+  	public static LinkedList<PortaleImmobiliare> listPortaliCancellazioneSequenziale = new LinkedList<PortaleImmobiliare>();
+  	//public static Map<PortaleImmobiliare, Boolean> mapPortaliCancellazioneSequenziale = new Hashtable<PortaleImmobiliare, Boolean>();
 	
 	/**
 	 * Create the frame.

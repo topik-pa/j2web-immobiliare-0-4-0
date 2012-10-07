@@ -40,7 +40,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
     //Costruttore - definisce la prima visualizzazione del pannello
     public PanelInserimentoImmobiliInPortali() {
 
-    	//Gestisco la lista concatenata che contiene le informazioni sui portali immobiliari
+    	//Inizializzo la lista concatenata che contiene le informazioni sui portali immobiliari
     	inizializzaPortaliAttivi();
     	
     	setBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -53,16 +53,18 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
         
   
         //Update del pannello, eseguito alla selezione di una scheda sul pannello centrale e dopo l'inserimento/rimozione di una scheda in un portale
-    public void updatePanello(final SchedaImmobile scheda, final boolean selectAll) {
+    public void updatePanello(final SchedaImmobile scheda, final boolean selectAllSelected) {
     	
     	//Rimuovo tutti i portali dalle liste sequenziali
-    	j2web_GUI.mapPortaliInserimentoSequenziale.clear();
-    	j2web_GUI.mapPortaliCancellazioneSequenziale.clear();
+    	j2web_GUI.listPortaliInserimentoSequenziale.clear();
+    	j2web_GUI.listPortaliCancellazioneSequenziale.clear();
+    	//j2web_GUI.mapPortaliInserimentoSequenziale.clear();
+    	//j2web_GUI.mapPortaliCancellazioneSequenziale.clear();
     	        	
     	//Rimuovo tutti gli elementi dal pannello
     	removeAll();
     	      	
-    	panelInserimentoInActiveMode(scheda, selectAll);
+    	panelInserimentoInActiveMode(scheda, selectAllSelected);
      	 
      	updateUI();
      	
@@ -116,13 +118,13 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
 
     public void panelInserimentoInDefaultMode() {
     	
-    	add(Box.createVerticalStrut(20));
+    	add(Box.createVerticalStrut(5));
     	        	
     	//Pannello controllo portali (primo in alto)
     	panelInserimentoSequenziale = new PanelInserimentoSequenziale();     		        
         add(panelInserimentoSequenziale);  
         
-        add(Box.createVerticalStrut(20));
+        add(Box.createVerticalStrut(10));
  	            
         //Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizzi: non hanno alcuna funzionalità )
         ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
@@ -137,13 +139,13 @@ public class PanelInserimentoImmobiliInPortali extends JPanel {
 
     public void panelInserimentoInActiveMode(final SchedaImmobile scheda, final boolean selectAll) {
     	
-    	add(Box.createVerticalStrut(20));
+    	add(Box.createVerticalStrut(5));
     	      	
     	//Pannello controllo portali (primo in alto)
     	panelInserimentoSequenziale = new PanelInserimentoSequenziale(scheda, selectAll);     		        
         add(panelInserimentoSequenziale); 
         
-        add(Box.createVerticalStrut(20));
+        add(Box.createVerticalStrut(10));
 
     	//Ciclo ogni oggetto PortaleImmobiliare presente nella lista concatenata e per ognuno aggiorno il sottopannello
         ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
@@ -173,6 +175,7 @@ class PanelInserimentoSequenziale extends JPanel implements parametriGenerali {
 	JButton btnCancellaTuttiIPortali;
 	JCheckBox checkboxSelezionaTutti;
 	
+	//Pannello inserimento sequenziali nel caso di nessun portale selezionato
 	public PanelInserimentoSequenziale() {
 		
 		btnInserisciTuttiIPortali = new JButton(labelBtnInserisciTutti);
@@ -201,7 +204,8 @@ class PanelInserimentoSequenziale extends JPanel implements parametriGenerali {
         
 	}
 	
-	public PanelInserimentoSequenziale(final SchedaImmobile scheda, boolean selectAll) {
+	//Pannello inserimento sequenziali nel caso di portale selezionato
+	public PanelInserimentoSequenziale(final SchedaImmobile scheda, boolean selectAllSelected) {
 		
 		btnInserisciTuttiIPortali = new JButton(labelBtnInserisciTutti);
     	btnCancellaTuttiIPortali = new JButton(labelBtnCancellaTutti);
@@ -213,27 +217,62 @@ class PanelInserimentoSequenziale extends JPanel implements parametriGenerali {
 		
 		//Inserisce la scheda in tutti i portali selezionati
 		btnInserisciTuttiIPortali.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {                
-                for(PortaleImmobiliare currentPortal : j2web_GUI.mapPortaliInserimentoSequenziale.keySet()) {
+            public void actionPerformed(ActionEvent e) {  
+            	ListIterator<PortaleImmobiliare> iterator = (ListIterator<PortaleImmobiliare>) j2web_GUI.listPortaliInserimentoSequenziale.iterator();
+            	while(iterator.hasNext()) {
+            		PortaleImmobiliare portaleCorrente = iterator.next();
+            		/*
+            		//Il cursone viene messo in modalità attesa
+     				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+     				//Chiamo il metodo afferente all'oggetto PortaleImmobiliare per inserire una scheda immobile, il metoso chiamata sarà quella della sottoclasse effettiva
+     				portaleCorrente.inserisciScheda(scheda);
+     				//Il cursone viene messo in modalità standard
+     				setCursor(Cursor.getDefaultCursor());
+     				*/
+            		System.out.println("Scheda " + scheda.idScheda + " inserita in: " + portaleCorrente.idPortale);
+            	}
+            	
+                /*for(PortaleImmobiliare currentPortal : j2web_GUI.mapPortaliInserimentoSequenziale.keySet()) {
+                	//Se il valore del portle corrente è "false", inserisco il portale
                 	if(j2web_GUI.mapPortaliInserimentoSequenziale.get(currentPortal)==false) {
                 		//currentPortal.inserisciScheda(scheda);
                 		System.out.println("Scheda inserita in: " + currentPortal.idPortale);
                 	}
-                }
+                }*/
                 
             }
+            
          });
 		add(btnInserisciTuttiIPortali);
 		    
 		//Elimina la scheda da tutti i portali selezionati
         btnCancellaTuttiIPortali.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {           
-                for(PortaleImmobiliare currentPortal : j2web_GUI.mapPortaliCancellazioneSequenziale.keySet()) {
-                	if(j2web_GUI.mapPortaliInserimentoSequenziale.get(currentPortal)==false) {
-                		//currentPortal.inserisciScheda(scheda);
+            public void actionPerformed(ActionEvent e) { 
+            	
+            	ListIterator<PortaleImmobiliare> iterator = (ListIterator<PortaleImmobiliare>) j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
+            	while(iterator.hasNext()) {
+            		PortaleImmobiliare portaleCorrente = iterator.next();
+            		/*            		
+            		 //Il cursone viene messo in modalità attesa
+     				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+     				//Chiamo il metodo afferente all'oggetto PortaleImmobiliare per inserire una scheda immobile, il metoso chiamata sarà quella della sottoclasse effettiva
+     				portale.cancellaScheda(scheda);
+     				//Il cursone viene messo in modalità standard
+     				setCursor(Cursor.getDefaultCursor());
+            		 */
+            		System.out.println("Scheda " + scheda.idScheda + " cancellata da: " + portaleCorrente.idPortale);
+            	}
+            	
+            	
+                /*for(PortaleImmobiliare currentPortal : j2web_GUI.mapPortaliCancellazioneSequenziale.keySet()) {
+                	//Se il valore del portle corrente è "false", cancello il portale
+                	if(j2web_GUI.mapPortaliCancellazioneSequenziale.get(currentPortal)==false) {
+                		//currentPortal.cancellaScheda(scheda);
                 		System.out.println("Scheda cancellata da: " + currentPortal.idPortale);
                 	}
-                }            
+                }*/  
+                
+                
             }
          });
         add(btnCancellaTuttiIPortali);
@@ -242,9 +281,10 @@ class PanelInserimentoSequenziale extends JPanel implements parametriGenerali {
         
         //Checkbox seleziona tutti
         final JCheckBox checkboxSelezionaTutti = new JCheckBox(labelCheckboxSelezionaTutti);
-        checkboxSelezionaTutti.setSelected(selectAll);
+        checkboxSelezionaTutti.setSelected(selectAllSelected);
         checkboxSelezionaTutti.addActionListener(new ActionListener() {
            public void actionPerformed(ActionEvent e) {
+        	   //Se la checkbox viene spuntata, ridisegno il pannello  passando "true" 
         	   j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, checkboxSelezionaTutti.isSelected());    
            }
   		 });
@@ -274,7 +314,8 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
     
     Border loweredetched;
     TitledBorder title;
-	        	
+	       
+    //Pannello inserimento portale nel caso di nessun portale selezionato
 	public InserimentoPortale(PortaleImmobiliare portale) {
 		
 		setLayout(new GridLayout(2,3,5,5));
@@ -313,7 +354,8 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
         	
 	}
 	
-	public InserimentoPortale(final PortaleImmobiliare portale, final SchedaImmobile scheda,  boolean selectAll) {
+	//Pannello inserimento portale nel caso di portale selezionato
+	public InserimentoPortale(final PortaleImmobiliare portale, final SchedaImmobile scheda,  boolean selectAllSelected) {
 		
 		final boolean isOnThisPortal = scheda.isOnThisPortal(portale.idPortale);
 		setLayout(new GridLayout(2,3,5,5));
@@ -327,23 +369,23 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
  		btnInserisci = new JButton(labelBtnInserisci);
  		//Controllo se la scheda è inserita nel portale corrente     		
  		if(isOnThisPortal){
+ 			//Pulsante disabilitato
+ 			btnInserisci.setEnabled(false);			
+ 		}
+ 		else {
  			//Pulsante abilitato
- 			btnInserisci.setEnabled(false);
+ 			btnInserisci.setEnabled(true);
  			btnInserisci.addActionListener(new ActionListener() {
      			public void actionPerformed(ActionEvent e) {
-     				System.out.println("Inserisci: " + scheda.codiceInserzione);	     				
+     				System.out.println("Inserisci: " + scheda.codiceInserzione + " in " + portale.idPortale);	     				
      				//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
      				//Chiamo il metodo afferente all'oggetto PortaleImmobiliare per inserire una scheda immobile, il metoso chiamata sarà quella della sottoclasse effettiva
-     				portale.inserisciScheda(scheda);
+     				//portale.inserisciScheda(scheda);
      				//Il cursone viene messo in modalità standard
      				setCursor(Cursor.getDefaultCursor());
      			}
      		});
- 		}
- 		else {
- 			//Pulsante disabilitato
- 			btnInserisci.setEnabled(true);
  		}
  		
  			     		
@@ -356,9 +398,9 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
      			public void actionPerformed(ActionEvent e) {
      				//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-     				System.out.println("Visualizza: " + scheda.codiceInserzione);
+     				System.out.println("Visualizza: " + scheda.codiceInserzione + " in " + portale.idPortale);
      				//Chiamo il metodo afferente all'oggetto PortaleImmobiliare per visualizzare una scheda immobile
-     				portale.visualizzaScheda(scheda);
+     				//portale.visualizzaScheda(scheda);
      				//Il cursone viene messo in modalità standard
      				setCursor(Cursor.getDefaultCursor());
      			}
@@ -376,11 +418,11 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
  			btnCancella.setEnabled(true);
  			btnCancella.addActionListener(new ActionListener() {
      			public void actionPerformed(ActionEvent e) {
-     				System.out.println("Cancella: " + scheda.codiceInserzione);
+     				System.out.println("Cancella: " + scheda.codiceInserzione + " da " + portale.idPortale);
      				//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
      				//Chiamo il metodo afferente all'oggetto PortaleImmobiliare per cancellare una scheda immobile
-     				portale.cancellaScheda(scheda);
+     				//portale.cancellaScheda(scheda);
      				//Il cursone viene messo in modalità standard
      				setCursor(Cursor.getDefaultCursor());
      			}
@@ -401,39 +443,61 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
         checkboxSelezionaPortale.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Checkbox: seleziona il portale"); 
-                //Aggiungo il portale alla lista dei portali ad inserimento sequenziale
+                //Aggiungo il portale alla lista dei portali ad inserimento o cancellazione sequenziale
+                //checkbox spuntata
                 if(checkboxSelezionaPortale.isSelected()) {
                 	if(isOnThisPortal) {
-                		j2web_GUI.mapPortaliInserimentoSequenziale.put(portale, true);
-                		j2web_GUI.mapPortaliCancellazioneSequenziale.put(portale, false);
+                		//j2web_GUI.mapPortaliInserimentoSequenziale.put(portale, true);
+                		//j2web_GUI.mapPortaliCancellazioneSequenziale.put(portale, false);
+                		j2web_GUI.listPortaliCancellazioneSequenziale.add(portale);
                 	}
                 	else {
-                		j2web_GUI.mapPortaliInserimentoSequenziale.put(portale, false);
-                		j2web_GUI.mapPortaliCancellazioneSequenziale.put(portale, true);
+                		//j2web_GUI.mapPortaliInserimentoSequenziale.put(portale, false);
+                		//j2web_GUI.mapPortaliCancellazioneSequenziale.put(portale, true);
+                		j2web_GUI.listPortaliInserimentoSequenziale.add(portale);
                 	}
                 }
+                //checkbox non spuntata
                 else {
-                	j2web_GUI.mapPortaliInserimentoSequenziale.remove(portale);
-                	j2web_GUI.mapPortaliCancellazioneSequenziale.remove(portale);
+                	if(j2web_GUI.listPortaliInserimentoSequenziale.contains(portale)) {
+                		j2web_GUI.listPortaliInserimentoSequenziale.remove(portale);
+                	}
+                	else {
+                		j2web_GUI.listPortaliCancellazioneSequenziale.remove(portale);
+                	}
+                	
+                	/*if(j2web_GUI.mapPortaliInserimentoSequenziale.containsKey(portale)) {
+                		j2web_GUI.mapPortaliInserimentoSequenziale.remove(portale);
+                	}
+                	else {
+                		j2web_GUI.mapPortaliCancellazioneSequenziale.remove(portale);
+                	}*/
                 }
             }
 	 	});
         
-        if(selectAll) {
+        //Se è stata selezionata la checkbox select all
+        if(selectAllSelected) {
         	checkboxSelezionaPortale.setSelected(true);
         	if(isOnThisPortal) {
-        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portale, true);
-        		j2web_GUI.mapPortaliCancellazioneSequenziale.put(portale, false);
+        		//j2web_GUI.mapPortaliInserimentoSequenziale.put(portale, true);
+        		//j2web_GUI.mapPortaliCancellazioneSequenziale.put(portale, false);
+        		j2web_GUI.listPortaliCancellazioneSequenziale.add(portale);
         	}
         	else {
-        		j2web_GUI.mapPortaliInserimentoSequenziale.put(portale, false);
-        		j2web_GUI.mapPortaliCancellazioneSequenziale.put(portale, true);
+        		//j2web_GUI.mapPortaliInserimentoSequenziale.put(portale, false);
+        		//j2web_GUI.mapPortaliCancellazioneSequenziale.put(portale, true);
+        		j2web_GUI.listPortaliInserimentoSequenziale.add(portale);
         		}       
         	}
         else {
         	checkboxSelezionaPortale.setSelected(false);
-        	j2web_GUI.mapPortaliInserimentoSequenziale.remove(portale);
-        	j2web_GUI.mapPortaliCancellazioneSequenziale.remove(portale);
+        	if(j2web_GUI.listPortaliInserimentoSequenziale.contains(portale)) {
+        		j2web_GUI.listPortaliInserimentoSequenziale.remove(portale);
+        	}
+        	else {
+        		j2web_GUI.listPortaliCancellazioneSequenziale.remove(portale);
+        	}
         }
         add(checkboxSelezionaPortale);      		
         add(btnInserisci);
