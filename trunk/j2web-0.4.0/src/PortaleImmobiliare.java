@@ -59,13 +59,13 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	//Metodi
 	
 	//Inserimento scheda (sovrascritto nelle sottoclassi)
-	public abstract void inserisciScheda(SchedaImmobile scheda);
+	public abstract void inserisciScheda(SchedaImmobile scheda) throws HttpCommunicationException;
 	
 	//Visualizzazione scheda (sovrascritto nelle sottoclassi)
-	public abstract void visualizzaScheda(SchedaImmobile scheda);
+	public abstract void visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException;
 
 	//Eliminazione scheda (sovrascritto nelle sottoclassi)
-	public abstract void cancellaScheda(SchedaImmobile scheda);
+	public abstract void cancellaScheda(SchedaImmobile scheda) throws HttpCommunicationException;
 	
 	//Invio mail in caso di errori runtime
 	static void sendErrorMail(String stackTrace, String errorCode)   {
