@@ -22,7 +22,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 
 	//I tre pannelli principali
 	static PanelCreazioneSchedeImmobile panelCreazioneSchedeImmobile;	//SX
-	static PannelloListaSchedeImmobili panelListaSchedeImmobile;	//MID
+	static PanelListaSchedeImmobili panelListaSchedeImmobile;	//MID
 	static PanelInserimentoImmobiliInPortali panelInserimentoImmobiliInPortali;	//DX
 	
 	//Inizializzo le principali strutture dati
@@ -199,7 +199,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		getContentPane().add(panelCreazioneSchedeImmobile);	
 		
 		//Pannello MID - "Lista schede create"
-		panelListaSchedeImmobile = new PannelloListaSchedeImmobili();
+		panelListaSchedeImmobile = new PanelListaSchedeImmobili();
 		getContentPane().add(new JScrollPane(panelListaSchedeImmobile));
 		
 		//Pannello DX - "Inserimento schede immobile"
