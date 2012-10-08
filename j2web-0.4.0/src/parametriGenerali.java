@@ -43,8 +43,10 @@ public interface parametriGenerali {
     		"Impossibile accedere al file hash: impossibile caricare la hashtable di questa scheda immobile", 
     		"Errore durante l'accesso al file hash: impossibile caricare la hashtable di questa scheda immobile",
     		"File hash non trovato: impossibile salvare la hashtable per questa scheda immobile", 
-    		"Impossibile accedere al file hash: impossibile salvare la hashtable di questa scheda immobile", 
-    		
+    		"Impossibile accedere al file hash: impossibile salvare la hashtable di questa scheda immobile",
+    		"Alcuni campi obbligatori non sono stati compilati.",
+    		"Formato di file non valido: le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega.",
+    		"Errore durante il caricamento dei dati: Non è possibile accedere alle schede precedentemente salvate."
     };
     
     //icone dei pulsanti

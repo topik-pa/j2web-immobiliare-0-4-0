@@ -16,10 +16,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ListIterator;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -47,6 +43,7 @@ import com.jgoodies.forms.layout.RowSpec;
 
 //Pannello per la creazione delle schede immobile
 public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGenerali {
+	
 	private static final long serialVersionUID = 1L;
 
 	//Tutti i campi della form soggetti ad interazione
@@ -227,7 +224,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
         });
 		textFieldTitoloAnnuncio.setColumns(23);
 		
-		//Regione-Provincia-Commune
+		//Regione-Provincia-Comune
 		JPanel panelRegProvCom = new JPanel();
 		panelTabDatiObbligatori.add(panelRegProvCom, "1, 6, fill, fill");
 		panelRegProvCom.setLayout(new FormLayout(new ColumnSpec[] {
@@ -280,11 +277,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("comboBoxComune", comboBoxComune);
 		listCampiForm.add(comboBoxComune);
-		comboBoxComune.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Select: Seleziona Comune");
-			}
-		});
 		lblComune.setLabelFor(comboBoxComune);
 		panelRegProvCom.add(comboBoxComune, "2, 5, left, default");
 		comboBoxComune.setToolTipText("Selezionare il comune");
@@ -497,7 +489,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnCreaScheda.setIcon(icoProcedi);
 		btnCreaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Click: Crea scheda");				
+				System.out.println("Button - Crea scheda");				
 				if(isFormValid()) { 
 					System.out.println("Form valido");
 					
@@ -514,7 +506,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 				}
 				else {
 					System.out.println("Form non valido");
-					JOptionPane.showMessageDialog(null, "Alcuni campi obbligatori non sono stati compilati.");
+					JOptionPane.showMessageDialog(null, ModalWindowsDialogs[8]);
 				}
 			}
 		});
@@ -528,7 +520,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnResettaPannelloCreazioneScheda.setIcon(icoResetta);
 		btnResettaPannelloCreazioneScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Click: Resetta");
+				System.out.println("Button - Resetta");
 				resettaForm();
 			}
 		});
@@ -584,7 +576,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(btnImmagine1);
 		btnImmagine1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Click: Immmagine 1");
+				System.out.println("Button - Immagine 1");
 				selezionaImmagine(textFieldImmagine1);
 			}
 		});
@@ -602,7 +594,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(btnImmagine2);
 		btnImmagine2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Click: Immmagine 2");
+				System.out.println("Button - Immagine 2");
 				selezionaImmagine(textFieldImmagine2);
 			}
 		});
@@ -620,7 +612,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(btnImmagine3);
 		btnImmagine3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Click: Immmagine 3");
+				System.out.println("Button - Immagine 3");
 				selezionaImmagine(textFieldImmagine3);
 			}
 		});
@@ -638,7 +630,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(btnImmagine4);
 		btnImmagine4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Click: Immmagine 4");
+				System.out.println("Button - Immagine 4");
 				selezionaImmagine(textFieldImmagine4);
 			}
 		});
@@ -656,7 +648,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(btnImmagine5);
 		btnImmagine5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Click: Immmagine 5");
+				System.out.println("Button - Immagine 5");
 				selezionaImmagine(textFieldImmagine5);
 			}
 		});
@@ -674,7 +666,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(btnImmagine6);
 		btnImmagine6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Click: Immmagine 6");
+				System.out.println("Button - Immagine 6");
 				selezionaImmagine(textFieldImmagine6);
 			}
 		});
@@ -692,7 +684,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(btnImmagine7);
 		btnImmagine7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Click: Immmagine 7");
+				System.out.println("Button - Immagine 7");
 				selezionaImmagine(textFieldImmagine7);
 			}
 		});
@@ -710,7 +702,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(btnImmagine8);
 		btnImmagine8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Click: Immmagine 8");
+				System.out.println("Button - Immagine 8");
 				selezionaImmagine(textFieldImmagine8);
 			}
 		});
@@ -728,7 +720,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(btnImmagine9);
 		btnImmagine9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Click: Immmagine 9");
+				System.out.println("Button - Immagine 9");
 				selezionaImmagine(textFieldImmagine9);
 			}
 		});
@@ -746,7 +738,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(btnImmagine10);
 		btnImmagine10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Click: Immmagine 10");
+				System.out.println("Button - Immagine 10");
 				selezionaImmagine(textFieldImmagine10);
 			}
 		});
@@ -1075,7 +1067,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		//Rimuovo tutte le opzioni della select Comune
 		comboBoxComune.removeAllItems();
 		if(!regione.equals(arrayRegioni[0])) {
-			System.out.println("Regione: " + regione);
+			System.out.println("Regione selezionata: " + regione);
 			comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get(regione)));
 		}	
 	}
@@ -1083,7 +1075,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	//Popola la combobox Comune quando viene modificata la Provincia
 	static void popolaComboBoxComune(String provincia) {
 		if(!provincia.equals(arrayProvincie[0])) {
-			System.out.println("Provincia: " + provincia);
+			System.out.println("Provincia selezionata: " + provincia);
 			comboBoxComune.setModel(new DefaultComboBoxModel<String>(provinciaComuni.get(provincia)));
 		}
 	}
@@ -1125,7 +1117,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
                 relatedTextField.setEnabled(false);
             }
             else {
-            	JOptionPane.showMessageDialog(null, "Formato di file non valido: le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega.");
+            	JOptionPane.showMessageDialog(null, ModalWindowsDialogs[9]);
             }	
         }
 	}
@@ -1249,7 +1241,9 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	j2web_GUI.listSchedeImmobile.add(scheda);
 		
 	//Aggiorno il file dat delle schede
-    try {
+	j2web.salvaListPortaliSuDat(datFilePath, j2web_GUI.listSchedeImmobile);
+	
+    /*try {
 	   File file = new File(datFilePath);
     	if(file.exists()) {
     		System.out.println("File .dat schede trovato.");
@@ -1270,7 +1264,8 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		} catch (IOException e1) {
 			JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat schede: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
-		}
+		}*/
+		
 	}
 	
 	
@@ -1321,79 +1316,19 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	  	comboBoxGiardino.setSelectedIndex(scheda.comboBoxGiardinoIndex); //11
 	  	
 	  	//Checkbox
-		if (scheda.bandaLarga) {
-			chckbxBandaLarga.setSelected(true);
-		}
-		else {
-			chckbxBandaLarga.setSelected(false);
-		}
-		
-		if (scheda.ascensore) {
-			chckbxAscensore.setSelected(true);
-		}
-		else {
-			chckbxAscensore.setSelected(false);
-		}
-		
-		if (scheda.casaEcologica) {
-			chckbxCasaEcologica.setSelected(true);
-		}
-		else {
-			chckbxCasaEcologica.setSelected(false);
-		}
-		
-		if (scheda.vicinanzeBus) {
-			chckbxVicinanzeBus.setSelected(true);
-		}
-		else {
-			chckbxVicinanzeBus.setSelected(false);
-		}
-		
-		if (scheda.vistaDiPregio) {
-			chckbxVistaDiPregio.setSelected(true);
-		}
-		else {
-			chckbxVistaDiPregio.setSelected(false);
-		}
-		
-		if (scheda.satellite) {
-			chckbxSatellite.setSelected(true);
-		}
-		else {
-			chckbxSatellite.setSelected(false);
-		}
-		
-		if (scheda.sistemaDiAllarme) {
-			chckbxSistemaDiAllarme.setSelected(true);
-		}
-		else {
-			chckbxSistemaDiAllarme.setSelected(false);
-		}
-		
-		if (scheda.cancelloElettrico) {
-			chckbxCancelloElettrico.setSelected(true);
-		}
-		else {
-			chckbxCancelloElettrico.setSelected(false);
-		}
-		
-		if (scheda.vicinanzeMetro) {
-			chckbxVicinanzeMetro.setSelected(true);
-		}
-		else {
-			chckbxVicinanzeMetro.setSelected(false);
-		}
-		
-		if (scheda.rampePerDisabili) {
-			chckbxRampePerDisabili.setSelected(true);
-		}
-		else {
-			chckbxRampePerDisabili.setSelected(false);
-		}
+	  	chckbxBandaLarga.setSelected(scheda.bandaLarga);
+	  	chckbxAscensore.setSelected(scheda.ascensore);
+	  	chckbxCasaEcologica.setSelected(scheda.casaEcologica);
+	  	chckbxVicinanzeBus.setSelected(scheda.vicinanzeBus);
+	  	chckbxVistaDiPregio.setSelected(scheda.vistaDiPregio);
+	  	chckbxSatellite.setSelected(scheda.satellite);
+	  	chckbxSistemaDiAllarme.setSelected(scheda.sistemaDiAllarme);
+	  	chckbxCancelloElettrico.setSelected(scheda.cancelloElettrico);
+	  	chckbxVicinanzeMetro.setSelected(scheda.vicinanzeMetro);
+	  	chckbxRampePerDisabili.setSelected(scheda.rampePerDisabili);
 	  	//TOT:56
 
-	    disabilitaCampiForm();
-	    
+	    disabilitaCampiForm();	    
 	    
 	}   //Fine metodo mostraSchedaSalvata
         

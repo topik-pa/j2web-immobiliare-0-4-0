@@ -1,8 +1,10 @@
 import java.awt.EventQueue;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
@@ -52,6 +54,32 @@ public class j2web implements parametriGenerali {
 		System.out.print(" fatto." + "\n");
 	}
 	
+	
+	//Caricamento da dat
+	@SuppressWarnings("unchecked")
+	public static void caricaListPortaliDaDat(String datFilePath, LinkedList<SchedaImmobile> listSchedeImmobile) {
+		File file = new File(datFilePath);
+    	if(file.exists() && file.length()!=0) {
+    			System.out.print("File .dat schede trovato. Caricamento dati...");
+    			try {
+    				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
+    				j2web_GUI.listSchedeImmobile = (LinkedList<SchedaImmobile>)inputFile.readObject();
+    				inputFile.close();
+    			} catch (FileNotFoundException e) {
+    				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[1], "Errore", JOptionPane.ERROR_MESSAGE);
+    				e.printStackTrace();
+    			} catch (IOException e) {
+    				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[2], "Errore", JOptionPane.ERROR_MESSAGE);
+    				e.printStackTrace();
+    			} catch (ClassNotFoundException e) {
+    				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[12], "Errore", JOptionPane.ERROR_MESSAGE);
+    			}
+    			System.out.print(" fatto." + "\n");
+    		}   				
+    	else {
+    		System.out.println("File .dat schede non trovato.");
+    	}
+	}
 	
 	//Salvataggio su dat
 	public static void salvaListPortaliSuDat(String datFilePath, LinkedList<SchedaImmobile> listSchedeImmobile) {
