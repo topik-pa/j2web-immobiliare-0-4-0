@@ -244,7 +244,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(comboBoxRegione);
 		comboBoxRegione.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Select: Seleziona Regione");
+				//System.out.println("Select: Seleziona Regione");
 				//Chiamo il metodo per popolare la combobox delle provincie
 				popolaComboBoxProvincia((String)comboBoxRegione.getSelectedItem());				
 			}
@@ -262,7 +262,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(comboBoxProvincia);
 		comboBoxProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Select: Seleziona Provincia");
+				//System.out.println("Select: Seleziona Provincia");
 				//Chiamo il metodo per popolare la combobox dei comuni
 				popolaComboBoxComune((String)comboBoxProvincia.getSelectedItem());
 			}
@@ -377,7 +377,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		listCampiForm.add(comboBoxCategoriaImmobile);
 		comboBoxCategoriaImmobile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Select: Seleziona Categoria immobile");
+				//System.out.println("Select: Seleziona Categoria immobile");
 				//Chiamo il metodo per popolare la combobox delle provincie
 				popolaComboBoxTipologiaImmobile((String)comboBoxCategoriaImmobile.getSelectedItem());	
 			}
@@ -1067,7 +1067,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		//Rimuovo tutte le opzioni della select Comune
 		comboBoxComune.removeAllItems();
 		if(!regione.equals(arrayRegioni[0])) {
-			System.out.println("Regione selezionata: " + regione);
+			//System.out.println("Regione selezionata: " + regione);
 			comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get(regione)));
 		}	
 	}
@@ -1075,14 +1075,14 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	//Popola la combobox Comune quando viene modificata la Provincia
 	static void popolaComboBoxComune(String provincia) {
 		if(!provincia.equals(arrayProvincie[0])) {
-			System.out.println("Provincia selezionata: " + provincia);
+			//System.out.println("Provincia selezionata: " + provincia);
 			comboBoxComune.setModel(new DefaultComboBoxModel<String>(provinciaComuni.get(provincia)));
 		}
 	}
 	
 	//Popola la combobox Categoria immobile quando viene modificata la Tipologia immobile
 	static void popolaComboBoxTipologiaImmobile(String categoria) {
-		System.out.println("Categoria: " + categoria);
+		//System.out.println("Categoria: " + categoria);
 		switch (categoria)
 		{
 	    case "Residenziale":
@@ -1241,7 +1241,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	j2web_GUI.listSchedeImmobile.add(scheda);
 		
 	//Aggiorno il file dat delle schede
-	j2web.salvaListPortaliSuDat(datFilePath, j2web_GUI.listSchedeImmobile);
+	j2web.salvaListPortaliSuDat();
 	
     /*try {
 	   File file = new File(datFilePath);

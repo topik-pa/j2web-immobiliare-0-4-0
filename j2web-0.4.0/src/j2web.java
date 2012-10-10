@@ -57,7 +57,7 @@ public class j2web implements parametriGenerali {
 	
 	//Caricamento da dat
 	@SuppressWarnings("unchecked")
-	public static void caricaListPortaliDaDat(String datFilePath, LinkedList<SchedaImmobile> listSchedeImmobile) {
+	public static void caricaListPortaliDaDat() {
 		File file = new File(datFilePath);
     	if(file.exists() && file.length()!=0) {
     			System.out.print("File .dat schede trovato. Caricamento dati...");
@@ -82,13 +82,13 @@ public class j2web implements parametriGenerali {
 	}
 	
 	//Salvataggio su dat
-	public static void salvaListPortaliSuDat(String datFilePath, LinkedList<SchedaImmobile> listSchedeImmobile) {
+	public static void salvaListPortaliSuDat() {
 		try {
 		   File file = new File(datFilePath);
 	    	if(file.exists()) {
 	    		System.out.print("File .dat schede trovato. Salvataggio dati...");
 	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-				outputFile.writeObject(listSchedeImmobile);
+				outputFile.writeObject(j2web_GUI.listSchedeImmobile);
 				outputFile.close();
 				System.out.print(" fatto." + "\n");
 	    	}
@@ -96,7 +96,7 @@ public class j2web implements parametriGenerali {
 				FileOutputStream newFile = new FileOutputStream(datFilePath);
 				System.out.print("File .dat non schede trovato. Creazione del file..." + newFile.toString());
 				ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-				outputFile.writeObject(listSchedeImmobile);
+				outputFile.writeObject(j2web_GUI.listSchedeImmobile);
 				outputFile.close();
 				System.out.print(" fatto." + "\n");
 	    	}
