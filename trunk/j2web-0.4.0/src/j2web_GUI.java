@@ -132,7 +132,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 					    } else if (response == JOptionPane.YES_OPTION) {
 					    	//Elimino tutte le schede e salvo su dat
 					    	j2web_GUI.listSchedeImmobile.clear();
-					    	j2web.salvaListPortaliSuDat(datFilePath, j2web_GUI.listSchedeImmobile);
+					    	j2web.salvaListPortaliSuDat();
 							/*try {
 							   File file = new File(datFilePath);
 						    	if(file.exists()) {

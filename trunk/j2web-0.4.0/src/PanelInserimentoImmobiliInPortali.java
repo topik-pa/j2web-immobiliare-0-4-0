@@ -62,9 +62,8 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
     	panelInserimentoInDefaultMode();
 
     }   //Fine costruttore PannelloInserimento
-        
-  
-        //Update del pannello, eseguito alla selezione di una scheda sul pannello centrale e dopo l'inserimento/rimozione di una scheda in un portale
+          
+    //Update del pannello, eseguito alla selezione di una scheda sul pannello centrale e dopo l'inserimento/rimozione di una scheda in un portale
     public void updatePanello(final SchedaImmobile scheda, final boolean selectAllSelected) {
     	
     	//Rimuovo tutti i portali dalle liste sequenziali
@@ -149,12 +148,12 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
     	add(Box.createVerticalGlue());
     }
 
-    public void panelInserimentoInActiveMode(final SchedaImmobile scheda, final boolean selectAll) {
+    public void panelInserimentoInActiveMode(final SchedaImmobile scheda, final boolean selectAllSelected) {
     	
     	add(Box.createVerticalStrut(5));
     	      	
     	//Pannello controllo portali (primo in alto)
-    	panelInserimentoSequenziale = new PanelInserimentoSequenziale(scheda, selectAll);     		        
+    	panelInserimentoSequenziale = new PanelInserimentoSequenziale(scheda, selectAllSelected);     		        
         add(panelInserimentoSequenziale); 
         
         add(Box.createVerticalStrut(10));
@@ -163,7 +162,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
      	while(iterator.hasNext()) {	     		
      		final PortaleImmobiliare portaleCorrente = iterator.next();
-     		InserimentoPortale inserimentoPortale = new InserimentoPortale(portaleCorrente, scheda, selectAll);
+     		InserimentoPortale inserimentoPortale = new InserimentoPortale(portaleCorrente, scheda, selectAllSelected);
      		add(inserimentoPortale);
      	}
      	
@@ -171,7 +170,11 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
     	add(Box.createVerticalGlue());        	
     }
       
-  //Gestione degli errori
+    
+    
+    
+    
+    //Gestione degli errori
     public static void manageErrors(Exception e, String errorType) {
     	//String errorType = e.getClass().getName();
     	
@@ -193,7 +196,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         e.printStackTrace();
     }
     
-  //Invio mail in caso di errori runtime
+    //Invio mail in caso di errori runtime
   	static void sendErrorMail(String stackTrace, String errorCode)   {
   				
   		final String USERNAME = BACKEND_EMAIL;
@@ -229,7 +232,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
   		}
   	}
   	
-  //printStackTrace into String
+  	//printStackTrace into String
     public static String readStackTrace(Exception e) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
@@ -492,7 +495,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
      					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
      					portale.inserisciScheda(scheda);
      				}
-     				catch (HttpCommunicationException e1 ) {
+     				catch (HttpCommunicationException e1) {
      					PanelInserimentoImmobiliInPortali.manageErrors(e1, e1.getExceptionType());
      		            return;
      				}
