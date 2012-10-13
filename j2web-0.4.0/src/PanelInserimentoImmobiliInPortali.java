@@ -44,7 +44,6 @@ import javax.swing.border.TitledBorder;
 public class PanelInserimentoImmobiliInPortali extends JPanel implements parametriGenerali {
 	private static final long serialVersionUID = 1L;
 
-	//Elementi del pannello
 	PanelInserimentoSequenziale panelInserimentoSequenziale;
 	JPanel panelInserimentoPortale;
       
@@ -251,9 +250,15 @@ class PanelInserimentoSequenziale extends JPanel implements parametriGenerali {
 	
 	private static final long serialVersionUID = 1L;
 	
+	String labelBtnInserisciTutti = "<html><p style=\"text-align:center;\">Inserisci scheda <br/>nei portali selezionati</p></html>";
+    String labelBtnCancellaTutti = "<html><p style=\"text-align:center;\">Cancella scheda <br/> dai portali selezionati</p></html>";
+    String labelCheckboxSelezionaTutti = "<html><div style=\"text-align:center;\">Seleziona tutti</div></html>";
+	
 	JButton btnInserisciTuttiIPortali;
 	JButton btnCancellaTuttiIPortali;
 	JCheckBox checkboxSelezionaTutti;
+	
+	String labelSpaziatore = "   "; 
 	
 	//Pannello inserimento sequenziali nel caso di nessun portale selezionato
 	public PanelInserimentoSequenziale() {
@@ -410,6 +415,13 @@ class PanelInserimentoSequenziale extends JPanel implements parametriGenerali {
 class InserimentoPortale extends JPanel implements parametriGenerali {
 	
 	private static final long serialVersionUID = 1L;
+	
+	String labelCheckboxSelezionaPortale = "Seleziona portale";
+    String labelBtnInserisci = "Inserisci";
+    String labelBtnVisualizza = "Visualizza";
+    String labelBtnCancella = "Cancella";
+    
+    String labelSpaziatore = "   "; 
 	
 	JButton btnInserisci;
 	JButton btnVisualizza;

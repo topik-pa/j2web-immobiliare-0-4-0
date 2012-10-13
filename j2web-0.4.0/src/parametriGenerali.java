@@ -58,20 +58,6 @@ public interface parametriGenerali {
     //Formato immagini consentito
     final String format=".jpg";
     
-    String labelSpaziatore = "   ";
-    
-    //Elementi del pannello di DX        
-    String labelBtnInserisciTutti = "<html><p style=\"text-align:center;\">Inserisci scheda <br/>nei portali selezionati</p></html>";
-    String labelBtnCancellaTutti = "<html><p style=\"text-align:center;\">Cancella scheda <br/> dai portali selezionati</p></html>";
-    String labelCheckboxSelezionaTutti = "<html><div style=\"text-align:center;\">Seleziona tutti</div></html>";
-    String labelCheckboxSelezionaPortale = "Seleziona portale";
-    String labelBtnInserisci = "Inserisci";
-    String labelBtnVisualizza = "Visualizza";
-    String labelBtnCancella = "Cancella";  
-    
-    //Elementi del pannello MID
-    String labelNessunaScheda ="Non \u00e8 stata inserita alcuna scheda immobile";
-    
     //Le seguenti mappe contengono il nome della Regione/Provincia e le/i rispettive/i Provincie/Comuni - vengono inizializzate nel main all'avvio di j2web
   	Map<String,String[]> regioneProvincie = new Hashtable<String,String[]>();
   	Map<String,String[]> provinciaComuni =  new Hashtable<String,String[]>();
