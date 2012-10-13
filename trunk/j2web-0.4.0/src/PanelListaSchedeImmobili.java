@@ -28,8 +28,11 @@ import javax.swing.border.TitledBorder;
 
 
 //Pannello per la gestione delle schede immobile create dall'utente
-public class PanelListaSchedeImmobili extends JPanel implements parametriGenerali {
+public class PanelListaSchedeImmobili extends JPanel {
+	
 	private static final long serialVersionUID = 1L;
+	
+	String labelNessunaScheda ="Non \u00e8 stata inserita alcuna scheda immobile";
 	
 	public ButtonGroup radioGrpSchede = new ButtonGroup();	//Serve per raggruppare i radio button in una struttura coerente 
 
@@ -138,6 +141,8 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
 	Long idScheda;
 	String codiceScheda;
 	JButton btnCancellaScheda;
+	
+	String labelSpaziatore = "   "; 
 	
 	 public PannelloSchedaImmobile(final SchedaImmobile scheda, final LinkedList<SchedaImmobile> listaSchedeImmobile, final ButtonGroup radioGrpSchede) { // l'attributo final è stato suggerito dal debugger, da rivedere...
 		 this.scheda = scheda;

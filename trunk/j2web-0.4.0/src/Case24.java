@@ -13,8 +13,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import javax.swing.JOptionPane;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -46,55 +49,47 @@ public class Case24 extends PortaleImmobiliare {
 
     //Parametri generali
 	private final String NOMEPORTALE = "case24.it";
+	private final String SESSIONCOOKIENAME = "PHPSESSID";
+	private final String SESSIONCOOKIEDOMAIN = "www.case24.it";
 	private final String URL_ROOT = "http://www.case24.it";
 	private final String USERNAME = "vgltoove@sharklasers.com";
     private final String PASSWORD = "nki9stjl";
     private final String CODICE_CLIENTE ="1340103900";
-    private final String USER_AGENT = "Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20100101 Firefox/12.0";
-    private String SESSIONCOOKIE_HEADER = "";
+    
+    /*private String SESSIONCOOKIE_HEADER = "";
     private String SESSIONCOOKIE_NAME = "";
     private String SESSIONCOOKIE_VALUE = "";
-    private String SESSIONCOOKIE_DOMAIN = "www.case24.it";  
+    private String SESSIONCOOKIE_DOMAIN = "www.case24.it";  */
     private String CODICEINSERZIONE;    
-    private String NOME_IMMAGINE_1;
+    /*private String NOME_IMMAGINE_1;
     private String NOME_IMMAGINE_2;
     private String NOME_IMMAGINE_3;
     private String NOME_IMMAGINE_4;
     private String NOME_IMMAGINE_5;
     private String NOME_IMMAGINE_6;
-    private boolean INSERIMENTO_OK = false;
+    private boolean INSERIMENTO_OK = false;*/
     
-    //Parametri scheda (elaborati in base al portale)
-    String data_annuncio = "";
-    String no_reload = "";
-    String rif_agenzia = "";
-    String codice_provincia_inserzione = "";
-    String codice_comune_inserzione = "";
-    String nameComune = "";
-    String indirizzo = "";
-    String tipo_proposta = "";
-    String tipo_immobile = "";
-    String superficie = "";
-    String prezzo = "";
-    String numero_camere_bis = "";
-    String numero_bagni = "";
-    String descrizione = "";
-    String stato_immobile ="";
-    String riscaldamento="";
-    String tipologia_giardino="";
-    String classe_energetica ="";
+
+    Map<String,String> mappaDeiParamerti =  new Hashtable<String,String>();
+    
+    List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+    
+    
 
     //La scheda immobile su cui si lavora
     SchedaImmobile scheda;   	
     
 	//Costruttore
 	public Case24 (String urlIcona, String valoreLabel, String idPortale) {		
-		super(urlIcona, valoreLabel, idPortale);			
+		super(urlIcona, valoreLabel, idPortale);
+		
+		
+	
 	}
 
 	
 	//GET della home page
-	private void connessione_0(HttpGet httpget) throws IOException, HttpResponseException {
+	/*private void connessione_0(HttpGet httpget) throws IOException, HttpResponseException {
         System.out.println("CONNESSIONE 0");
     	HttpClient httpclient = new DefaultHttpClient();
 
@@ -150,12 +145,12 @@ public class Case24 extends PortaleImmobiliare {
         // shut down the connection manager to ensure
         // immediate deallocation of all system resources
         httpclient.getConnectionManager().shutdown();
-    }
+    }*/
     
     	
 	
 	//GET della pagina di login
-    private void connessione_1(HttpGet httpget) throws IOException, HttpResponseException {
+    /*private void connessione_1(HttpGet httpget) throws IOException, HttpResponseException {
     	System.out.println("CONNESSIONE 1");
     	HttpClient httpclient = new DefaultHttpClient();
 
@@ -211,12 +206,12 @@ public class Case24 extends PortaleImmobiliare {
         // shut down the connection manager to ensure
         // immediate deallocation of all system resources
         httpclient.getConnectionManager().shutdown();
-    }
+    }*/
     
     
     
     //GET della pagina "Area Riservata"
-    private void connessione_2(HttpGet httpget) throws IOException, HttpResponseException {
+    /*private void connessione_2(HttpGet httpget) throws IOException, HttpResponseException {
     	System.out.println("CONNESSIONE 2");
     	HttpClient httpclient = new DefaultHttpClient();
         	
@@ -291,12 +286,12 @@ public class Case24 extends PortaleImmobiliare {
         // shut down the connection manager to ensure
         // immediate deallocation of all system resources
         httpclient.getConnectionManager().shutdown();
-    }
+    }*/
     
 
     
     //GET della pagina "Inserisci annuncio" (step 1)
-    private void connessione_3(HttpGet httpget) throws IOException, HttpResponseException {
+    /*private void connessione_3(HttpGet httpget) throws IOException, HttpResponseException {
     	System.out.println("CONNESSIONE 3");
     	HttpClient httpclient = new DefaultHttpClient();
         	
@@ -361,12 +356,12 @@ public class Case24 extends PortaleImmobiliare {
         // shut down the connection manager to ensure
         // immediate deallocation of all system resources
         httpclient.getConnectionManager().shutdown();
-    }
+    }*/
     
     
     
     //POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
-    private void connessione_4(HttpPost httppost) throws IOException, HttpResponseException, WrongPostDataException {
+    /*private void connessione_4(HttpPost httppost) throws IOException, HttpResponseException, WrongPostDataException {
     	System.out.println("CONNESSIONE 4");
     	HttpClient httpclient = new DefaultHttpClient();
 
@@ -395,7 +390,7 @@ public class Case24 extends PortaleImmobiliare {
 
         //Add request parameters
         List<NameValuePair> postParameters = new ArrayList<NameValuePair>();       
-        postParameters.add(new BasicNameValuePair("inserisci_annuncio", "1"));
+        postParameters.add(new BasicNameValuePair("", "1"));
         postParameters.add(new BasicNameValuePair("x", "10"));
         postParameters.add(new BasicNameValuePair("y", "10"));
         //Stampa dei parametri inviati
@@ -443,12 +438,12 @@ public class Case24 extends PortaleImmobiliare {
         // shut down the connection manager to ensure
         // immediate deallocation of all system resources
         httpclient.getConnectionManager().shutdown();
-    }
+    }*/
     
     
     
     //GET di una pagina per passargli il codice agenzia e riferimento annuncio
-    private void connessione_5(HttpGet httpget) throws IOException, HttpResponseException {
+    /*private void connessione_5(HttpGet httpget) throws IOException, HttpResponseException {
     	System.out.println("CONNESSIONE 5");
     	HttpClient httpclient = new DefaultHttpClient();
         	
@@ -513,11 +508,11 @@ public class Case24 extends PortaleImmobiliare {
         // shut down the connection manager to ensure
         // immediate deallocation of all system resources
         httpclient.getConnectionManager().shutdown();
-    }
+    }*/
     	
     
     //POST di inserimento immmagine
-  	private void connessione_6(String index, File image) throws IOException {
+  	/*private void connessione_6(String index, File image) throws IOException {
   		System.out.println("\n\n\n");
     	System.out.println("######################\n######################\n######################");
     	System.out.println("\n\n\n");
@@ -594,11 +589,11 @@ public class Case24 extends PortaleImmobiliare {
         System.out.println("METODO: " + connessione6.getRequestMethod());                     
         connessione6.getRequestHeaders();
         connessione6.getResponseHeaders();
-  	}
+  	}*/
 
   	
     //POST dello step 1 (ed unico...)
-    private void connessione_7(HttpPost httppost) throws IOException, HttpResponseException, WrongPostDataException {
+    /*private void connessione_7(HttpPost httppost) throws IOException, HttpResponseException, WrongPostDataException {
     	System.out.println("CONNESSIONE 7");
     	HttpClient httpclient = new DefaultHttpClient();
 
@@ -773,12 +768,12 @@ public class Case24 extends PortaleImmobiliare {
         // shut down the connection manager to ensure
         // immediate deallocation of all system resources
         httpclient.getConnectionManager().shutdown();
-    }
+    }*/
     
     
     
     //POST della pagina Gestione annunci per eliminare un annuncio
-    private void connessione_8(HttpPost httppost) throws IOException, HttpResponseException, WrongPostDataException {
+    /*private void connessione_8(HttpPost httppost) throws IOException, HttpResponseException, WrongPostDataException {
     	System.out.println("CONNESSIONE 8");
     	HttpClient httpclient = new DefaultHttpClient();
 
@@ -858,7 +853,7 @@ public class Case24 extends PortaleImmobiliare {
         // shut down the connection manager to ensure
         // immediate deallocation of all system resources
         httpclient.getConnectionManager().shutdown();
-    }
+    }*/
     
 
 
@@ -869,70 +864,120 @@ public class Case24 extends PortaleImmobiliare {
     	//Inizializzazione parametri
     	this.scheda=scheda;
     	
-    	//Valorizzazione parametri da inviare
-    	valutaParametri();
+    	//Inizializza i parametri http del portale 
+    	inizializzaParametri();
     	
     	
     	    	
     	//Connessione 0 - GET della home page
+    	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
+    	try {
+			connessione_0.get(URL_ROOT);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	//Connessione 1 - GET della pagina di login
+    	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
+    	try {
+			connessione_1.get(URL_ROOT + "/mycase24-areariservata-vendita-appartamenti.php");
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	//Connessione 2 - GET della pagina "Area Riservata"
+    	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
+    	try {
+			connessione_2.get(URL_ROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, SESSIONCOOKIENAME);
+		} catch (IOException | HttpResponseException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	//Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
+    	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
+    	try {
+    		connessione_3.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
+			connessione_3.get(URL_ROOT + "/area_clienti/annunci.php?pagina=1");
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	//Connessione 4 - POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
+    	HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();
+    	
+    	postParameters = new ArrayList<NameValuePair>();          
+        postParameters.add(new BasicNameValuePair("inserisci_annuncio", mappaDeiParamerti.get("inserisci_annuncio")));
+        postParameters.add(new BasicNameValuePair("x", mappaDeiParamerti.get("x")));
+        postParameters.add(new BasicNameValuePair("y", mappaDeiParamerti.get("y")));
+    	
         try {
+			connessione_4.post(URL_ROOT + "/area_clienti/annunci.php?pagina=1", postParameters);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	finally {
+    		postParameters.clear();
+    	}
+    	
+    	
+        /*try {
 			connessione_0(new HttpGet(URL_ROOT));
 		} catch (IOException | HttpResponseException e ) {
 			throw new HttpCommunicationException(e);
 			//manageErrors(e, 1);
             //return;
-		}
+		}*/
         
         
         
         //Connessione 1 - GET della pagina di login
-        try {
+        /*try {
 			connessione_1(new HttpGet(URL_ROOT + "/mycase24-areariservata-vendita-appartamenti.php"));
 		} catch (IOException | HttpResponseException e ) {
 			manageErrors(e, 2);
             return;
-		}
+		}*/
         
         
         
         //Connessione 2 - GET della pagina "Area Riservata"
-        try {
+        /*try {
 			connessione_2(new HttpGet(URL_ROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD));
 		} catch (IOException | HttpResponseException e ) {
 			manageErrors(e, 3);
             return;
-		}
+		}*/
         
         
         
         //Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
-        try {
+        /*try {
 			connessione_3(new HttpGet(URL_ROOT + "/area_clienti/annunci.php?pagina=1"));
 		} catch (IOException | HttpResponseException e ) {
 			manageErrors(e, 3);
             return;
-		}
+		}*/
         
         
         
         //Connessione 4 - POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
-    	try {
+    	/*try {
 			connessione_4(new HttpPost(URL_ROOT + "/area_clienti/annunci.php?pagina=1"));
 		} catch (IOException | HttpResponseException | WrongPostDataException e ) {
 			manageErrors(e, 3);
             return;
-		}
+		}*/
     	
     	
     	
     	//Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio
-        try {
+        /*try {
         	String encodedSchedaCodice = URLEncoder.encode(scheda.codiceInserzione,"UTF-8");
 			connessione_5(new HttpGet(URL_ROOT + "/area_clienti/include/ajax.php?edit=valida_rif_agenzia&rif_agenzia=" + encodedSchedaCodice + "&codice_inserzione=&codice_cliente=" + CODICE_CLIENTE));
 		} catch (IOException | HttpResponseException e ) {
 			manageErrors(e, 3);
             return;
-		}
+		}*/
         
         
         
@@ -990,17 +1035,17 @@ public class Case24 extends PortaleImmobiliare {
 
         
         //Connessione 7 - POST dello step 1 (e unico...)
-    	try {
+    	/*try {
 			connessione_7(new HttpPost(URL_ROOT + "/area_clienti/annunci.php?pagina=1"));
 		} catch (IOException | HttpResponseException | WrongPostDataException e ) {
 			manageErrors(e, 3);
             return;
-		}
+		}*/
     	
     	
       
     	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
-    	if(INSERIMENTO_OK) {
+    	/*if(INSERIMENTO_OK) {
     		System.out.println("Inserita in: " + NOMEPORTALE);
     		
     		//Aggiorna la lista dei portali in cui è inserita la scheda
@@ -1018,7 +1063,7 @@ public class Case24 extends PortaleImmobiliare {
     	else {
     		//Stampo a video un messaggio informativo
     		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-    	}
+    	}*/
        
 	}
 	
@@ -1048,22 +1093,22 @@ public class Case24 extends PortaleImmobiliare {
 		
 		
 		//Connessione 2 - GET della pagina "Area Riservata"
-        try {
+        /*try {
 			connessione_2(new HttpGet(URL_ROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD));
 		} catch (IOException | HttpResponseException e ) {
 			manageErrors(e, 3);
             return;
-		}
+		}*/
         
         
         
         //Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio
-    	try {
+    	/*try {
 			connessione_8(new HttpPost(URL_ROOT + "/area_clienti/annunci.php?pagina=1"));
 		} catch (IOException | HttpResponseException | WrongPostDataException e ) {
 			manageErrors(e, 3);
             return;
-		}
+		}*/
         
     	
     	
@@ -1083,26 +1128,31 @@ public class Case24 extends PortaleImmobiliare {
 	
 	
 	//Metodo per la valutazione dei parametri
-	public void valutaParametri() {
-				
-		System.out.println("--ELABORAZIONE PARAMETRI--");
-		System.out.println("----------------------------------------");
+	public void inizializzaParametri() {
+		
+		String inserisci_annuncio = "1";
+		mappaDeiParamerti.put("inserisci_annuncio", inserisci_annuncio);
+		
+		String x = "10";
+		mappaDeiParamerti.put("x", x);
+		
+		String y = "10";
+		mappaDeiParamerti.put("y", y);
 		
 		Date now = new Date();  		  
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");  
-		String data_annuncio = df.format(now); 
-		no_reload = Long.toString(now.getTime());
+		String data_annuncio = df.format(now);
+		mappaDeiParamerti.put("data_annuncio", data_annuncio);
+		
+		String no_reload = Long.toString(now.getTime());
 		no_reload = no_reload.substring(0, no_reload.length()-3);
-		System.out.println("data_annuncio: " + data_annuncio);
-		System.out.println("no_reload: " + no_reload);
+		mappaDeiParamerti.put("no_reload", no_reload);
 		
-		nameComune = scheda.comune;
-		System.out.println("nameComune: " + nameComune);
-		
-		rif_agenzia = scheda.codiceInserzione;
-		System.out.println("rif_agenzia: " + rif_agenzia);
+		String rif_agenzia = scheda.codiceInserzione;
+		mappaDeiParamerti.put("rif_agenzia", rif_agenzia);
 		
 		String provincia = scheda.provincia;
+		String codice_provincia_inserzione = "";
 		switch (provincia)
 		{
 		    case "Agrigento":
@@ -1430,20 +1480,24 @@ public class Case24 extends PortaleImmobiliare {
 		    	codice_provincia_inserzione = "056";
 		        break;		        
 		}
-	    System.out.println("codice_provincia_inserzione: " + codice_provincia_inserzione);
+		mappaDeiParamerti.put("codice_provincia_inserzione", codice_provincia_inserzione);
 		
-		
+		/*String codice_comune_inserzione = "";
 		try {
 			codice_comune_inserzione = get_codice_comune_inserzione();
-			System.out.println("codice_comune_inserzione: " + codice_comune_inserzione);
 		} catch (IOException | HttpResponseException e ) {
 			manageErrors(e, 3);
             return;
 		}
+		mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);*/
 		
-		indirizzo = scheda.indirizzoLocalita;
-		System.out.println("indirizzo: " + indirizzo);
+		String nameComune = scheda.comune;
+		mappaDeiParamerti.put("nameComune", nameComune);
 		
+		String indirizzo = scheda.indirizzoLocalita;
+		mappaDeiParamerti.put("indirizzo", indirizzo);
+		
+		String tipo_proposta = "";
 		switch (scheda.tipologiaContratto)
 		{
 		    case "Affitto":
@@ -1453,9 +1507,10 @@ public class Case24 extends PortaleImmobiliare {
 		    	tipo_proposta = "Vendita";
 		    	break;
 		}
-	    System.out.println("tipo_proposta: " + tipo_proposta);
-	    
-	    switch (scheda.tipologiaImmobile)
+		mappaDeiParamerti.put("tipo_proposta", tipo_proposta);
+		
+		String tipo_immobile = "";
+		switch (scheda.tipologiaImmobile)
 		{
 		    case "Appartamento":
 		    	tipo_immobile = "16";
@@ -1515,14 +1570,15 @@ public class Case24 extends PortaleImmobiliare {
 		    	tipo_immobile = "23";
 		        break;
 		}
-		System.out.println("tipo_immobile: " + tipo_immobile);
-				
-		superficie = scheda.superficieImmobile;
-		System.out.println("superficie: " + superficie);
+		mappaDeiParamerti.put("tipo_immobile", tipo_immobile);
 		
-		prezzo = scheda.prezzoImmobile;
-		System.out.println("prezzo: " + prezzo);
+		String superficie = scheda.superficieImmobile;
+		mappaDeiParamerti.put("superficie", superficie);
 		
+		String prezzo = scheda.prezzoImmobile;
+		mappaDeiParamerti.put("prezzo", prezzo);
+		
+		String numero_camere_bis = "";
 		switch (scheda.comboBoxNumeroCamereIndex)
 		{
 			case 0:
@@ -1546,9 +1602,10 @@ public class Case24 extends PortaleImmobiliare {
 		    default:
 		    	numero_camere_bis = "6";
 		}
-	    System.out.println("numero_camere_bis: " + numero_camere_bis);
+		mappaDeiParamerti.put("numero_camere_bis", numero_camere_bis);
 		
-	    switch (scheda.numeroBagni)
+		String numero_bagni = "";
+		switch (scheda.numeroBagni)
 		{
 		    case "1":
 		    	numero_bagni = "1";
@@ -1568,11 +1625,12 @@ public class Case24 extends PortaleImmobiliare {
 		    default:
 		    	numero_bagni = "";
 		}
-	    System.out.println("numero_bagni: " + numero_bagni);
+		mappaDeiParamerti.put("numero_bagni", numero_bagni);
 		
-	    descrizione = scheda.testoAnnuncio;
-		System.out.println("descrizione: " + descrizione);
-			
+		String descrizione = scheda.testoAnnuncio;
+		mappaDeiParamerti.put("descrizione", descrizione);
+		
+		String stato_immobile = "";
 		switch (scheda.statoImmobile)
     	{
     	    case "Nuovo":
@@ -1599,9 +1657,10 @@ public class Case24 extends PortaleImmobiliare {
     	    default:
     	    	stato_immobile = "";
     	}
-        System.out.println("stato_immobile: " + stato_immobile);
-		        
-        switch (scheda.tipologiaRiscaldamento)
+		mappaDeiParamerti.put("stato_immobile", stato_immobile);
+		
+		String riscaldamento = "";
+		switch (scheda.tipologiaRiscaldamento)
 		{
 		    case "Assente":
 		    	riscaldamento = "";
@@ -1618,9 +1677,10 @@ public class Case24 extends PortaleImmobiliare {
 		    default:
 		    	riscaldamento = "";
 		}
-	    System.out.println("riscaldamento: " + riscaldamento);
-			    
-	    switch (scheda.giardino)
+		mappaDeiParamerti.put("riscaldamento", riscaldamento);
+		
+		String tipologia_giardino = "";
+		switch (scheda.giardino)
 		{
 		    case "Assente":
 		    	tipologia_giardino = "";
@@ -1634,9 +1694,10 @@ public class Case24 extends PortaleImmobiliare {
 		    default:
 		    	tipologia_giardino = "";
 		}
-	    System.out.println("tipologia_giardino: " + tipologia_giardino);
-	    	    
-	    switch (scheda.certificazioniEnergetiche)
+		mappaDeiParamerti.put("tipologia_giardino", tipologia_giardino);
+		
+		String classe_energetica = "";
+		switch (scheda.certificazioniEnergetiche)
 		{
 		    case "Nessuna":
 		    	classe_energetica = "130";
@@ -1671,15 +1732,12 @@ public class Case24 extends PortaleImmobiliare {
 		    default:
 		    	classe_energetica = "";
 		}
-	    System.out.println("classe_energetica: " + classe_energetica);
-	    
-		
-		
+		mappaDeiParamerti.put("classe_energetica", classe_energetica);
 
 	}
 	
 
-	public String get_codice_comune_inserzione() throws ClientProtocolException, IOException, HttpResponseException {
+	/*public String get_codice_comune_inserzione() throws ClientProtocolException, IOException, HttpResponseException {
 		System.out.println("CONNESSIONE 8");
 		String valueComune = "";
     	HttpClient httpclient = new DefaultHttpClient();
@@ -1771,6 +1829,6 @@ public class Case24 extends PortaleImmobiliare {
         httpclient.getConnectionManager().shutdown();
         
         return valueComune;
-	}
+	}*/
 	
 }
