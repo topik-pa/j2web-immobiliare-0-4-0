@@ -1,9 +1,6 @@
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -11,13 +8,13 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicNameValuePair;
 
 
 public class HttpPortalPostConnection extends HttpPortalConnection {
@@ -37,7 +34,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 		
 	}
 	
-	public void post(String url, List<NameValuePair> postParameters) throws IOException {
+	public String post(String url, List<NameValuePair> postParameters) throws IOException {
 		
 		httppost = new HttpPost(url);
 		
@@ -66,15 +63,19 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         responseHeaders = response.getAllHeaders();
         
         //Print connection properties
-        printConnectionProperties();
+        printConnectionProperties(postParameters);
         
         //Close the request
         httpclient.getConnectionManager().shutdown();
        
-		
+        //Return the response body
+        String responseBody = responseHandler.handleResponse(response);
+        return responseBody;
+        
 	}
 	
-	public void post(String url, String sessionCookieName) throws IOException, HttpResponseException {
+	
+	public String post(String url, MultipartEntity reqEntity) throws IOException {
 		
 		httppost = new HttpPost(url);
 		
@@ -82,23 +83,37 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         requestHeader = new BasicHeader("User-Agent", USER_AGENT);
         httppost.addHeader(requestHeader);
         
+        //Add request parameters
+        httppost.setEntity(reqEntity);
+        
+        //Set the cookies
+        if(SESSIONCOOKIE_HEADER!=null) {
+	        BasicCookieStore cookieStore = new BasicCookieStore(); 
+	        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
+	        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
+	        cookie.setPath("/");           
+	        cookieStore.addCookie(cookie); 
+	        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
+        }
+        
         //Send the request
         response = httpclient.execute(httppost);
         
         //Get the response headers
         responseHeaders = response.getAllHeaders();
         
-        //Set the local cookie
-        setLocalCookie(sessionCookieName);
-        
         //Print connection properties
         printConnectionProperties();
         
         //Close the request
         httpclient.getConnectionManager().shutdown();
-       
+		
+        //Return the response body
+        String responseBody = responseHandler.handleResponse(response);
+        return responseBody;      
 		
 	}
+	
 	
 	public void printConnectionProperties() throws IOException {
 		
@@ -112,6 +127,79 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         System.out.println("Request method: " + httppost.getMethod());
         System.out.println("Protocol version: " + httppost.getProtocolVersion());
         System.out.println("----------------------------------------");
+        
+        //Show Cookie properties
+        System.out.println("Session cookie header: " + SESSIONCOOKIE_HEADER);
+        System.out.println("Session cookie name: " + SESSIONCOOKIE_NAME);
+        System.out.println("Session cookie value: " + SESSIONCOOKIE_VALUE);
+        System.out.println("Session cookie domain: " + SESSIONCOOKIE_DOMAIN);
+        System.out.println("----------------------------------------");
+        
+        //Show request headers
+        requestHeaders = httppost.getAllHeaders(); 
+        System.out.println("Request headers: " + requestHeaders.length + "\n");
+        for(int i=0; i<requestHeaders.length; i++) {
+        	System.out.println(requestHeaders[i]);
+        }
+        System.out.println("----------------------------------------");
+        
+        //Show response headers                          
+        System.out.println("Response status: " + response.getStatusLine());
+        System.out.println("Response headers: " + responseHeaders.length + "\n");
+        for(int i=0; i<responseHeaders.length; i++) {
+        	System.out.println(responseHeaders[i]);
+        }
+        System.out.println("----------------------------------------");
+        
+        //Show response body
+        if(response.getStatusLine().toString().contains("200")) {
+            System.out.println("Response body: \n");
+            String responseBody = responseHandler.handleResponse(response);
+            System.out.println(responseBody);
+                       
+        }
+        else {
+        	System.out.println("Nessuna risposta nel body"); 
+        }       
+        System.out.println("----------------------------------------");
+        
+        //Stampa fine connessione
+        System.out.println("\n");
+        System.out.println("----------------------------------------");
+        System.out.println("Request end");
+        System.out.println("----------------------------------------");
+        System.out.println("\n\n\n");
+        
+	}
+	
+	
+	public void printConnectionProperties(List<NameValuePair> postParameters) throws IOException {
+		
+		//Show Request URL
+		System.out.println("\n\n\n");
+        System.out.println("----------------------------------------");
+        System.out.println("Executing request: " + httppost.getURI());
+        System.out.println("----------------------------------------");
+        
+        //Show Request properties
+        System.out.println("Request method: " + httppost.getMethod());
+        System.out.println("Protocol version: " + httppost.getProtocolVersion());
+        System.out.println("----------------------------------------");
+        
+        //Show Cookie properties
+        System.out.println("Session cookie header: " + SESSIONCOOKIE_HEADER);
+        System.out.println("Session cookie name: " + SESSIONCOOKIE_NAME);
+        System.out.println("Session cookie value: " + SESSIONCOOKIE_VALUE);
+        System.out.println("Session cookie domain: " + SESSIONCOOKIE_DOMAIN);
+        System.out.println("----------------------------------------");
+        
+        //Show sent parameters
+        Iterator<NameValuePair> iterator = postParameters.iterator();
+    	while(iterator.hasNext()) {
+    		NameValuePair currentParam = (NameValuePair) iterator.next();
+    		System.out.println("Name: " + currentParam.getName() + "\tValue: " + currentParam.getValue() + "\n");
+    	}
+    	System.out.println("----------------------------------------");
         
         //Show request headers
         requestHeaders = httppost.getAllHeaders(); 

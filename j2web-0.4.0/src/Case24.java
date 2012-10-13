@@ -3,11 +3,8 @@
  * and open the template in the editor.
 */ 
 
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,23 +14,11 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.JOptionPane;
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.message.BasicHeader;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -55,808 +40,37 @@ public class Case24 extends PortaleImmobiliare {
 	private final String USERNAME = "vgltoove@sharklasers.com";
     private final String PASSWORD = "nki9stjl";
     private final String CODICE_CLIENTE ="1340103900";
-    
-    /*private String SESSIONCOOKIE_HEADER = "";
-    private String SESSIONCOOKIE_NAME = "";
-    private String SESSIONCOOKIE_VALUE = "";
-    private String SESSIONCOOKIE_DOMAIN = "www.case24.it";  */
+
     private String CODICEINSERZIONE;    
-    /*private String NOME_IMMAGINE_1;
+    private String NOME_IMMAGINE_1;
     private String NOME_IMMAGINE_2;
     private String NOME_IMMAGINE_3;
     private String NOME_IMMAGINE_4;
     private String NOME_IMMAGINE_5;
     private String NOME_IMMAGINE_6;
-    private boolean INSERIMENTO_OK = false;*/
-    
+    private String NOME_IMMAGINE_7;
+    private String NOME_IMMAGINE_8;
+    private boolean INSERIMENTO_OK = false;    
 
-    Map<String,String> mappaDeiParamerti =  new Hashtable<String,String>();
+    Map<String,String> mappaDeiParamerti;
     
-    List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-    
-    
+    List<NameValuePair> postParameters;  
 
     //La scheda immobile su cui si lavora
-    SchedaImmobile scheda;   	
+    SchedaImmobile scheda;   	   
+    
     
 	//Costruttore
 	public Case24 (String urlIcona, String valoreLabel, String idPortale) {		
 		super(urlIcona, valoreLabel, idPortale);
 		
-		
+		mappaDeiParamerti =  new Hashtable<String,String>();
+	    
+	    postParameters = new ArrayList<NameValuePair>();		
 	
 	}
 
 	
-	//GET della home page
-	/*private void connessione_0(HttpGet httpget) throws IOException, HttpResponseException {
-        System.out.println("CONNESSIONE 0");
-    	HttpClient httpclient = new DefaultHttpClient();
-
-    	//Request URL
-        System.out.println("----------------------------------------");
-        System.out.println("executing request: " + httpget.getURI());
-        System.out.println("----------------------------------------");
-        
-        //Request properties
-        System.out.println("Request method: " + httpget.getMethod());
-        System.out.println("Protocol version: " + httpget.getProtocolVersion());
-        System.out.println("----------------------------------------");
-        
-        //Add request headers
-        BasicHeader requestHeader0 = new BasicHeader("User-Agent", USER_AGENT);
-        httpget.addHeader(requestHeader0);
-        
-        //Show request headers
-        Header[] requestHeaders;
-        requestHeaders = httpget.getAllHeaders(); 
-        System.out.println("Request headers: " + requestHeaders.length + "\n");
-        for(int i=0; i<requestHeaders.length; i++) {
-        	System.out.println(requestHeaders[i]);
-        }
-        System.out.println("----------------------------------------");
-
-        //Send the request
-        HttpResponse response = httpclient.execute(httpget);
-        
-        //Show response headers
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();           
-        Header[] responseHeaders;
-        responseHeaders = response.getAllHeaders(); 
-        System.out.println("Response status: " + response.getStatusLine());
-        System.out.println("Response headers: " + responseHeaders.length + "\n");
-        for(int i=0; i<responseHeaders.length; i++) {
-        	System.out.println(responseHeaders[i]);
-        }
-        System.out.println("----------------------------------------");
-        
-        //Show response body
-        if(response.getStatusLine().toString().contains("200")) {
-            System.out.println("Response body: \n");
-            String responseBody = responseHandler.handleResponse(response);
-            System.out.println(responseBody);
-            System.out.println("----------------------------------------");            
-        }
-        else {
-        	throw(new HttpResponseException("Response code"));
-        }
-
-        // When HttpClient instance is no longer needed,
-        // shut down the connection manager to ensure
-        // immediate deallocation of all system resources
-        httpclient.getConnectionManager().shutdown();
-    }*/
-    
-    	
-	
-	//GET della pagina di login
-    /*private void connessione_1(HttpGet httpget) throws IOException, HttpResponseException {
-    	System.out.println("CONNESSIONE 1");
-    	HttpClient httpclient = new DefaultHttpClient();
-
-    	//Request URL
-        System.out.println("----------------------------------------");
-        System.out.println("executing request: " + httpget.getURI());
-        System.out.println("----------------------------------------");
-        
-        //Request properties
-        System.out.println("Request method: " + httpget.getMethod());
-        System.out.println("Protocol version: " + httpget.getProtocolVersion());
-        System.out.println("----------------------------------------");
-        
-        //Add request headers
-        BasicHeader requestHeader0 = new BasicHeader("User-Agent", USER_AGENT);
-        httpget.addHeader(requestHeader0);
-        
-        //Show request headers
-        Header[] requestHeaders;
-        requestHeaders = httpget.getAllHeaders(); 
-        System.out.println("Request headers: " + requestHeaders.length + "\n");
-        for(int i=0; i<requestHeaders.length; i++) {
-        	System.out.println(requestHeaders[i]);
-        }
-        System.out.println("----------------------------------------");
-
-        //Send the request
-        HttpResponse response = httpclient.execute(httpget);
-
-        //Show response headers
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();           
-        Header[] responseHeaders;
-        responseHeaders = response.getAllHeaders(); 
-        System.out.println("Response status: " + response.getStatusLine());
-        System.out.println("Response headers: " + responseHeaders.length + "\n");
-        for(int i=0; i<responseHeaders.length; i++) {
-        	System.out.println(responseHeaders[i]);
-        }
-        System.out.println("----------------------------------------");
-        
-        //Show response body
-        if(response.getStatusLine().toString().contains("200")) {
-            System.out.println("Response body: \n");
-            String responseBody = responseHandler.handleResponse(response);
-            System.out.println(responseBody);
-            System.out.println("----------------------------------------");                       
-        }
-        else {
-        	throw(new HttpResponseException("Response code"));
-        }
-        
-        // When HttpClient instance is no longer needed,
-        // shut down the connection manager to ensure
-        // immediate deallocation of all system resources
-        httpclient.getConnectionManager().shutdown();
-    }*/
-    
-    
-    
-    //GET della pagina "Area Riservata"
-    /*private void connessione_2(HttpGet httpget) throws IOException, HttpResponseException {
-    	System.out.println("CONNESSIONE 2");
-    	HttpClient httpclient = new DefaultHttpClient();
-        	
-    	//Request URL
-        System.out.println("----------------------------------------");
-        System.out.println("executing request " + httpget.getURI());
-        System.out.println("----------------------------------------");
-        
-        //Request properties
-        System.out.println("Request method: " + httpget.getMethod());
-        System.out.println("Protocol version: " + httpget.getProtocolVersion());
-        System.out.println("----------------------------------------");
-        
-        //Add request headers
-        BasicHeader requestHeader0 = new BasicHeader("User-Agent", USER_AGENT);  
-        httpget.addHeader(requestHeader0);            
-        
-        //Show request headers
-        Header[] requestHeaders;
-        requestHeaders = httpget.getAllHeaders(); 
-        System.out.println("Request headers: " + requestHeaders.length + "\n");
-        for(int i=0; i<requestHeaders.length; i++) {
-        	System.out.println(requestHeaders[i]);
-        }
-        System.out.println("----------------------------------------");           
-
-        //Send the request
-        HttpResponse response = httpclient.execute(httpget);
-
-        //Show response headers
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();           
-        Header[] responseHeaders;
-        responseHeaders = response.getAllHeaders(); 
-        System.out.println("Response status: " + response.getStatusLine());
-        System.out.println("Response headers: " + responseHeaders.length + "\n");       
-        boolean cookieHeaderFound = false;
-        for(int i=0; i<responseHeaders.length; i++) {       	
-        	Header currentHeader = responseHeaders[i];
-        	System.out.println(currentHeader);
-        	//Get session cookie
-        	if(currentHeader.getName().contains("Set-Cookie")) {
-        		//Cookie trovato
-        		cookieHeaderFound = true;
-        		SESSIONCOOKIE_HEADER = currentHeader.getValue();
-        		int end = SESSIONCOOKIE_HEADER.indexOf("=");
-                SESSIONCOOKIE_NAME = SESSIONCOOKIE_HEADER.substring(0, end);                   
-                int start = end + 1;
-                end = SESSIONCOOKIE_HEADER.indexOf(";");
-                SESSIONCOOKIE_VALUE = SESSIONCOOKIE_HEADER.substring(start, end);
-                System.out.println("Session cookie name: " + SESSIONCOOKIE_NAME);
-                System.out.println("Session cookie value: " + SESSIONCOOKIE_VALUE);
-        	}       	
-        }        
-        //Se non trovo le intestazioni che cerco
-    	if(!cookieHeaderFound) {
-    		throw(new HttpResponseException("Response header"));
-    	}
-        System.out.println("----------------------------------------");
-        
-        //Show response body
-        if(response.getStatusLine().toString().contains("200")) {
-	        System.out.println("Response body: \n");
-	        String responseBody = responseHandler.handleResponse(response);
-	        System.out.println(responseBody);
-	        System.out.println("----------------------------------------");
-        }
-        else {
-        	throw(new HttpResponseException("Response code"));
-        }
-
-        // When HttpClient instance is no longer needed,
-        // shut down the connection manager to ensure
-        // immediate deallocation of all system resources
-        httpclient.getConnectionManager().shutdown();
-    }*/
-    
-
-    
-    //GET della pagina "Inserisci annuncio" (step 1)
-    /*private void connessione_3(HttpGet httpget) throws IOException, HttpResponseException {
-    	System.out.println("CONNESSIONE 3");
-    	HttpClient httpclient = new DefaultHttpClient();
-        	
-    	//Request URL
-        System.out.println("----------------------------------------");
-        System.out.println("executing request " + httpget.getURI());
-        System.out.println("----------------------------------------");
-        
-        //Request properties
-        System.out.println("Request method: " + httpget.getMethod());
-        System.out.println("Protocol version: " + httpget.getProtocolVersion());
-        System.out.println("----------------------------------------");
-        
-        //Add request headers
-        BasicHeader requestHeader0 = new BasicHeader("User-Agent", USER_AGENT);  
-        httpget.addHeader(requestHeader0);            
-        
-        //Show request headers
-        Header[] requestHeaders;
-        requestHeaders = httpget.getAllHeaders(); 
-        System.out.println("Request headers: " + requestHeaders.length + "\n");
-        for(int i=0; i<requestHeaders.length; i++) {
-        	System.out.println(requestHeaders[i]);
-        }
-        System.out.println("----------------------------------------");   
-        
-        //Set the cookies
-        BasicCookieStore cookieStore = new BasicCookieStore(); 
-        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
-        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
-        cookie.setPath("/");           
-        cookieStore.addCookie(cookie); 
-        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
-
-        //Send the request
-        HttpResponse response = httpclient.execute(httpget);
-
-        //Show response headers
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();           
-        Header[] responseHeaders;
-        responseHeaders = response.getAllHeaders(); 
-        System.out.println("Response status: " + response.getStatusLine());
-        System.out.println("Response headers: " + responseHeaders.length + "\n");
-        for(int i=0; i<responseHeaders.length; i++) {
-        	Header currentHeader = responseHeaders[i];
-        	System.out.println(currentHeader);          	
-        }
-        System.out.println("----------------------------------------");
-        
-        //Show response body
-        if(response.getStatusLine().toString().contains("200")) {
-	        System.out.println("Response body: \n");
-	        String responseBody = responseHandler.handleResponse(response);
-	        System.out.println(responseBody);
-	        System.out.println("----------------------------------------");
-        }
-        else {
-        	throw(new HttpResponseException("Response code"));
-        }
-
-        // When HttpClient instance is no longer needed,
-        // shut down the connection manager to ensure
-        // immediate deallocation of all system resources
-        httpclient.getConnectionManager().shutdown();
-    }*/
-    
-    
-    
-    //POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
-    /*private void connessione_4(HttpPost httppost) throws IOException, HttpResponseException, WrongPostDataException {
-    	System.out.println("CONNESSIONE 4");
-    	HttpClient httpclient = new DefaultHttpClient();
-
-    	//Request URL
-        System.out.println("----------------------------------------");
-        System.out.println("executing request " + httppost.getURI());
-        System.out.println("----------------------------------------");
-        
-        //Request properties
-        System.out.println("Request method: " + httppost.getMethod());
-        System.out.println("Protocol version: " + httppost.getProtocolVersion());
-        System.out.println("----------------------------------------");
-        
-        //Add request headers
-        BasicHeader requestHeader0 = new BasicHeader("User-Agent", USER_AGENT);
-        httppost.addHeader(requestHeader0);
-                   
-        //Show request headers
-        Header[] requestHeaders;
-        requestHeaders = httppost.getAllHeaders(); 
-        System.out.println("Request headers: " + requestHeaders.length + "\n");
-        for(int i=0; i<requestHeaders.length; i++) {
-        	System.out.println(requestHeaders[i]);
-        }
-        System.out.println("----------------------------------------");
-
-        //Add request parameters
-        List<NameValuePair> postParameters = new ArrayList<NameValuePair>();       
-        postParameters.add(new BasicNameValuePair("", "1"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("y", "10"));
-        //Stampa dei parametri inviati
-        printSentParameters(postParameters);
-        
-        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
-        httppost.setEntity(formEntity);
-        
-        //Set the cookies
-        BasicCookieStore cookieStore = new BasicCookieStore(); 
-        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
-        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
-        cookie.setPath("/");
-        
-        cookieStore.addCookie(cookie); 
-        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
-
-        //Send the request
-        HttpResponse response = httpclient.execute(httppost);
-
-        //Show response headers
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();           
-        Header[] responseHeaders;
-        responseHeaders = response.getAllHeaders(); 
-        System.out.println("Response status: " + response.getStatusLine());
-        System.out.println("Response headers: " + responseHeaders.length + "\n");
-        for(int i=0; i<responseHeaders.length; i++) {
-        	Header currentHeader = responseHeaders[i];
-        	System.out.println(currentHeader);
-        }
-        System.out.println("----------------------------------------");
-            
-        //Show response body
-        if(response.getStatusLine().toString().contains("200")) {
-	        System.out.println("Response body: \n");
-	        String responseBody = responseHandler.handleResponse(response);
-	        System.out.println(responseBody);	        
-	        System.out.println("----------------------------------------");
-        }
-        else {
-        	throw(new HttpResponseException("Response code"));
-        }
-        
-        // When HttpClient instance is no longer needed,
-        // shut down the connection manager to ensure
-        // immediate deallocation of all system resources
-        httpclient.getConnectionManager().shutdown();
-    }*/
-    
-    
-    
-    //GET di una pagina per passargli il codice agenzia e riferimento annuncio
-    /*private void connessione_5(HttpGet httpget) throws IOException, HttpResponseException {
-    	System.out.println("CONNESSIONE 5");
-    	HttpClient httpclient = new DefaultHttpClient();
-        	
-    	//Request URL
-        System.out.println("----------------------------------------");
-        System.out.println("executing request " + httpget.getURI());
-        System.out.println("----------------------------------------");
-        
-        //Request properties
-        System.out.println("Request method: " + httpget.getMethod());
-        System.out.println("Protocol version: " + httpget.getProtocolVersion());
-        System.out.println("----------------------------------------");
-        
-        //Add request headers
-        BasicHeader requestHeader0 = new BasicHeader("User-Agent", USER_AGENT);  
-        httpget.addHeader(requestHeader0);            
-        
-        //Show request headers
-        Header[] requestHeaders;
-        requestHeaders = httpget.getAllHeaders(); 
-        System.out.println("Request headers: " + requestHeaders.length + "\n");
-        for(int i=0; i<requestHeaders.length; i++) {
-        	System.out.println(requestHeaders[i]);
-        }
-        System.out.println("----------------------------------------");   
-        
-        //Set the cookies
-        BasicCookieStore cookieStore = new BasicCookieStore(); 
-        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
-        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
-        cookie.setPath("/");           
-        cookieStore.addCookie(cookie); 
-        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
-
-        //Send the request
-        HttpResponse response = httpclient.execute(httpget);
-
-        //Show response headers
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();           
-        Header[] responseHeaders;
-        responseHeaders = response.getAllHeaders(); 
-        System.out.println("Response status: " + response.getStatusLine());
-        System.out.println("Response headers: " + responseHeaders.length + "\n");
-        for(int i=0; i<responseHeaders.length; i++) {
-        	Header currentHeader = responseHeaders[i];
-        	System.out.println(currentHeader);          	
-        }
-        System.out.println("----------------------------------------");
-        
-        //Show response body
-        if(response.getStatusLine().toString().contains("200")) {
-	        System.out.println("Response body: \n");
-	        String responseBody = responseHandler.handleResponse(response);
-	        System.out.println(responseBody);
-	        System.out.println("----------------------------------------");
-        }
-        else {
-        	throw(new HttpResponseException("Response code"));
-        }
-
-        // When HttpClient instance is no longer needed,
-        // shut down the connection manager to ensure
-        // immediate deallocation of all system resources
-        httpclient.getConnectionManager().shutdown();
-    }*/
-    	
-    
-    //POST di inserimento immmagine
-  	/*private void connessione_6(String index, File image) throws IOException {
-  		System.out.println("\n\n\n");
-    	System.out.println("######################\n######################\n######################");
-    	System.out.println("\n\n\n");
-        System.out.println("CONNESSIONE 6 - VECCHIO METODO");                               
-          
-        //URL a cui si accede
-        String serverAccesso = URL_ROOT + "/area_clienti/include/upload_foto.php?i=" + index + "&codice_cliente=" + CODICE_CLIENTE;
-        	
-        //Impostazione della connessione alla risorsa
-        httpRequest connessione6 = new httpRequest(serverAccesso);
-        
-        //Definizione del request method
-        connessione6.setconnectionProperty("POST");
-        
-        //Recupero nome e valore cookie
-        //nomeCookie = connessione2.getHeaderNameByIndex(3);      //Nome del cookie ricevuto dopo l'inserimento delle credenziali di accesso
-        //valoreCookie = connessione2.getHeaderValueByIndex(3);   //Valore del cookie ricevuto dopo l'inserimento delle credenziali di accesso
-        
-        //Inserimento cookie
-        connessione6.setCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
-        connessione6.postCookies();
-        
-        //Inserimento parametri (POST)
-        connessione6.setParameter("image_" + index, image);        
-                      
-        //Invio della richiesta e stampa a video della risorsa creata
-        System.out.println("\n\n######################\n\n");
-        System.out.println("Stampa della risorsa 6...");
-        BufferedReader rd1 = new BufferedReader(new InputStreamReader(connessione6.post()));
-        String line1;   //Per visualizzare la risorsa Web generata
-        while ((line1 = rd1.readLine()) != null) {
-          //Process line...
-          System.out.println(line1);
-          
-          boolean control = true;
-          int start;
-          int end;
-          if(line1.contains("document.formAnnuncio.foto_tmp_") && control) {
-        	  start = line1.indexOf("value='")+7;
-        	  end = line1.indexOf("';");
-        	  switch (index)
-      		{
-      		    case "0":
-      		    	NOME_IMMAGINE_1 = line1.substring(start, end);
-      		    	control=false;
-      		        break;
-      		    case "1":
-      		    	NOME_IMMAGINE_2 = line1.substring(start, end);
-      		    	control=false;
-      		    	break;
-      		    case "2":
-      		    	NOME_IMMAGINE_3 = line1.substring(start, end);
-      		    	control=false;
-      		    	break;
-      		    case "3":
-      		    	NOME_IMMAGINE_4 = line1.substring(start, end);
-      		    	control=false;
-      		    	break;
-      		    case "4":
-      		    	NOME_IMMAGINE_5 = line1.substring(start, end);
-      		    	control=false;
-      		    	break;
-      		    default:
-      		    	NOME_IMMAGINE_6 = line1.substring(start, end);
-      		    	control=false;
-      		}
-          }
-        }
-        System.out.println("\n\n######################\n\n");
-
-        //Stampa delle proprietà di connessione
-        System.out.println("\nProprietà della chiamata...\n");         
-        System.out.println("RISPOSTA: " + connessione6.getResponse());
-        System.out.println("METODO: " + connessione6.getRequestMethod());                     
-        connessione6.getRequestHeaders();
-        connessione6.getResponseHeaders();
-  	}*/
-
-  	
-    //POST dello step 1 (ed unico...)
-    /*private void connessione_7(HttpPost httppost) throws IOException, HttpResponseException, WrongPostDataException {
-    	System.out.println("CONNESSIONE 7");
-    	HttpClient httpclient = new DefaultHttpClient();
-
-    	//Request URL
-        System.out.println("----------------------------------------");
-        System.out.println("executing request " + httppost.getURI());
-        System.out.println("----------------------------------------");
-        
-        //Request properties
-        System.out.println("Request method: " + httppost.getMethod());
-        System.out.println("Protocol version: " + httppost.getProtocolVersion());
-        System.out.println("----------------------------------------");
-        
-        //Add request headers
-        BasicHeader requestHeader0 = new BasicHeader("User-Agent", USER_AGENT);
-        httppost.addHeader(requestHeader0);
-                   
-        //Show request headers
-        Header[] requestHeaders;
-        requestHeaders = httppost.getAllHeaders(); 
-        System.out.println("Request headers: " + requestHeaders.length + "\n");
-        for(int i=0; i<requestHeaders.length; i++) {
-        	System.out.println(requestHeaders[i]);
-        }
-        System.out.println("----------------------------------------");
-
-        //Add request parameters
-        List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-        postParameters.add(new BasicNameValuePair("action", "inserisci_nuovo_annuncio"));
-        postParameters.add(new BasicNameValuePair("data_annuncio", data_annuncio));
-        postParameters.add(new BasicNameValuePair("no_reload", no_reload));
-        postParameters.add(new BasicNameValuePair("codice_cliente", CODICE_CLIENTE));
-        postParameters.add(new BasicNameValuePair("InserzionistaPrivato", "0"));
-        postParameters.add(new BasicNameValuePair("codice_inserzione", ""));
-        postParameters.add(new BasicNameValuePair("foto_tmp_0", NOME_IMMAGINE_1));
-        postParameters.add(new BasicNameValuePair("foto_tmp_1", NOME_IMMAGINE_2));
-        postParameters.add(new BasicNameValuePair("foto_tmp_2", NOME_IMMAGINE_3));
-        postParameters.add(new BasicNameValuePair("foto_tmp_3", NOME_IMMAGINE_4));
-        postParameters.add(new BasicNameValuePair("foto_tmp_4", NOME_IMMAGINE_5));
-        postParameters.add(new BasicNameValuePair("foto_tmp_5", NOME_IMMAGINE_6));
-        postParameters.add(new BasicNameValuePair("foto_tmp_6", ""));
-        postParameters.add(new BasicNameValuePair("foto_tmp_7", ""));
-        postParameters.add(new BasicNameValuePair("galleria_valore", "0"));
-        postParameters.add(new BasicNameValuePair("rif_agenzia", rif_agenzia));
-        postParameters.add(new BasicNameValuePair("codice_provincia_inserzione", codice_provincia_inserzione));
-        postParameters.add(new BasicNameValuePair("codice_comune_inserzione", codice_comune_inserzione));
-        postParameters.add(new BasicNameValuePair("zona", "0"));
-        postParameters.add(new BasicNameValuePair("indirizzo", indirizzo));
-        postParameters.add(new BasicNameValuePair("visua_indirizzo", "1"));
-        postParameters.add(new BasicNameValuePair("tipo_proposta", tipo_proposta));
-        postParameters.add(new BasicNameValuePair("tipo_immobile", tipo_immobile));
-        postParameters.add(new BasicNameValuePair("superficie", superficie));
-        postParameters.add(new BasicNameValuePair("prezzo", prezzo));
-        postParameters.add(new BasicNameValuePair("numero_camere_old", ""));
-        postParameters.add(new BasicNameValuePair("numero_camere_bis", numero_camere_bis));
-        postParameters.add(new BasicNameValuePair("stato_immobile", stato_immobile));
-        postParameters.add(new BasicNameValuePair("numero_bagni", numero_bagni));
-        postParameters.add(new BasicNameValuePair("numero_piani", ""));//il  numero piani è difficile da mettere
-        postParameters.add(new BasicNameValuePair("numero_terrazze", "0"));
-        postParameters.add(new BasicNameValuePair("numero_posti_auto_coperti", "0"));
-        postParameters.add(new BasicNameValuePair("numero_posti_auto", "0"));
-        postParameters.add(new BasicNameValuePair("numero_posti_auto_garage", ""));
-        postParameters.add(new BasicNameValuePair("riscaldamento", riscaldamento));
-        postParameters.add(new BasicNameValuePair("riscaldamento_tipo", "")); 
-        postParameters.add(new BasicNameValuePair("anno", "")); //una select...
-        postParameters.add(new BasicNameValuePair("spese_condominiali", ""));
-        postParameters.add(new BasicNameValuePair("stato_rogito", ""));
-        postParameters.add(new BasicNameValuePair("orientamento", ""));
-        postParameters.add(new BasicNameValuePair("tipologia_giardino", tipologia_giardino));
-        postParameters.add(new BasicNameValuePair("scoperto", ""));
-        postParameters.add(new BasicNameValuePair("classe_energetica", classe_energetica));
-        postParameters.add(new BasicNameValuePair("ipe", ""));
-        postParameters.add(new BasicNameValuePair("descrizione", descrizione));
-        postParameters.add(new BasicNameValuePair("attivo", "1"));
-        postParameters.add(new BasicNameValuePair("opt_ascensore", "0"));
-        postParameters.add(new BasicNameValuePair("opt_servizi_disabili", "0"));
-        postParameters.add(new BasicNameValuePair("opt_angolo_cottura", "0"));
-        postParameters.add(new BasicNameValuePair("opt_satellite", "0"));
-        postParameters.add(new BasicNameValuePair("opt_arredato", "0"));
-        postParameters.add(new BasicNameValuePair("opt_bagno_con_vasca", "0"));
-        postParameters.add(new BasicNameValuePair("opt_caminetto", "0"));
-        postParameters.add(new BasicNameValuePair("opt_cantina", "0"));
-        postParameters.add(new BasicNameValuePair("opt_cassaforte", "0"));
-        postParameters.add(new BasicNameValuePair("opt_climatizzatore", "0"));
-        postParameters.add(new BasicNameValuePair("opt_cucina_vivibile", "0"));
-        postParameters.add(new BasicNameValuePair("opt_idromassaggio", "0"));
-        postParameters.add(new BasicNameValuePair("opt_allarme", "0"));
-        postParameters.add(new BasicNameValuePair("opt_lavanderia", "0"));
-        postParameters.add(new BasicNameValuePair("opt_mansarda", "0"));
-        postParameters.add(new BasicNameValuePair("opt_fotovoltaico", "0"));
-        postParameters.add(new BasicNameValuePair("opt_pannelli_solari", "0"));
-        postParameters.add(new BasicNameValuePair("opt_piscina", "0"));
-        postParameters.add(new BasicNameValuePair("opt_porta_blindata", "0"));
-        postParameters.add(new BasicNameValuePair("opt_possibilita_animali", "0"));
-        postParameters.add(new BasicNameValuePair("opt_ripostiglio", "0"));
-        postParameters.add(new BasicNameValuePair("opt_riscaldamento_pavimento", "0"));
-        postParameters.add(new BasicNameValuePair("opt_sauna", "0"));
-        postParameters.add(new BasicNameValuePair("opt_taverna", "0"));
-        postParameters.add(new BasicNameValuePair("opt_terra_cielo", "0"));
-        postParameters.add(new BasicNameValuePair("opt_travi", "0"));
-        postParameters.add(new BasicNameValuePair("opt_vista_panoramica", "0"));
-        postParameters.add(new BasicNameValuePair("opt_in_campagna", "0"));
-        postParameters.add(new BasicNameValuePair("optional_valore", "0"));
-        //Stampa dei parametri inviati
-        printSentParameters(postParameters);
-        
-        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
-        httppost.setEntity(formEntity);
-        
-        //Set the cookies
-        BasicCookieStore cookieStore = new BasicCookieStore(); 
-        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
-        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
-        cookie.setPath("/");
-        
-        cookieStore.addCookie(cookie); 
-        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
-
-        //Send the request
-        HttpResponse response = httpclient.execute(httppost);
-
-        //Show response headers
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();           
-        Header[] responseHeaders;
-        responseHeaders = response.getAllHeaders(); 
-        System.out.println("Response status: " + response.getStatusLine());
-        System.out.println("Response headers: " + responseHeaders.length + "\n");
-        for(int i=0; i<responseHeaders.length; i++) {
-        	Header currentHeader = responseHeaders[i];
-        	System.out.println(currentHeader);
-        }
-        System.out.println("----------------------------------------");
-            
-        //Show response body
-        if(response.getStatusLine().toString().contains("200")) {
-            System.out.println("Response body: \n");
-            String responseBody = responseHandler.handleResponse(response);
-            System.out.println(responseBody);
-            System.out.println("----------------------------------------"); 
-                        
-            if(responseBody.contains("ANNUNCIO INSERITO CORRETTAMENTE")) {
-            	INSERIMENTO_OK = true;
-            }
-            else {
-            	throw(new HttpResponseException("Response body"));
-            }
-            
-	        //Parse HMTL to retrieve some informations
-            org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);                       
-            Elements linkElements = doc.getElementsByTag("a");
-            if(linkElements!=null) {
-	            Iterator<Element> iterator = linkElements.iterator();
-	            while(iterator.hasNext()) {
-	            	Element currentElement = iterator.next();
-	            	if(currentElement.html().contains("CODICE RIFERIMENTO AGENZIA:")) {
-	            		String text = currentElement.html().substring(currentElement.html().indexOf("AGENZIA:")+8).trim();
-	            		System.out.println("Codice riferimento agenzia: " + text);
-	            		if(scheda.codiceInserzione.equals(text)) {
-	            			CODICEINSERZIONE = currentElement.attr("name");
-	            		}		
-	            		System.out.println("CODICEINSERZIONE: " + CODICEINSERZIONE);
-	            	}
-	            }
-            }
-	        System.out.println("----------------------------------------");
-        }
-        else {
-        	throw(new HttpResponseException("Response code"));
-        }
-        
-        // When HttpClient instance is no longer needed,
-        // shut down the connection manager to ensure
-        // immediate deallocation of all system resources
-        httpclient.getConnectionManager().shutdown();
-    }*/
-    
-    
-    
-    //POST della pagina Gestione annunci per eliminare un annuncio
-    /*private void connessione_8(HttpPost httppost) throws IOException, HttpResponseException, WrongPostDataException {
-    	System.out.println("CONNESSIONE 8");
-    	HttpClient httpclient = new DefaultHttpClient();
-
-    	//Request URL
-        System.out.println("----------------------------------------");
-        System.out.println("executing request " + httppost.getURI());
-        System.out.println("----------------------------------------");
-        
-        //Request properties
-        System.out.println("Request method: " + httppost.getMethod());
-        System.out.println("Protocol version: " + httppost.getProtocolVersion());
-        System.out.println("----------------------------------------");
-        
-        //Add request headers
-        BasicHeader requestHeader0 = new BasicHeader("User-Agent", USER_AGENT);
-        httppost.addHeader(requestHeader0);
-                   
-        //Show request headers
-        Header[] requestHeaders;
-        requestHeaders = httppost.getAllHeaders(); 
-        System.out.println("Request headers: " + requestHeaders.length + "\n");
-        for(int i=0; i<requestHeaders.length; i++) {
-        	System.out.println(requestHeaders[i]);
-        }
-        System.out.println("----------------------------------------");
-
-        //Add request parameters
-        List<NameValuePair> postParameters = new ArrayList<NameValuePair>();       
-        postParameters.add(new BasicNameValuePair("bottone_cancella", "Cancella annuncio"));
-        postParameters.add(new BasicNameValuePair("cancella_annuncio", "cancella"));
-        postParameters.add(new BasicNameValuePair("codice_inserzione", CODICEINSERZIONE));
-        postParameters.add(new BasicNameValuePair("order_by", ""));
-        postParameters.add(new BasicNameValuePair("order_direction", ""));
-        postParameters.add(new BasicNameValuePair("page", ""));
-        //Stampa dei parametri inviati
-        printSentParameters(postParameters);
-        
-        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
-        httppost.setEntity(formEntity);
-        
-        //Set the cookies
-        BasicCookieStore cookieStore = new BasicCookieStore(); 
-        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
-        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
-        cookie.setPath("/");
-        
-        cookieStore.addCookie(cookie); 
-        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
-
-        //Send the request
-        HttpResponse response = httpclient.execute(httppost);
-
-        //Show response headers
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();           
-        Header[] responseHeaders;
-        responseHeaders = response.getAllHeaders(); 
-        System.out.println("Response status: " + response.getStatusLine());
-        System.out.println("Response headers: " + responseHeaders.length + "\n");
-        for(int i=0; i<responseHeaders.length; i++) {
-        	Header currentHeader = responseHeaders[i];
-        	System.out.println(currentHeader);
-        }
-        System.out.println("----------------------------------------");
-            
-        //Show response body
-        if(response.getStatusLine().toString().contains("200")) {
-	        System.out.println("Response body: \n");
-	        String responseBody = responseHandler.handleResponse(response);
-	        System.out.println(responseBody);	        
-	        System.out.println("----------------------------------------");
-        }
-        else {
-        	throw(new HttpResponseException("Response code"));
-        }
-        
-        // When HttpClient instance is no longer needed,
-        // shut down the connection manager to ensure
-        // immediate deallocation of all system resources
-        httpclient.getConnectionManager().shutdown();
-    }*/
-    
-
-
     //Metodo per l'inserimento della scheda immobile nel portale immobiliare
     public void inserisciScheda(SchedaImmobile scheda) throws HttpCommunicationException {
     	System.out.println("Inserimento scheda: " + scheda.codiceInserzione + "...");
@@ -864,10 +78,16 @@ public class Case24 extends PortaleImmobiliare {
     	//Inizializzazione parametri
     	this.scheda=scheda;
     	
+    	File[] arrayImages = {scheda.immagine1, scheda.immagine2, scheda.immagine3, scheda.immagine4, scheda.immagine5, scheda.immagine6, scheda.immagine7, scheda.immagine8, scheda.immagine9, scheda.immagine10};
+    	
+    	
     	//Inizializza i parametri http del portale 
-    	inizializzaParametri();
-    	
-    	
+    	try {
+			inizializzaParametri();
+		} catch (HttpResponseException e1) {
+			throw new HttpCommunicationException(e1);
+		}
+    	  	
     	    	
     	//Connessione 0 - GET della home page
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -877,6 +97,7 @@ public class Case24 extends PortaleImmobiliare {
 			throw new HttpCommunicationException(e);
 		}
     	
+    	
     	//Connessione 1 - GET della pagina di login
     	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
     	try {
@@ -885,6 +106,7 @@ public class Case24 extends PortaleImmobiliare {
 			throw new HttpCommunicationException(e);
 		}
     	
+    	
     	//Connessione 2 - GET della pagina "Area Riservata"
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
@@ -892,6 +114,7 @@ public class Case24 extends PortaleImmobiliare {
 		} catch (IOException | HttpResponseException e) {
 			throw new HttpCommunicationException(e);
 		}
+    	
     	
     	//Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
@@ -902,14 +125,13 @@ public class Case24 extends PortaleImmobiliare {
 			throw new HttpCommunicationException(e);
 		}
     	
+    	
     	//Connessione 4 - POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
-    	HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();
-    	
+    	HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
-        postParameters.add(new BasicNameValuePair("inserisci_annuncio", mappaDeiParamerti.get("inserisci_annuncio")));
-        postParameters.add(new BasicNameValuePair("x", mappaDeiParamerti.get("x")));
-        postParameters.add(new BasicNameValuePair("y", mappaDeiParamerti.get("y")));
-    	
+        postParameters.add(new BasicNameValuePair("inserisci_annuncio", "1"));
+        postParameters.add(new BasicNameValuePair("x", "10"));
+        postParameters.add(new BasicNameValuePair("y", "10"));   	
         try {
 			connessione_4.post(URL_ROOT + "/area_clienti/annunci.php?pagina=1", postParameters);
 		} catch (IOException e) {
@@ -918,134 +140,216 @@ public class Case24 extends PortaleImmobiliare {
     	finally {
     		postParameters.clear();
     	}
-    	
-    	
-        /*try {
-			connessione_0(new HttpGet(URL_ROOT));
-		} catch (IOException | HttpResponseException e ) {
+        
+        
+        //Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio
+        HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
+    	try {
+    		String encodedSchedaCodice = URLEncoder.encode(mappaDeiParamerti.get("rif_agenzia"),"UTF-8");
+			connessione_5.get(URL_ROOT + "/area_clienti/include/ajax.php?edit=valida_rif_agenzia&rif_agenzia=" + encodedSchedaCodice + "&codice_inserzione=&codice_cliente=" + CODICE_CLIENTE);
+		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
-			//manageErrors(e, 1);
-            //return;
-		}*/
-        
-        
-        
-        //Connessione 1 - GET della pagina di login
-        /*try {
-			connessione_1(new HttpGet(URL_ROOT + "/mycase24-areariservata-vendita-appartamenti.php"));
-		} catch (IOException | HttpResponseException e ) {
-			manageErrors(e, 2);
-            return;
-		}*/
-        
-        
-        
-        //Connessione 2 - GET della pagina "Area Riservata"
-        /*try {
-			connessione_2(new HttpGet(URL_ROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD));
-		} catch (IOException | HttpResponseException e ) {
-			manageErrors(e, 3);
-            return;
-		}*/
-        
-        
-        
-        //Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
-        /*try {
-			connessione_3(new HttpGet(URL_ROOT + "/area_clienti/annunci.php?pagina=1"));
-		} catch (IOException | HttpResponseException e ) {
-			manageErrors(e, 3);
-            return;
-		}*/
-        
-        
-        
-        //Connessione 4 - POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
-    	/*try {
-			connessione_4(new HttpPost(URL_ROOT + "/area_clienti/annunci.php?pagina=1"));
-		} catch (IOException | HttpResponseException | WrongPostDataException e ) {
-			manageErrors(e, 3);
-            return;
-		}*/
+		}
     	
     	
-    	
-    	//Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio
-        /*try {
-        	String encodedSchedaCodice = URLEncoder.encode(scheda.codiceInserzione,"UTF-8");
-			connessione_5(new HttpGet(URL_ROOT + "/area_clienti/include/ajax.php?edit=valida_rif_agenzia&rif_agenzia=" + encodedSchedaCodice + "&codice_inserzione=&codice_cliente=" + CODICE_CLIENTE));
-		} catch (IOException | HttpResponseException e ) {
-			manageErrors(e, 3);
-            return;
-		}*/
-        
-        
-        
-        //Connessioni 6 - inserimento immagine
-        /*if(scheda.immagine1!=null) {
-        	try {
-				connessione_6("0", scheda.immagine1);
-			} catch (IOException e) {
-				manageErrors(e, 3);
-                return;
-			}
-        }
-        if(scheda.immagine2!=null) {
-        	try {
-				connessione_6("1", scheda.immagine2);
-			} catch (IOException e) {
-				manageErrors(e, 3);
-                return;
-			}
-        }
-        if(scheda.immagine3!=null) {
-        	try {
-				connessione_6("2", scheda.immagine3);
-			} catch (IOException e) {
-				manageErrors(e, 3);
-                return;
-			}
-        }
-        if(scheda.immagine4!=null) {
-        	try {
-				connessione_6("3", scheda.immagine4);
-			} catch (IOException e) {
-				manageErrors(e, 3);
-                return;
-			}
-        }
-        if(scheda.immagine5!=null) {
-        	try {
-				connessione_6("4", scheda.immagine5);
-			} catch (IOException e) {
-				manageErrors(e, 3);
-                return;
-			}
-        }
-        if(scheda.immagine6!=null) {
-        	try {
-				connessione_6("5", scheda.immagine6);
-			} catch (IOException e) {
-				manageErrors(e, 3);
-                return;
-			}
-        }*/
-        
-    	
+    	//Connessioni 6 - inserimento immagine
+    	for(int i=0; i<arrayImages.length; i++) {
+    		if(arrayImages[i]!=null) {
+    			HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
+    	    	
+    			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+    	        FileBody bin = new FileBody(arrayImages[i]);
+    	        reqEntity.addPart("image_" + i, bin );
+    	    	
+    	        try {
+    				String response = connessione_6.post(URL_ROOT + "/area_clienti/include/upload_foto.php?i=" + i + "&codice_cliente=" + CODICE_CLIENTE, reqEntity);
+    				boolean control = true;
+    		          int start;
+    		          int end;
+    		          if(response.contains("document.formAnnuncio.foto_tmp_") && control) {
+    		        	  start = response.indexOf("value='")+7;
+    		        	  end = response.indexOf("';");
+    		        	  switch (i)
+    		      		{
+    		      		    case 0:
+    		      		    	NOME_IMMAGINE_1 = response.substring(start, end);
+    		      		    	control=false;
+    		      		        break;
+    		      		    case 1:
+    		      		    	NOME_IMMAGINE_2 = response.substring(start, end);
+    		      		    	control=false;
+    		      		    	break;
+    		      		    case 2:
+    		      		    	NOME_IMMAGINE_3 = response.substring(start, end);
+    		      		    	control=false;
+    		      		    	break;
+    		      		    case 3:
+    		      		    	NOME_IMMAGINE_4 = response.substring(start, end);
+    		      		    	control=false;
+    		      		    	break;
+    		      		    case 4:
+    		      		    	NOME_IMMAGINE_5 = response.substring(start, end);
+    		      		    	control=false;
+    		      		    	break;
+    		      		    case 5:
+	  		      		    	NOME_IMMAGINE_5 = response.substring(start, end);
+	  		      		    	control=false;
+	  		      		    	break;
+    		      		    case 6:
+			      		    	NOME_IMMAGINE_6 = response.substring(start, end);
+			      		    	control=false;
+			      		    	break;
+    		      		    default:
+    		      		    	NOME_IMMAGINE_7 = response.substring(start, end);
+    		      		    	control=false;
+    		      		}
+    		        	String foto_tmp_0 = NOME_IMMAGINE_1;
+    		      		mappaDeiParamerti.put("foto_tmp_0", foto_tmp_0);
+    		      		
+    		      		String foto_tmp_1 = NOME_IMMAGINE_2;
+    		      		mappaDeiParamerti.put("foto_tmp_1", foto_tmp_1);
+    		      		
+    		      		String foto_tmp_2 = NOME_IMMAGINE_3;
+    		      		mappaDeiParamerti.put("foto_tmp_2", foto_tmp_2);
+    		      		
+    		      		String foto_tmp_3 = NOME_IMMAGINE_4;
+    		      		mappaDeiParamerti.put("foto_tmp_3", foto_tmp_3);
+    		      		
+    		      		String foto_tmp_4 = NOME_IMMAGINE_5;
+    		      		mappaDeiParamerti.put("foto_tmp_4", foto_tmp_4);
+    		      		
+    		      		String foto_tmp_5 = NOME_IMMAGINE_6;
+    		      		mappaDeiParamerti.put("foto_tmp_5", foto_tmp_5);
+    		      		
+    		      		String foto_tmp_6 = NOME_IMMAGINE_7;
+    		      		mappaDeiParamerti.put("foto_tmp_6", foto_tmp_6);
+    		      		
+    		      		String foto_tmp_7 = NOME_IMMAGINE_8;
+    		      		mappaDeiParamerti.put("foto_tmp_7", foto_tmp_7);
+    		          }
+    			} catch (IOException e) {
+    				throw new HttpCommunicationException(e);
+    			}
+    	    	finally {
+    	    		postParameters.clear();
+    	    	}
+            }
+    	}
 
-        
-        //Connessione 7 - POST dello step 1 (e unico...)
-    	/*try {
-			connessione_7(new HttpPost(URL_ROOT + "/area_clienti/annunci.php?pagina=1"));
-		} catch (IOException | HttpResponseException | WrongPostDataException e ) {
-			manageErrors(e, 3);
-            return;
-		}*/
     	
-    	
+    	//Connessione 7 - POST dello step 1 (e unico...)
+    	HttpPortalPostConnection connessione_7 = new HttpPortalPostConnection();   	
+    	postParameters = new ArrayList<NameValuePair>();          
+        postParameters.add(new BasicNameValuePair("action", mappaDeiParamerti.get("action")));
+        postParameters.add(new BasicNameValuePair("data_annuncio", mappaDeiParamerti.get("data_annuncio")));
+        postParameters.add(new BasicNameValuePair("no_reload", mappaDeiParamerti.get("no_reload")));
+        postParameters.add(new BasicNameValuePair("codice_cliente", mappaDeiParamerti.get("codice_cliente")));
+        postParameters.add(new BasicNameValuePair("InserzionistaPrivato", mappaDeiParamerti.get("InserzionistaPrivato")));
+        postParameters.add(new BasicNameValuePair("codice_inserzione", mappaDeiParamerti.get("codice_inserzione")));
+        postParameters.add(new BasicNameValuePair("foto_tmp_0", mappaDeiParamerti.get("foto_tmp_0")));
+        postParameters.add(new BasicNameValuePair("foto_tmp_1", mappaDeiParamerti.get("foto_tmp_1")));
+        postParameters.add(new BasicNameValuePair("foto_tmp_2", mappaDeiParamerti.get("foto_tmp_2")));
+        postParameters.add(new BasicNameValuePair("foto_tmp_3", mappaDeiParamerti.get("foto_tmp_3")));
+        postParameters.add(new BasicNameValuePair("foto_tmp_4", mappaDeiParamerti.get("foto_tmp_4")));
+        postParameters.add(new BasicNameValuePair("foto_tmp_5", mappaDeiParamerti.get("foto_tmp_5")));
+        postParameters.add(new BasicNameValuePair("foto_tmp_6", mappaDeiParamerti.get("foto_tmp_6")));
+        postParameters.add(new BasicNameValuePair("foto_tmp_7", mappaDeiParamerti.get("foto_tmp_7")));
+        postParameters.add(new BasicNameValuePair("galleria_valore", mappaDeiParamerti.get("galleria_valore")));
+        postParameters.add(new BasicNameValuePair("rif_agenzia", mappaDeiParamerti.get("rif_agenzia")));
+        postParameters.add(new BasicNameValuePair("codice_provincia_inserzione", mappaDeiParamerti.get("codice_provincia_inserzione")));
+        postParameters.add(new BasicNameValuePair("codice_comune_inserzione", mappaDeiParamerti.get("codice_comune_inserzione")));
+        postParameters.add(new BasicNameValuePair("zona", mappaDeiParamerti.get("zona")));
+        postParameters.add(new BasicNameValuePair("indirizzo", mappaDeiParamerti.get("indirizzo")));
+        postParameters.add(new BasicNameValuePair("visua_indirizzo", mappaDeiParamerti.get("visua_indirizzo")));
+        postParameters.add(new BasicNameValuePair("tipo_proposta", mappaDeiParamerti.get("tipo_proposta")));
+        postParameters.add(new BasicNameValuePair("tipo_immobile", mappaDeiParamerti.get("tipo_immobile")));
+        postParameters.add(new BasicNameValuePair("superficie", mappaDeiParamerti.get("superficie")));
+        postParameters.add(new BasicNameValuePair("prezzo", mappaDeiParamerti.get("prezzo")));
+        postParameters.add(new BasicNameValuePair("numero_camere_old", mappaDeiParamerti.get("numero_camere_old")));
+        postParameters.add(new BasicNameValuePair("numero_camere_bis", mappaDeiParamerti.get("numero_camere_bis")));
+        postParameters.add(new BasicNameValuePair("stato_immobile", mappaDeiParamerti.get("stato_immobile")));
+        postParameters.add(new BasicNameValuePair("numero_bagni", mappaDeiParamerti.get("numero_bagni")));
+        postParameters.add(new BasicNameValuePair("numero_piani", mappaDeiParamerti.get("numero_piani")));//il  numero piani è difficile da mettere
+        postParameters.add(new BasicNameValuePair("numero_terrazze", mappaDeiParamerti.get("numero_terrazze")));
+        postParameters.add(new BasicNameValuePair("numero_posti_auto_coperti", mappaDeiParamerti.get("numero_posti_auto_coperti")));
+        postParameters.add(new BasicNameValuePair("numero_posti_auto", mappaDeiParamerti.get("numero_posti_auto")));
+        postParameters.add(new BasicNameValuePair("numero_posti_auto_garage", mappaDeiParamerti.get("numero_posti_auto_garage")));
+        postParameters.add(new BasicNameValuePair("riscaldamento", mappaDeiParamerti.get("riscaldamento")));
+        postParameters.add(new BasicNameValuePair("riscaldamento_tipo", mappaDeiParamerti.get("riscaldamento_tipo"))); 
+        postParameters.add(new BasicNameValuePair("anno", mappaDeiParamerti.get("anno"))); //una select...
+        postParameters.add(new BasicNameValuePair("spese_condominiali", mappaDeiParamerti.get("spese_condominiali")));
+        postParameters.add(new BasicNameValuePair("stato_rogito", mappaDeiParamerti.get("stato_rogito")));
+        postParameters.add(new BasicNameValuePair("orientamento", mappaDeiParamerti.get("orientamento")));
+        postParameters.add(new BasicNameValuePair("tipologia_giardino", mappaDeiParamerti.get("tipologia_giardino")));
+        postParameters.add(new BasicNameValuePair("scoperto", mappaDeiParamerti.get("scoperto")));
+        postParameters.add(new BasicNameValuePair("classe_energetica", mappaDeiParamerti.get("classe_energetica")));
+        postParameters.add(new BasicNameValuePair("ipe", mappaDeiParamerti.get("ipe")));
+        postParameters.add(new BasicNameValuePair("descrizione", mappaDeiParamerti.get("descrizione")));
+        postParameters.add(new BasicNameValuePair("attivo", mappaDeiParamerti.get("attivo")));
+        postParameters.add(new BasicNameValuePair("opt_ascensore", mappaDeiParamerti.get("opt_ascensore")));
+        postParameters.add(new BasicNameValuePair("opt_servizi_disabili", mappaDeiParamerti.get("opt_servizi_disabili")));
+        postParameters.add(new BasicNameValuePair("opt_angolo_cottura", mappaDeiParamerti.get("opt_angolo_cottura")));
+        postParameters.add(new BasicNameValuePair("opt_satellite", mappaDeiParamerti.get("opt_satellite")));
+        postParameters.add(new BasicNameValuePair("opt_arredato", mappaDeiParamerti.get("opt_arredato")));
+        postParameters.add(new BasicNameValuePair("opt_bagno_con_vasca", mappaDeiParamerti.get("opt_bagno_con_vasca")));
+        postParameters.add(new BasicNameValuePair("opt_caminetto", mappaDeiParamerti.get("opt_caminetto")));
+        postParameters.add(new BasicNameValuePair("opt_cantina", mappaDeiParamerti.get("opt_cantina")));
+        postParameters.add(new BasicNameValuePair("opt_cassaforte", mappaDeiParamerti.get("opt_cassaforte")));
+        postParameters.add(new BasicNameValuePair("opt_climatizzatore", mappaDeiParamerti.get("opt_climatizzatore")));
+        postParameters.add(new BasicNameValuePair("opt_cucina_vivibile", mappaDeiParamerti.get("opt_cucina_vivibile")));
+        postParameters.add(new BasicNameValuePair("opt_idromassaggio", mappaDeiParamerti.get("opt_idromassaggio")));
+        postParameters.add(new BasicNameValuePair("opt_allarme", mappaDeiParamerti.get("opt_allarme")));
+        postParameters.add(new BasicNameValuePair("opt_lavanderia", mappaDeiParamerti.get("opt_lavanderia")));
+        postParameters.add(new BasicNameValuePair("opt_mansarda", mappaDeiParamerti.get("opt_mansarda")));
+        postParameters.add(new BasicNameValuePair("opt_fotovoltaico", mappaDeiParamerti.get("opt_fotovoltaico")));
+        postParameters.add(new BasicNameValuePair("opt_pannelli_solari", mappaDeiParamerti.get("opt_pannelli_solari")));
+        postParameters.add(new BasicNameValuePair("opt_piscina", mappaDeiParamerti.get("opt_piscina")));
+        postParameters.add(new BasicNameValuePair("opt_porta_blindata", mappaDeiParamerti.get("opt_porta_blindata")));
+        postParameters.add(new BasicNameValuePair("opt_possibilita_animali", mappaDeiParamerti.get("opt_possibilita_animali")));
+        postParameters.add(new BasicNameValuePair("opt_ripostiglio", mappaDeiParamerti.get("opt_ripostiglio")));
+        postParameters.add(new BasicNameValuePair("opt_riscaldamento_pavimento", mappaDeiParamerti.get("opt_riscaldamento_pavimento")));
+        postParameters.add(new BasicNameValuePair("opt_sauna", mappaDeiParamerti.get("opt_sauna")));
+        postParameters.add(new BasicNameValuePair("opt_taverna", mappaDeiParamerti.get("opt_taverna")));
+        postParameters.add(new BasicNameValuePair("opt_terra_cielo", mappaDeiParamerti.get("opt_terra_cielo")));
+        postParameters.add(new BasicNameValuePair("opt_travi", mappaDeiParamerti.get("opt_travi")));
+        postParameters.add(new BasicNameValuePair("opt_vista_panoramica", mappaDeiParamerti.get("opt_vista_panoramica")));
+        postParameters.add(new BasicNameValuePair("opt_in_campagna", mappaDeiParamerti.get("opt_in_campagna")));
+        postParameters.add(new BasicNameValuePair("optional_valore", mappaDeiParamerti.get("optional_valore"))); 	
+        try {
+			String response = connessione_7.post(URL_ROOT + "/area_clienti/annunci.php?pagina=1", postParameters);
+			
+			if(response.contains("ANNUNCIO INSERITO CORRETTAMENTE")) {
+            	INSERIMENTO_OK = true;
+            }
+            else {
+            	throw(new HttpResponseException("Response body"));
+            }
+            
+	        //Parse HMTL to retrieve some informations
+            org.jsoup.nodes.Document doc = Jsoup.parse(response);                       
+            Elements linkElements = doc.getElementsByTag("a");
+            if(linkElements!=null) {
+	            Iterator<Element> iterator = linkElements.iterator();
+	            while(iterator.hasNext()) {
+	            	Element currentElement = iterator.next();
+	            	if(currentElement.html().contains("CODICE RIFERIMENTO AGENZIA:")) {
+	            		String text = currentElement.html().substring(currentElement.html().indexOf("AGENZIA:")+8).trim();
+	            		if(scheda.codiceInserzione.equals(text)) {
+	            			CODICEINSERZIONE = currentElement.attr("name");
+	            		}		
+	            		System.out.println("CODICEINSERZIONE: " + CODICEINSERZIONE);
+	            	}
+	            }
+            }
+		} catch (IOException | HttpResponseException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	finally {
+    		postParameters.clear();
+    	}	    	
       
     	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
-    	/*if(INSERIMENTO_OK) {
+    	if(INSERIMENTO_OK) {
     		System.out.println("Inserita in: " + NOMEPORTALE);
     		
     		//Aggiorna la lista dei portali in cui è inserita la scheda
@@ -1063,7 +367,7 @@ public class Case24 extends PortaleImmobiliare {
     	else {
     		//Stampo a video un messaggio informativo
     		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-    	}*/
+    	}
        
 	}
 	
@@ -1088,29 +392,36 @@ public class Case24 extends PortaleImmobiliare {
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public void cancellaScheda(SchedaImmobile scheda) throws HttpCommunicationException {		
 		System.out.println("Eliminazione scheda: " + scheda.codiceInserzione + "...");
-		CODICEINSERZIONE = scheda.getCodiceInserimento(idPortale);
-	
+		CODICEINSERZIONE = scheda.getCodiceInserimento(idPortale);	
 		
 		
 		//Connessione 2 - GET della pagina "Area Riservata"
-        /*try {
-			connessione_2(new HttpGet(URL_ROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD));
-		} catch (IOException | HttpResponseException e ) {
-			manageErrors(e, 3);
-            return;
-		}*/
-        
-        
-        
-        //Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio
-    	/*try {
-			connessione_8(new HttpPost(URL_ROOT + "/area_clienti/annunci.php?pagina=1"));
-		} catch (IOException | HttpResponseException | WrongPostDataException e ) {
-			manageErrors(e, 3);
-            return;
-		}*/
+    	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
+    	try {
+			connessione_2.get(URL_ROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, SESSIONCOOKIENAME);
+		} catch (IOException | HttpResponseException e) {
+			throw new HttpCommunicationException(e);
+		}
         
     	
+        //Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio
+    	HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();	
+    	postParameters = new ArrayList<NameValuePair>();          
+    	postParameters.add(new BasicNameValuePair("bottone_cancella", "Cancella annuncio"));
+        postParameters.add(new BasicNameValuePair("cancella_annuncio", "cancella"));
+        postParameters.add(new BasicNameValuePair("codice_inserzione", CODICEINSERZIONE));
+        postParameters.add(new BasicNameValuePair("order_by", ""));
+        postParameters.add(new BasicNameValuePair("order_direction", ""));
+        postParameters.add(new BasicNameValuePair("page", ""));	
+        try {
+			connessione_8.post(URL_ROOT + "/area_clienti/annunci.php?pagina=1", postParameters);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	finally {
+    		postParameters.clear();
+    	}
+	
     	
         //Aggiorno la lista dei portali in cui è presenta la scheda corrente
   		scheda.eliminaInserimentoPortale(idPortale);			
@@ -1128,7 +439,7 @@ public class Case24 extends PortaleImmobiliare {
 	
 	
 	//Metodo per la valutazione dei parametri
-	public void inizializzaParametri() {
+	public void inizializzaParametri() throws HttpCommunicationException, HttpResponseException {
 		
 		String inserisci_annuncio = "1";
 		mappaDeiParamerti.put("inserisci_annuncio", inserisci_annuncio);
@@ -1138,6 +449,156 @@ public class Case24 extends PortaleImmobiliare {
 		
 		String y = "10";
 		mappaDeiParamerti.put("y", y);
+		
+		String action = "inserisci_nuovo_annuncio";
+		mappaDeiParamerti.put("action", action);
+		
+		String codice_cliente = CODICE_CLIENTE;
+		mappaDeiParamerti.put("codice_cliente", codice_cliente);
+		
+		String InserzionistaPrivato = "0";
+		mappaDeiParamerti.put("InserzionistaPrivato", InserzionistaPrivato);
+		
+		String codice_inserzione = "";
+		mappaDeiParamerti.put("codice_inserzione", codice_inserzione);
+		
+		String galleria_valore = "0";
+		mappaDeiParamerti.put("galleria_valore", galleria_valore);
+		
+		String zona = "0";
+		mappaDeiParamerti.put("zona", zona);
+		
+		String visua_indirizzo = "1";
+		mappaDeiParamerti.put("visua_indirizzo", visua_indirizzo);
+		
+		String numero_camere_old = "";
+		mappaDeiParamerti.put("numero_camere_old", numero_camere_old);
+		
+		String numero_piani = "";
+		mappaDeiParamerti.put("numero_piani", numero_piani);
+		
+		String numero_terrazze = "0";
+		mappaDeiParamerti.put("numero_terrazze", numero_terrazze);
+		
+		String numero_posti_auto_coperti = "0";
+		mappaDeiParamerti.put("numero_posti_auto_coperti", numero_posti_auto_coperti);
+		
+		String numero_posti_auto = "0";
+		mappaDeiParamerti.put("numero_posti_auto", numero_posti_auto);
+		
+		String numero_posti_auto_garage = "";
+		mappaDeiParamerti.put("numero_posti_auto_garage", numero_posti_auto_garage);
+		
+		String riscaldamento_tipo = "";
+		mappaDeiParamerti.put("riscaldamento_tipo", riscaldamento_tipo);
+		
+		String anno = "";
+		mappaDeiParamerti.put("anno", anno);
+		
+		String spese_condominiali = "";
+		mappaDeiParamerti.put("spese_condominiali", spese_condominiali);
+		
+		String stato_rogito = "";
+		mappaDeiParamerti.put("stato_rogito", stato_rogito);
+		
+		String orientamento = "";
+		mappaDeiParamerti.put("orientamento", orientamento);
+		
+		String scoperto = "";
+		mappaDeiParamerti.put("scoperto", scoperto);
+		
+		String ipe = "";
+		mappaDeiParamerti.put("ipe", ipe);
+		
+		String attivo = "1";
+		mappaDeiParamerti.put("attivo", attivo);
+		
+		String opt_ascensore = "0";
+		mappaDeiParamerti.put("opt_ascensore", opt_ascensore);
+		
+		String opt_servizi_disabili = "0";
+		mappaDeiParamerti.put("opt_servizi_disabili", opt_servizi_disabili);
+		
+		String opt_angolo_cottura = "0";
+		mappaDeiParamerti.put("opt_angolo_cottura", opt_angolo_cottura);
+		
+		String opt_satellite = "0";
+		mappaDeiParamerti.put("opt_satellite", opt_satellite);
+		
+		String opt_arredato = "0";
+		mappaDeiParamerti.put("opt_arredato", opt_arredato);
+		
+		String opt_bagno_con_vasca = "0";
+		mappaDeiParamerti.put("opt_bagno_con_vasca", opt_bagno_con_vasca);
+		
+		String opt_caminetto = "0";
+		mappaDeiParamerti.put("opt_caminetto", opt_caminetto);
+		
+		String opt_cantina = "0";
+		mappaDeiParamerti.put("opt_cantina", opt_cantina);
+		
+		String opt_cassaforte = "0";
+		mappaDeiParamerti.put("opt_cassaforte", opt_cassaforte);
+		
+		String opt_climatizzatore = "0";
+		mappaDeiParamerti.put("opt_climatizzatore", opt_climatizzatore);
+		
+		String opt_cucina_vivibile = "0";
+		mappaDeiParamerti.put("opt_cucina_vivibile", opt_cucina_vivibile);
+		
+		String opt_idromassaggio = "0";
+		mappaDeiParamerti.put("opt_idromassaggio", opt_idromassaggio);
+		
+		String opt_allarme = "0";
+		mappaDeiParamerti.put("opt_allarme", opt_allarme);
+		
+		String opt_lavanderia = "0";
+		mappaDeiParamerti.put("opt_lavanderia", opt_lavanderia);
+		
+		String opt_mansarda = "0";
+		mappaDeiParamerti.put("opt_mansarda", opt_mansarda);
+		
+		String opt_fotovoltaico = "0";
+		mappaDeiParamerti.put("opt_fotovoltaico", opt_fotovoltaico);
+		
+		String opt_pannelli_solari = "0";
+		mappaDeiParamerti.put("opt_pannelli_solari", opt_pannelli_solari);
+		
+		String opt_piscina = "0";
+		mappaDeiParamerti.put("opt_piscina", opt_piscina);
+		
+		String opt_porta_blindata = "0";
+		mappaDeiParamerti.put("opt_porta_blindata", opt_porta_blindata);
+		
+		String opt_possibilita_animali = "0";
+		mappaDeiParamerti.put("opt_possibilita_animali", opt_possibilita_animali);
+		
+		String opt_ripostiglio = "0";
+		mappaDeiParamerti.put("opt_ripostiglio", opt_ripostiglio);
+		
+		String opt_riscaldamento_pavimento = "0";
+		mappaDeiParamerti.put("opt_riscaldamento_pavimento", opt_riscaldamento_pavimento);
+		
+		String opt_sauna = "0";
+		mappaDeiParamerti.put("opt_sauna", opt_sauna);
+		
+		String opt_taverna = "0";
+		mappaDeiParamerti.put("opt_taverna", opt_taverna);
+		
+		String opt_terra_cielo = "0";
+		mappaDeiParamerti.put("opt_terra_cielo", opt_terra_cielo);
+		
+		String opt_travi = "0";
+		mappaDeiParamerti.put("opt_travi", opt_travi);
+		
+		String opt_vista_panoramica = "0";
+		mappaDeiParamerti.put("opt_vista_panoramica", opt_vista_panoramica);
+		
+		String opt_in_campagna = "0";
+		mappaDeiParamerti.put("opt_in_campagna", opt_in_campagna);
+		
+		String optional_valore = "0";
+		mappaDeiParamerti.put("optional_valore", optional_valore);
 		
 		Date now = new Date();  		  
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");  
@@ -1482,17 +943,40 @@ public class Case24 extends PortaleImmobiliare {
 		}
 		mappaDeiParamerti.put("codice_provincia_inserzione", codice_provincia_inserzione);
 		
-		/*String codice_comune_inserzione = "";
-		try {
-			codice_comune_inserzione = get_codice_comune_inserzione();
-		} catch (IOException | HttpResponseException e ) {
-			manageErrors(e, 3);
-            return;
-		}
-		mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);*/
-		
 		String nameComune = scheda.comune;
 		mappaDeiParamerti.put("nameComune", nameComune);
+		
+		String codice_comune_inserzione = "";
+		/*HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
+    	try {
+    		String response = connessione_9.get(URL_ROOT + "/area_clienti/include/ajax.php?funzione=select_geografico&etichetta=denominazione_comune&zona=X&valore_etichetta=" + codice_provincia_inserzione + "&valore_selezionato=&tabindex=3");
+    		
+    		org.jsoup.nodes.Document doc = Jsoup.parse(response);              
+            //Ottengo il valore del parametro Provincia
+            Elements optionElements = doc.getElementsByTag("option");
+            if(optionElements.isEmpty()) {
+            	throw(new HttpResponseException("Non ho trovato tag di tipo \"option\""));
+            }
+            else {
+            	Iterator<Element> iterator = optionElements.iterator();
+            	double resultComparation = 0;
+            	while(iterator.hasNext()) {
+	            	Element currentElement = iterator.next();
+	            	List<char[]> charListPortale = bigram(currentElement.html());
+	        		List<char[]> charListImagination = bigram(nameComune);
+	        		double actualResultComparation = dice(charListPortale, charListImagination);
+	        		if(actualResultComparation>=resultComparation) {
+	        			resultComparation = actualResultComparation;
+	        			codice_comune_inserzione = currentElement.attr("value");            		
+	        		}       		
+            	}
+            }
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}*/
+    	mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);
+		
+		mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);				
 		
 		String indirizzo = scheda.indirizzoLocalita;
 		mappaDeiParamerti.put("indirizzo", indirizzo);
@@ -1736,99 +1220,5 @@ public class Case24 extends PortaleImmobiliare {
 
 	}
 	
-
-	/*public String get_codice_comune_inserzione() throws ClientProtocolException, IOException, HttpResponseException {
-		System.out.println("CONNESSIONE 8");
-		String valueComune = "";
-    	HttpClient httpclient = new DefaultHttpClient();
-    	HttpGet httpget = new HttpGet(URL_ROOT + "/area_clienti/include/ajax.php?funzione=select_geografico&etichetta=denominazione_comune&zona=X&valore_etichetta=" + codice_provincia_inserzione + "&valore_selezionato=&tabindex=3");
-        	
-    	//Request URL
-        System.out.println("----------------------------------------");
-        System.out.println("executing request " + httpget.getURI());
-        System.out.println("----------------------------------------");
-        
-        //Request properties
-        System.out.println("Request method: " + httpget.getMethod());
-        System.out.println("Protocol version: " + httpget.getProtocolVersion());
-        System.out.println("----------------------------------------");
-        
-        //Add request headers
-        BasicHeader requestHeader0 = new BasicHeader("User-Agent", USER_AGENT);  
-        httpget.addHeader(requestHeader0);            
-        
-        //Show request headers
-        Header[] requestHeaders;
-        requestHeaders = httpget.getAllHeaders(); 
-        System.out.println("Request headers: " + requestHeaders.length + "\n");
-        for(int i=0; i<requestHeaders.length; i++) {
-        	System.out.println(requestHeaders[i]);
-        }
-        System.out.println("----------------------------------------");   
-        
-        //Set the cookies
-        BasicCookieStore cookieStore = new BasicCookieStore(); 
-        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
-        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
-        cookie.setPath("/");           
-        cookieStore.addCookie(cookie); 
-        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
-
-        //Send the request
-        HttpResponse response = httpclient.execute(httpget);
-
-        //Show response headers
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();           
-        Header[] responseHeaders;
-        responseHeaders = response.getAllHeaders(); 
-        System.out.println("Response status: " + response.getStatusLine());
-        System.out.println("Response headers: " + responseHeaders.length + "\n");
-        for(int i=0; i<responseHeaders.length; i++) {
-        	Header currentHeader = responseHeaders[i];
-        	System.out.println(currentHeader);          	
-        }
-        System.out.println("----------------------------------------");
-        
-        //Show response body
-        if(response.getStatusLine().toString().contains("200")) {
-	        System.out.println("Response body: \n");
-	        String responseBody = responseHandler.handleResponse(response);
-	        System.out.println(responseBody);
-	        System.out.println("----------------------------------------");
-	        
-	        org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);              
-            //Ottengo il valore del parametro Provincia
-            Elements optionElements = doc.getElementsByTag("option");
-            if(optionElements.isEmpty()) {
-            	System.out.println("Errore: " + "Rilevati errori");
-            	throw(new HttpResponseException("Rilevati errori nella risposta del server"));
-            }
-            else {
-            	Iterator<Element> iterator = optionElements.iterator();
-            	double resultComparation = 0;
-            	while(iterator.hasNext()) {
-	            	Element currentElement = iterator.next();
-	            	List<char[]> charListPortale = bigram(currentElement.html());
-	        		List<char[]> charListImagination = bigram(nameComune);
-	        		double actualResultComparation = dice(charListPortale, charListImagination);
-	        		if(actualResultComparation>=resultComparation) {
-	        			resultComparation = actualResultComparation;
-	        			valueComune = currentElement.attr("value");            		
-	        		}       		
-	        		System.out.println("Risultato comparazione: " + resultComparation);
-            	}
-            } 
-        }
-        else {
-        	throw(new HttpResponseException("Response code"));
-        }
-
-        // When HttpClient instance is no longer needed,
-        // shut down the connection manager to ensure
-        // immediate deallocation of all system resources
-        httpclient.getConnectionManager().shutdown();
-        
-        return valueComune;
-	}*/
 	
 }

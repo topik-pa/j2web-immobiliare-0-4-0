@@ -30,7 +30,7 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 		
 	}
 	
-	public void get(String url) throws IOException {
+	public String get(String url) throws IOException {
 		
 		httpget = new HttpGet(url);
 		
@@ -59,11 +59,14 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
         
         //Close the request
         httpclient.getConnectionManager().shutdown();
-       
+        
+        //Return the response body
+        String responseBody = responseHandler.handleResponse(response);
+        return responseBody;      
 		
 	}
 	
-	public void get(String url, String sessionCookieName) throws IOException, HttpResponseException {
+	public String get(String url, String sessionCookieName) throws IOException, HttpResponseException {
 		
 		httpget = new HttpGet(url);
 		
@@ -85,7 +88,10 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
         
         //Close the request
         httpclient.getConnectionManager().shutdown();
-       
+        
+        //Return the response body
+        String responseBody = responseHandler.handleResponse(response);
+        return responseBody;      
 		
 	}
 	
