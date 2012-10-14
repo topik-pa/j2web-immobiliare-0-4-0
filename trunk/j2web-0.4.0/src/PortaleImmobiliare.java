@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -266,6 +268,38 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
     		System.out.println("Nome: " + currentParam.getName() + "\tValore: " + currentParam.getValue() + "\n");
     	}
     }
+
+    //Trova e imposta il cookie di sessione
+    public void findAndSetLocalCookie(HttpPortalConnection connessione, Header[] headers, String cookieName) throws HttpResponseException {
+		
+		boolean cookieHeaderFound = false;
+        for(int i=0; i<headers.length; i++) {       	
+        	Header currentHeader = headers[i];
+        	//Get cookie
+        	if(currentHeader.getName().contains("Set-Cookie")) {
+        		        		
+        		String cookie_header = currentHeader.getValue();
+        		int end = cookie_header.indexOf("=");
+                String cookie_name = cookie_header.substring(0, end);                   
+                int start = end + 1;
+                end = cookie_header.indexOf(";");
+                String cookie_value = cookie_header.substring(start, end);
+                
+                if(cookie_name.equals(cookieName)) {
+                	//Cookie di sessione trovato
+            		cookieHeaderFound = true;
+            		connessione.setSessionCookieDomain(cookie_header);
+            		connessione.setSessionCookieName(cookieName);
+            		connessione.setSessionCookieValue(cookie_value);
+            		break;
+                }   
+        	}       	
+        }        
+        //Se non trovo le intestazioni che cerco lancio una eccezione (è un errore non trovare i cookie di sessione se richiesti)
+    	if(!cookieHeaderFound) {
+    		throw(new HttpResponseException("Response header"));
+    	}
+	}
     
     //Metodo per ottenere le coordinate della città
   	public String getCoord(String indirizzo, String comune, String provincia, String regione) throws ParserConfigurationException, SAXException, IOException {

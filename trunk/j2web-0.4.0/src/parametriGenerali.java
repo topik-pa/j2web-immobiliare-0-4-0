@@ -34,6 +34,9 @@ public interface parametriGenerali {
 	//Icona della finestra principale
     final Image frameIcon = new ImageIcon("./images/imaginationLogo.png").getImage();
     
+    //User agent utilizzato per le connssioni
+    final String USER_AGENT_VALUE = "Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20100101 Firefox/12.0";
+    
     //Messaggi delle finestre modali
     String[] ModalWindowsDialogs = {
     		"Eliminare tutte le schede immobile dal pannello?", 
