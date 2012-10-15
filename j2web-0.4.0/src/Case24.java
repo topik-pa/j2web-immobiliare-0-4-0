@@ -3,7 +3,6 @@
  * and open the template in the editor.
 */ 
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -80,21 +79,20 @@ public class Case24 extends PortaleImmobiliare {
     	
     	//Inizializzazione parametri
     	this.scheda=scheda;
+    	    
     	
-    	File[] arrayImages = {scheda.immagine1, scheda.immagine2, scheda.immagine3, scheda.immagine4, scheda.immagine5, scheda.immagine6, scheda.immagine7, scheda.immagine8, scheda.immagine9, scheda.immagine10};
-    	   	
     	//Inizializza i parametri http del portale 
     	try {
 			inizializzaParametri();
 		} catch (HttpResponseException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	  	
-    	    	
+    	
+    	
     	//Connessione 0 - GET della home page
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
     	try {
-			connessione_0.get(CASE24_URLROOT, debugMode);
+			connessione_0.get("Connessione 0 - GET della home page", CASE24_URLROOT, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -103,7 +101,7 @@ public class Case24 extends PortaleImmobiliare {
     	//Connessione 1 - GET della pagina di login
     	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
     	try {
-			connessione_1.get(CASE24_URLROOT + "/mycase24-areariservata-vendita-appartamenti.php", debugMode);
+			connessione_1.get("Connessione 1 - GET della pagina di login", CASE24_URLROOT + "/mycase24-areariservata-vendita-appartamenti.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -112,7 +110,7 @@ public class Case24 extends PortaleImmobiliare {
     	//Connessione 2 - GET della pagina "Area Riservata"
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
-    		Object[] response = connessione_2.get(CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
+    		Object[] response = connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
     		Header[] responseHeaders = (Header[])response[0];
     		findAndSetLocalCookie(connessione_2, responseHeaders, CASE24_SESSIONCOOKIENAME);
 		} catch (IOException | HttpResponseException e) {
@@ -124,7 +122,7 @@ public class Case24 extends PortaleImmobiliare {
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
     		connessione_3.setSessionCookieDomain(CASE24_SESSIONCOOKIEDOMAIN);
-			connessione_3.get(CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", debugMode);
+			connessione_3.get("Connessione 3 - GET della pagina \"Inserisci annuncio\" (step 1)", CASE24_URLROOT + "/area_clienti/index.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -137,7 +135,7 @@ public class Case24 extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("x", "10"));
         postParameters.add(new BasicNameValuePair("y", "10"));   	
         try {
-			connessione_4.post(CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+			connessione_4.post("POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio", CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -150,23 +148,23 @@ public class Case24 extends PortaleImmobiliare {
         HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
     	try {
     		String encodedSchedaCodice = URLEncoder.encode(mappaDeiParamerti.get("rif_agenzia"),"UTF-8");
-			connessione_5.get(CASE24_URLROOT + "/area_clienti/include/ajax.php?edit=valida_rif_agenzia&rif_agenzia=" + encodedSchedaCodice + "&codice_inserzione=&codice_cliente=" + CASE24_CODICE_CLIENTE, debugMode);
+			connessione_5.get("Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio", CASE24_URLROOT + "/area_clienti/include/ajax.php?edit=valida_rif_agenzia&rif_agenzia=" + encodedSchedaCodice + "&codice_inserzione=&codice_cliente=" + CASE24_CODICE_CLIENTE, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	
     	
     	//Connessioni 6 - inserimento immagine
-    	for(int i=0; i<arrayImages.length; i++) {
-    		if(arrayImages[i]!=null) {
+    	for(int i=0; i<scheda.arrayImages.length; i++) {
+    		if(scheda.arrayImages[i]!=null) {
     			HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
     	    	
     			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-    	        FileBody bin = new FileBody(arrayImages[i]);
+    	        FileBody bin = new FileBody(scheda.arrayImages[i]);
     	        reqEntity.addPart("image_" + i, bin );
     	    	
     	        try {
-    	        	Object[] response = connessione_6.post(CASE24_URLROOT + "/area_clienti/include/upload_foto.php?i=" + i + "&codice_cliente=" + CASE24_CODICE_CLIENTE, reqEntity, debugMode);
+    	        	Object[] response = connessione_6.post("Connessioni 6 - inserimento immagine " + i, CASE24_URLROOT + "/area_clienti/include/upload_foto.php?i=" + i + "&codice_cliente=" + CASE24_CODICE_CLIENTE, reqEntity, debugMode);
     	        	String responseBody = (String)response[1];
     				boolean control = true;
     		          int start;
@@ -298,7 +296,7 @@ public class Case24 extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("opt_in_campagna", mappaDeiParamerti.get("opt_in_campagna")));
         postParameters.add(new BasicNameValuePair("optional_valore", mappaDeiParamerti.get("optional_valore"))); 	
         try {
-        	Object[] response = connessione_7.post(CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+        	Object[] response = connessione_7.post("Connessione 7 - POST dello step 1 (e unico...)", CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
         	String responseBody = (String)response[1];
         	
 			if(responseBody.contains("ANNUNCIO INSERITO CORRETTAMENTE")) {
@@ -381,7 +379,7 @@ public class Case24 extends PortaleImmobiliare {
 		//Connessione 2 - GET della pagina "Area Riservata"
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
-			connessione_2.get(CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
+			connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -397,7 +395,7 @@ public class Case24 extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("order_direction", ""));
         postParameters.add(new BasicNameValuePair("page", ""));	
         try {
-			connessione_8.post(CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+			connessione_8.post("Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio", CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}

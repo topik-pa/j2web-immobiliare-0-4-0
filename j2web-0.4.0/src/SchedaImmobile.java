@@ -55,7 +55,8 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	File immagine7;
 	File immagine8;
 	File immagine9;
-	File immagine10; //10
+	File immagine0; //10
+	File[] arrayImages = {immagine1, immagine2, immagine3, immagine4, immagine5, immagine6, immagine7, immagine8, immagine9, immagine0};
 	//Textarea
 	String testoAnnuncio; //1
 	//Combobox
@@ -163,16 +164,13 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		}
 		
 		//Immagini
-		immagine1 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine1")).getText());
-		immagine2 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine2")).getText());
-		immagine3 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine3")).getText());
-		immagine4 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine4")).getText());
-		immagine5 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine5")).getText());
-		immagine6 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine6")).getText());
-		immagine7 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine7")).getText());
-		immagine8 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine8")).getText());
-		immagine9 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine9")).getText());
-		immagine10 = new File((String)((JTextField)mapCampiForm.get("textFieldImmagine10")).getText());
+		for(int i=0; i<arrayImages.length; i++) {
+			String imgPath = (String)((JTextField)mapCampiForm.get("textFieldImmagine" + (i+1))).getText();
+			File imgFile = new File(imgPath);
+			if(imgFile.exists()) {
+				arrayImages[i] = imgFile;
+			}
+		}
 		
 		//TextArea
 		testoAnnuncio = (String)((JTextArea)mapCampiForm.get("textAreaTestoAnnuncio")).getText().trim();

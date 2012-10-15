@@ -172,8 +172,8 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	  	if(scheda.immagine9!=null) {
 	  		textBody += "Immagine : " + scheda.immagine9.getName() + "\n";
 	  	}
-	  	if(scheda.immagine10!=null) {
-	  		textBody += "Immagine : " + scheda.immagine10.getName() + "\n";
+	  	if(scheda.immagine0!=null) {
+	  		textBody += "Immagine : " + scheda.immagine0.getName() + "\n";
 	  	}
 	  	textBody += "Prezzo: " + scheda.prezzoImmobile + "\n";
 	  	
@@ -288,7 +288,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
                 if(cookie_name.equals(cookieName)) {
                 	//Cookie di sessione trovato
             		cookieHeaderFound = true;
-            		connessione.setSessionCookieDomain(cookie_header);
+            		connessione.setSessionCookieHeader(cookie_header);
             		connessione.setSessionCookieName(cookieName);
             		connessione.setSessionCookieValue(cookie_value);
             		break;

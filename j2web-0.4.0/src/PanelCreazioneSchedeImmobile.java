@@ -1281,16 +1281,38 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	  	textFieldIndirizzoLocalita.setText(scheda.indirizzoLocalita);
 	  	textFieldSuperficieImmobile.setText(scheda.superficieImmobile);
 	  	textFieldPrezzoImmobile.setText(scheda.prezzoImmobile);
-	  	textFieldImmagine1.setText(scheda.immagine1.getPath());
-	  	textFieldImmagine2.setText(scheda.immagine2.getPath());
-	  	textFieldImmagine3.setText(scheda.immagine3.getPath());
-	  	textFieldImmagine4.setText(scheda.immagine4.getPath());
-	  	textFieldImmagine5.setText(scheda.immagine5.getPath());
-	  	textFieldImmagine6.setText(scheda.immagine6.getPath());
-	  	textFieldImmagine7.setText(scheda.immagine7.getPath());
-	  	textFieldImmagine8.setText(scheda.immagine8.getPath());
-	  	textFieldImmagine9.setText(scheda.immagine9.getPath());
-	  	textFieldImmagine10.setText(scheda.immagine10.getPath());
+	  	
+	  	if(scheda.arrayImages[0]!=null) {
+	  		textFieldImmagine1.setText(scheda.arrayImages[0].getPath());
+	  	}
+	  	if(scheda.arrayImages[1]!=null) {
+	  		textFieldImmagine2.setText(scheda.arrayImages[1].getPath());
+	  	}
+	  	if(scheda.arrayImages[2]!=null) {
+	  		textFieldImmagine3.setText(scheda.arrayImages[2].getPath());
+	  	}
+	  	if(scheda.arrayImages[3]!=null) {
+	  		textFieldImmagine4.setText(scheda.arrayImages[3].getPath());
+	  	}
+	  	if(scheda.arrayImages[4]!=null) {
+	  		textFieldImmagine5.setText(scheda.arrayImages[4].getPath());
+	  	}
+	  	if(scheda.arrayImages[5]!=null) {
+	  		textFieldImmagine6.setText(scheda.arrayImages[5].getPath());
+	  	}
+	  	if(scheda.arrayImages[6]!=null) {
+	  		textFieldImmagine7.setText(scheda.arrayImages[6].getPath());
+	  	}
+	  	if(scheda.arrayImages[7]!=null) {
+	  		textFieldImmagine8.setText(scheda.arrayImages[7].getPath());
+	  	}
+	  	if(scheda.arrayImages[8]!=null) {
+	  		textFieldImmagine9.setText(scheda.arrayImages[8].getPath());
+	  	}
+	  	if(scheda.arrayImages[9]!=null) {
+	  		textFieldImmagine10.setText(scheda.arrayImages[9].getPath());
+	  	}
+	  	
 	  	textFieldNumeroTotalePiani.setText(scheda.numeroTotalePiani);
 	  	textFieldAnnoCostruzione.setText(scheda.annoCostruzione);//18
 	  	//Textarea

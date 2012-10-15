@@ -6,8 +6,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
 
@@ -17,14 +15,11 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	
 	//Costruttore
 	public HttpPortalPostConnection() {
-				
-		httpclient = new DefaultHttpClient();
-		responseHandler = new BasicResponseHandler();
-		
+
 	}
 	
 	
-	public Object[] post(String url, List<NameValuePair> postParameters, boolean debugMode) throws IOException {
+	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
 		Object[] headersAndBodyResponse = new Object[2];
@@ -60,7 +55,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
             
         if(debugMode) {
             //Print connection properties
-            printConnectionProperties();
+        	printConnectionProperties(connectionDescription, httppost, responseHeaders, responseBody);
         }
         
         //Close the request
@@ -74,7 +69,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	}
 	
 	
-	public Object[] post(String url, MultipartEntity reqEntity, boolean debugMode) throws IOException {
+	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
 		Object[] headersAndBodyResponse = new Object[2];
@@ -109,7 +104,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
          
         if(debugMode) {
             //Print connection properties
-            printConnectionProperties();
+        	printConnectionProperties(connectionDescription, httppost, responseHeaders, responseBody);
         }
         
         //Close the request
