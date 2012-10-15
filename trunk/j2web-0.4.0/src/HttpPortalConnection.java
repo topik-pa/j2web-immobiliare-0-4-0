@@ -5,6 +5,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 
 
@@ -28,16 +31,18 @@ public class HttpPortalConnection implements parametriGenerali {
     
 	//Costruttore
 	public HttpPortalConnection() {
-    
+		httpclient = new DefaultHttpClient();
+		responseHandler = new BasicResponseHandler();
 	}
 	
 	//Stampa a video le proprietà della connessione corrente
-	public void printConnectionProperties() throws IOException {
+	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody) throws IOException {
 		
 		//Show Request URL
 		System.out.println("\n\n\n");
         System.out.println("----------------------------------------");
-        System.out.println("Executing request: " + httpget.getURI());
+        System.out.println("Executing request: " + connectionDescription);
+        System.out.println("Request uri: " + httpRequest.getURI());
         System.out.println("----------------------------------------");
         
         //Show Request cookies
@@ -48,12 +53,12 @@ public class HttpPortalConnection implements parametriGenerali {
         System.out.println("----------------------------------------");
         
         //Show Request properties
-        System.out.println("Request method: " + httpget.getMethod());
-        System.out.println("Protocol version: " + httpget.getProtocolVersion());
+        System.out.println("Request method: " + httpRequest.getMethod());
+        System.out.println("Protocol version: " + httpRequest.getProtocolVersion());
         System.out.println("----------------------------------------");
         
         //Show request headers
-        requestHeaders = httpget.getAllHeaders(); 
+        requestHeaders = httpRequest.getAllHeaders(); 
         System.out.println("Request headers: " + requestHeaders.length + "\n");
         for(int i=0; i<requestHeaders.length; i++) {
         	System.out.println(requestHeaders[i]);
@@ -71,9 +76,7 @@ public class HttpPortalConnection implements parametriGenerali {
         //Show response body
         if(response.getStatusLine().toString().contains("200")) {
             System.out.println("Response body: \n");
-            String responseBody = responseHandler.handleResponse(response);
-            System.out.println(responseBody);
-                       
+            System.out.println(responseBody);                     
         }
         else {
         	System.out.println("Nessuna risposta nel body"); 

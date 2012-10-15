@@ -2,8 +2,6 @@ import java.io.IOException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
 
@@ -12,15 +10,12 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 	
 	//Costruttore
 	public HttpPortalGetConnection() {
-				
-		httpclient = new DefaultHttpClient();
-		responseHandler = new BasicResponseHandler();
-		
+
 	}
 	
 	
 	//Get di una risorsa
-	public Object[] get(String url, boolean debugMode) throws IOException {
+	public Object[] get(String connectionDescription, String url, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
 		Object[] headersAndBodyResponse = new Object[2];
@@ -52,7 +47,7 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
            
         if(debugMode) {
             //Print connection properties
-            printConnectionProperties();
+            printConnectionProperties(connectionDescription, httpget, responseHeaders, responseBody);
         }        
         
         //Close the request
