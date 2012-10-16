@@ -182,6 +182,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("textFieldCodiceInserzione", textFieldCodiceInserzione);
 		listCampiForm.add(textFieldCodiceInserzione);
+		listCampiFormObbligatori.add(textFieldCodiceInserzione);
 		panelCodiceInserzione.add(textFieldCodiceInserzione, "2, 1, left, default");
 		textFieldCodiceInserzione.setHorizontalAlignment(SwingConstants.LEFT);
 		textFieldCodiceInserzione.setToolTipText("Inserire un codice per identificare univocamente l'annuncio");
@@ -211,6 +212,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("textFieldTitoloAnnuncio", textFieldTitoloAnnuncio);
 		listCampiForm.add(textFieldTitoloAnnuncio);
+		listCampiFormObbligatori.add(textFieldTitoloAnnuncio);
 		lblTitoloAnnuncio.setLabelFor(textFieldTitoloAnnuncio);
 		panelTitoloAnnuncio.add(textFieldTitoloAnnuncio, "2, 1, left, default");
 		textFieldTitoloAnnuncio.setToolTipText("Inserire un titolo per l'annuncio");
@@ -242,6 +244,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("comboBoxRegione", comboBoxRegione);
 		listCampiForm.add(comboBoxRegione);
+		listCampiFormObbligatori.add(comboBoxRegione);
 		comboBoxRegione.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//System.out.println("Select: Seleziona Regione");
@@ -260,6 +263,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("comboBoxProvincia", comboBoxProvincia);
 		listCampiForm.add(comboBoxProvincia);
+		listCampiFormObbligatori.add(comboBoxProvincia);
 		comboBoxProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//System.out.println("Select: Seleziona Provincia");
@@ -277,6 +281,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("comboBoxComune", comboBoxComune);
 		listCampiForm.add(comboBoxComune);
+		listCampiFormObbligatori.add(comboBoxComune);
 		lblComune.setLabelFor(comboBoxComune);
 		panelRegProvCom.add(comboBoxComune, "2, 5, left, default");
 		comboBoxComune.setToolTipText("Selezionare il comune");
@@ -295,6 +300,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("textFieldCap", textFieldCap);
 		listCampiForm.add(textFieldCap);
+		listCampiFormObbligatori.add(textFieldCap);
 		lblCap.setLabelFor(textFieldCap);
 		panelCap.add(textFieldCap, "2, 1, left, default");
 		textFieldCap.setToolTipText("Inserire il CAP");
@@ -323,6 +329,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("textFieldIndirizzoLocalita", textFieldIndirizzoLocalita);
 		listCampiForm.add(textFieldIndirizzoLocalita);
+		listCampiFormObbligatori.add(textFieldIndirizzoLocalita);
 		lblIndirizzoLocalita.setLabelFor(textFieldIndirizzoLocalita);
 		panelIndirizzo.add(textFieldIndirizzoLocalita, "2, 1, left, default");
 		textFieldIndirizzoLocalita.setToolTipText("Specificare un indirizzo completo o la località dell'immobile");
@@ -346,6 +353,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("textAreaTestoAnnuncio", textAreaTestoAnnuncio);
 		listCampiForm.add(textAreaTestoAnnuncio);
+		listCampiFormObbligatori.add(textAreaTestoAnnuncio);
 		textAreaTestoAnnuncio.setTabSize(4);
 		lblTestoDellaScheda.setLabelFor(textAreaTestoAnnuncio);
 		textAreaTestoAnnuncio.setToolTipText("Inserire il testo dell'annuncio");
@@ -375,6 +383,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("comboBoxCategoriaImmobile", comboBoxCategoriaImmobile);
 		listCampiForm.add(comboBoxCategoriaImmobile);
+		listCampiFormObbligatori.add(comboBoxCategoriaImmobile);
 		comboBoxCategoriaImmobile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//System.out.println("Select: Seleziona Categoria immobile");
@@ -393,6 +402,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("comboBoxTipologiaImmobile", comboBoxTipologiaImmobile);
 		listCampiForm.add(comboBoxTipologiaImmobile);
+		listCampiFormObbligatori.add(comboBoxTipologiaImmobile);
 		lblTipologiaImmobile.setLabelFor(comboBoxTipologiaImmobile);
 		comboBoxTipologiaImmobile.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panelCategoriaTipologia.add(comboBoxTipologiaImmobile, "2, 3, left, default");
@@ -412,6 +422,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("textFieldSuperficieImmobile", textFieldSuperficieImmobile);
 		listCampiForm.add(textFieldSuperficieImmobile);
+		listCampiFormObbligatori.add(textFieldSuperficieImmobile);
 		lblSuperficieImmmobile.setLabelFor(textFieldSuperficieImmobile);
 		panelSuperficie.add(textFieldSuperficieImmobile, "2, 1, left, default");
 		textFieldSuperficieImmobile.setToolTipText("Inserire la superficie dell'immobile in metri quadrati");
@@ -441,6 +452,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("comboBoxTipologiaContratto", comboBoxTipologiaContratto);
 		listCampiForm.add(comboBoxTipologiaContratto);
+		listCampiFormObbligatori.add(comboBoxTipologiaContratto);
 		comboBoxTipologiaContratto.setModel(new DefaultComboBoxModel<String>(arrayTipologieContratto));
 		lblTipologiaContratto.setLabelFor(comboBoxTipologiaContratto);
 		comboBoxTipologiaContratto.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -461,6 +473,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		
 		mapCampiForm.put("textFieldPrezzoImmobile", textFieldPrezzoImmobile);
 		listCampiForm.add(textFieldPrezzoImmobile);
+		listCampiFormObbligatori.add(textFieldPrezzoImmobile);
 		lblPrezzoImmobile.setLabelFor(textFieldPrezzoImmobile);
 		panelPrezzo.add(textFieldPrezzoImmobile, "2, 1, left, default");
 		textFieldPrezzoImmobile.setToolTipText("Inserire il prezzo di vendita o affitto dell'immobile");
@@ -489,12 +502,14 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnCreaScheda.setIcon(icoProcedi);
 		btnCreaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Button - Crea scheda");				
+				System.out.print("Creazione della scheda immobile...");				
 				if(isFormValid()) { 
-					System.out.println("Form valido");
+					System.out.println(" ...form valido... ");
 					
+					//Disabilito i campi della form
 					disabilitaCampiForm();
 					
+					//Istanzio l'oggetto schda e lo salvo nel file
              	   	SchedaImmobile schedaImmobile = new SchedaImmobile();
              	   	aggiungiScheda(schedaImmobile);
              	 
@@ -503,10 +518,12 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
              	   
              	    //Il pannello di destra viene ridisegnato
              	    j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello();
+             	    
+             	    System.out.print(" fatto." + "\n");
 				}
 				else {
-					System.out.println("Form non valido");
-					JOptionPane.showMessageDialog(null, ModalWindowsDialogs[8]);
+					System.out.println(" ...form non valido. Scheda non creata.");
+					JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("CreazioneDellaSchedaImmobile_SchedaNonCreata"), "Errore", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -520,8 +537,9 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		btnResettaPannelloCreazioneScheda.setIcon(icoResetta);
 		btnResettaPannelloCreazioneScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Button - Resetta");
+				System.out.print("Resetto la form...");
 				resettaForm();
+				System.out.print(" fatto." + "\n");
 			}
 		});
 		btnResettaPannelloCreazioneScheda.setToolTipText("Resetta il pannello di creazione scheda");
@@ -1060,6 +1078,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 			
     }	//Fine costruttore 
 	
+	
 	//Popola la combobox Provincia quando viene modificata la Regione
 	static void popolaComboBoxProvincia(String regione) {
 		//Rimuovo tutte le opzioni della select Provincia
@@ -1067,7 +1086,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		//Rimuovo tutte le opzioni della select Comune
 		comboBoxComune.removeAllItems();
 		if(!regione.equals(arrayRegioni[0])) {
-			//System.out.println("Regione selezionata: " + regione);
 			comboBoxProvincia.setModel(new DefaultComboBoxModel<String>(regioneProvincie.get(regione)));
 		}	
 	}
@@ -1075,14 +1093,12 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	//Popola la combobox Comune quando viene modificata la Provincia
 	static void popolaComboBoxComune(String provincia) {
 		if(!provincia.equals(arrayProvincie[0])) {
-			//System.out.println("Provincia selezionata: " + provincia);
 			comboBoxComune.setModel(new DefaultComboBoxModel<String>(provinciaComuni.get(provincia)));
 		}
 	}
 	
 	//Popola la combobox Categoria immobile quando viene modificata la Tipologia immobile
 	static void popolaComboBoxTipologiaImmobile(String categoria) {
-		//System.out.println("Categoria: " + categoria);
 		switch (categoria)
 		{
 	    case "Residenziale":
@@ -1117,7 +1133,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
                 relatedTextField.setEnabled(false);
             }
             else {
-            	JOptionPane.showMessageDialog(null, ModalWindowsDialogs[9]);
+            	MapModalWindowsDialogs.get("selezioneFileImmagne_SelezioneNonValida");
             }	
         }
 	}
@@ -1157,7 +1173,6 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	}
 		
 	//Disabilita i campi della form
-	//@SuppressWarnings("unchecked")
 	static void disabilitaCampiForm() {
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 		while(iteratorListCampiForm.hasNext()) {
@@ -1171,105 +1186,46 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	static boolean isFormValid() {
 		
 		String comboContent;
-		boolean campiObbligatoriCompilati = true;
 		
-		//Controllo i campi testuali
-		if(((JTextField)mapCampiForm.get("textFieldCodiceInserzione")).getText().isEmpty()) {
-			campiObbligatoriCompilati = false;
+		ListIterator<JComponent> iteratorListCampiFormObbligatori = listCampiFormObbligatori.listIterator();
+		while(iteratorListCampiFormObbligatori.hasNext()) {
+			JComponent campoCorrente = (JComponent)iteratorListCampiFormObbligatori.next();
+			switch (campoCorrente.getClass().getName())
+			{
+			    case "javax.swing.JTextField": //Campo testuale
+			    	if(((JTextComponent) campoCorrente).getText().isEmpty()) {
+			    		return false;
+					}
+			        break;
+			    case "javax.swing.JTextArea": //Text Area
+			    	if(((JTextArea) campoCorrente).getText().isEmpty()) {
+			    		return false;
+					}
+			        break;
+			    case "javax.swing.JComboBox": //Select		    	
+			    	comboContent = (String)((JComboBox<String>) campoCorrente).getSelectedItem();
+					if(comboContent.isEmpty() || comboContent.contains("Seleziona ")) { //Attenzione: il controllo viene effettuato sulla parola "Seleziona "
+						return false;
+					}
+			        break;
+			}	
 		}
-		if(((JTextField)mapCampiForm.get("textFieldTitoloAnnuncio")).getText().isEmpty()) {
-			campiObbligatoriCompilati = false;
-		}
-		if(((JTextField)mapCampiForm.get("textFieldCap")).getText().isEmpty()) {
-			campiObbligatoriCompilati = false;
-		}
-		if(((JTextField)mapCampiForm.get("textFieldIndirizzoLocalita")).getText().isEmpty()) {
-			campiObbligatoriCompilati = false;
-		}
-		if(((JTextField)mapCampiForm.get("textFieldSuperficieImmobile")).getText().isEmpty()) {
-			campiObbligatoriCompilati = false;
-		}
-		if(((JTextField)mapCampiForm.get("textFieldPrezzoImmobile")).getText().isEmpty()) {
-			campiObbligatoriCompilati = false;
-		}
-		
-		//Controllo la text area
-		if(((JTextArea)mapCampiForm.get("textAreaTestoAnnuncio")).getText().isEmpty()) {
-			campiObbligatoriCompilati = false;
-		}
-		
-		//Controllo le checkbox
-		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxRegione")).getSelectedItem());
-		if(comboContent.isEmpty() || comboContent.equals(arrayRegioni[0])) {
-			campiObbligatoriCompilati = false;
-		}
-		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxProvincia")).getSelectedItem());
-		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayProvincie[0])) {
-			campiObbligatoriCompilati = false;
-		}
-		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxComune")).getSelectedItem());
-		if(comboContent==null || comboContent.isEmpty()) {
-			campiObbligatoriCompilati = false;
-		}
-		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxCategoriaImmobile")).getSelectedItem());
-		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayCategorieImmobili[0])) {
-			campiObbligatoriCompilati = false;
-		}
-		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxTipologiaImmobile")).getSelectedItem());
-		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayTipologie[0])) {
-			campiObbligatoriCompilati = false;
-		}
-		comboContent = ((String)((JComboBox<String>)mapCampiForm.get("comboBoxTipologiaContratto")).getSelectedItem());
-		if(comboContent==null || comboContent.isEmpty() || comboContent.equals(arrayTipologie[0])) {
-			campiObbligatoriCompilati = false;
-		}
-		
-		//Se tutti i campi obbligatori hanno dati validi
-       if(campiObbligatoriCompilati) {  	
-           return true;
-       }
-       else {               	           
-           return false;
-       }
-		
+		return true;	
 	}
 
 	//Il nuovo oggetto scheda immobile viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
 	static void aggiungiScheda(SchedaImmobile scheda) {
 	
-	//Aggiorno la lista delle schede immobile
-	j2web_GUI.listSchedeImmobile.add(scheda);
-		
-	//Aggiorno il file dat delle schede
-	j2web.salvaListPortaliSuDat();
-	
-    /*try {
-	   File file = new File(datFilePath);
-    	if(file.exists()) {
-    		System.out.println("File .dat schede trovato.");
-    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-				outputFile.writeObject(j2web_GUI.listSchedeImmobile);
-				outputFile.close();
-    	}
-    	else {
-				FileOutputStream newFile = new FileOutputStream(datFilePath);
-				ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-				outputFile.writeObject(j2web_GUI.listSchedeImmobile);
-				outputFile.close();
-				System.out.println("File .dat schede non trovato. Creazione del file...: " + newFile.toString());
-    	}
-		} catch (FileNotFoundException e0) {
-            JOptionPane.showMessageDialog(null, "File .dat schede non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-            e0.printStackTrace();
-		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat schede: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-			e1.printStackTrace();
-		}*/
+		//Aggiorno la lista delle schede immobile
+		j2web_GUI.listSchedeImmobile.add(scheda);
+			
+		//Aggiorno il file dat delle schede
+		j2web.salvaListaSchedeImmobiliCreate();
 		
 	}
 	
 	
-	// Metodo per ricompilare i dati della form con quelli presenti in una scheda data
+	// Metodo per ricompilare i dati della form con quelli presenti in una scheda appena viene selezionata
 	public void mostraSchedaSalvata(SchedaImmobile scheda) {
 		
 		resettaForm();		
