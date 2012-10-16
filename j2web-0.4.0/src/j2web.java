@@ -28,6 +28,11 @@ public class j2web implements parametriGenerali {
 		inizializzaMappaProvinciaComuni();
 		System.out.print(" fatto." + "\n");
 		
+		//Popolo la mappa dei dialoghi modali
+		System.out.print("Popolo la mappa dei dialoghi modali...");
+		inizializzaMappaDialoghiModali();
+		System.out.print(" fatto." + "\n");
+		
 		//Popolo la mappa dei limiti di caratteri per i campi testuali
 		System.out.print("Popolo la mappa dei limiti di caratteri per i campi testuali...");
 		inizializzaMappaLimiteCaratteri();
@@ -56,35 +61,37 @@ public class j2web implements parametriGenerali {
 	
 	
 	//Caricamento da dat
-	@SuppressWarnings("unchecked")
-	public static void caricaListPortaliDaDat() {
-		File file = new File(datFilePath);
+	//@SuppressWarnings("unchecked")
+	public static void caricaListaSchedeImmobiliCreate() {
+		File file = new File(pathFileDatSchede);
     	if(file.exists() && file.length()!=0) {
     			System.out.print("File .dat schede trovato. Caricamento dati...");
     			try {
     				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
-    				j2web_GUI.listSchedeImmobile = (LinkedList<SchedaImmobile>)inputFile.readObject();
+    				@SuppressWarnings("unchecked")
+					LinkedList<SchedaImmobile> readObject = (LinkedList<SchedaImmobile>)inputFile.readObject();
+					j2web_GUI.listSchedeImmobile = readObject;
     				inputFile.close();
     			} catch (FileNotFoundException e) {
-    				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[1], "Errore", JOptionPane.ERROR_MESSAGE);
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
     				e.printStackTrace();
     			} catch (IOException e) {
-    				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[2], "Errore", JOptionPane.ERROR_MESSAGE);
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_IOException"), "IOException", JOptionPane.ERROR_MESSAGE);
     				e.printStackTrace();
     			} catch (ClassNotFoundException e) {
-    				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[12], "Errore", JOptionPane.ERROR_MESSAGE);
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_ClassNotFoundException"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
     			}
     			System.out.print(" fatto." + "\n");
     		}   				
     	else {
-    		System.out.println("File .dat schede non trovato.");
+    		System.out.println("File .dat schede non trovato o file .dat vuoto.");
     	}
 	}
 	
 	//Salvataggio su dat
-	public static void salvaListPortaliSuDat() {
+	public static void salvaListaSchedeImmobiliCreate() {
 		try {
-		   File file = new File(datFilePath);
+		   File file = new File(pathFileDatSchede);
 	    	if(file.exists()) {
 	    		System.out.print("File .dat schede trovato. Salvataggio dati...");
 	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
@@ -93,7 +100,7 @@ public class j2web implements parametriGenerali {
 				System.out.print(" fatto." + "\n");
 	    	}
 	    	else {	    		
-				FileOutputStream newFile = new FileOutputStream(datFilePath);
+				FileOutputStream newFile = new FileOutputStream(pathFileDatSchede);
 				System.out.print("File .dat non schede trovato. Creazione del file..." + newFile.toString());
 				ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
 				outputFile.writeObject(j2web_GUI.listSchedeImmobile);
@@ -102,16 +109,14 @@ public class j2web implements parametriGenerali {
 	    	}
 		}
 		catch (FileNotFoundException e) {		
-	        JOptionPane.showMessageDialog(null, ModalWindowsDialogs[1], "Errore", JOptionPane.ERROR_MESSAGE);
+	        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeImmobiliCreate_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 	        e.printStackTrace();
 		}
 		catch (IOException e) {
-			JOptionPane.showMessageDialog(null, ModalWindowsDialogs[2], "Errore", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeImmobiliCreate_FileNotFoundException"), "IOException", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 	}
-
-	//public static void 
 	
 	//Inizializza la mappa delle regioni e provincie
 	public static void inizializzaMappaRegioneProvincia() {		
@@ -258,4 +263,20 @@ public class j2web implements parametriGenerali {
 		maxCaratteri.put("textFieldAnnoCostruzione", 4);
 		maxCaratteri.put("textFieldNumeroTotalePiani", 2);
 	}
+
+	//Inizializza la mappa dei dialoghi modali
+	public static void inizializzaMappaDialoghiModali() {
+		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_FileNotFoundException", "XXX");
+		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_IOException", "XXX");
+		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_ClassNotFoundException", "XXX");
+		MapModalWindowsDialogs.put("salvaListaSchedeImmobiliCreate_FileNotFoundException", "XXX");
+		MapModalWindowsDialogs.put("salvaListaSchedeImmobiliCreate_FileNotFoundException", "XXX");
+		
+		MapModalWindowsDialogs.put("menu_EliminaTutteLeSchede", "XXX");
+		
+		MapModalWindowsDialogs.put("CreazioneDellaSchedaImmobile_SchedaNonCreata", "XXX");
+		
+		MapModalWindowsDialogs.put("selezioneFileImmagne_SelezioneNonValida", "XXX");
+	}
+
 }

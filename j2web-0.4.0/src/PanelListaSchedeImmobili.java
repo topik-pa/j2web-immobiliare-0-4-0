@@ -45,7 +45,7 @@ public class PanelListaSchedeImmobili extends JPanel {
 		
         
         //Lettura schede dal file .dat 
-		j2web.caricaListPortaliDaDat();
+		j2web.caricaListaSchedeImmobiliCreate();
         
 		/*File file = new File(datFilePath);
     	if(file.exists()) {
@@ -203,7 +203,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
             	}
             	
             	//Aggiorno il file dat delle schede
-            	j2web.salvaListPortaliSuDat();
+            	j2web.salvaListaSchedeImmobiliCreate();
             	
             	//Aggiorno il file dat relativo alle schede immobile
             	/*try {

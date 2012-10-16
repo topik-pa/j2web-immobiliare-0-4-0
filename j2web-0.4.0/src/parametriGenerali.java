@@ -1,7 +1,6 @@
 import java.awt.Image;
 import java.util.Hashtable;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -38,6 +37,8 @@ public interface parametriGenerali {
     final String USER_AGENT_VALUE = "Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20100101 Firefox/12.0";
     
     //Messaggi delle finestre modali
+    final Map<String,String> MapModalWindowsDialogs = new Hashtable<String,String>();
+
     String[] ModalWindowsDialogs = {
     		"Eliminare tutte le schede immobile dal pannello?", 
     		"File .dat schede non trovato: impossibile caricare le schede precedentemente inserite", 
@@ -69,13 +70,16 @@ public interface parametriGenerali {
     Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>(); 
   	
   	//Percorso file dat per le schede
-  	String datFilePath = ".\\schede\\schede.dat";
+  	String pathFileDatSchede = ".\\schede\\schede.dat";
   	  
     //Mappa che contiene tutti i campi della form soggetti a lettura/scrittura o modifiche varie a runtime
     Map<String,JComponent> mapCampiForm =  new Hashtable<String,JComponent>();
+    
     //Lista concatenata che contiene tutti i campi della form soggetti a lettura/scrittura o modifiche varie a runtime
     LinkedList<JComponent> listCampiForm = new LinkedList<JComponent>();
-    ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
+    
+    //Lista concatenata che contiene tutti i campi della form che sono obbligatori
+    LinkedList<JComponent> listCampiFormObbligatori = new LinkedList<JComponent>();
 	
 	//Tutti gli array<String> che definiscono le combo box
     final String[] arrayCategorieImmobili = {"Seleziona la categoria", "Residenziale", "Commerciale", "Industriale"};
