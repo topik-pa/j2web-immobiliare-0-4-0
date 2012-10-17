@@ -46,17 +46,9 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	String numeroTotalePiani;
 	String annoCostruzione; //8
 	//File
-	File immagine1;
-	File immagine2;
-	File immagine3;
-	File immagine4;
-	File immagine5;
-	File immagine6;	
-	File immagine7;
-	File immagine8;
-	File immagine9;
-	File immagine0; //10
+	File immagine1;	File immagine2;	File immagine3;	File immagine4;	File immagine5;	File immagine6;	File immagine7;	File immagine8;	File immagine9;	File immagine0; 	
 	File[] arrayImages = {immagine1, immagine2, immagine3, immagine4, immagine5, immagine6, immagine7, immagine8, immagine9, immagine0};
+	//10
 	//Textarea
 	String testoAnnuncio; //1
 	//Combobox
@@ -111,7 +103,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	int comboBoxGiardinoIndex;
 
 	//Percorso file dat per la scheda
-	String schedaDatPath;
+	String singolaSchedaDatPath;
 
 	//Una scheda immobile può essere ospitata in diversi portali, la seguente tabella hash contiene i codici dei portali(key) e il codice di inserimento(value) in cui la scheda è attualmente inserita
 	Map<String,String> mappaPortaliOspitanti = new Hashtable<String,String>();
@@ -168,7 +160,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 			String imgPath = (String)((JTextField)mapCampiForm.get("textFieldImmagine" + (i+1))).getText();
 			File imgFile = new File(imgPath);
 			if(imgFile.exists()) {
-				arrayImages[i] = imgFile;
+				arrayImages[i] = imgFile;	//tutte le altre sono null
 			}
 		}
 		
@@ -236,7 +228,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		
 		
 		//Inizializzo il path per il file hash di questa scheda
-		schedaDatPath = ".\\schede\\" + codiceInserzione + "-" + idScheda + ".dat";
+		singolaSchedaDatPath = ".\\schede\\" + codiceInserzione + "-" + idScheda + ".dat";
 		
 		//Salvo gli indici delle select
 		comboBoxRegioneIndex=((int)((JComboBox)mapCampiForm.get("comboBoxRegione")).getSelectedIndex());
@@ -266,9 +258,9 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	public void caricaTabellaHash() {
 		
 		//Lettura schede dal file .dat
-        File file = new File(schedaDatPath);
+        File file = new File(singolaSchedaDatPath);
     	if(file.exists()) {
-    		System.out.print("File hash scheda trovato. Lettura dati da " + schedaDatPath);
+    		System.out.print("File hash scheda trovato. Lettura dati da " + singolaSchedaDatPath);
     		try {
     			if(file.length()!=0) {
     				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
@@ -277,22 +269,22 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
     			}
     			System.out.print(" fatto." + "\n");
 			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[3], "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[4], "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash_IOException"), "IOException", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[5], "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash_ClassNotFoundException"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
 			} 		
     	}
     	else {
     		try {
-				FileOutputStream newFile = new FileOutputStream(schedaDatPath);
+				FileOutputStream newFile = new FileOutputStream(singolaSchedaDatPath);
 				System.out.print("File hash non trovato. Creazione di un nuovo file hash per questa scheda..." + newFile.toString());
 				System.out.print(" fatto." + "\n");
 			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(null, ModalWindowsDialogs[3], "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
     	}
@@ -302,11 +294,9 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	//Verifico la presenza della scheda immobile in un dato portale
 	public boolean isOnThisPortal(String idPortale) {
 		if(mappaPortaliOspitanti.containsKey(idPortale)) {
-			System.out.println("La scheda è presente nel portale: " + idPortale);
 			return true; 
 		}
 		else {
-			System.out.println("La scheda non è presente nel portale: " + idPortale);
 			return false;
 		}
 	}
@@ -317,27 +307,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		mappaPortaliOspitanti.put(idPortale, codiceInserzione);
 				
 		//Salvataggio tabella hash
-		salvaTabellaHash(schedaDatPath, mappaPortaliOspitanti);
-        /*try {
- 		   File file = new File(schedaDatPath);
-	    	if(file.exists()) {
-	    		System.out.print("File hash scheda trovato. Salvataggio dati su " + schedaDatPath);
-	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-				outputFile.writeObject(mappaPortaliOspitanti);
-				outputFile.close();
-				System.out.print(" fatto." + "\n");
-	    	}
-	    	else {
-	    		//La tabella hash è creata in ogni caso al momento della prima lettura della stessa
-	    		System.out.println("File hash scheda non trovato.");
-	    	}
-		} catch (FileNotFoundException e0) {		
-	        JOptionPane.showMessageDialog(null, ModalWindowsDialogs[6], "Errore", JOptionPane.ERROR_MESSAGE);
-	        e0.printStackTrace();
-		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(null, ModalWindowsDialogs[7], "Errore", JOptionPane.ERROR_MESSAGE);
-			e1.printStackTrace();
-		}*/	
+		salvaTabellaHash(singolaSchedaDatPath, mappaPortaliOspitanti);
 	}
 
 	
@@ -347,27 +317,10 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		mappaPortaliOspitanti.remove(idPortale);
 		
 		//Salvataggio tabella
-		salvaTabellaHash(schedaDatPath, mappaPortaliOspitanti);
-		
-        /*try {
- 		   File file = new File(schedaDatPath);
- 	    	if(file.exists()) {
- 	    		System.out.println("File hash scheda trovato.");
- 	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-					outputFile.writeObject(mappaPortaliOspitanti);
-					outputFile.close();
- 	    	}
- 	    	else {
- 	    		System.out.println("File hash scheda non trovato.");
- 	    	}
-			} catch (FileNotFoundException e0) {
-	            JOptionPane.showMessageDialog(null, "File hash scheda non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-	            e0.printStackTrace();
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(null, "Impossibile accedere al file .hash scheda: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-				e1.printStackTrace();
-			}*/      
+		salvaTabellaHash(singolaSchedaDatPath, mappaPortaliOspitanti);
+		    
 	}
+	
 	
 	public void salvaTabellaHash(String schedaDatPath, Map<String,String> mappaPortaliOspitanti) {
 		try {
@@ -384,10 +337,10 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	    		System.out.println("File hash scheda non trovato.");
 	    	}
 		} catch (FileNotFoundException e0) {		
-	        JOptionPane.showMessageDialog(null, ModalWindowsDialogs[6], "Errore", JOptionPane.ERROR_MESSAGE);
+	        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 	        e0.printStackTrace();
 		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(null, ModalWindowsDialogs[7], "Errore", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash_IOException"), "IOException", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}	
 	}

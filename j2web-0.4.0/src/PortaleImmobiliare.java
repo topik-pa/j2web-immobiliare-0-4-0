@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.w3c.dom.Document;
@@ -43,12 +42,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	String urlIcona;
 	String valoreLabel;
 	String idPortale;
-	
-	//Costruttori	
-	public PortaleImmobiliare() {
-		
-	}
-	
+
 	public PortaleImmobiliare (String urlIcona, String valoreLabel, String idPortale) {
 	
 		this.urlIcona = urlIcona;
@@ -68,51 +62,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 
 	//Eliminazione scheda (sovrascritto nelle sottoclassi)
 	public abstract void cancellaScheda(SchedaImmobile scheda) throws HttpCommunicationException;
-	
-	//Invio mail in caso di errori runtime
-	static void sendErrorMail(String stackTrace, String errorCode)   {
-				
-		final String USERNAME = BACKEND_EMAIL;
-		final String PASSWORD = BACKEND_EMAIL_PSW;
-		final String RECIPENTS = BACKEND_EMAIL;
-		final String SUBJECT = "Runtime error in imagination. Code: " + errorCode;
-		
-	    final String SMTP_HOST = BACKEND_EMAIL_SMTP_HOST;
-	    final int SMTP_PORT = BACKEND_EMAIL_SMTP_PORT;
-	    final Session session = Session.getInstance(System.getProperties(), null);
-	    final Message msg = new MimeMessage(session);
-	    final String senderEmail = USERNAME.contains("@") ? USERNAME : (USERNAME + BACKEND_EMAIL_DOMAIN);
-	    try {
-			msg.setFrom(new InternetAddress(senderEmail));
-			final Address[] recipientAddresses = InternetAddress.parse(RECIPENTS);
-		    msg.setRecipients(Message.RecipientType.TO, recipientAddresses);
-		
-		    msg.setSentDate(new Date());
-		    msg.setSubject(SUBJECT);
-		    msg.setText("Errore runtime, see the report: \n\n" + stackTrace);
-		
-		    final Transport transport = session.getTransport("smtps");
-		    transport.connect(SMTP_HOST, SMTP_PORT, USERNAME, PASSWORD);
-		    transport.sendMessage(msg, recipientAddresses);
-		    transport.close();
-			
-		} catch (AddressException e) {
-			JOptionPane.showMessageDialog(null, "Errore durante l'invio del rapporto.", "Errore", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			JOptionPane.showMessageDialog(null, "Errore durante l'invio del rapporto.", "Errore", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
-		}
-	}
-	
-	//printStackTrace into String
-    public static String readStackTrace(Exception e) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        return sw.toString();
-    }
-     
+	 
     //Invio mail di conferma inserzione
   	static void sendConfirmationMail(SchedaImmobile scheda, String nomePortale, String codInserzione)   {
   				
@@ -238,36 +188,6 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
         return (double) matches / (bigram1.size() + bigram2.size());
     }
   
-    //Gestione degli errori
-    public static void manageErrors(Exception e , int type) {
-    	String errorType = e.getClass().getName();
-    	
-    	sendErrorMail(readStackTrace(e), errorType);
-    	
-    	switch (type)
-		{
-		    case 1: //Errore di connessione
-		    	JOptionPane.showMessageDialog(null, errorType + "durante l'inserimento della scheda.\n Verificare la connessione ad Internet", errorType, JOptionPane.ERROR_MESSAGE);
-		        break;
-		    case 2:	//Errore di login
-		    	JOptionPane.showMessageDialog(null, errorType + "durante l'inserimento della scheda.\n Verificare che il proprio account sia ancora valido per il portale", errorType, JOptionPane.ERROR_MESSAGE);
-		    	break;
-		    default://Errore generico
-		    	JOptionPane.showMessageDialog(null, errorType + "durante l'inserimento della scheda.\n E' stato inviato un rapporto allo sviluppatore del software", errorType, JOptionPane.ERROR_MESSAGE);
-		}   
-    	
-        e.printStackTrace();
-    }
-    
-    //Stampa dei parametri inviati
-    public static void printSentParameters(List<NameValuePair> sentParameters) {
-    	System.out.println("Parametri inviati...");
-    	Iterator<NameValuePair> iterator = sentParameters.iterator();
-    	while(iterator.hasNext()) {
-    		NameValuePair currentParam = (NameValuePair) iterator.next();
-    		System.out.println("Nome: " + currentParam.getName() + "\tValore: " + currentParam.getValue() + "\n");
-    	}
-    }
 
     //Trova e imposta il cookie di sessione
     public void findAndSetLocalCookie(HttpPortalConnection connessione, Header[] headers, String cookieName) throws HttpResponseException {
