@@ -362,7 +362,7 @@ public class Case24 extends PortaleImmobiliare {
 			String url = CASE24_URLROOT + "/area_clienti/annunci.php";
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 		} catch (IOException e ) {
-			manageErrors(e, 3);
+			//manageErrors(e, 3);
             return;
 		}
 		System.out.println("Visualizzata in: " + CASE24_NOMEPORTALE);

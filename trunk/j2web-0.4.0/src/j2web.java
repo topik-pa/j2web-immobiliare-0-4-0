@@ -37,6 +37,14 @@ public class j2web implements parametriGenerali {
 		System.out.print("Popolo la mappa dei limiti di caratteri per i campi testuali...");
 		inizializzaMappaLimiteCaratteri();
 		System.out.print(" fatto." + "\n");
+		
+		//Popolo la lista delle schede immobile caricando i dati dal file dat
+		System.out.print("Carico la lista delle schede immobile precedentemente salvate...");
+		caricaListaSchedeImmobiliCreate();
+		System.out.print(" fatto." + "\n");
+		
+		//Inizializzo la lista concatenata che contiene le informazioni sui portali immobiliari
+    	inizializzaPortaliAttivi();
 			
 		System.out.print("Lancio la GUI...");
 		try {
@@ -65,7 +73,7 @@ public class j2web implements parametriGenerali {
 	public static void caricaListaSchedeImmobiliCreate() {
 		File file = new File(pathFileDatSchede);
     	if(file.exists() && file.length()!=0) {
-    			System.out.print("File .dat schede trovato. Caricamento dati...");
+    			System.out.print(" File .dat schede trovato. Caricamento dati...");
     			try {
     				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
     				@SuppressWarnings("unchecked")
@@ -81,10 +89,9 @@ public class j2web implements parametriGenerali {
     			} catch (ClassNotFoundException e) {
     				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_ClassNotFoundException"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
     			}
-    			System.out.print(" fatto." + "\n");
     		}   				
     	else {
-    		System.out.println("File .dat schede non trovato o file .dat vuoto.");
+    		System.out.println(" File .dat schede non trovato o file .dat vuoto.");
     	}
 	}
 	
@@ -143,7 +150,7 @@ public class j2web implements parametriGenerali {
 	}
 		
 	//Inizializza la mappa delle regioni e provincie
-	static void inizializzaMappaProvinciaComuni() {		
+	public static void inizializzaMappaProvinciaComuni() {		
 		provinciaComuni.put("L'Aquila", comuniLAquila);
 		provinciaComuni.put("Chieti", comuniChieti);
 		provinciaComuni.put("Pescara", comuniPescara);
@@ -277,6 +284,52 @@ public class j2web implements parametriGenerali {
 		MapModalWindowsDialogs.put("CreazioneDellaSchedaImmobile_SchedaNonCreata", "XXX");
 		
 		MapModalWindowsDialogs.put("selezioneFileImmagne_SelezioneNonValida", "XXX");
+		
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_IOException", "XXX");
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpResponseException", "XXX");		
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_ErroreGenerico", "XXX");
+		MapModalWindowsDialogs.put("sendErrorMail_AddressException", "XXX");
+		MapModalWindowsDialogs.put("sendErrorMail_MessagingException", "XXX");
+		MapModalWindowsDialogs.put("caricaTabellaHash_FileNotFoundException", "XXX");
+		MapModalWindowsDialogs.put("caricaTabellaHash_IOException", "XXX");
+		MapModalWindowsDialogs.put("caricaTabellaHash_ClassNotFoundException", "XXX");
+		MapModalWindowsDialogs.put("salvaTabellaHash_FileNotFoundException", "XXX");
+		MapModalWindowsDialogs.put("salvaTabellaHash_IOException", "XXX");
 	}
 
+	public static void inizializzaPortaliAttivi() {
+    	//PortaleImmobiliare immobiliarePuntoIt = new ImmobiliarePuntoIt("./img/immobiliarePuntoIt.gif", "1 - immobiliare.it", "001");
+    	//listPortaliImmobiliari.add(immobiliarePuntoIt);
+    	
+    	//PortaleImmobiliare casaPuntoIt = new casaPuntoIt("./img/casaPuntoIt.png", "2 - casa.it", "002");
+    	//listPortaliImmobiliari.add(casaPuntoIt);
+    	
+    	//PortaleImmobiliare bancaDelleCase = new BancaDelleCase("./img/banca_delle_case.gif", "2 - bancadellecase.it", "003");
+    	//listPortaliImmobiliari.add(bancaDelleCase);
+    	
+    	PortaleImmobiliare case24 = new Case24("./images/case24.gif", "1 - case24.it", "001");
+    	j2web_GUI.listPortaliImmobiliari.add(case24);   
+    	
+    	PortaleImmobiliare case24bis = new Case24("./images/case24.gif", "1 - case24.it", "002");
+    	j2web_GUI.listPortaliImmobiliari.add(case24bis);
+    	
+    	PortaleImmobiliare case24tris = new Case24("./images/case24.gif", "1 - case24.it", "003");
+    	j2web_GUI.listPortaliImmobiliari.add(case24tris);
+    	
+    	PortaleImmobiliare case24bis2 = new Case24("./images/case24.gif", "1 - case24.it", "004");
+    	j2web_GUI.listPortaliImmobiliari.add(case24bis2);
+    	
+    	PortaleImmobiliare case24bis3 = new Case24("./images/case24.gif", "1 - case24.it", "005");
+    	j2web_GUI.listPortaliImmobiliari.add(case24bis3);
+     	
+    	//PortaleImmobiliare pagineCasa = new PagineCasa("./img/paginecasa.gif", "4 - paginecasa.it", "005");
+    	//listPortaliImmobiliari.add(pagineCasa);
+    	
+    	/*PortaleImmobiliare cuboCasa = new CuboCasa("./img/cubocasa.gif", "5 - cubocasa.it", "005");
+    	listPortaliImmobiliari.add(cuboCasa);*/
+    	
+    	//PortaleImmobiliare caseFvg = new CaseFvg("./img/casefvg.gif", "7 - casefvg.it", "007");
+    	//listPortaliImmobiliari.add(caseFvg);
+    }
+	
 }

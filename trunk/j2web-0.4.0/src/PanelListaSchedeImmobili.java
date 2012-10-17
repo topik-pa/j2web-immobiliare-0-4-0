@@ -34,76 +34,36 @@ public class PanelListaSchedeImmobili extends JPanel {
 	
 	String labelNessunaScheda ="Non \u00e8 stata inserita alcuna scheda immobile";
 	
-	public ButtonGroup radioGrpSchede = new ButtonGroup();	//Serve per raggruppare i radio button in una struttura coerente 
+	//Serve per raggruppare i radio button in una struttura coerente
+	public ButtonGroup radioGrpSchede = new ButtonGroup();	 
 
 	//Costruttore del pannello
 	public PanelListaSchedeImmobili() {
 		
 		setBorder(new TitledBorder(null, "Lista schede create", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(Box.createVerticalStrut(7));
 		
-        
-        //Lettura schede dal file .dat 
-		j2web.caricaListaSchedeImmobiliCreate();
-        
-		/*File file = new File(datFilePath);
-    	if(file.exists()) {
-    		System.out.println("File .dat trovato.");
-    		if(file.length()!=0) {
-    			try {
-    				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
-    				j2web_GUI.listSchedeImmobile = (LinkedList<SchedaImmobile>)inputFile.readObject();
-    				inputFile.close();
-    			} catch (FileNotFoundException e) {
-    				JOptionPane.showMessageDialog(null, "File .dat non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-    				e.printStackTrace();
-    			} catch (IOException e) {
-    				JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-    				e.printStackTrace();
-    			} catch (ClassNotFoundException e) {
-    				JOptionPane.showMessageDialog(null, "Errore generico", "Errore", JOptionPane.ERROR_MESSAGE);
-    			}   
-    		}   				
-    	}
-    	else {
-    		System.out.println("File .dat non trovato.");
-    	}*/
-    	
     	//Aggiorno il pannello con il contenuto della LinkedList che contiene le schede immobile
-    	//Pannello senza schede   	
-    	if(j2web_GUI.listSchedeImmobile.isEmpty()) {
-    		System.out.println("La lista delle schede immobili è vuota.");
-    		JPanel panelNessunaScheda = new JPanel();
-            JLabel lblNessunaScheda = new JLabel(labelNessunaScheda);                
-            panelNessunaScheda.add(lblNessunaScheda);
-            add(panelNessunaScheda);
-    	}
-    	//Pannello con schede
-    	else {
-    		System.out.println("La lista delle schede immobili contiene delle schede.");    		    	
-    		
-    		ListIterator<SchedaImmobile> iterator = j2web_GUI.listSchedeImmobile.listIterator();
-        	while(iterator.hasNext()) {
-        		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
-        		//I sottopannelli sono istanze di una classe comune definita più sotto
-        		JPanel pannelloSchedaImmobile = new PannelloSchedaImmobile(schedaCorrente, j2web_GUI.listSchedeImmobile, radioGrpSchede);            
-        		add(pannelloSchedaImmobile);
-        		add(Box.createVerticalStrut(5));
-        	}
-    	}
+		popolaPannelloListaSchedeImmobile();
+    	
     }	//Fine costruttore PannelloSchedeImmobili
         
     
-    //Il pannello viene aggiornato ogni volta che una scheda viene creata o cancellata, senza parametri formali il metodo riporta il pannello nella sua forma originaria 
+    //Il pannello viene aggiornato ogni volta che una scheda viene creata o cancellata
     public void updatePanello() { 
 
     	//Rimuovo tutti i pannelli attualmente presenti
     	removeAll();
-    	
+    	    	
+    	//Aggiorno il pannello con il contenuto della LinkedList che contiene le schede immobile 
+    	popolaPannelloListaSchedeImmobile();
+
+		updateUI();		
+    }
+    
+    public void popolaPannelloListaSchedeImmobile() {  	
+    	//Aggiorno il pannello con il contenuto della LinkedList che contiene le schede immobile  	
     	add(Box.createVerticalStrut(7));
-    	
-    	//Aggiorno il pannello con il contenuto della LinkedList che contiene le schede immobile
     	//Pannello senza schede
     	if(j2web_GUI.listSchedeImmobile.isEmpty()) {
     		System.out.println("La lista delle schede immobili è vuota.");
@@ -123,17 +83,15 @@ public class PanelListaSchedeImmobili extends JPanel {
         		add(pannelloSchedaImmobile);
         		add(Box.createVerticalStrut(5));
         	}
-    	}
-
-		updateUI();		
+    	}   	
     }
 
 }   //Fine PannelloInserimento
 
 
 
-//Questa classe definisce tutti i sottopannelli presenti quando esistono schede immobile
-class PannelloSchedaImmobile extends JPanel implements parametriGenerali {  
+//Questa classe definisce tutti i sottopannelli schede immobile
+class PannelloSchedaImmobile extends JPanel {  
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -141,10 +99,11 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
 	Long idScheda;
 	String codiceScheda;
 	JButton btnCancellaScheda;
+	JRadioButton schedaRadio;
 	
 	String labelSpaziatore = "   "; 
 	
-	 public PannelloSchedaImmobile(final SchedaImmobile scheda, final LinkedList<SchedaImmobile> listaSchedeImmobile, final ButtonGroup radioGrpSchede) { // l'attributo final è stato suggerito dal debugger, da rivedere...
+	 public PannelloSchedaImmobile(final SchedaImmobile scheda, final LinkedList<SchedaImmobile> listaSchedeImmobile, final ButtonGroup radioGrpSchede) {
 		 this.scheda = scheda;
 		 idScheda = scheda.idScheda;
 		 codiceScheda = scheda.codiceInserzione;
@@ -153,14 +112,15 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
 		 setBorder(new LineBorder(new Color(184,208,229)));
 		 	
 		 //Radio button dei sottopannelli
-		 JRadioButton schedaRadio = new JRadioButton();
-		 radioGrpSchede.add(schedaRadio); //Le radio button devono appartenere allo stesso gruppo per funzionare correttamente
-		 schedaRadio.addActionListener(new ActionListener() {
-			 //Clicco su una radio button di una scheda
+		 schedaRadio = new JRadioButton();
+		 //Le radio button devono appartenere allo stesso gruppo per funzionare correttamente
+		 radioGrpSchede.add(schedaRadio); 
+		 //Clicco su una radio button di una scheda
+		 schedaRadio.addActionListener(new ActionListener() {			 
              public void actionPerformed(ActionEvent e) {
                  System.out.println("Scheda selezionata: " + scheda.codiceInserzione); 
                  
-                 //Devo caricare la relativa hashtable contenente i portali in cui è inserita e glòi associati codici di inserimento
+                 //Devo caricare la relativa hashtable contenente i portali in cui è inserita e gli associati codici di inserimento
                  scheda.caricaTabellaHash();
                  
                  //Il pannello di destra (inserimento) deve essere aggiornato
@@ -174,7 +134,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
 		 
 		 //La label delle schede
 		 String labelScheda = scheda.codiceInserzione + "-" + scheda.titoloAnnuncio + "-" + scheda.provincia + "-" + scheda.comune + "-" + scheda.regione + "-" + scheda.testoAnnuncio;
-		 if(labelScheda.length()>31) {
+		 if(labelScheda.length()>31) {	//è molto probabile che lo sia... :)
 			 labelScheda = labelScheda.substring(0, 30); 
 		 }		 
 		 labelScheda+="...";
@@ -189,7 +149,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
 		 btnCancellaScheda = new JButton("Cancella");
 		 btnCancellaScheda.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Button - Cancella scheda: " + scheda.codiceInserzione);
+                System.out.println("Cancella scheda: " + scheda.codiceInserzione);
                 
                 //Rimozione di una scheda immobile dalla LinkedList
                 ListIterator<SchedaImmobile> iterator = listaSchedeImmobile.listIterator();
@@ -204,29 +164,7 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
             	
             	//Aggiorno il file dat delle schede
             	j2web.salvaListaSchedeImmobiliCreate();
-            	
-            	//Aggiorno il file dat relativo alle schede immobile
-            	/*try {
-         		   File file = new File(datFilePath);
-         	    	if(file.exists()) {
-         	    		System.out.println("File .dat trovato.");
-         	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-						outputFile.writeObject(j2web_GUI.listSchedeImmobile);
-						outputFile.close();
-						System.out.println("File .dat aggiornato");
-         	    	}
-         	    	else {
-         	    		System.out.println("File non .dat trovato.");
-         	    	}
-				
-				} catch (FileNotFoundException e1) {
-					JOptionPane.showMessageDialog(null, "File .dat non trovato: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Impossibile accedere al file .dat: impossibile caricare le schede precedentemente inserite", "Errore", JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
-				}*/
-            	
+            	          	
             	//Eliminazione del file dat con la hashtable
             	File removeFile = new File("./schede/" + codiceScheda + "-" + idScheda + ".dat");
             	System.out.println("File da rimuovere: " + removeFile.getName());
@@ -247,8 +185,6 @@ class PannelloSchedaImmobile extends JPanel implements parametriGenerali {
             }
          });
          add(btnCancellaScheda);
-         
-         add(new JLabel(labelSpaziatore));        
 	 }
 	
 }
