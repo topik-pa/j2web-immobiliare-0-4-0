@@ -107,7 +107,6 @@ public class HttpPortalConnection implements parametriGenerali {
 	
 	public void setSessionCookieValue(String cookieValue) {
 		SESSIONCOOKIE_VALUE = cookieValue;
-	}
-	
+	}	
 
 }

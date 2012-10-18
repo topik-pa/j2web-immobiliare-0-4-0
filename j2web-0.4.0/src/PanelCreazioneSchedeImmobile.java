@@ -523,7 +523,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 				}
 				else {
 					System.out.println(" ...form non valido. Scheda non creata.");
-					JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("CreazioneDellaSchedaImmobile_SchedaNonCreata"), "Errore", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("CreazioneDellaSchedaImmobile_FormNonValido"), "Errore", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

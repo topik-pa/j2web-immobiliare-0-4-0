@@ -18,7 +18,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 
 	}
 	
-	
+	//POST URLENCODED VALUES
 	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
@@ -68,7 +68,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         
 	}
 	
-	
+	//POST MULTIPART/FORM-DATA
 	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
@@ -115,7 +115,6 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         headersAndBodyResponse[1] = responseBody;       
         return headersAndBodyResponse;     
 		
-	}
-	
+	}	
 	
 }

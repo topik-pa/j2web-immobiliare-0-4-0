@@ -273,30 +273,30 @@ public class j2web implements parametriGenerali {
 
 	//Inizializza la mappa dei dialoghi modali
 	public static void inizializzaMappaDialoghiModali() {
-		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_FileNotFoundException", "XXX");
-		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_IOException", "XXX");
-		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_ClassNotFoundException", "XXX");
-		MapModalWindowsDialogs.put("salvaListaSchedeImmobiliCreate_FileNotFoundException", "XXX");
-		MapModalWindowsDialogs.put("salvaListaSchedeImmobiliCreate_FileNotFoundException", "XXX");
+		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_FileNotFoundException", "File schede immobili non trovato: non è stato possibile caricare le schede immobili precedentemente salvate.");
+		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_IOException", "Impossibile accedere al file delle schede immobili: non è stato possibile caricare le schede immobili precedentemente salvate.");
+		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_ClassNotFoundException", "Errore durante l'accesso al file delle schede immobili: non è stato possibile caricare le schede immobili precedentemente salvate.");
+		MapModalWindowsDialogs.put("salvaListaSchedeImmobiliCreate_FileNotFoundException", "File schede immobili non trovato: non è stato possibile salvare le schede immobili.");
 		
-		MapModalWindowsDialogs.put("menu_EliminaTutteLeSchede", "XXX");
+		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchede", "Eliminazione di tutte le schede salvate. Continuare?");
 		
-		MapModalWindowsDialogs.put("CreazioneDellaSchedaImmobile_SchedaNonCreata", "XXX");
+		MapModalWindowsDialogs.put("CreazioneDellaSchedaImmobile_FormNonValido", "Attenzione: alcuni campi obbigatori non sono stati compilati.");
 		
-		MapModalWindowsDialogs.put("selezioneFileImmagne_SelezioneNonValida", "XXX");
+		MapModalWindowsDialogs.put("selezioneFileImmagne_SelezioneNonValida", "Attenzione: formato di file non valido. Le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega.");
 		
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_IOException", "XXX");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpResponseException", "XXX");		
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_ErroreGenerico", "XXX");
-		MapModalWindowsDialogs.put("sendErrorMail_AddressException", "XXX");
-		MapModalWindowsDialogs.put("sendErrorMail_MessagingException", "XXX");
-		MapModalWindowsDialogs.put("caricaTabellaHash_FileNotFoundException", "XXX");
-		MapModalWindowsDialogs.put("caricaTabellaHash_IOException", "XXX");
-		MapModalWindowsDialogs.put("caricaTabellaHash_ClassNotFoundException", "XXX");
-		MapModalWindowsDialogs.put("salvaTabellaHash_FileNotFoundException", "XXX");
-		MapModalWindowsDialogs.put("salvaTabellaHash_IOException", "XXX");
+		MapModalWindowsDialogs.put("sendErrorMail_AddressException", "Impossibile inviare la mail: indirizzo non valido.");
+		MapModalWindowsDialogs.put("sendErrorMail_MessagingException", "Impossibile inviare la mail: errore durante l'invio.");
+		MapModalWindowsDialogs.put("caricaTabellaHash_FileNotFoundException", "File hash scheda non trovato: non è stato possibile caricare le impostazioni della scheda.");
+		MapModalWindowsDialogs.put("caricaTabellaHash_IOException", "Impossibile accedere al file hash scheda: non è stato possibile caricare le impostazioni della scheda.");
+		MapModalWindowsDialogs.put("caricaTabellaHash_ClassNotFoundException", "Errore durante l'accesso al file hash scheda: non è stato possibile caricare le impostazioni della scheda.");
+		MapModalWindowsDialogs.put("salvaTabellaHash_FileNotFoundException", "File hash scheda non trovato: non è stato possibile salvare le impostazioni della scheda.");
+		MapModalWindowsDialogs.put("salvaTabellaHash_IOException", "Impossibile accedere al file hash scheda: non è stato possibile salvare le impostazioni della scheda.");
 	}
 
+	//Inizializza la lista dei portali attivi
 	public static void inizializzaPortaliAttivi() {
     	//PortaleImmobiliare immobiliarePuntoIt = new ImmobiliarePuntoIt("./img/immobiliarePuntoIt.gif", "1 - immobiliare.it", "001");
     	//listPortaliImmobiliari.add(immobiliarePuntoIt);

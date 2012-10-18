@@ -563,11 +563,7 @@ public class httpRequest {
 		}
 	  }
   }
-  
-  /*public void setUserAgent() {
-	  connection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; it; rv:1.9.2.17) Gecko/20110422 Ubuntu/10.12 (maverick) Firefox/3.6.17"); // Do as if you're using Firefox 3.6.3.
-  }*/
-  
+
   
   //Get the request method for the current connection
   public String getRequestMethod() {
@@ -626,8 +622,7 @@ public class httpRequest {
       System.out.println("User-Agent: " + User_Agent);
       
       String Accept = connection.getRequestProperty("Accept");
-      System.out.println("Accept: " + Accept);
-	  
+      System.out.println("Accept: " + Accept);	  
 	  
 	  String from = connection.getRequestProperty("From");
       System.out.println("From: " + from);
@@ -701,12 +696,12 @@ public class httpRequest {
     connection.setRequestProperty(name, value);
   }
 
- public String getPostProperty(String name) {
+  
+  public String getPostProperty(String name) {
     return connection.getRequestProperty(name);
   }
  
 
- 
   public String getHeaderNameByIndex(int index) {
       String linea;
           linea = connection.getHeaderField(index);
@@ -742,31 +737,25 @@ public class httpRequest {
           }
       }
         cookie = cookie.substring(0, cookie.indexOf(";"));
-        //System.out.println(cookie);
         String cookieName = cookie.substring(0, cookie.indexOf("="));
-        //System.out.println(cookieName);
         String cookieValue = cookie.substring(cookie.indexOf("=") + 1, cookie.length());
-        //System.out.println(cookieValue);
         
         return cookieName;
     }
 
   
-  public String getCookieValue() {       //Ritorna il valore del cookie in base al nome dell'header
+  	public String getCookieValue() {       //Ritorna il valore del cookie in base al nome dell'header
       String cookie = "";
       String headerName=null;
 
       for (int i=1; (headerName = connection.getHeaderFieldKey(i))!=null; i++) {
         if (headerName.equals("Set-Cookie")) {
-	cookie = connection.getHeaderField(i);
+        	cookie = connection.getHeaderField(i);
           }
       }
         cookie = cookie.substring(0, cookie.indexOf(";"));
-        //System.out.println(cookie);
         String cookieName = cookie.substring(0, cookie.indexOf("="));
-        //System.out.println(cookieName);
         String cookieValue = cookie.substring(cookie.indexOf("=") + 1, cookie.length());
-        //System.out.println(cookieValue);
 
         return cookieValue;
     }
@@ -777,33 +766,23 @@ public class httpRequest {
       cookie = connection.getHeaderField(index);
 
       cookie = cookie.substring(0, cookie.indexOf(";"));
-      //System.out.println(cookie);
       String cookieName = cookie.substring(0, cookie.indexOf("="));
-      //System.out.println(cookieName);
       String cookieValue = cookie.substring(cookie.indexOf("=") + 1, cookie.length());
-      //System.out.println(cookieValue);
 
       return cookieName;
     }
 
-
+    
   public String getCookieValueWithIndex(int index) {       //Ritorna il valore del cookie in base al numero di indice del campo
       String cookie = "";
 
       cookie = connection.getHeaderField(index);
 
       cookie = cookie.substring(0, cookie.indexOf(";"));
-      //System.out.println(cookie);
       String cookieName = cookie.substring(0, cookie.indexOf("="));
-      //System.out.println(cookieName);
       String cookieValue = cookie.substring(cookie.indexOf("=") + 1, cookie.length());
-      //System.out.println(cookieValue);
 
       return cookieValue;
     }
-
-  
-
-
 
 }

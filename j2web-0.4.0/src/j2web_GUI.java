@@ -122,7 +122,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 			menu1_menuItem_2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					System.out.println("Elimino tutte le schede...");				
-					int response = JOptionPane.showConfirmDialog(null, MapModalWindowsDialogs.get("menu_EliminaTutteLeSchede"), "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					int response = JOptionPane.showConfirmDialog(null, MapModalWindowsDialogs.get("menu_ConfermaEliminaTutteLeSchede"), "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (response == JOptionPane.NO_OPTION) {
 					    } else if (response == JOptionPane.YES_OPTION) {
 					    	//Elimino tutte le schede e salvo su dat

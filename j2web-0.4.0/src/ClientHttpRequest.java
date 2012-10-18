@@ -526,7 +526,8 @@ public void setParameter(String name, String filename, InputStream is) throws IO
 
 
 
-
+  /*I MIEI METODI AGGIUNTI*/
+  
   public void getHeaders() {
       String linea;
 
@@ -540,7 +541,7 @@ public void setParameter(String name, String filename, InputStream is) throws IO
     connection.setRequestProperty(name, value);
   }
 
- public String getPostProperty(String name) {
+  public String getPostProperty(String name) {
     return connection.getRequestProperty(name);
   }
  
@@ -579,11 +580,8 @@ public void setParameter(String name, String filename, InputStream is) throws IO
           }
       }
         cookie = cookie.substring(0, cookie.indexOf(";"));
-        //System.out.println(cookie);
         String cookieName = cookie.substring(0, cookie.indexOf("="));
-        //System.out.println(cookieName);
         String cookieValue = cookie.substring(cookie.indexOf("=") + 1, cookie.length());
-        //System.out.println(cookieValue);
         
         return cookieName;
     }
@@ -595,34 +593,27 @@ public void setParameter(String name, String filename, InputStream is) throws IO
 
       for (int i=1; (headerName = connection.getHeaderFieldKey(i))!=null; i++) {
         if (headerName.equals("Set-Cookie")) {
-	cookie = connection.getHeaderField(i);
+        	cookie = connection.getHeaderField(i);
           }
       }
         cookie = cookie.substring(0, cookie.indexOf(";"));
-        //System.out.println(cookie);
         String cookieName = cookie.substring(0, cookie.indexOf("="));
-        //System.out.println(cookieName);
         String cookieValue = cookie.substring(cookie.indexOf("=") + 1, cookie.length());
-        //System.out.println(cookieValue);
 
         return cookieValue;
     }
 
-    public String getCookieNameWithIndex(int index) {       //Ritorna il nome del cookie in base al numero di indice del campo
+  public String getCookieNameWithIndex(int index) {       //Ritorna il nome del cookie in base al numero di indice del campo
       String cookie = "";
 
       cookie = connection.getHeaderField(index);
 
       cookie = cookie.substring(0, cookie.indexOf(";"));
-      //System.out.println(cookie);
       String cookieName = cookie.substring(0, cookie.indexOf("="));
-      //System.out.println(cookieName);
       String cookieValue = cookie.substring(cookie.indexOf("=") + 1, cookie.length());
-      //System.out.println(cookieValue);
 
       return cookieName;
     }
-
 
   public String getCookieValueWithIndex(int index) {       //Ritorna il valore del cookie in base al numero di indice del campo
       String cookie = "";
@@ -630,25 +621,19 @@ public void setParameter(String name, String filename, InputStream is) throws IO
       cookie = connection.getHeaderField(index);
 
       cookie = cookie.substring(0, cookie.indexOf(";"));
-      //System.out.println(cookie);
       String cookieName = cookie.substring(0, cookie.indexOf("="));
-      //System.out.println(cookieName);
       String cookieValue = cookie.substring(cookie.indexOf("=") + 1, cookie.length());
-      //System.out.println(cookieValue);
 
       return cookieValue;
     }
 
-  public void getPostProperties() {       //
+  public void getPostProperties() { 
       String cookie = "";
       boolean userInteraction = connection.getAllowUserInteraction();
       System.out.println("User interaction :" + userInteraction);
 
       int connectTimeout = connection.getConnectTimeout();
       System.out.println("Connection timeout :" + connectTimeout);
-
-      //Object content = connection.getContent();
-      //System.out.println(content);
 
       String encoding = connection.getContentEncoding();
       System.out.println("Encoding :" + encoding);
@@ -673,7 +658,6 @@ public void setParameter(String name, String filename, InputStream is) throws IO
 
       String userAgent = connection.getRequestProperty("User-Agent");
       System.out.println("User Agent:" + userAgent);
-
 
     }
 
