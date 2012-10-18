@@ -258,6 +258,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	public void caricaTabellaHash() {
 		
 		//Lettura schede dal file .dat
+		System.out.print("TEST: " + singolaSchedaDatPath);
         File file = new File(singolaSchedaDatPath);
     	if(file.exists()) {
     		System.out.print("File hash scheda trovato. Lettura dati da " + singolaSchedaDatPath);

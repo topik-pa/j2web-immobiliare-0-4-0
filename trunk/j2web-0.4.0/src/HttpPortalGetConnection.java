@@ -14,7 +14,7 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 	}
 	
 	
-	//Get di una risorsa
+	//GET di una risorsa
 	public Object[] get(String connectionDescription, String url, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
@@ -58,7 +58,6 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
         headersAndBodyResponse[1] = responseBody;       
         return headersAndBodyResponse;      
 		
-	}
-	
+	}	
 	
 }
