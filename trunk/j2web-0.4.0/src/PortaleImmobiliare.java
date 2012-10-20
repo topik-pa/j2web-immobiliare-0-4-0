@@ -51,13 +51,13 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	//Metodi
 	
 	//Inserimento scheda (sovrascritto nelle sottoclassi)
-	public abstract void inserisciScheda(SchedaImmobile scheda) throws HttpCommunicationException;
+	public abstract boolean inserisciScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException;
 	
 	//Visualizzazione scheda (sovrascritto nelle sottoclassi)
-	public abstract void visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException;
+	public abstract boolean visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException;
 
 	//Eliminazione scheda (sovrascritto nelle sottoclassi)
-	public abstract void cancellaScheda(SchedaImmobile scheda) throws HttpCommunicationException;
+	public abstract boolean cancellaScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException;
 	 
     //Invio mail di conferma inserzione
   	static void sendConfirmationMail(SchedaImmobile scheda, String nomePortale, String codInserzione)   {
@@ -186,7 +186,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
   
 
     //Trova e imposta il cookie di sessione
-    public void findAndSetLocalCookie(HttpPortalConnection connessione, Header[] headers, String cookieName) throws HttpResponseException {
+    public boolean findAndSetLocalCookie(HttpPortalConnection connessione, Header[] headers, String cookieName) throws HttpResponseException {
 		
 		boolean cookieHeaderFound = false;
         for(int i=0; i<headers.length; i++) {       	
@@ -210,11 +210,9 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
             		break;
                 }   
         	}       	
-        }        
-        //Se non trovo le intestazioni che cerco lancio una eccezione (è un errore non trovare i cookie di sessione se richiesti)
-    	if(!cookieHeaderFound) {
-    		throw(new HttpResponseException("Response header"));
-    	}
+        }       
+        //Valori di ritorno
+        return cookieHeaderFound?true:false;
 	}
     
     //Metodo per ottenere le coordinate della città
