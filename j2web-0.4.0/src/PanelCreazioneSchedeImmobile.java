@@ -1223,8 +1223,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		j2web.salvaListaSchedeImmobiliCreate();
 		
 	}
-	
-	
+		
 	// Metodo per ricompilare i dati della form con quelli presenti in una scheda appena viene selezionata
 	public void mostraSchedaSalvata(SchedaImmobile scheda) {
 		

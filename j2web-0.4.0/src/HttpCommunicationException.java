@@ -19,7 +19,7 @@ public class HttpCommunicationException extends Exception {
 	    e = new Exception();
 	  }
 	
-	public String getExceptionType()
+	public String getCatchedExceptionType()
 	  {
 	    return e.getClass().getName();
 	  }
