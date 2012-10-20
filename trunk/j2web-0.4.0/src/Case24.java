@@ -64,6 +64,7 @@ public class Case24 extends PortaleImmobiliare {
     
 	//Costruttore
 	public Case24 (String urlIcona, String valoreLabel, String idPortale) {		
+		
 		super(urlIcona, valoreLabel, idPortale);
 		
 		mappaDeiParamerti =  new Hashtable<String,String>();
@@ -82,12 +83,8 @@ public class Case24 extends PortaleImmobiliare {
     	    
     	
     	//Inizializza i parametri http del portale 
-    	try {
-			inizializzaParametri();
-		} catch (HttpResponseException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	
+		inizializzaParametri();
+
     	
     	//Connessione 0 - GET della home page
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -113,7 +110,7 @@ public class Case24 extends PortaleImmobiliare {
     		Object[] response = connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
     		Header[] responseHeaders = (Header[])response[0];
     		findAndSetLocalCookie(connessione_2, responseHeaders, CASE24_SESSIONCOOKIENAME);
-		} catch (IOException | HttpResponseException e) {
+		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	
@@ -303,7 +300,7 @@ public class Case24 extends PortaleImmobiliare {
             	INSERIMENTO_OK = true;
             }
             else {
-            	throw(new HttpResponseException("Response body"));
+            	throw(new HttpWrongResponseBodyException("Non trovo il testo \"ANNUNCIO INSERITO CORRETTAMENTE\" che stabilisce se l'annuncio è stato inserito correttamente"));
             }
             
 	        //Parse HMTL to retrieve some informations
@@ -322,7 +319,7 @@ public class Case24 extends PortaleImmobiliare {
 	            	}
 	            }
             }
-		} catch (IOException | HttpResponseException e) {
+		} catch (IOException | HttpWrongResponseBodyException e) {
 			throw new HttpCommunicationException(e);
 		}
     	finally {
@@ -368,7 +365,7 @@ public class Case24 extends PortaleImmobiliare {
     
     
     //Metodo per la visualizzazione della scheda immobile nel portale immobiliare
-	public boolean visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException {
+	public boolean visualizzaScheda(SchedaImmobile scheda) {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
 		//Apro il browser e inserisco credenziali		
 		try {
@@ -440,7 +437,7 @@ public class Case24 extends PortaleImmobiliare {
 	
 	
 	//Metodo per la valutazione dei parametri
-	public void inizializzaParametri() throws HttpCommunicationException, HttpResponseException {
+	public void inizializzaParametri()  {
 		
 		String inserisci_annuncio = "1";
 		mappaDeiParamerti.put("inserisci_annuncio", inserisci_annuncio);

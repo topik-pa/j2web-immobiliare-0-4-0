@@ -54,7 +54,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	public abstract boolean inserisciScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException;
 	
 	//Visualizzazione scheda (sovrascritto nelle sottoclassi)
-	public abstract boolean visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException;
+	public abstract boolean visualizzaScheda(SchedaImmobile scheda);
 
 	//Eliminazione scheda (sovrascritto nelle sottoclassi)
 	public abstract boolean cancellaScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException;
@@ -142,10 +142,10 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
   		    transport.close();
   			
   		} catch (AddressException e) {
-  			JOptionPane.showMessageDialog(null, "Errore durante l'invio del rapporto.", "Errore", JOptionPane.ERROR_MESSAGE);
+  			JOptionPane.showMessageDialog(null, "Errore durante l'invio del rapporto.", "AddressException", JOptionPane.ERROR_MESSAGE);
   			e.printStackTrace();
   		} catch (MessagingException e) {
-  			JOptionPane.showMessageDialog(null, "Errore durante l'invio del rapporto.", "Errore", JOptionPane.ERROR_MESSAGE);
+  			JOptionPane.showMessageDialog(null, "Errore durante l'invio del rapporto.", "MessagingException", JOptionPane.ERROR_MESSAGE);
   			e.printStackTrace();
   		}
   	}
@@ -186,7 +186,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
   
 
     //Trova e imposta il cookie di sessione
-    public boolean findAndSetLocalCookie(HttpPortalConnection connessione, Header[] headers, String cookieName) throws HttpResponseException {
+    public boolean findAndSetLocalCookie(HttpPortalConnection connessione, Header[] headers, String cookieName) {
 		
 		boolean cookieHeaderFound = false;
         for(int i=0; i<headers.length; i++) {       	

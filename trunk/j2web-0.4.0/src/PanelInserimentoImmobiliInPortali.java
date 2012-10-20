@@ -131,26 +131,36 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
     }
        
     //Gestione degli errori
-    public static void manageErrorsOnPortalSubmission(Exception e, String errorType) {
+    public static void manageErrorsOnPortalSubmission(HttpCommunicationException e) {
     	
-    	//sendErrorMail(readStackTrace(e), errorType);
-    	
-    	
+    	String errorType = e.getCatchedExceptionType();
+ 	
     	switch (errorType)
 		{
-		    case "IOException": //Errore di connessione
-		    	JOptionPane.showMessageDialog(null, errorType + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_IOException"), errorType, JOptionPane.ERROR_MESSAGE);
+		    case "IOException": //Errore standard GET/POST
+		    	JOptionPane.showMessageDialog(null, errorType + "\n" + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_IOException"), errorType, JOptionPane.ERROR_MESSAGE);
 		        break;
-		    case "HttpResponseException":	//Errore di login
-		    	JOptionPane.showMessageDialog(null, errorType + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_HttpResponseException"), errorType, JOptionPane.ERROR_MESSAGE);
+		    case "HttpWrongResponseStatusCodeException":	//Errore status code inaspettato
+		    	JOptionPane.showMessageDialog(null, errorType + "\n" + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_HttpWrongResponseStatusCodeException"), errorType, JOptionPane.ERROR_MESSAGE);
 		    	break;
-		    default://Errore generico
-		    	JOptionPane.showMessageDialog(null, errorType + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_ErroreGenerico"), errorType, JOptionPane.ERROR_MESSAGE);
-		} 	
+		    case "HttpWrongResponseHeaderException":	//Errore response header inaspettato
+		    	JOptionPane.showMessageDialog(null, errorType + "\n" + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_HttpWrongResponseHeaderException"), errorType, JOptionPane.ERROR_MESSAGE);
+		    	break;
+		    case "HttpWrongResponseBodyException":	//Errore response body inaspettato
+		    	JOptionPane.showMessageDialog(null, errorType + "\n" + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_HttpWrongResponseBodyException"), errorType, JOptionPane.ERROR_MESSAGE);
+		    	break;
+		    default:	//Altra tipologia di errore 
+		    	JOptionPane.showMessageDialog(null, errorType + "\n" + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_Generic"), errorType, JOptionPane.ERROR_MESSAGE);
+		    	break;
+		} 
+    	
+    	//Invio a me la mail di avviso errore runtime
+    	sendErrorMail(readStackTrace(e), errorType);
+    	
         e.printStackTrace();
     }
     
-    //Invio mail in caso di errori runtime
+    //Invio a me la mail in caso di errori runtime
   	static void sendErrorMail(String stackTrace, String errorCode)   {
   				
   		final String USERNAME = BACKEND_EMAIL;
@@ -260,31 +270,37 @@ class PanelInserimentoSequenziale extends JPanel {
 		//Inserisce la scheda in tutti i portali selezionati
 		btnInserisciTuttiIPortali.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {  
-            	ListIterator<PortaleImmobiliare> iterator = (ListIterator<PortaleImmobiliare>) j2web_GUI.listPortaliInserimentoSequenziale.iterator();
-            	
-            	//Il cursone viene messo in modalità attesa
- 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            	while(iterator.hasNext()) {
-            		PortaleImmobiliare portaleCorrente = iterator.next();          		
-            		try {
-     					System.out.println("Inserimento della scheda " + scheda.codiceInserzione + " in " + portaleCorrente.idPortale);
-     					boolean schedaInserita = portaleCorrente.inserisciScheda(scheda, true);
-     					if(schedaInserita) {
-     						System.out.println("Scheda " + scheda.idScheda + " inserita in: " + portaleCorrente.idPortale);						
-     					}
-     					else {
-     						System.out.println("Scheda " + scheda.idScheda + "NON inserita in: " + portaleCorrente.idPortale);
-     					} 					
-     				}
-     				catch (HttpCommunicationException e1 ) {
-     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1, e1.getExceptionType());
-     				}            		   		
-            	}
-            	//Solo alla fine aggiorno i pulsanti del pannello inserimento
-        		j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
-            	//Il cursone viene messo in modalità standard
- 				setCursor(Cursor.getDefaultCursor());
- 				
+            	if(!j2web_GUI.listPortaliInserimentoSequenziale.isEmpty()) {
+            		ListIterator<PortaleImmobiliare> iterator = (ListIterator<PortaleImmobiliare>) j2web_GUI.listPortaliInserimentoSequenziale.iterator();
+                	String rapportoInserimentiOK = "";
+                	String rapportoInserimentiKO = "";
+                	//Il cursone viene messo in modalità attesa
+     				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                	while(iterator.hasNext()) {
+                		PortaleImmobiliare portaleCorrente = iterator.next();          		
+                		try {
+         					System.out.println("Inserimento della scheda " + scheda.codiceInserzione + " in " + portaleCorrente.idPortale);
+         					boolean schedaInserita = portaleCorrente.inserisciScheda(scheda, true);
+         					if(schedaInserita) {
+         						System.out.println("Scheda " + scheda.idScheda + " inserita in: " + portaleCorrente.idPortale);
+         						rapportoInserimentiOK += "\n   " + portaleCorrente.idPortale;
+         					}
+         					else {
+         						System.out.println("Scheda " + scheda.idScheda + "NON inserita in: " + portaleCorrente.idPortale);
+         						rapportoInserimentiKO += "\n   " + portaleCorrente.idPortale;
+         					} 					
+         				}
+         				catch (HttpCommunicationException e1 ) {
+         					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
+         				}
+                	}
+                	//Mostro il rapporto di inserimento
+                	JOptionPane.showMessageDialog(null, "Rapporto di inserimento: \n\nScheda inserita in: \n" + rapportoInserimentiOK + "\n\nScheda non inserita in: \n" + rapportoInserimentiKO);
+                	//Solo alla fine aggiorno i pulsanti del pannello inserimento
+            		j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
+                	//Il cursone viene messo in modalità standard
+     				setCursor(Cursor.getDefaultCursor());
+            	}	
             }         
          });
 		add(btnInserisciTuttiIPortali);
@@ -292,27 +308,27 @@ class PanelInserimentoSequenziale extends JPanel {
 		//Elimina la scheda da tutti i portali selezionati
         btnCancellaTuttiIPortali.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { 
-            	
-            	ListIterator<PortaleImmobiliare> iterator = (ListIterator<PortaleImmobiliare>) j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
-            	
-            	//Il cursone viene messo in modalità attesa
- 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            	while(iterator.hasNext()) {
-            		PortaleImmobiliare portaleCorrente = iterator.next();         		
-            		try {
-            			System.out.println("Cancellazione della scheda " + scheda.codiceInserzione + " da " + portaleCorrente.idPortale);
-     					portaleCorrente.cancellaScheda(scheda, true);
-     				}
-     				catch (HttpCommunicationException e1 ) {
-     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1, e1.getExceptionType());
-     				}
-            		System.out.println("Scheda " + scheda.idScheda + " cancellata da: " + portaleCorrente.idPortale);         		            		
+            	if(!j2web_GUI.listPortaliCancellazioneSequenziale.isEmpty()) {
+	            	ListIterator<PortaleImmobiliare> iterator = (ListIterator<PortaleImmobiliare>) j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
+	            	
+	            	//Il cursone viene messo in modalità attesa
+	 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	            	while(iterator.hasNext()) {
+	            		PortaleImmobiliare portaleCorrente = iterator.next();         		
+	            		try {
+	            			System.out.println("Cancellazione della scheda " + scheda.codiceInserzione + " da " + portaleCorrente.idPortale);
+	     					portaleCorrente.cancellaScheda(scheda, true);
+	     				}
+	     				catch (HttpCommunicationException e1 ) {
+	     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
+	     				}
+	            		System.out.println("Scheda " + scheda.idScheda + " cancellata da: " + portaleCorrente.idPortale);         		            		
+	            	}
+	            	//Solo alla fine aggiorno i pulsanti del pannello inserimento
+	        		j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
+	            	//Il cursone viene messo in modalità standard
+	 				setCursor(Cursor.getDefaultCursor());
             	}
-            	//Solo alla fine aggiorno i pulsanti del pannello inserimento
-        		j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
-            	//Il cursone viene messo in modalità standard
- 				setCursor(Cursor.getDefaultCursor());
- 				
             }
          });
         add(btnCancellaTuttiIPortali);
@@ -437,7 +453,7 @@ class InserimentoPortale extends JPanel {
      					portale.inserisciScheda(scheda, false);
      				}
      				catch (HttpCommunicationException e1) {
-     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1, e1.getExceptionType());
+     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
      				}
      				finally  {
      					//Il cursone viene messo in modalità standard
@@ -457,17 +473,10 @@ class InserimentoPortale extends JPanel {
      			public void actionPerformed(ActionEvent e) {
      				//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-     				try {
-     					System.out.println("Visualizza: " + scheda.codiceInserzione + " in " + portale.idPortale);
-     					portale.visualizzaScheda(scheda);
-     				}
-     				catch (HttpCommunicationException e1 ) {
-     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1, e1.getExceptionType());
-     				}
-     				finally  {
-     					//Il cursone viene messo in modalità standard
-         				setCursor(Cursor.getDefaultCursor());
-     				}
+ 					System.out.println("Visualizza: " + scheda.codiceInserzione + " in " + portale.idPortale);
+ 					portale.visualizzaScheda(scheda);
+ 					//Il cursone viene messo in modalità standard
+     				setCursor(Cursor.getDefaultCursor());
      			}
      		});
  		}
@@ -490,7 +499,7 @@ class InserimentoPortale extends JPanel {
      					portale.cancellaScheda(scheda, false);
      				}
      				catch (HttpCommunicationException e1 ) {
-     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1, e1.getExceptionType());
+     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
      				}
      				finally  {
      					//Il cursone viene messo in modalità standard
