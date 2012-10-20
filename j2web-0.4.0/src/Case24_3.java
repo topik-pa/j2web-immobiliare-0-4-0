@@ -30,7 +30,7 @@ import org.jsoup.select.Elements;
  */
 
 //La classe principale
-public class Case24 extends PortaleImmobiliare {     
+public class Case24_3 extends PortaleImmobiliare {     
 
     //Parametri generali
 	private final String CASE24_NOMEPORTALE = "case24.it";
@@ -63,7 +63,7 @@ public class Case24 extends PortaleImmobiliare {
     
     
 	//Costruttore
-	public Case24 (String urlIcona, String valoreLabel, String idPortale) {		
+	public Case24_3 (String urlIcona, String valoreLabel, String idPortale) {		
 		super(urlIcona, valoreLabel, idPortale);
 		
 		mappaDeiParamerti =  new Hashtable<String,String>();

@@ -277,13 +277,9 @@ public class j2web implements parametriGenerali {
 		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_IOException", "Impossibile accedere al file delle schede immobili: non è stato possibile caricare le schede immobili precedentemente salvate.");
 		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_ClassNotFoundException", "Errore durante l'accesso al file delle schede immobili: non è stato possibile caricare le schede immobili precedentemente salvate.");
 		MapModalWindowsDialogs.put("salvaListaSchedeImmobiliCreate_FileNotFoundException", "File schede immobili non trovato: non è stato possibile salvare le schede immobili.");
-		
 		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchede", "Eliminazione di tutte le schede salvate. Continuare?");
-		
-		MapModalWindowsDialogs.put("CreazioneDellaSchedaImmobile_FormNonValido", "Attenzione: alcuni campi obbigatori non sono stati compilati.");
-		
-		MapModalWindowsDialogs.put("selezioneFileImmagne_SelezioneNonValida", "Attenzione: formato di file non valido. Le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega.");
-		
+		MapModalWindowsDialogs.put("creazioneDellaSchedaImmobile_FormNonValido", "Attenzione: alcuni campi obbigatori non sono stati compilati.");		
+		MapModalWindowsDialogs.put("selezioneFileImmagne_SelezioneNonValida", "Attenzione: formato di file non valido. Le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega.");		
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_IOException", "XXX");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpResponseException", "XXX");		
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_ErroreGenerico", "XXX");
@@ -298,6 +294,15 @@ public class j2web implements parametriGenerali {
 
 	//Inizializza la lista dei portali attivi
 	public static void inizializzaPortaliAttivi() {
+		PortaleImmobiliare case24 = new Case24("./images/case24.gif", "1 - case24.it", "001");
+    	j2web_GUI.listPortaliImmobiliari.add(case24);
+    	
+    	PortaleImmobiliare case24_2 = new Case24("./images/case24.gif", "2 - case24.it", "002");
+    	j2web_GUI.listPortaliImmobiliari.add(case24_2);
+		
+    	PortaleImmobiliare case24_3 = new Case24("./images/case24.gif", "3 - case24.it", "003");
+    	j2web_GUI.listPortaliImmobiliari.add(case24_3);
+    	
     	//PortaleImmobiliare immobiliarePuntoIt = new ImmobiliarePuntoIt("./img/immobiliarePuntoIt.gif", "1 - immobiliare.it", "001");
     	//listPortaliImmobiliari.add(immobiliarePuntoIt);
     	
@@ -306,22 +311,7 @@ public class j2web implements parametriGenerali {
     	
     	//PortaleImmobiliare bancaDelleCase = new BancaDelleCase("./img/banca_delle_case.gif", "2 - bancadellecase.it", "003");
     	//listPortaliImmobiliari.add(bancaDelleCase);
-    	
-    	PortaleImmobiliare case24 = new Case24("./images/case24.gif", "1 - case24.it", "001");
-    	j2web_GUI.listPortaliImmobiliari.add(case24);   
-    	
-    	PortaleImmobiliare case24bis = new Case24("./images/case24.gif", "1 - case24.it", "002");
-    	j2web_GUI.listPortaliImmobiliari.add(case24bis);
-    	
-    	PortaleImmobiliare case24tris = new Case24("./images/case24.gif", "1 - case24.it", "003");
-    	j2web_GUI.listPortaliImmobiliari.add(case24tris);
-    	
-    	PortaleImmobiliare case24bis2 = new Case24("./images/case24.gif", "1 - case24.it", "004");
-    	j2web_GUI.listPortaliImmobiliari.add(case24bis2);
-    	
-    	PortaleImmobiliare case24bis3 = new Case24("./images/case24.gif", "1 - case24.it", "005");
-    	j2web_GUI.listPortaliImmobiliari.add(case24bis3);
-     	
+	
     	//PortaleImmobiliare pagineCasa = new PagineCasa("./img/paginecasa.gif", "4 - paginecasa.it", "005");
     	//listPortaliImmobiliari.add(pagineCasa);
     	
