@@ -75,7 +75,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	boolean ascensore;
 	boolean casaEcologica;
 	boolean vicinanzeBus;
-	boolean vistaDiPregio;
+	boolean cantina;
 	boolean satellite;
 	boolean sistemaDiAllarme;
 	boolean cancelloElettrico;
@@ -214,7 +214,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		
 		vicinanzeBus = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeBus")).isSelected())?true:false;
 		
-		vistaDiPregio = (((JCheckBox) mapCampiForm.get("chckbxVistaDiPregio")).isSelected())?true:false;
+		cantina = (((JCheckBox) mapCampiForm.get("chckbxCantina")).isSelected())?true:false;
 		
 		satellite = (((JCheckBox) mapCampiForm.get("chckbxSatellite")).isSelected())?true:false;
 		

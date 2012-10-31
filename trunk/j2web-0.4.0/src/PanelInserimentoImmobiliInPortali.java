@@ -474,7 +474,11 @@ class InserimentoPortale extends JPanel {
      				//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
  					System.out.println("Visualizza: " + scheda.codiceInserzione + " in " + portale.idPortale);
- 					portale.visualizzaScheda(scheda);
+ 					try {
+						portale.visualizzaScheda(scheda);
+					} catch (HttpCommunicationException e1) {
+						PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
+					}
  					//Il cursone viene messo in modalità standard
      				setCursor(Cursor.getDefaultCursor());
      			}

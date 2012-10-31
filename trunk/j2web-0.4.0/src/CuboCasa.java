@@ -3,6 +3,7 @@
  * and open the template in the editor.
 */ 
 
+import java.awt.Component;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -39,17 +40,16 @@ public class CuboCasa extends PortaleImmobiliare {
 	private final String URLROOT = "http://www.cubocasa.it";
 	private final String USERNAME = "testAccount01";
     private final String PASSWORD = "test1234";
-    //private final String CODICE_CLIENTE ="1340103900";
 
     private String CODICEINSERZIONE;    
-    private String NOME_IMMAGINE_1;
+    /*private String NOME_IMMAGINE_1;
     private String NOME_IMMAGINE_2;
     private String NOME_IMMAGINE_3;
     private String NOME_IMMAGINE_4;
     private String NOME_IMMAGINE_5;
     private String NOME_IMMAGINE_6;
     private String NOME_IMMAGINE_7;
-    private String NOME_IMMAGINE_8;
+    private String NOME_IMMAGINE_8;*/
     private boolean INSERIMENTO_OK = false;
     private boolean debugMode = true;
    
@@ -136,7 +136,7 @@ public class CuboCasa extends PortaleImmobiliare {
     	//Connessione 4 - GET della pagina "Inserisci annuncio" (step 2)
     	HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
     	try {
-			connessione_4.get("Connessione 4 - GET della pagina \"Inserisci annuncio\" (step 2)", URLROOT + "/agenzie/inserisci-annuncio.php?provincia=" + "UD", debugMode); //todo
+			connessione_4.get("Connessione 4 - GET della pagina \"Inserisci annuncio\" (step 2)", URLROOT + "/agenzie/inserisci-annuncio.php?provincia=" + mappaDeiParamerti.get("provincia"), debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -148,43 +148,55 @@ public class CuboCasa extends PortaleImmobiliare {
     	//Connessione 5 - POST della pagina "Inserisci annuncio" (step 2)
     	HttpPortalPostConnection connessione_5 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
-        postParameters.add(new BasicNameValuePair("inserisci_annuncio", "1"));	//todo
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("y", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
-        postParameters.add(new BasicNameValuePair("x", "10"));
+        postParameters.add(new BasicNameValuePair("Submit", "Salva Annuncio"));
+        postParameters.add(new BasicNameValuePair("anno", mappaDeiParamerti.get("anno")));
+        postParameters.add(new BasicNameValuePair("cantina", mappaDeiParamerti.get("cantina")));
+        postParameters.add(new BasicNameValuePair("cap", mappaDeiParamerti.get("cap")));
+        postParameters.add(new BasicNameValuePair("certificato_ipe", mappaDeiParamerti.get("certificato_ipe")));
+        postParameters.add(new BasicNameValuePair("citta_annuncio", mappaDeiParamerti.get("citta_annuncio")));
+        postParameters.add(new BasicNameValuePair("classe_energetica", mappaDeiParamerti.get("classe_energetica")));
+        postParameters.add(new BasicNameValuePair("code_maps", mappaDeiParamerti.get("code_maps")));
+        postParameters.add(new BasicNameValuePair("codice", mappaDeiParamerti.get("codice")));
+        postParameters.add(new BasicNameValuePair("condizionato", mappaDeiParamerti.get("condizionato")));
+        postParameters.add(new BasicNameValuePair("contratto", mappaDeiParamerti.get("contratto")));
+        postParameters.add(new BasicNameValuePair("cucina", mappaDeiParamerti.get("cucina")));
+        postParameters.add(new BasicNameValuePair("descrizione", mappaDeiParamerti.get("descrizione")));
+        postParameters.add(new BasicNameValuePair("garage", mappaDeiParamerti.get("garage")));
+        postParameters.add(new BasicNameValuePair("giardino", mappaDeiParamerti.get("giardino")));
+        postParameters.add(new BasicNameValuePair("idComune", mappaDeiParamerti.get("idComune")));
+        postParameters.add(new BasicNameValuePair("idFrazione", mappaDeiParamerti.get("idFrazione")));
+        postParameters.add(new BasicNameValuePair("idTipologia", mappaDeiParamerti.get("idTipologia")));
+        postParameters.add(new BasicNameValuePair("indirizzo", mappaDeiParamerti.get("indirizzo")));
+        postParameters.add(new BasicNameValuePair("ipe", mappaDeiParamerti.get("ipe")));
+        postParameters.add(new BasicNameValuePair("latitudine", mappaDeiParamerti.get("latitudine")));
+        postParameters.add(new BasicNameValuePair("longitudine", mappaDeiParamerti.get("longitudine")));
+        postParameters.add(new BasicNameValuePair("mq", mappaDeiParamerti.get("mq")));
+        postParameters.add(new BasicNameValuePair("n_bagni", mappaDeiParamerti.get("n_bagni")));
+        postParameters.add(new BasicNameValuePair("n_camere", mappaDeiParamerti.get("n_camere")));
+        postParameters.add(new BasicNameValuePair("piano", mappaDeiParamerti.get("piano")));
+        postParameters.add(new BasicNameValuePair("postoauto", mappaDeiParamerti.get("postoauto")));
+        postParameters.add(new BasicNameValuePair("prezzo", mappaDeiParamerti.get("prezzo")));
+        postParameters.add(new BasicNameValuePair("provincia", mappaDeiParamerti.get("provincia")));
+        postParameters.add(new BasicNameValuePair("riscaldamento", mappaDeiParamerti.get("riscaldamento")));
+        postParameters.add(new BasicNameValuePair("soffitta", mappaDeiParamerti.get("soffitta")));
+        postParameters.add(new BasicNameValuePair("stato", mappaDeiParamerti.get("stato")));
+        postParameters.add(new BasicNameValuePair("supiani", mappaDeiParamerti.get("supiani")));
+        postParameters.add(new BasicNameValuePair("zona", mappaDeiParamerti.get("zona")));
         try {
         	Object[] response = connessione_5.post("POST della pagina \"Inserisci annuncio\" (step 2)", URLROOT + "/agenzie/_inserisci-annuncio.php", postParameters, debugMode);
-        	Header[] responseHeaders = (Header[])response[0];	//todo
+        	Header[] responseHeaders = (Header[])response[0];	
+        	
+        	String responseStatus = (String)response[2];
+        	if( (responseStatus.contains("302"))) {
+        		System.out.println("Bingo!"); //todo: rimuovere
+        		CODICEINSERZIONE = getHeaderValueByName(responseHeaders, "Location");
+        		System.out.println("Bingo!" + CODICEINSERZIONE);  //todo: rimuovere
+        		INSERIMENTO_OK = true;
+        	}
+        	else {
+        		throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto: mi aspettavo un 302"));
+        	}
+        	
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -196,7 +208,7 @@ public class CuboCasa extends PortaleImmobiliare {
         //Connessione 6 - GET di redirect
         HttpPortalGetConnection connessione_6 = new HttpPortalGetConnection();
     	try {
-			connessione_6.get("Connessione 6 - GET di redirect", URLROOT + "dett-annuncio.php?id=" + "17889664", debugMode);	//todo
+			connessione_6.get("Connessione 6 - GET di redirect", URLROOT + "dett-annuncio.php?id=" + CODICEINSERZIONE, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -205,7 +217,7 @@ public class CuboCasa extends PortaleImmobiliare {
     	//Connessione 7 - GET della pagina di inserimento immagini
         HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
     	try {
-			connessione_7.get("Connessione 7 - GET della pagina di inserimento immagini", URLROOT + "/agenzie/foto.php?id=" + "17889664", debugMode);	//todo
+			connessione_7.get("Connessione 7 - GET della pagina di inserimento immagini", URLROOT + "/agenzie/foto.php?id=" + CODICEINSERZIONE, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -221,8 +233,7 @@ public class CuboCasa extends PortaleImmobiliare {
     	        reqEntity.addPart("foto", bin );
     	    	
     	        try {
-    	        	Object[] response = connessione_8.post("Connessioni 8 - inserimento immagine " + i, URLROOT + "/agenzie/_foto.php", reqEntity, debugMode);
-    	        	String responseBody = (String)response[1];    				    		         
+    	        	connessione_8.post("Connessioni 8 - inserimento immagine " + i, URLROOT + "/agenzie/_foto.php", reqEntity, debugMode);
     			} catch (IOException e) {
     				throw new HttpCommunicationException(e);
     			}
@@ -231,43 +242,7 @@ public class CuboCasa extends PortaleImmobiliare {
     	    	}
             }
     	}
-
-    	
-    	//Connessione 7 - POST dello step 1 (e unico...)
-    	 	
-        try {
-        	Object[] response = connessione_7.post("Connessione 7 - POST dello step 1 (e unico...)", CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
-        	String responseBody = (String)response[1];
-        	
-			if(responseBody.contains("ANNUNCIO INSERITO CORRETTAMENTE")) {
-            	INSERIMENTO_OK = true;
-            }
-            else {
-            	throw(new HttpWrongResponseBodyException("Non trovo il testo \"ANNUNCIO INSERITO CORRETTAMENTE\" che stabilisce se l'annuncio è stato inserito correttamente"));
-            }
-            
-	        //Parse HMTL to retrieve some informations
-            org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);                       
-            Elements linkElements = doc.getElementsByTag("a");
-            if(linkElements!=null) {
-	            Iterator<Element> iterator = linkElements.iterator();
-	            while(iterator.hasNext()) {
-	            	Element currentElement = iterator.next();
-	            	if(currentElement.html().contains("CODICE RIFERIMENTO AGENZIA:")) {
-	            		String text = currentElement.html().substring(currentElement.html().indexOf("AGENZIA:")+8).trim();
-	            		if(scheda.codiceInserzione.equals(text)) {
-	            			CASE24_CODICEINSERZIONE = currentElement.attr("name");
-	            		}		
-	            		System.out.println("CODICEINSERZIONE: " + CASE24_CODICEINSERZIONE);
-	            	}
-	            }
-            }
-		} catch (IOException | HttpWrongResponseBodyException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	finally {
-    		postParameters.clear();
-    	}	    	
+    		    	
       
     	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
     	if(INSERIMENTO_OK) {
@@ -308,16 +283,16 @@ public class CuboCasa extends PortaleImmobiliare {
     
     
     //Metodo per la visualizzazione della scheda immobile nel portale immobiliare
-	public boolean visualizzaScheda(SchedaImmobile scheda) {
+	public boolean visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT + "/area_clienti/annunci.php";	//todo
+			String url = URLROOT + "/agenzie/index.php";
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			System.out.println("Visualizzata in: " + NOMEPORTALE);
 			
 		} catch (IOException e ) {
-			//manageErrors(e, 3);	//todo
+			throw new HttpCommunicationException(e);
 		}
 		
 		return true;
@@ -332,32 +307,33 @@ public class CuboCasa extends PortaleImmobiliare {
 		CODICEINSERZIONE = scheda.getCodiceInserimento(idPortale);	
 		
 		
-		//Connessione 2 - GET della pagina "Area Riservata"
-    	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
-    	try {
-			connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
-		} catch (IOException e) {
-			throw new HttpCommunicationException(e);
-		}
-        
-    	
-        //Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio
-    	HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();	
+		//Connessione 1 - POST della pagina di login
+    	HttpPortalPostConnection connessione_1 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
-    	postParameters.add(new BasicNameValuePair("bottone_cancella", "Cancella annuncio"));
-        postParameters.add(new BasicNameValuePair("cancella_annuncio", "cancella"));
-        postParameters.add(new BasicNameValuePair("codice_inserzione", CODICEINSERZIONE));
-        postParameters.add(new BasicNameValuePair("order_by", ""));
-        postParameters.add(new BasicNameValuePair("order_direction", ""));
-        postParameters.add(new BasicNameValuePair("page", ""));	
+        postParameters.add(new BasicNameValuePair("Submit", "Entra"));
+        postParameters.add(new BasicNameValuePair("email", USERNAME));
+        postParameters.add(new BasicNameValuePair("from_login", "/"));
+        postParameters.add(new BasicNameValuePair("password", PASSWORD));
         try {
-			connessione_8.post("Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+        	Object[] response = connessione_1.post("POST della pagina di login", URLROOT + "/_login.php", postParameters, debugMode);
+			Header[] responseHeaders = (Header[])response[0];
+    		findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME);
+    		connessione_1.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	finally {
     		postParameters.clear();
-    	}	
+    	}
+        
+    	
+        //Connessione 9 - GET della pagina Gestione annunci per eliminare un annuncio
+    	HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
+    	try {
+			connessione_9.get("Connessione 3 - GET della pagina Gestione annunci per eliminare un annuncio", URLROOT + "/agenzie/_del_annunci.php?id=" + CODICEINSERZIONE, debugMode);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}	
     	
         
         //Aggiorno la lista dei portali in cui è presenta la scheda corrente
@@ -380,166 +356,370 @@ public class CuboCasa extends PortaleImmobiliare {
 	
 	
 	//Metodo per la valutazione dei parametri
-	public void inizializzaParametri()  {
+	public void inizializzaParametri()  {		
 		
-		String inserisci_annuncio = "1";
-		mappaDeiParamerti.put("inserisci_annuncio", inserisci_annuncio);
+		String provincia = scheda.provincia;
+		switch (provincia)
+		{
+		    case "Agrigento":
+		    	provincia = "AG";
+		        break;
+		    case "Alessandria":
+		    	provincia = "AL";
+		        break;
+		    case "Ancona":
+		    	provincia = "AN";
+		        break;
+		    case "Aosta":
+		    	provincia = "AO";
+		        break;
+		    case "Arezzo":
+		    	provincia = "AR";
+		        break;
+		    case "Ascoli Piceno":
+		    	provincia = "AP";
+		        break;
+		    case "Asti":
+		    	provincia = "AT";
+		        break;
+		    case "Avellino":
+		    	provincia = "AV";
+		        break;
+		    case "Bari":
+		    	provincia = "BA";
+		        break;
+		    case "Barletta-Andria-Trani":
+		    	provincia = "";//???
+		        break;
+		    case "Belluno":
+		    	provincia = "BL";
+		        break;
+		    case "Benevento":
+		    	provincia = "BN";
+		        break;
+		    case "Bergamo":
+		    	provincia = "BG";
+		        break;
+		    case "Biella":
+		    	provincia = "BI";
+		        break;
+		    case "Bologna":
+		    	provincia = "BO";
+		        break;
+		    case "Bolzano":
+		    	provincia = "BZ";
+		        break;
+		    case "Brescia":
+		    	provincia = "BS";
+		        break;
+		    case "Brindisi":
+		    	provincia = "BR";
+		        break;
+		    case "Cagliari":
+		    	provincia = "CA";
+		        break;
+		    case "Caltanissetta":
+		    	provincia = "CL";
+		        break;
+		    case "Campobasso":
+		    	provincia = "CB";
+		        break;
+		    case "Carbonia-Iglesias":
+		    	provincia = "CI";
+		        break;
+		    case "Caserta":
+		    	provincia = "CE";
+		        break;
+		    case "Catania":
+		    	provincia = "CT";
+		        break;
+		    case "Catanzaro":
+		    	provincia = "CZ";
+		        break;
+		    case "Chieti":
+		    	provincia = "CH";
+		        break;
+		    case "Como":
+		    	provincia = "CO";
+		        break;
+		    case "Cosenza":
+		    	provincia = "CS";
+		        break;
+		    case "Cremona":
+		    	provincia = "CR";
+		        break;
+		    case "Crotone":
+		    	provincia = "KR";
+		        break;
+		    case "Cuneo":
+		    	provincia = "CN";
+		        break;
+		    case "Enna":
+		    	provincia = "EN";
+		        break;
+		    case "Fermo":
+		    	provincia = "";//??
+		        break;
+		    case "Ferrara":
+		    	provincia = "FE";
+		        break;
+		    case "Firenze":
+		    	provincia = "FI";
+		        break;
+		    case "Foggia":
+		    	provincia = "FG";
+		        break;
+		    case "Forlì-Cesena":
+		    	provincia = "FO";
+		        break;
+		    case "Frosinone":
+		    	provincia = "FR";
+		        break;
+		    case "Genova":
+		    	provincia = "GE";
+		        break;
+		    case "Gorizia":
+		    	provincia = "GO";
+		        break;
+		    case "Grosseto":
+		    	provincia = "GR";
+		        break;
+		    case "Imperia":
+		    	provincia = "IM";
+		        break;
+		    case "Isernia":
+		    	provincia = "IS";
+		        break;
+		    case "L'Aquila":
+		    	provincia = "AQ";
+		        break;
+		    case "La Spezia":
+		    	provincia = "SP";
+		        break;
+		    case "Latina":
+		    	provincia = "LT";
+		        break;
+		    case "Lecce":
+		    	provincia = "LE";
+		        break;
+		    case "Lecco":
+		    	provincia = "LC";
+		        break;
+		    case "Livorno":
+		    	provincia = "LI";
+		        break;
+		    case "Lodi":
+		    	provincia = "LO";
+		        break;
+		    case "Lucca":
+		    	provincia = "LU";
+		        break;
+		    case "Macerata":
+		    	provincia = "MC";
+		        break;
+		    case "Mantova":
+		    	provincia = "MN";
+		        break;
+		    case "Massa-Carrara":
+		    	provincia = "MS";
+		        break;
+		    case "Matera":
+		    	provincia = "MT";
+		        break;
+		    case "Medio Campidano":
+		    	provincia = "MD";
+		        break;
+		    case "Messina":
+		    	provincia = "ME";
+		        break;
+		    case "Milano":
+		    	provincia = "MI";
+		        break;
+		    case "Modena":
+		    	provincia = "MO";
+		        break;
+		    case "Monza e della Brianza":
+		    	provincia = "";//???
+		        break;
+		    case "Napoli":
+		    	provincia = "NA";
+		        break;
+		    case "Novara":
+		    	provincia = "NO";
+		        break;
+		    case "Nuoro":
+		    	provincia = "NU";
+		        break;
+		    case "Ogliastra":
+		    	provincia = "OG";
+		        break;
+		    case "Olbia-Tempio":
+		    	provincia = "OT";
+		        break;
+		    case "Oristano":
+		    	provincia = "OR";
+		        break;
+		    case "Padova":
+		    	provincia = "PD";
+		        break;
+		    case "Palermo":
+		    	provincia = "PA";
+		        break;
+		    case "Parma":
+		    	provincia = "PR";
+		        break;
+		    case "Pavia":
+		    	provincia = "PV";
+		        break;
+		    case "Perugia":
+		    	provincia = "PG";
+		        break;
+		    case "Pesaro e Urbino":
+		    	provincia = "PU";
+		        break;
+		    case "Pescara":
+		    	provincia = "PE";
+		        break;
+		    case "Piacenza":
+		    	provincia = "PC";
+		        break;
+		    case "Pisa":
+		    	provincia = "PI";
+		        break;
+		    case "Pistoia":
+		    	provincia = "PT";
+		        break;
+		    case "Pordenone":
+		    	provincia = "PN";
+		        break;
+		    case "Potenza":
+		    	provincia = "PZ";
+		        break;
+		    case "Prato":
+		    	provincia = "PO";
+		        break;
+		    case "Ragusa":
+		    	provincia = "RG";
+		        break;
+		    case "Ravenna":
+		    	provincia = "RA";
+		        break;
+		    case "Reggio di Calabria":
+		    	provincia = "RC";
+		        break;
+		    case "Reggio nell'Emilia":
+		    	provincia = "RE";
+		        break;
+		    case "Rieti":
+		    	provincia = "RI";
+		        break;
+		    case "Rimini":
+		    	provincia = "RN";
+		        break;
+		    case "Roma":
+		    	provincia = "RM";
+		        break;
+		    case "Rovigo":
+		    	provincia = "RO";
+		        break;
+		    case "Salerno":
+		    	provincia = "SA";
+		        break;
+		    case "Sassari":
+		    	provincia = "SS";
+		        break;
+		    case "Savona":
+		    	provincia = "SV";
+		        break;
+		    case "Siena":
+		    	provincia = "SI";
+		        break;
+		    case "Siracusa":
+		    	provincia = "SO";
+		        break;
+		    case "Sondrio":
+		    	provincia = "";//???
+		        break;
+		    case "Taranto":
+		    	provincia = "TA";
+		        break;
+		    case "Teramo":
+		    	provincia = "TE";
+		        break;
+		    case "Terni":
+		    	provincia = "TR";
+		        break;
+		    case "Torino":
+		    	provincia = "TO";
+		        break;
+		    case "Trapani":
+		    	provincia = "TP";
+		        break;
+		    case "Trento":
+		    	provincia = "TN";
+		        break;
+		    case "Treviso":
+		    	provincia = "TV";
+		        break;
+		    case "Trieste":
+		    	provincia = "TS";
+		        break;
+		    case "Udine":
+		    	provincia = "UD";
+		        break;
+		    case "Valle d'Aosta":
+		    	provincia = "";//???
+		        break;
+		    case "Varese":
+		    	provincia = "VA";
+		        break;
+		    case "Venezia":
+		    	provincia = "VE";
+		        break;
+		    case "Verbano-Cusio-Ossola":
+		    	provincia = "VB";
+		        break;
+		    case "Vercelli":
+		    	provincia = "VC";
+		        break;
+		    case "Verona":
+		    	provincia = "VR";
+		        break;
+		    case "Vibo Valentia":
+		    	provincia = "VV";
+		        break;
+		    case "Vicenza":
+		    	provincia = "VI";
+		        break;
+		    case "Viterbo":
+		    	provincia = "VT";
+		        break;		        
+		}
+		mappaDeiParamerti.put("provincia", provincia);	
 		
-		String x = "10";
-		mappaDeiParamerti.put("x", x);
 		
-		String y = "10";
-		mappaDeiParamerti.put("y", y);
-		
-		String action = "inserisci_nuovo_annuncio";
-		mappaDeiParamerti.put("action", action);
-		
-		String codice_cliente = CASE24_CODICE_CLIENTE;
-		mappaDeiParamerti.put("codice_cliente", codice_cliente);
-		
-		String InserzionistaPrivato = "0";
-		mappaDeiParamerti.put("InserzionistaPrivato", InserzionistaPrivato);
-		
-		String codice_inserzione = "";
-		mappaDeiParamerti.put("codice_inserzione", codice_inserzione);
-		
-		String galleria_valore = "0";
-		mappaDeiParamerti.put("galleria_valore", galleria_valore);
-		
-		String zona = "0";
-		mappaDeiParamerti.put("zona", zona);
-		
-		String visua_indirizzo = "1";
-		mappaDeiParamerti.put("visua_indirizzo", visua_indirizzo);
-		
-		String numero_camere_old = "";
-		mappaDeiParamerti.put("numero_camere_old", numero_camere_old);
-		
-		String numero_piani = "";
-		mappaDeiParamerti.put("numero_piani", numero_piani);
-		
-		String numero_terrazze = "0";
-		mappaDeiParamerti.put("numero_terrazze", numero_terrazze);
-		
-		String numero_posti_auto_coperti = "0";
-		mappaDeiParamerti.put("numero_posti_auto_coperti", numero_posti_auto_coperti);
-		
-		String numero_posti_auto = "0";
-		mappaDeiParamerti.put("numero_posti_auto", numero_posti_auto);
-		
-		String numero_posti_auto_garage = "";
-		mappaDeiParamerti.put("numero_posti_auto_garage", numero_posti_auto_garage);
-		
-		String riscaldamento_tipo = "";
-		mappaDeiParamerti.put("riscaldamento_tipo", riscaldamento_tipo);
-		
-		String anno = "";
+		String anno =  scheda.annoCostruzione;
 		mappaDeiParamerti.put("anno", anno);
 		
-		String spese_condominiali = "";
-		mappaDeiParamerti.put("spese_condominiali", spese_condominiali);
+		String cantina = scheda.cantina?"Presente":"Non disponibile";
+		mappaDeiParamerti.put("cantina", cantina);
 		
-		String stato_rogito = "";
-		mappaDeiParamerti.put("stato_rogito", stato_rogito);
+		String cap = scheda.cap;
+		mappaDeiParamerti.put("cap", cap);
 		
-		String orientamento = "";
-		mappaDeiParamerti.put("orientamento", orientamento);
 		
-		String scoperto = "";
-		mappaDeiParamerti.put("scoperto", scoperto);
 		
-		String ipe = "";
-		mappaDeiParamerti.put("ipe", ipe);
 		
-		String attivo = "1";
-		mappaDeiParamerti.put("attivo", attivo);
 		
-		String opt_ascensore = "0";
-		mappaDeiParamerti.put("opt_ascensore", opt_ascensore);
 		
-		String opt_servizi_disabili = "0";
-		mappaDeiParamerti.put("opt_servizi_disabili", opt_servizi_disabili);
 		
-		String opt_angolo_cottura = "0";
-		mappaDeiParamerti.put("opt_angolo_cottura", opt_angolo_cottura);
 		
-		String opt_satellite = "0";
-		mappaDeiParamerti.put("opt_satellite", opt_satellite);
 		
-		String opt_arredato = "0";
-		mappaDeiParamerti.put("opt_arredato", opt_arredato);
 		
-		String opt_bagno_con_vasca = "0";
-		mappaDeiParamerti.put("opt_bagno_con_vasca", opt_bagno_con_vasca);
 		
-		String opt_caminetto = "0";
-		mappaDeiParamerti.put("opt_caminetto", opt_caminetto);
 		
-		String opt_cantina = "0";
-		mappaDeiParamerti.put("opt_cantina", opt_cantina);
+	
 		
-		String opt_cassaforte = "0";
-		mappaDeiParamerti.put("opt_cassaforte", opt_cassaforte);
-		
-		String opt_climatizzatore = "0";
-		mappaDeiParamerti.put("opt_climatizzatore", opt_climatizzatore);
-		
-		String opt_cucina_vivibile = "0";
-		mappaDeiParamerti.put("opt_cucina_vivibile", opt_cucina_vivibile);
-		
-		String opt_idromassaggio = "0";
-		mappaDeiParamerti.put("opt_idromassaggio", opt_idromassaggio);
-		
-		String opt_allarme = "0";
-		mappaDeiParamerti.put("opt_allarme", opt_allarme);
-		
-		String opt_lavanderia = "0";
-		mappaDeiParamerti.put("opt_lavanderia", opt_lavanderia);
-		
-		String opt_mansarda = "0";
-		mappaDeiParamerti.put("opt_mansarda", opt_mansarda);
-		
-		String opt_fotovoltaico = "0";
-		mappaDeiParamerti.put("opt_fotovoltaico", opt_fotovoltaico);
-		
-		String opt_pannelli_solari = "0";
-		mappaDeiParamerti.put("opt_pannelli_solari", opt_pannelli_solari);
-		
-		String opt_piscina = "0";
-		mappaDeiParamerti.put("opt_piscina", opt_piscina);
-		
-		String opt_porta_blindata = "0";
-		mappaDeiParamerti.put("opt_porta_blindata", opt_porta_blindata);
-		
-		String opt_possibilita_animali = "0";
-		mappaDeiParamerti.put("opt_possibilita_animali", opt_possibilita_animali);
-		
-		String opt_ripostiglio = "0";
-		mappaDeiParamerti.put("opt_ripostiglio", opt_ripostiglio);
-		
-		String opt_riscaldamento_pavimento = "0";
-		mappaDeiParamerti.put("opt_riscaldamento_pavimento", opt_riscaldamento_pavimento);
-		
-		String opt_sauna = "0";
-		mappaDeiParamerti.put("opt_sauna", opt_sauna);
-		
-		String opt_taverna = "0";
-		mappaDeiParamerti.put("opt_taverna", opt_taverna);
-		
-		String opt_terra_cielo = "0";
-		mappaDeiParamerti.put("opt_terra_cielo", opt_terra_cielo);
-		
-		String opt_travi = "0";
-		mappaDeiParamerti.put("opt_travi", opt_travi);
-		
-		String opt_vista_panoramica = "0";
-		mappaDeiParamerti.put("opt_vista_panoramica", opt_vista_panoramica);
-		
-		String opt_in_campagna = "0";
-		mappaDeiParamerti.put("opt_in_campagna", opt_in_campagna);
-		
-		String optional_valore = "0";
-		mappaDeiParamerti.put("optional_valore", optional_valore);
 		
 		Date now = new Date();  		  
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");  
@@ -553,336 +733,7 @@ public class CuboCasa extends PortaleImmobiliare {
 		String rif_agenzia = scheda.codiceInserzione;
 		mappaDeiParamerti.put("rif_agenzia", rif_agenzia);
 		
-		String provincia = scheda.provincia;
-		String codice_provincia_inserzione = "";
-		switch (provincia)
-		{
-		    case "Agrigento":
-		    	codice_provincia_inserzione = "084";
-		        break;
-		    case "Alessandria":
-		    	codice_provincia_inserzione = "006";
-		        break;
-		    case "Ancona":
-		    	codice_provincia_inserzione = "042";
-		        break;
-		    case "Arezzo":
-		    	codice_provincia_inserzione = "051";
-		        break;
-		    case "Ascoli Piceno":
-		    	codice_provincia_inserzione = "044";
-		        break;
-		    case "Asti":
-		    	codice_provincia_inserzione = "005";
-		        break;
-		    case "Avellino":
-		    	codice_provincia_inserzione = "064";
-		        break;
-		    case "Bari":
-		    	codice_provincia_inserzione = "072";
-		        break;
-		    case "Barletta-Andria-Trani":
-		    	codice_provincia_inserzione = "110";
-		        break;
-		    case "Belluno":
-		    	codice_provincia_inserzione = "025";
-		        break;
-		    case "Benevento":
-		    	codice_provincia_inserzione = "062";
-		        break;
-		    case "Bergamo":
-		    	codice_provincia_inserzione = "016";
-		        break;
-		    case "Biella":
-		    	codice_provincia_inserzione = "096";
-		        break;
-		    case "Bologna":
-		    	codice_provincia_inserzione = "037";
-		        break;
-		    case "Bolzano":
-		    	codice_provincia_inserzione = "021";
-		        break;
-		    case "Brescia":
-		    	codice_provincia_inserzione = "017";
-		        break;
-		    case "Brindisi":
-		    	codice_provincia_inserzione = "074";
-		        break;
-		    case "Cagliari":
-		    	codice_provincia_inserzione = "092";
-		        break;
-		    case "Caltanissetta":
-		    	codice_provincia_inserzione = "085";
-		        break;
-		    case "Campobasso":
-		    	codice_provincia_inserzione = "070";
-		        break;
-		    case "Carbonia-Iglesias":
-		    	codice_provincia_inserzione = "107";
-		        break;
-		    case "Caserta":
-		    	codice_provincia_inserzione = "061";
-		        break;
-		    case "Catania":
-		    	codice_provincia_inserzione = "087";
-		        break;
-		    case "Catanzaro":
-		    	codice_provincia_inserzione = "079";
-		        break;
-		    case "Chieti":
-		    	codice_provincia_inserzione = "069";
-		        break;
-		    case "Como":
-		    	codice_provincia_inserzione = "013";
-		        break;
-		    case "Cosenza":
-		    	codice_provincia_inserzione = "078";
-		        break;
-		    case "Cremona":
-		    	codice_provincia_inserzione = "019";
-		        break;
-		    case "Crotone":
-		    	codice_provincia_inserzione = "101";
-		        break;
-		    case "Cuneo":
-		    	codice_provincia_inserzione = "004";
-		        break;
-		    case "Enna":
-		    	codice_provincia_inserzione = "086";
-		        break;
-		    case "Fermo":
-		    	codice_provincia_inserzione = "109";
-		        break;
-		    case "Ferrara":
-		    	codice_provincia_inserzione = "038";
-		        break;
-		    case "Firenze":
-		    	codice_provincia_inserzione = "048";
-		        break;
-		    case "Foggia":
-		    	codice_provincia_inserzione = "071";
-		        break;
-		    case "Forlì-Cesena":
-		    	codice_provincia_inserzione = "040";
-		        break;
-		    case "Frosinone":
-		    	codice_provincia_inserzione = "060";
-		        break;
-		    case "Genova":
-		    	codice_provincia_inserzione = "010";
-		        break;
-		    case "Gorizia":
-		    	codice_provincia_inserzione = "031";
-		        break;
-		    case "Grosseto":
-		    	codice_provincia_inserzione = "053";
-		        break;
-		    case "Imperia":
-		    	codice_provincia_inserzione = "008";
-		        break;
-		    case "Isernia":
-		    	codice_provincia_inserzione = "094";
-		        break;
-		    case "L'Aquila":
-		    	codice_provincia_inserzione = "066";
-		        break;
-		    case "La Spezia":
-		    	codice_provincia_inserzione = "011";
-		        break;
-		    case "Latina":
-		    	codice_provincia_inserzione = "059";
-		        break;
-		    case "Lecce":
-		    	codice_provincia_inserzione = "075";
-		        break;
-		    case "Lecco":
-		    	codice_provincia_inserzione = "097";
-		        break;
-		    case "Livorno":
-		    	codice_provincia_inserzione = "049";
-		        break;
-		    case "Lodi":
-		    	codice_provincia_inserzione = "098";
-		        break;
-		    case "Lucca":
-		    	codice_provincia_inserzione = "046";
-		        break;
-		    case "Macerata":
-		    	codice_provincia_inserzione = "043";
-		        break;
-		    case "Mantova":
-		    	codice_provincia_inserzione = "020";
-		        break;
-		    case "Massa-Carrara":
-		    	codice_provincia_inserzione = "045";
-		        break;
-		    case "Matera":
-		    	codice_provincia_inserzione = "077";
-		        break;
-		    case "Medio Campidano":
-		    	codice_provincia_inserzione = "106";
-		        break;
-		    case "Messina":
-		    	codice_provincia_inserzione = "083";
-		        break;
-		    case "Milano":
-		    	codice_provincia_inserzione = "015";
-		        break;
-		    case "Modena":
-		    	codice_provincia_inserzione = "036";
-		        break;
-		    case "Monza e della Brianza":
-		    	codice_provincia_inserzione = "108";
-		        break;
-		    case "Napoli":
-		    	codice_provincia_inserzione = "063";
-		        break;
-		    case "Novara":
-		    	codice_provincia_inserzione = "003";
-		        break;
-		    case "Nuoro":
-		    	codice_provincia_inserzione = "091";
-		        break;
-		    case "Ogliastra":
-		    	codice_provincia_inserzione = "105";
-		        break;
-		    case "Olbia-Tempio":
-		    	codice_provincia_inserzione = "104";
-		        break;
-		    case "Oristano":
-		    	codice_provincia_inserzione = "095";
-		        break;
-		    case "Padova":
-		    	codice_provincia_inserzione = "028";
-		        break;
-		    case "Palermo":
-		    	codice_provincia_inserzione = "082";
-		        break;
-		    case "Parma":
-		    	codice_provincia_inserzione = "034";
-		        break;
-		    case "Perugia":
-		    	codice_provincia_inserzione = "054";
-		        break;
-		    case "Pesaro e Urbino":
-		    	codice_provincia_inserzione = "041";
-		        break;
-		    case "Pescara":
-		    	codice_provincia_inserzione = "068";
-		        break;
-		    case "Piacenza":
-		    	codice_provincia_inserzione = "033";
-		        break;
-		    case "Pisa":
-		    	codice_provincia_inserzione = "050";
-		        break;
-		    case "Pistoia":
-		    	codice_provincia_inserzione = "047";
-		        break;
-		    case "Pordenone":
-		    	codice_provincia_inserzione = "093";
-		        break;
-		    case "Potenza":
-		    	codice_provincia_inserzione = "076";
-		        break;
-		    case "Prato":
-		    	codice_provincia_inserzione = "100";
-		        break;
-		    case "Ragusa":
-		    	codice_provincia_inserzione = "088";
-		        break;
-		    case "Ravenna":
-		    	codice_provincia_inserzione = "039";
-		        break;
-		    case "Reggio di Calabria":
-		    	codice_provincia_inserzione = "080";
-		        break;
-		    case "Reggio nell'Emilia":
-		    	codice_provincia_inserzione = "036";
-		        break;
-		    case "Rieti":
-		    	codice_provincia_inserzione = "057";
-		        break;
-		    case "Rimini":
-		    	codice_provincia_inserzione = "099";
-		        break;
-		    case "Roma":
-		    	codice_provincia_inserzione = "058";
-		        break;
-		    case "Rovigo":
-		    	codice_provincia_inserzione = "029";
-		        break;
-		    case "Salerno":
-		    	codice_provincia_inserzione = "065";
-		        break;
-		    case "Sassari":
-		    	codice_provincia_inserzione = "090";
-		        break;
-		    case "Siena":
-		    	codice_provincia_inserzione = "052";
-		        break;
-		    case "Siracusa":
-		    	codice_provincia_inserzione = "089";
-		        break;
-		    case "Sondrio":
-		    	codice_provincia_inserzione = "014";
-		        break;
-		    case "Taranto":
-		    	codice_provincia_inserzione = "073";
-		        break;
-		    case "Teramo":
-		    	codice_provincia_inserzione = "067";
-		        break;
-		    case "Terni":
-		    	codice_provincia_inserzione = "055";
-		        break;
-		    case "Torino":
-		    	codice_provincia_inserzione = "001";
-		        break;
-		    case "Trapani":
-		    	codice_provincia_inserzione = "081";
-		        break;
-		    case "Trento":
-		    	codice_provincia_inserzione = "022";
-		        break;
-		    case "Treviso":
-		    	codice_provincia_inserzione = "026";
-		        break;
-		    case "Trieste":
-		    	codice_provincia_inserzione = "032";
-		        break;
-		    case "Udine":
-		    	codice_provincia_inserzione = "030";
-		        break;
-		    case "Valle d'Aosta":
-		    	codice_provincia_inserzione = "007";
-		        break;
-		    case "Varese":
-		    	codice_provincia_inserzione = "012";
-		        break;
-		    case "Venezia":
-		    	codice_provincia_inserzione = "027";
-		        break;
-		    case "Verbano-Cusio-Ossola":
-		    	codice_provincia_inserzione = "103";
-		        break;
-		    case "Vercelli":
-		    	codice_provincia_inserzione = "002";
-		        break;
-		    case "Verona":
-		    	codice_provincia_inserzione = "023";
-		        break;
-		    case "Vibo Valentia":
-		    	codice_provincia_inserzione = "102";
-		        break;
-		    case "Vicenza":
-		    	codice_provincia_inserzione = "024";
-		        break;
-		    case "Viterbo":
-		    	codice_provincia_inserzione = "056";
-		        break;		        
-		}
-		mappaDeiParamerti.put("codice_provincia_inserzione", codice_provincia_inserzione);
+		
 		
 		String nameComune = scheda.comune;
 		mappaDeiParamerti.put("nameComune", nameComune);
@@ -890,7 +741,7 @@ public class CuboCasa extends PortaleImmobiliare {
 		String codice_comune_inserzione = "";
 		/*HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
     	try {
-    		Object[] response = connessione_9.get(CASE24_URLROOT + "/area_clienti/include/ajax.php?funzione=select_geografico&etichetta=denominazione_comune&zona=X&valore_etichetta=" + codice_provincia_inserzione + "&valore_selezionato=&tabindex=3", debugMode);
+    		Object[] response = connessione_9.get(CASE24_URLROOT + "/area_clienti/include/ajax.php?funzione=select_geografico&etichetta=denominazione_comune&zona=X&valore_etichetta=" + provincia + "&valore_selezionato=&tabindex=3", debugMode);
     		String responseBody = (String)response[1];
     		
     		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);              

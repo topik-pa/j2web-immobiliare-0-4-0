@@ -9,7 +9,7 @@ import javax.swing.JComponent;
 public interface parametriGenerali {
 
 	//Versione di J2Web
-	final String  j2web_version = "0.4.0.0";
+	final String  j2web_version = "0.4.1.0";
 	
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
@@ -28,7 +28,7 @@ public interface parametriGenerali {
 	final String nomeGUI = "J2Web - Immobiliare" + " " + j2web_version;
 	
 	//Dimensioni di default della GUI 
-	final int[] GUI_bounds = {20, 20, 1170, 600};
+	final int[] GUI_bounds = {20, 20, 1170, 635};
 	
 	//Icona della finestra principale
     final Image frameIcon = new ImageIcon("./images/imaginationLogo.png").getImage();
@@ -95,6 +95,7 @@ public interface parametriGenerali {
 	final String[] arrayArredamenti = {"Seleziona", "Arredato", "Semi arredato", "Non arredato"};
 	final String[] arrayPiano = {"Seleziona", "Piano terra", "Primo piano", "Piano intermedio", "Piano alto", "Ultimo piano", "Su più livelli"};
 	final String[] arrayCertificazioniEnergetiche = {"Seleziona", "Certificazione energetica A+", "Certificazione energetica A", "Certificazione energetica B", "Certificazione energetica C", "Certificazione energetica D", "Certificazione energetica E", "Certificazione energetica F", "Certificazione energetica G", "Non specificata"};
+	final String[] arrayCertificazioneIpe = {"Seleziona", "Immobile certificato", "Immobile esente da certificazione", "Documentazione non esistente"};
 	final String[] arrayTipologieRiscaldamento = {"Seleziona", "Assente", "Centralizzato", "Autonomo", "Stufa"};
 	final String[] arrayClima = {"Seleziona", "Assente", "Aria condizionata", "Climatizzatore"};
 	final String[] arrayParcheggio = {"Seleziona", "Nessuno", "Garage", "Posto auto coperto", "Posto auto scoperto"};

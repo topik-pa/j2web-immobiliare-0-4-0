@@ -18,7 +18,7 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 	public Object[] get(String connectionDescription, String url, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
-		Object[] headersAndBodyResponse = new Object[2];
+		Object[] headersAndBodyResponseAndStatus = new Object[3];
 				
 		//Inizializza la connessione
 		httpget = new HttpGet(url);
@@ -54,9 +54,10 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
         httpclient.getConnectionManager().shutdown();
                
         //Return the headers and response body
-        headersAndBodyResponse[0] = responseHeaders;
-        headersAndBodyResponse[1] = responseBody;       
-        return headersAndBodyResponse;      
+        headersAndBodyResponseAndStatus[0] = responseHeaders;
+        headersAndBodyResponseAndStatus[1] = responseBody;
+        headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
+        return headersAndBodyResponseAndStatus;     
 		
 	}	
 	
