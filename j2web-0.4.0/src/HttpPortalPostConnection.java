@@ -22,7 +22,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
-		Object[] headersAndBodyResponse = new Object[2];
+		Object[] headersAndBodyResponseAndStatus = new Object[3];
 		
 		//Inizializza la connessione
 		httppost = new HttpPost(url);
@@ -62,9 +62,10 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         httpclient.getConnectionManager().shutdown();
         
         //Return the headers and response body
-        headersAndBodyResponse[0] = responseHeaders;
-        headersAndBodyResponse[1] = responseBody;       
-        return headersAndBodyResponse; 
+        headersAndBodyResponseAndStatus[0] = responseHeaders;
+        headersAndBodyResponseAndStatus[1] = responseBody;
+        headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
+        return headersAndBodyResponseAndStatus; 
         
 	}
 	
@@ -72,7 +73,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
-		Object[] headersAndBodyResponse = new Object[2];
+		Object[] headersAndBodyResponseAndStatus = new Object[3];
 		
 		//Inizializza la connessione
 		httppost = new HttpPost(url);
@@ -111,9 +112,10 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         httpclient.getConnectionManager().shutdown();
 		
         //Return the headers and response body
-        headersAndBodyResponse[0] = responseHeaders;
-        headersAndBodyResponse[1] = responseBody;       
-        return headersAndBodyResponse;     
+        headersAndBodyResponseAndStatus[0] = responseHeaders;
+        headersAndBodyResponseAndStatus[1] = responseBody;
+        headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
+        return headersAndBodyResponseAndStatus;     
 		
 	}	
 	

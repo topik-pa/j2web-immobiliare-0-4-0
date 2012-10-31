@@ -54,7 +54,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	public abstract boolean inserisciScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException;
 	
 	//Visualizzazione scheda (sovrascritto nelle sottoclassi)
-	public abstract boolean visualizzaScheda(SchedaImmobile scheda);
+	public abstract boolean visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException;
 
 	//Eliminazione scheda (sovrascritto nelle sottoclassi)
 	public abstract boolean cancellaScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException;
@@ -204,6 +204,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
                 if(cookie_name.equals(cookieName)) {
                 	//Cookie di sessione trovato
             		cookieHeaderFound = true;
+            		//Scrive i valori del cookie trovato nell'oggetto connessione passato come argomento
             		connessione.setSessionCookieHeader(cookie_header);
             		connessione.setSessionCookieName(cookieName);
             		connessione.setSessionCookieValue(cookie_value);
@@ -213,6 +214,23 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
         }       
         //Valori di ritorno
         return cookieHeaderFound?true:false;
+	}
+    
+    //Ritorna il valore di una header dato il nome dell'header stesso
+    public String getHeaderValueByName(Header[] headers, String headerName) {
+    	
+    	String headerValue = "Header non trovato";
+		
+		//boolean headerFound = false;
+        for(int i=0; i<headers.length; i++) {       	
+        	Header currentHeader = headers[i];
+        	//Get cookie
+        	if(currentHeader.getName().contains(headerName)) {     		        		
+        		headerValue = currentHeader.getValue();	
+        	}       	
+        }       
+        //Valore tornato
+        return headerValue;
 	}
     
     //Metodo per ottenere le coordinate della città

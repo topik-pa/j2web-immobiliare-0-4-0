@@ -167,7 +167,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		
 		//Pannello SX - "Creazione scheda immobile"
 		panelCreazioneSchedeImmobile = new PanelCreazioneSchedeImmobile();
-		getContentPane().add(panelCreazioneSchedeImmobile);	
+		getContentPane().add(new JScrollPane(panelCreazioneSchedeImmobile));
 		
 		//Pannello MID - "Lista schede create"
 		panelListaSchedeImmobile = new PanelListaSchedeImmobili();

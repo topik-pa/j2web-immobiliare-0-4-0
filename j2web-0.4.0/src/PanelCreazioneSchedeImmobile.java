@@ -17,6 +17,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ListIterator;
+
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -83,10 +85,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
   	private static JComboBox<String> comboBoxArredamenti = new JComboBox<String>();
   	private static JComboBox<String> comboBoxPiano = new JComboBox<String>();
   	private static JComboBox<String> comboBoxCertificazioniEnergetiche = new JComboBox<String>();
+  	private static JComboBox<String> comboBoxCertificazioneIpe = new JComboBox<String>();
   	private static JComboBox<String> comboBoxTipologiaRiscaldamento = new JComboBox<String>();
   	private static JComboBox<String> comboBoxClima = new JComboBox<String>();
   	private static JComboBox<String> comboBoxParcheggio = new JComboBox<String>();
-  	private static JComboBox<String> comboBoxGiardino = new JComboBox<String>(); //11
+  	private static JComboBox<String> comboBoxGiardino = new JComboBox<String>(); //12
   	//Pulsanti
   	private static JButton btnImmagine1 = new JButton("Immagine1");
   	private static JButton btnImmagine2 = new JButton("Immagine2");
@@ -103,13 +106,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
   	private static JCheckBox chckbxAscensore = new JCheckBox("Ascensore");
   	private static JCheckBox chckbxCasaEcologica = new JCheckBox("Casa ecologica");
   	private static JCheckBox chckbxVicinanzeBus = new JCheckBox("Vicinanze bus");
-  	private static JCheckBox chckbxVistaDiPregio = new JCheckBox("Vista di pregio");
+  	private static JCheckBox chckbxCantina = new JCheckBox("Cantina");
   	private static JCheckBox chckbxSatellite = new JCheckBox("Satellite");
   	private static JCheckBox chckbxSistemaDiAllarme = new JCheckBox("Sistema di allarme");
   	private static JCheckBox chckbxCancelloElettrico = new JCheckBox("Cancello elettrico");
   	private static JCheckBox chckbxVicinanzeMetro = new JCheckBox("Vicinanze metro");
   	private static JCheckBox chckbxRampePerDisabili = new JCheckBox("Rampe per disabili");  //10
-  	//TOT:56
+  	//TOT:57
 	
 	//Costruttore del pannello
 	public PanelCreazioneSchedeImmobile() {
@@ -121,6 +124,12 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		//Sottopannello a schede (tab)
 		JTabbedPane tabbedPaneCreazioneSchede = new JTabbedPane(JTabbedPane.TOP);
 		add(tabbedPaneCreazioneSchede, BorderLayout.NORTH);
+		
+		add(Box.createVerticalStrut(10));
+		
+		//Sottopannello controllo form
+		JPanel panelPulsantiCreazioneScheda = new JPanel();
+		add(panelPulsantiCreazioneScheda);
 		
 		
 		
@@ -171,7 +180,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JPanel panelCodiceInserzione = new JPanel();
 		panelTabDatiObbligatori.add(panelCodiceInserzione, "1, 2, fill, fill");
 		panelCodiceInserzione.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("125px"),
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
 				RowSpec.decode("fill:20px"),}));
@@ -202,7 +211,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JPanel panelTitoloAnnuncio = new JPanel();
 		panelTabDatiObbligatori.add(panelTitoloAnnuncio, "1, 4, fill, fill");
 		panelTitoloAnnuncio.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("125px"),
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
 				RowSpec.decode("20px"),}));
@@ -230,7 +239,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JPanel panelRegProvCom = new JPanel();
 		panelTabDatiObbligatori.add(panelRegProvCom, "1, 6, fill, fill");
 		panelRegProvCom.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("125px"),
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
 				RowSpec.decode("20px"),
@@ -290,7 +299,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JPanel panelCap = new JPanel();
 		panelTabDatiObbligatori.add(panelCap, "1, 8, fill, fill");
 		panelCap.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("125px"),
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
 				RowSpec.decode("default:grow"),}));
@@ -319,7 +328,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JPanel panelIndirizzo = new JPanel();
 		panelTabDatiObbligatori.add(panelIndirizzo, "1, 10, fill, fill");
 		panelIndirizzo.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("125px"),
 				ColumnSpec.decode("50dlu:grow"),},
 			new RowSpec[] {
 				RowSpec.decode("20px"),}));
@@ -371,7 +380,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JPanel panelCategoriaTipologia = new JPanel();
 		panelTabDatiObbligatori.add(panelCategoriaTipologia, "1, 15, fill, default");
 		panelCategoriaTipologia.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("125px"),
 				ColumnSpec.decode("50dlu:grow"),},
 			new RowSpec[] {
 				RowSpec.decode("20px"),
@@ -411,7 +420,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		JPanel panelSuperficie = new JPanel();
 		panelTabDatiObbligatori.add(panelSuperficie, "1, 17, fill, fill");
 		panelSuperficie.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("125px"),
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
 				RowSpec.decode("20px"),}));
@@ -437,11 +446,32 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
             }
         });
 		
+		//Certificazioni energetiche
+		JPanel panelCertificazioniEnergetiche = new JPanel();
+		panelTabDatiObbligatori.add(panelCertificazioniEnergetiche, "1, 19, fill, fill");
+		panelCertificazioniEnergetiche.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("125px"),
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("20px"),}));
+		
+		JLabel lblCertificazioniEnergetiche = new JLabel("Certificazioni energetiche");
+		panelCertificazioniEnergetiche.add(lblCertificazioniEnergetiche, "1, 1, fill, fill");
+		
+		mapCampiForm.put("comboBoxCertificazioniEnergetiche", comboBoxCertificazioniEnergetiche);
+		listCampiForm.add(comboBoxCertificazioniEnergetiche);
+		listCampiFormObbligatori.add(comboBoxCertificazioniEnergetiche);
+		comboBoxCertificazioniEnergetiche.setModel(new DefaultComboBoxModel<String>(arrayCertificazioniEnergetiche));
+		lblCertificazioniEnergetiche.setLabelFor(comboBoxCertificazioniEnergetiche);
+		comboBoxTipologiaContratto.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panelCertificazioniEnergetiche.add(comboBoxCertificazioniEnergetiche, "2, 1, left, default");
+		comboBoxCertificazioniEnergetiche.setToolTipText("Selezionare la certificazione energetica dell'immobile");
+		
 		//Tipologia contratto
 		JPanel panelTipologiaContratto = new JPanel();
-		panelTabDatiObbligatori.add(panelTipologiaContratto, "1, 19, fill, fill");
+		panelTabDatiObbligatori.add(panelTipologiaContratto, "1, 21, fill, fill");
 		panelTipologiaContratto.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("125px"),
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
 				RowSpec.decode("20px"),}));
@@ -457,16 +487,16 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblTipologiaContratto.setLabelFor(comboBoxTipologiaContratto);
 		comboBoxTipologiaContratto.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panelTipologiaContratto.add(comboBoxTipologiaContratto, "2, 1, left, default");
-		comboBoxTipologiaContratto.setToolTipText("");
+		comboBoxTipologiaContratto.setToolTipText("Selezionare la tipologia di contratto");
 		
 		//Prezzo
 		JPanel panelPrezzo = new JPanel();
-		panelTabDatiObbligatori.add(panelPrezzo, "1, 21, fill, fill");
+		panelTabDatiObbligatori.add(panelPrezzo, "1, 23, fill, fill");
 		panelPrezzo.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("121px"),
+				ColumnSpec.decode("125px"),
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
-				FormFactory.MIN_ROWSPEC,}));
+				RowSpec.decode("20px"),}));
 		
 		JLabel lblPrezzoImmobile = new JLabel("Prezzo");
 		panelPrezzo.add(lblPrezzoImmobile, "1, 1, fill, fill");
@@ -487,10 +517,24 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
                 }
             }
         });
+		/*-----------------------------------------------------------------------------------------*/
 		
-		//Pulsanti Creazione e Resetta 
-		JPanel panelPulsantiCreazioneScheda = new JPanel();
-		panelTabDatiObbligatori.add(panelPulsantiCreazioneScheda, "1, 23, fill, fill");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*-----------------------------------------------------------------------------------------*/
+		//Pulsanti Creazione e Resetta 				
 		panelPulsantiCreazioneScheda.setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("81px:grow"),
 				ColumnSpec.decode("20px:grow"),
@@ -924,16 +968,16 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
         });
 		
 		//Certificazioni energetiche
-		JLabel lblCertificazioniEnergetiche = new JLabel("Certificazioni energetiche");
-		lblCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
-		panelTabDatiSecondari.add(lblCertificazioniEnergetiche, "1, 16");
+		JLabel lblCertificazioneIpe = new JLabel("Certificazioni ipe");
+		lblCertificazioneIpe.setToolTipText("Selezionare la certificazione ipe");
+		panelTabDatiSecondari.add(lblCertificazioneIpe, "1, 16");
 		
-		mapCampiForm.put("comboBoxCertificazioniEnergetiche", comboBoxCertificazioniEnergetiche);
-		listCampiForm.add(comboBoxCertificazioniEnergetiche);
-		comboBoxCertificazioniEnergetiche.setModel(new DefaultComboBoxModel<String>(arrayCertificazioniEnergetiche));
-		comboBoxCertificazioniEnergetiche.setToolTipText("Selezionre la certificazione energetica");
-		lblCertificazioniEnergetiche.setLabelFor(comboBoxCertificazioniEnergetiche);
-		panelTabDatiSecondari.add(comboBoxCertificazioniEnergetiche, "2, 16");
+		mapCampiForm.put("comboBoxCertificazioneIpe", comboBoxCertificazioneIpe);
+		listCampiForm.add(comboBoxCertificazioneIpe);
+		comboBoxCertificazioneIpe.setModel(new DefaultComboBoxModel<String>(arrayCertificazioneIpe));
+		comboBoxCertificazioneIpe.setToolTipText("Selezionare la certificazione ipe");
+		lblCertificazioneIpe.setLabelFor(comboBoxCertificazioneIpe);
+		panelTabDatiSecondari.add(comboBoxCertificazioneIpe, "2, 16");
 		
 		//Tipologia riscaldamento
 		JLabel lbTipologiaRiscaldamento = new JLabel("Tipologia riscaldamento");
@@ -1049,11 +1093,11 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		chckbxVicinanzeMetro.setToolTipText("Vicinanze metro");
 		panelTabDatiSecondari.add(chckbxVicinanzeMetro, "2, 36");
 		
-		//Vista di pregio
-		mapCampiForm.put("chckbxVistaDiPregio", chckbxVistaDiPregio);
-		listCampiForm.add(chckbxVistaDiPregio);
-		chckbxVistaDiPregio.setToolTipText("Vista di pregio");
-		panelTabDatiSecondari.add(chckbxVistaDiPregio, "1, 38");
+		//Cantina
+		mapCampiForm.put("chckbxCantina", chckbxCantina);
+		listCampiForm.add(chckbxCantina);
+		chckbxCantina.setToolTipText("Cantina");
+		panelTabDatiSecondari.add(chckbxCantina, "1, 38");
 		
 		//Rampe per disabili
 		mapCampiForm.put("chckbxRampePerDisabili", chckbxRampePerDisabili);
@@ -1297,7 +1341,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	  	chckbxAscensore.setSelected(scheda.ascensore);
 	  	chckbxCasaEcologica.setSelected(scheda.casaEcologica);
 	  	chckbxVicinanzeBus.setSelected(scheda.vicinanzeBus);
-	  	chckbxVistaDiPregio.setSelected(scheda.vistaDiPregio);
+	  	chckbxCantina.setSelected(scheda.cantina);
 	  	chckbxSatellite.setSelected(scheda.satellite);
 	  	chckbxSistemaDiAllarme.setSelected(scheda.sistemaDiAllarme);
 	  	chckbxCancelloElettrico.setSelected(scheda.cancelloElettrico);
