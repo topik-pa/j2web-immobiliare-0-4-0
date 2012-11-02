@@ -1,7 +1,12 @@
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -186,7 +191,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
   
 
     //Trova e imposta il cookie di sessione
-    public boolean findAndSetLocalCookie(HttpPortalConnection connessione, Header[] headers, String cookieName) {
+    public boolean findAndSetLocalCookie(HttpPortalConnection connessione, Header[] headers, String cookieName, String cookieDomain) {
 		
 		boolean cookieHeaderFound = false;
         for(int i=0; i<headers.length; i++) {       	
@@ -208,6 +213,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
             		connessione.setSessionCookieHeader(cookie_header);
             		connessione.setSessionCookieName(cookieName);
             		connessione.setSessionCookieValue(cookie_value);
+            		connessione.setSessionCookieDomain(cookieDomain);
             		break;
                 }   
         	}       	
@@ -234,30 +240,56 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	}
     
     //Metodo per ottenere le coordinate della città
-  	public String getCoord(String indirizzo, String comune, String provincia, String regione) throws ParserConfigurationException, SAXException, IOException {
+  	public Map<String,String> getCoord(String indirizzo, String comune, String provincia, String regione) /*throws ParserConfigurationException, SAXException, IOException*/ {
+  		Map<String,String> mappaLatLon = new Hashtable<String,String>();
+  		String url;
   		String latitudine;
   		String longitudine;
   		Document doc = null;
   		DocumentBuilder db = null;
   		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+  		NodeList nodelist;
+  		Node latitude = null, longitude = null;
           
-  		db = dbf.newDocumentBuilder();    
-  		doc = db.parse("http://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + indirizzo + "%20" + comune + "%20" + provincia + "%20" + regione + "%20" + "Italia");
+  		try {
+			db = dbf.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  		url = "http://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + indirizzo + " " + comune + " " + provincia + " " + regione + " " + "Italia";
+  		/*try {
+			url = URLEncoder.encode(url, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+  		try {
+			doc = db.parse(url);
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
           
   		doc.getDocumentElement().normalize();
   		
-        System.out.println("Root element " + doc.getDocumentElement().getNodeName());
-        NodeList nodeLstLat = doc.getElementsByTagName("lat");       
-        Node lat = nodeLstLat.item(1);
-        NodeList nodeLstLon = doc.getElementsByTagName("lng");       
-        Node lon = nodeLstLon.item(1);
-             
-        System.out.println("Latitudine e longitudine: " + lat.getTextContent() + " - " + lon.getTextContent());
+  		nodelist = doc.getElementsByTagName("location");
+  		if(nodelist!=null) {
+  			Node locationNode = nodelist.item(0);
+  			latitude = locationNode.getFirstChild();
+  			longitude = locationNode.getLastChild();
+  		}
       
-        latitudine = lat.getTextContent();
-        longitudine = lon.getTextContent();
+        latitudine = latitude.getTextContent();
+        longitudine = longitude.getTextContent();
         
-        return latitudine + "$$$" + longitudine;       	
+        mappaLatLon.put("latitudine", latitudine);
+        mappaLatLon.put("longitudine", longitudine);
+        
+        return mappaLatLon;       	
   	}
   
     

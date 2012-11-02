@@ -109,7 +109,7 @@ public class Case24 extends PortaleImmobiliare {
     	try {
     		Object[] response = connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
     		Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_2, responseHeaders, CASE24_SESSIONCOOKIENAME);
+    		findAndSetLocalCookie(connessione_2, responseHeaders, CASE24_SESSIONCOOKIENAME, CASE24_SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}

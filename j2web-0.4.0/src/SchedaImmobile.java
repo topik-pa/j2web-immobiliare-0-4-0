@@ -66,6 +66,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	String arredamenti;
 	String piano;
 	String certificazioniEnergetiche;
+	String certificazioneIpe;
 	String tipologiaRiscaldamento;
 	String clima;
 	String parcheggio;
@@ -196,6 +197,8 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		piano = ((String)((JComboBox)mapCampiForm.get("comboBoxPiano")).getSelectedItem());
 		
 		certificazioniEnergetiche = ((String)((JComboBox)mapCampiForm.get("comboBoxCertificazioniEnergetiche")).getSelectedItem());
+		
+		certificazioneIpe = ((String)((JComboBox)mapCampiForm.get("comboBoxCertificazioneIpe")).getSelectedItem());
 		
 		tipologiaRiscaldamento = ((String)((JComboBox)mapCampiForm.get("comboBoxTipologiaRiscaldamento")).getSelectedItem());
 		

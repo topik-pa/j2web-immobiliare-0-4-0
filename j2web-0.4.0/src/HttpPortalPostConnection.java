@@ -1,22 +1,29 @@
 import java.io.IOException;
 import java.util.List;
+
+import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.util.EntityUtils;
 
 
 public class HttpPortalPostConnection extends HttpPortalConnection {
 	
+	protected ResponseHandler<String> responseHandler;
 	
 	//Costruttore
 	public HttpPortalPostConnection() {
-
+		responseHandler = new BasicResponseHandler();
 	}
+	
 	
 	//POST URLENCODED VALUES
 	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, boolean debugMode) throws IOException {
@@ -48,8 +55,13 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         //Send the request
         response = httpclient.execute(httppost);
         
-        String responseBody = responseHandler.handleResponse(response);
-        
+        //Get the response body
+        HttpEntity responseEntity = response.getEntity();
+        String responseBody = "";
+        if(responseEntity!=null) {
+        	responseBody = EntityUtils.toString(responseEntity);
+        }
+
     	//Get the response headers
         responseHeaders = response.getAllHeaders();
             
@@ -98,7 +110,12 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         //Send the request
         response = httpclient.execute(httppost);
         
-        String responseBody = responseHandler.handleResponse(response);
+        //Get the response body
+        HttpEntity responseEntity = response.getEntity();
+        String responseBody = "";
+        if(responseEntity!=null) {
+        	responseBody = EntityUtils.toString(responseEntity);
+        }
                 
     	//Get the response headers
         responseHeaders = response.getAllHeaders();
