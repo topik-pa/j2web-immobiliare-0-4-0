@@ -296,32 +296,13 @@ public class j2web implements parametriGenerali {
 
 	//Inizializza la lista dei portali attivi
 	public static void inizializzaPortaliAttivi() {
-		PortaleImmobiliare case24 = new Case24("./images/case24.gif", "1 - case24.it", "001");
-    	j2web_GUI.listPortaliImmobiliari.add(case24);
-    	
-    	PortaleImmobiliare case24_2 = new Case24("./images/case24.gif", "2 - case24.it", "002");
-    	j2web_GUI.listPortaliImmobiliari.add(case24_2);
 		
-    	PortaleImmobiliare case24_3 = new Case24("./images/case24.gif", "3 - case24.it", "003");
-    	j2web_GUI.listPortaliImmobiliari.add(case24_3);
+		PortaleImmobiliare cuboCasa = new CuboCasa("./images/cubocasa.gif", "1 - cubocasa.it", "001");
+    	j2web_GUI.listPortaliImmobiliari.add(cuboCasa);
     	
-    	//PortaleImmobiliare immobiliarePuntoIt = new ImmobiliarePuntoIt("./img/immobiliarePuntoIt.gif", "1 - immobiliare.it", "001");
-    	//listPortaliImmobiliari.add(immobiliarePuntoIt);
-    	
-    	//PortaleImmobiliare casaPuntoIt = new casaPuntoIt("./img/casaPuntoIt.png", "2 - casa.it", "002");
-    	//listPortaliImmobiliari.add(casaPuntoIt);
-    	
-    	//PortaleImmobiliare bancaDelleCase = new BancaDelleCase("./img/banca_delle_case.gif", "2 - bancadellecase.it", "003");
-    	//listPortaliImmobiliari.add(bancaDelleCase);
-	
-    	//PortaleImmobiliare pagineCasa = new PagineCasa("./img/paginecasa.gif", "4 - paginecasa.it", "005");
-    	//listPortaliImmobiliari.add(pagineCasa);
-    	
-    	/*PortaleImmobiliare cuboCasa = new CuboCasa("./img/cubocasa.gif", "5 - cubocasa.it", "005");
-    	listPortaliImmobiliari.add(cuboCasa);*/
-    	
-    	//PortaleImmobiliare caseFvg = new CaseFvg("./img/casefvg.gif", "7 - casefvg.it", "007");
-    	//listPortaliImmobiliari.add(caseFvg);
+		PortaleImmobiliare case24 = new Case24("./images/case24.gif", "2 - case24.it (testing)", "002");
+    	j2web_GUI.listPortaliImmobiliari.add(case24);
+
     }
 	
 }

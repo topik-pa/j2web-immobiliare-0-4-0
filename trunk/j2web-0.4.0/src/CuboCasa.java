@@ -3,27 +3,26 @@
  * and open the template in the editor.
 */ 
 
-import java.awt.Component;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.message.BasicStatusLine;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -33,29 +32,24 @@ import org.jsoup.select.Elements;
 //La classe principale
 public class CuboCasa extends PortaleImmobiliare {     
 
-    //Parametri generali
+    //Variabili generali
 	private final String NOMEPORTALE = "cubocasa.it";
 	private final String SESSIONCOOKIENAME = "PHPSESSID";
 	private final String SESSIONCOOKIEDOMAIN = "www.cubocasa.it";
 	private final String URLROOT = "http://www.cubocasa.it";
 	private final String USERNAME = "testAccount01";
     private final String PASSWORD = "test1234";
-
-    private String CODICEINSERZIONE;    
-    /*private String NOME_IMMAGINE_1;
-    private String NOME_IMMAGINE_2;
-    private String NOME_IMMAGINE_3;
-    private String NOME_IMMAGINE_4;
-    private String NOME_IMMAGINE_5;
-    private String NOME_IMMAGINE_6;
-    private String NOME_IMMAGINE_7;
-    private String NOME_IMMAGINE_8;*/
-    private boolean INSERIMENTO_OK = false;
+    private String codiceInserzione;    
+    private boolean inserimentoOK = false;
     private boolean debugMode = true;
-   
+    
+    //Altre variabili
+    String matchedComune = "";  
 
+    //Mappa dei parametri da inviare
     Map<String,String> mappaDeiParamerti;
     
+    //Lista dei parametri inviati in una singola connessione
     List<NameValuePair> postParameters;  
 
     //La scheda immobile su cui si lavora
@@ -78,13 +72,11 @@ public class CuboCasa extends PortaleImmobiliare {
     public boolean inserisciScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException {
     	System.out.println("Inserimento scheda: " + scheda.codiceInserzione + "...");
     	
-    	//Inizializzazione parametri
+    	//Inizializzazione scheda
     	this.scheda=scheda;
-    	    
-    	
+    	     	
     	//Inizializza i parametri http del portale 
 		inizializzaParametri();
-
     	
     	//Connessione 0 - GET della home page
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -93,8 +85,7 @@ public class CuboCasa extends PortaleImmobiliare {
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	
-    	
+    	  	
     	//Connessione 1 - POST della pagina di login
     	HttpPortalPostConnection connessione_1 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
@@ -103,17 +94,15 @@ public class CuboCasa extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("from_login", "/"));
         postParameters.add(new BasicNameValuePair("password", PASSWORD));
         try {
-        	Object[] response = connessione_1.post("POST della pagina di login", URLROOT + "/_login.php", postParameters, debugMode);
+        	Object[] response = connessione_1.post("Connessione 1 - POST della pagina di login", URLROOT + "/_login.php", postParameters, debugMode);
 			Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME);
-    		connessione_1.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
+    		findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	finally {
     		postParameters.clear();
-    	}
-    	
+    	}	
     	
     	//Connessione 2 - GET di redirect 
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
@@ -122,8 +111,7 @@ public class CuboCasa extends PortaleImmobiliare {
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	
-    	
+    	   	
     	//Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
@@ -131,20 +119,33 @@ public class CuboCasa extends PortaleImmobiliare {
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	
-    	
+    	   	
     	//Connessione 4 - GET della pagina "Inserisci annuncio" (step 2)
-    	HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
+    	HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();    	
     	try {
-			connessione_4.get("Connessione 4 - GET della pagina \"Inserisci annuncio\" (step 2)", URLROOT + "/agenzie/inserisci-annuncio.php?provincia=" + mappaDeiParamerti.get("provincia"), debugMode);
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci annuncio\" (step 2)", URLROOT + "/agenzie/inserisci-annuncio.php?provincia=" + mappaDeiParamerti.get("provincia"), debugMode);
+			String responseBody = (String)response[1];
+			org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
+			Elements optionElements = doc.select("#idComune option");
+			Iterator<Element> iterator = optionElements.iterator();
+			//Comparazione della similarità  tra stringhe
+            double resultComparation = 0;
+            while(iterator.hasNext()) {
+            	Element currentOption = iterator.next();         	
+            	List<char[]> textPortale = bigram(currentOption.text());
+        		List<char[]> textJ2Web = bigram(scheda.comune);       		
+        		double actualResultComparation = dice(textPortale, textJ2Web);
+        		if(actualResultComparation>=resultComparation) {
+        			resultComparation = actualResultComparation;
+        			matchedComune = currentOption.attr("value");            		
+        		}       		
+        		System.out.println("Risultato comparazione: " + resultComparation);
+        		System.out.println("idComune: " + matchedComune);      		
+            }		
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
-		}
-    	
-    	
-    	/*Connessione di mezzo per recuperare le frazioni*/
-    	
-    	
+		} 	
+    	  	
     	//Connessione 5 - POST della pagina "Inserisci annuncio" (step 2)
     	HttpPortalPostConnection connessione_5 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
@@ -157,7 +158,9 @@ public class CuboCasa extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("classe_energetica", mappaDeiParamerti.get("classe_energetica")));
         postParameters.add(new BasicNameValuePair("code_maps", mappaDeiParamerti.get("code_maps")));
         postParameters.add(new BasicNameValuePair("codice", mappaDeiParamerti.get("codice")));
-        postParameters.add(new BasicNameValuePair("condizionato", mappaDeiParamerti.get("condizionato")));
+        if(scheda.clima=="Aria condizionata") {
+        	postParameters.add(new BasicNameValuePair("condizionato", mappaDeiParamerti.get("condizionato")));
+        }
         postParameters.add(new BasicNameValuePair("contratto", mappaDeiParamerti.get("contratto")));
         postParameters.add(new BasicNameValuePair("cucina", mappaDeiParamerti.get("cucina")));
         postParameters.add(new BasicNameValuePair("descrizione", mappaDeiParamerti.get("descrizione")));
@@ -183,15 +186,12 @@ public class CuboCasa extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("supiani", mappaDeiParamerti.get("supiani")));
         postParameters.add(new BasicNameValuePair("zona", mappaDeiParamerti.get("zona")));
         try {
-        	Object[] response = connessione_5.post("POST della pagina \"Inserisci annuncio\" (step 2)", URLROOT + "/agenzie/_inserisci-annuncio.php", postParameters, debugMode);
-        	Header[] responseHeaders = (Header[])response[0];	
-        	
-        	String responseStatus = (String)response[2];
-        	if( (responseStatus.contains("302"))) {
-        		System.out.println("Bingo!"); //todo: rimuovere
-        		CODICEINSERZIONE = getHeaderValueByName(responseHeaders, "Location");
-        		System.out.println("Bingo!" + CODICEINSERZIONE);  //todo: rimuovere
-        		INSERIMENTO_OK = true;
+        	Object[] response = connessione_5.post("Connessione 5 - POST della pagina \"Inserisci annuncio\" (step 2)", URLROOT + "/agenzie/_inserisci-annuncio.php", postParameters, debugMode);
+        	Header[] responseHeaders = (Header[])response[0];	     	
+        	BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+        	if( (responseStatus.getStatusCode()==302)) {
+        		codiceInserzione = getHeaderValueByName(responseHeaders, "Location");
+        		inserimentoOK = true;
         	}
         	else {
         		throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto: mi aspettavo un 302"));
@@ -203,26 +203,23 @@ public class CuboCasa extends PortaleImmobiliare {
     	finally {
     		postParameters.clear();
     	}
-        
-        
+               
         //Connessione 6 - GET di redirect
         HttpPortalGetConnection connessione_6 = new HttpPortalGetConnection();
     	try {
-			connessione_6.get("Connessione 6 - GET di redirect", URLROOT + "dett-annuncio.php?id=" + CODICEINSERZIONE, debugMode);
+			connessione_6.get("Connessione 6 - GET di redirect", URLROOT + "dett-annuncio.php?id=" + codiceInserzione, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	
-    	
+    	   	
     	//Connessione 7 - GET della pagina di inserimento immagini
         HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
     	try {
-			connessione_7.get("Connessione 7 - GET della pagina di inserimento immagini", URLROOT + "/agenzie/foto.php?id=" + CODICEINSERZIONE, debugMode);
+			connessione_7.get("Connessione 7 - GET della pagina di inserimento immagini", URLROOT + "/agenzie/foto.php?id=" + codiceInserzione, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	
-    	
+    	   	
     	//Connessioni 8 - inserimento immagine
     	for(int i=0; i<scheda.arrayImages.length; i++) {
     		if(scheda.arrayImages[i]!=null) {
@@ -242,13 +239,12 @@ public class CuboCasa extends PortaleImmobiliare {
     	    	}
             }
     	}
-    		    	
-      
+    		    	    
     	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
-    	if(INSERIMENTO_OK) {
+    	if(inserimentoOK) {
     		
     		//Aggiorna la lista dei portali in cui è inserita la scheda
-    		scheda.aggiungiInserimentoPortale(idPortale, CODICEINSERZIONE);
+    		scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
     		      	
     		if(!isSequential) {   			
     			System.out.println("Inserita in: " + NOMEPORTALE);       		
@@ -257,14 +253,14 @@ public class CuboCasa extends PortaleImmobiliare {
     			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
     			
     			//Invio mail di conferma inserimento 
-            	sendConfirmationMail(scheda, NOMEPORTALE, CODICEINSERZIONE);
+            	sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
            	
             	//Stampo a video un messaggio informativo
                 JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
               
     		}
     		
-    		return INSERIMENTO_OK;        	
+    		return inserimentoOK;        	
         	
     	}
     	else {
@@ -274,14 +270,12 @@ public class CuboCasa extends PortaleImmobiliare {
         		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
     		}
     		
-    		return INSERIMENTO_OK;
+    		return inserimentoOK;
  		
     	}
        
 	}
-	
-    
-    
+	 
     //Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
@@ -299,14 +293,11 @@ public class CuboCasa extends PortaleImmobiliare {
 	
 	}
 
-	
-	
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException {		
 		System.out.println("Eliminazione scheda: " + scheda.codiceInserzione + "...");
-		CODICEINSERZIONE = scheda.getCodiceInserimento(idPortale);	
-		
-		
+		codiceInserzione = scheda.getCodiceInserimento(idPortale);	
+			
 		//Connessione 1 - POST della pagina di login
     	HttpPortalPostConnection connessione_1 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
@@ -317,25 +308,23 @@ public class CuboCasa extends PortaleImmobiliare {
         try {
         	Object[] response = connessione_1.post("POST della pagina di login", URLROOT + "/_login.php", postParameters, debugMode);
 			Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME);
+    		findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
     		connessione_1.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	finally {
     		postParameters.clear();
-    	}
-        
+    	}       
     	
         //Connessione 9 - GET della pagina Gestione annunci per eliminare un annuncio
     	HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
     	try {
-			connessione_9.get("Connessione 3 - GET della pagina Gestione annunci per eliminare un annuncio", URLROOT + "/agenzie/_del_annunci.php?id=" + CODICEINSERZIONE, debugMode);
+			connessione_9.get("Connessione 3 - GET della pagina Gestione annunci per eliminare un annuncio", URLROOT + "/agenzie/_del_annunci.php?id=" + codiceInserzione, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}	
-    	
-        
+    	       
         //Aggiorno la lista dei portali in cui è presenta la scheda corrente
   		scheda.eliminaInserimentoPortale(idPortale);			
   	 		
@@ -353,10 +342,8 @@ public class CuboCasa extends PortaleImmobiliare {
 	
 	}
 		
-	
-	
 	//Metodo per la valutazione dei parametri
-	public void inizializzaParametri()  {		
+	public void inizializzaParametri() throws HttpCommunicationException  {		
 		
 		String provincia = scheda.provincia;
 		switch (provincia)
@@ -696,8 +683,7 @@ public class CuboCasa extends PortaleImmobiliare {
 		        break;		        
 		}
 		mappaDeiParamerti.put("provincia", provincia);	
-		
-		
+				
 		String anno =  scheda.annoCostruzione;
 		mappaDeiParamerti.put("anno", anno);
 		
@@ -707,310 +693,265 @@ public class CuboCasa extends PortaleImmobiliare {
 		String cap = scheda.cap;
 		mappaDeiParamerti.put("cap", cap);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-		
-		
-		Date now = new Date();  		  
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");  
-		String data_annuncio = df.format(now);
-		mappaDeiParamerti.put("data_annuncio", data_annuncio);
-		
-		String no_reload = Long.toString(now.getTime());
-		no_reload = no_reload.substring(0, no_reload.length()-3);
-		mappaDeiParamerti.put("no_reload", no_reload);
-		
-		String rif_agenzia = scheda.codiceInserzione;
-		mappaDeiParamerti.put("rif_agenzia", rif_agenzia);
-		
-		
-		
-		String nameComune = scheda.comune;
-		mappaDeiParamerti.put("nameComune", nameComune);
-		
-		String codice_comune_inserzione = "";
-		/*HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
-    	try {
-    		Object[] response = connessione_9.get(CASE24_URLROOT + "/area_clienti/include/ajax.php?funzione=select_geografico&etichetta=denominazione_comune&zona=X&valore_etichetta=" + provincia + "&valore_selezionato=&tabindex=3", debugMode);
-    		String responseBody = (String)response[1];
-    		
-    		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);              
-            //Ottengo il valore del parametro Provincia
-            Elements optionElements = doc.getElementsByTag("option");
-            if(optionElements.isEmpty()) {
-            	throw(new HttpResponseException("Non ho trovato tag di tipo \"option\""));
-            }
-            else {
-            	Iterator<Element> iterator = optionElements.iterator();
-            	double resultComparation = 0;
-            	while(iterator.hasNext()) {
-	            	Element currentElement = iterator.next();
-	            	List<char[]> charListPortale = bigram(currentElement.html());
-	        		List<char[]> charListImagination = bigram(nameComune);
-	        		double actualResultComparation = dice(charListPortale, charListImagination);
-	        		if(actualResultComparation>=resultComparation) {
-	        			resultComparation = actualResultComparation;
-	        			codice_comune_inserzione = currentElement.attr("value");            		
-	        		}       		
-            	}
-            }
-		} catch (IOException e) {
-			throw new HttpCommunicationException(e);
-		}*/
-    	mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);
-		
-		mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);				
-		
-		String indirizzo = scheda.indirizzoLocalita;
-		mappaDeiParamerti.put("indirizzo", indirizzo);
-		
-		String tipo_proposta = "";
-		switch (scheda.tipologiaContratto)
-		{
-		    case "Affitto":
-		    	tipo_proposta = "Affitti";
-		        break;
-		    case "Vendita":
-		    	tipo_proposta = "Vendita";
-		    	break;
+		String certificato_ipe = "";
+		switch (scheda.certificazioneIpe) {
+			case "Immobile certificato":
+				certificato_ipe = "C";
+				break;		
+			case "Immobile esente da certificazione":
+				certificato_ipe = "E";
+				break;		
+			case "Documentazione non esistente":	
+				certificato_ipe = "N";
+				break;
+			default:
+				certificato_ipe = "N";
+				break;
 		}
-		mappaDeiParamerti.put("tipo_proposta", tipo_proposta);
+		mappaDeiParamerti.put("certificato_ipe", certificato_ipe);
+				
+		String citta_annuncio = scheda.comune;
+		mappaDeiParamerti.put("citta_annuncio", citta_annuncio);
+				
+		String classe_energetica = "";
+		switch (scheda.certificazioniEnergetiche)
+		{
+		    case "Nessuna":
+		    	classe_energetica = "";
+		        break;
+		    case "Certificazione energetica A++":
+		    	classe_energetica = "A";
+		    	break;
+		    case "Certificazione energetica A+":
+		    	classe_energetica = "A";
+		    	break;
+		    case "Certificazione energetica A":
+		    	classe_energetica = "A";
+		    	break;
+		    case "Certificazione energetica B":
+		    	classe_energetica = "B";
+		    	break;
+		    case "Certificazione energetica C":
+		    	classe_energetica = "C";
+		    	break;
+		    case "Certificazione energetica D":
+		    	classe_energetica = "D";
+		    	break;
+		    case "Certificazione energetica E":
+		    	classe_energetica = "E";
+		    	break;
+		    case "Certificazione energetica F":
+		    	classe_energetica = "F";
+		    	break;
+		    case "Certificazione energetica G":
+		    	classe_energetica = "G";
+		    	break;
+		    default:
+		    	classe_energetica = "G";
+		}
+		mappaDeiParamerti.put("classe_energetica", classe_energetica);
 		
-		String tipo_immobile = "";
+		String code_maps = "200";
+		mappaDeiParamerti.put("code_maps", code_maps);
+				
+		String codice = scheda.codiceInserzione;
+		mappaDeiParamerti.put("codice", codice);
+				
+		String condizionato = "si";
+		mappaDeiParamerti.put("condizionato", condizionato);
+				
+		String contratto = "";
+		switch (scheda.tipologiaContratto) {
+			case "Affitto":
+				contratto = "affitto";
+				break;
+			case "Vendita":
+				contratto = "vendita";
+				break;
+			default:
+				contratto = "vacanze";
+				break;
+		}
+		mappaDeiParamerti.put("contratto", contratto);
+		
+		String cucina = ""; //non previsto da J2Web
+		mappaDeiParamerti.put("cucina", cucina);
+				
+		String descrizione = scheda.testoAnnuncio;
+		mappaDeiParamerti.put("descrizione", descrizione);
+				
+		String garage = scheda.parcheggio=="Garage"?"Presente":"Non disponibile";
+		mappaDeiParamerti.put("garage", garage);
+				
+		String giardino = (scheda.giardino=="Giardino condominiale" || scheda.giardino=="Giardino ad uso esclusivo")?"Presente":"Non disponibile";
+		mappaDeiParamerti.put("giardino", giardino);
+				
+		String idComune = matchedComune;
+		mappaDeiParamerti.put("idComune", idComune);		
+		
+		String idFrazione = "";	//non supportata
+		mappaDeiParamerti.put("idFrazione", idFrazione);
+				
+		String idTipologia = "";
 		switch (scheda.tipologiaImmobile)
 		{
 		    case "Appartamento":
-		    	tipo_immobile = "16";
+		    	idTipologia = "1";
 		        break;
 		    case "Attico":
-		    	tipo_immobile = "26";
+		    	idTipologia = "12";
 		        break;
 		    case "Bifamiliare":
-		    	tipo_immobile = "19";
+		    	idTipologia = "2";
 		        break;
 		    case "Casa":
-		    	tipo_immobile = "19";
+		    	idTipologia = "2";
 		        break;
 		    case "Garage":
-		    	tipo_immobile = "22";
+		    	idTipologia = "10";
 		        break;
 		    case "Palazzo":
-		    	tipo_immobile = "20";
+		    	idTipologia = "31";
 		        break;
 		    case "Rustico":
-		    	tipo_immobile = "24";
+		    	idTipologia = "5";
 		        break;
-		    case "Terreno":
-		    	tipo_immobile = "27";
+		    case "Terreno agricolo":
+		    	idTipologia = "7";
+		        break;
+		    case "Terreno edificabile":
+		    	idTipologia = "34";
 		        break;
 		    case "Villa":
-		    	tipo_immobile = "20";
+		    	idTipologia = "11";
 		        break;
 		    case "Villaschiera":
-		    	tipo_immobile = "19";
+		    	idTipologia = "3";
 		        break;
 		    case "Agriturismo":
-		    	tipo_immobile = "25";
+		    	idTipologia = "28";
 		        break;
 		    case "Albergo":
-		    	tipo_immobile = "25";
+		    	idTipologia = "19";
 		        break;
 		    case "Bar":
-		    	tipo_immobile = "21";
+		    	idTipologia = "20";
 		        break;
 		    case "Negozio":
-		    	tipo_immobile = "23";
+		    	idTipologia = "9";
 		        break;
 		    case "Ristorante":
-		    	tipo_immobile = "25";
+		    	idTipologia = "21";
 		        break;
 		    case "Ufficio":
-		    	tipo_immobile = "23";
+		    	idTipologia = "6";
 		        break;
 		    case "Capannone":
-		    	tipo_immobile = "23";
+		    	idTipologia = "15";
 		        break;
 		    case "Laboratorio":
-		    	tipo_immobile = "23";
+		    	idTipologia = "17";
 		        break;
 		    case "Magazzino":
-		    	tipo_immobile = "23";
+		    	idTipologia = "18";
 		        break;
 		}
-		mappaDeiParamerti.put("tipo_immobile", tipo_immobile);
+		mappaDeiParamerti.put("idTipologia", idTipologia);
 		
-		String superficie = scheda.superficieImmobile;
-		mappaDeiParamerti.put("superficie", superficie);
+		String indirizzo = scheda.indirizzoLocalita;
+		mappaDeiParamerti.put("indirizzo", indirizzo);		
+		
+		String ipe = "";
+		mappaDeiParamerti.put("ipe", ipe);		
+		
+		Map<String, String> latLon;
+		//try {
+			latLon = getCoord(scheda.indirizzoLocalita, scheda.comune, scheda.provincia, scheda.regione);
+		//} catch (ParserConfigurationException | SAXException | IOException e) {
+			//throw new HttpCommunicationException(e);
+		//}
+		
+		String latitudine = latLon.get("latitudine");
+		mappaDeiParamerti.put("latitudine", latitudine);
+		
+		String longitudine = latLon.get("longitudine");
+		mappaDeiParamerti.put("longitudine", longitudine);
+				
+		String mq = scheda.superficieImmobile;
+		mappaDeiParamerti.put("mq", mq);		
+		
+		String n_bagni = scheda.numeroBagni;
+		mappaDeiParamerti.put("n_bagni", n_bagni);
+				
+		String n_camere = scheda.numeroCamere;
+		mappaDeiParamerti.put("n_camere", n_camere);
+				
+		String piano = scheda.piano;
+		mappaDeiParamerti.put("piano", piano);
+				
+		String postoauto = (scheda.parcheggio=="Posto auto coperto" || scheda.parcheggio=="Posto auto scoperto")?"Presente":"Non disponibile";
+		mappaDeiParamerti.put("postoauto", postoauto);		
 		
 		String prezzo = scheda.prezzoImmobile;
-		mappaDeiParamerti.put("prezzo", prezzo);
-		
-		String numero_camere_bis = "";
-		switch (scheda.comboBoxNumeroCamereIndex)
-		{
-			case 0:
-				numero_camere_bis = "";
-				break;
-			case 1:
-		    	numero_camere_bis = "1";
-		        break;
-		    case 2:
-		    	numero_camere_bis = "2";
-		    	break;
-		    case 3:
-		    	numero_camere_bis = "3";
-		    	break;
-		    case 4:
-		    	numero_camere_bis = "4";
-		    	break;
-		    case 5:
-		    	numero_camere_bis = "5";
-		    	break;
-		    default:
-		    	numero_camere_bis = "6";
-		}
-		mappaDeiParamerti.put("numero_camere_bis", numero_camere_bis);
-		
-		String numero_bagni = "";
-		switch (scheda.numeroBagni)
-		{
-		    case "1":
-		    	numero_bagni = "1";
-		        break;
-		    case "2":
-		    	numero_bagni = "2";
-		    	break;
-		    case "3":
-		    	numero_bagni = "3";
-		    	break;
-		    case "4":
-		    	numero_bagni = "4";
-		    	break;
-		    case "5":
-		    	numero_bagni = "5";
-		    	break;
-		    default:
-		    	numero_bagni = "";
-		}
-		mappaDeiParamerti.put("numero_bagni", numero_bagni);
-		
-		String descrizione = scheda.testoAnnuncio;
-		mappaDeiParamerti.put("descrizione", descrizione);
-		
-		String stato_immobile = "";
-		switch (scheda.statoImmobile)
-    	{
-    	    case "Nuovo":
-    	    	stato_immobile = "88";
-    	        break;
-    	    case "Ristrutturato":
-    	    	stato_immobile = "91";
-    	    	break;
-    	    case "Da ristrutturare":
-    	    	stato_immobile = "4";
-    	    	break;
-    	    case "In buono stato":
-    	    	stato_immobile = "";
-    	    	break;
-    	    case "Abitabile":
-    	    	stato_immobile = "";
-    	    	break;
-    	    case "Ottimo":
-    	    	stato_immobile = "";
-    	    	break;
-    	    case "In costruzione":
-    	    	stato_immobile = "87";
-    	    	break;
-    	    default:
-    	    	stato_immobile = "";
-    	}
-		mappaDeiParamerti.put("stato_immobile", stato_immobile);
+		mappaDeiParamerti.put("prezzo", prezzo);		
 		
 		String riscaldamento = "";
-		switch (scheda.tipologiaRiscaldamento)
-		{
+		switch (scheda.tipologiaRiscaldamento) {
 		    case "Assente":
 		    	riscaldamento = "";
 		        break;
 		    case "Centralizzato":
-		    	riscaldamento = "107";
+		    	riscaldamento = "centralizzato";
 		    	break;
 		    case "Autonomo":
-		    	riscaldamento = "106";
+		    	riscaldamento = "autonomo";
 		    	break;
 		    case "Stufa":
 		    	riscaldamento = "";
 		    	break;
 		    default:
 		    	riscaldamento = "";
-		}
+			}
 		mappaDeiParamerti.put("riscaldamento", riscaldamento);
+				
+		String soffitta = "";
+		mappaDeiParamerti.put("soffitta", soffitta);
+				
+		String stato = "";
+		switch (scheda.statoImmobile)
+    	{
+    	    case "Nuovo":
+    	    	stato = "nuovo";
+    	        break;
+    	    case "Ristrutturato":
+    	    	stato = "ristrutturato";
+    	    	break;
+    	    case "Da ristrutturare":
+    	    	stato = "da ristrutturare";
+    	    	break;
+    	    case "In buono stato":
+    	    	stato = "nuovo";
+    	    	break;
+    	    case "Abitabile":
+    	    	stato = "abitabile";
+    	    	break;
+    	    case "Ottimo":
+    	    	stato = "nuovo";
+    	    	break;
+    	    case "In costruzione":
+    	    	stato = "in costruzione";
+    	    	break;
+    	    default:
+    	    	stato = "";
+    	}
+		mappaDeiParamerti.put("stato", stato);		
 		
-		String tipologia_giardino = "";
-		switch (scheda.giardino)
-		{
-		    case "Assente":
-		    	tipologia_giardino = "";
-		        break;
-		    case "Giardino condominiale":
-		    	tipologia_giardino = "117";
-		    	break;
-		    case "Giardino ad uso esclusivo":
-		    	tipologia_giardino = "116";
-		    	break;
-		    default:
-		    	tipologia_giardino = "";
-		}
-		mappaDeiParamerti.put("tipologia_giardino", tipologia_giardino);
+		String supiani = scheda.numeroTotalePiani;
+		mappaDeiParamerti.put("supiani", supiani);		
 		
-		String classe_energetica = "";
-		switch (scheda.certificazioniEnergetiche)
-		{
-		    case "Nessuna":
-		    	classe_energetica = "130";
-		        break;
-		    case "Certificazione energetica A++":
-		    	classe_energetica = "122";
-		    	break;
-		    case "Certificazione energetica A+":
-		    	classe_energetica = "122";
-		    	break;
-		    case "Certificazione energetica A":
-		    	classe_energetica = "123";
-		    	break;
-		    case "Certificazione energetica B":
-		    	classe_energetica = "124";
-		    	break;
-		    case "Certificazione energetica C":
-		    	classe_energetica = "125";
-		    	break;
-		    case "Certificazione energetica D":
-		    	classe_energetica = "126";
-		    	break;
-		    case "Certificazione energetica E":
-		    	classe_energetica = "127";
-		    	break;
-		    case "Certificazione energetica F":
-		    	classe_energetica = "128";
-		    	break;
-		    case "Certificazione energetica G":
-		    	classe_energetica = "129";
-		    	break;
-		    default:
-		    	classe_energetica = "";
-		}
-		mappaDeiParamerti.put("classe_energetica", classe_energetica);
-
+		String zona = scheda.indirizzoLocalita;
+		mappaDeiParamerti.put("zona", zona);
+		
 	}
 	
 	

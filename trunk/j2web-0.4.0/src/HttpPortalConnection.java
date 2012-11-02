@@ -25,14 +25,14 @@ public class HttpPortalConnection implements parametriGenerali {
 	protected HttpClient httpclient;
 	protected HttpResponse response;
 	protected BasicHeader requestHeader;
-	protected ResponseHandler<String> responseHandler;
+	/*protected ResponseHandler<String> responseHandler;*/
 	protected Header[] requestHeaders;
 	protected Header[] responseHeaders;
     
 	//Costruttore
 	public HttpPortalConnection() {
 		httpclient = new DefaultHttpClient();
-		responseHandler = new BasicResponseHandler();
+		/*responseHandler = new BasicResponseHandler();*/
 	}
 	
 	//Stampa a video le proprietà della connessione corrente

@@ -1248,7 +1248,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 			        break;
 			    case "javax.swing.JComboBox": //Select		    	
 			    	comboContent = (String)((JComboBox<String>) campoCorrente).getSelectedItem();
-					if(comboContent.isEmpty() || comboContent.contains("Seleziona ")) { //Attenzione: il controllo viene effettuato sulla parola "Seleziona "
+					if(comboContent.isEmpty() || comboContent.contains("Seleziona")) { //Attenzione: il controllo viene effettuato sulla parola "Seleziona "
 						return false;
 					}
 			        break;
