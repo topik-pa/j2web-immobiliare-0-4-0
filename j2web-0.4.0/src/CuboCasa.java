@@ -141,7 +141,8 @@ public class CuboCasa extends PortaleImmobiliare {
         		}       		
         		System.out.println("Risultato comparazione: " + resultComparation);
         		System.out.println("idComune: " + matchedComune);      		
-            }		
+            }
+            mappaDeiParamerti.put("idComune", matchedComune);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		} 	
@@ -865,11 +866,11 @@ public class CuboCasa extends PortaleImmobiliare {
 		mappaDeiParamerti.put("ipe", ipe);		
 		
 		Map<String, String> latLon;
-		//try {
-			latLon = getCoord(scheda.indirizzoLocalita, scheda.comune, scheda.provincia, scheda.regione);
-		//} catch (ParserConfigurationException | SAXException | IOException e) {
-			//throw new HttpCommunicationException(e);
-		//}
+		try {
+			latLon = getLatLonCoord(scheda.indirizzoLocalita, scheda.comune, scheda.provincia, scheda.regione);
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			throw new HttpCommunicationException(e);
+		}
 		
 		String latitudine = latLon.get("latitudine");
 		mappaDeiParamerti.put("latitudine", latitudine);

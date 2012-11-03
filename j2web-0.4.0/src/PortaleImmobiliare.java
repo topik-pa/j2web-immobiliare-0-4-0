@@ -240,7 +240,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	}
     
     //Metodo per ottenere le coordinate della città
-  	public Map<String,String> getCoord(String indirizzo, String comune, String provincia, String regione) /*throws ParserConfigurationException, SAXException, IOException*/ {
+  	public Map<String,String> getLatLonCoord(String indirizzo, String comune, String provincia, String regione) throws ParserConfigurationException, SAXException, IOException {
   		Map<String,String> mappaLatLon = new Hashtable<String,String>();
   		String url;
   		String latitudine;
@@ -250,39 +250,19 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
   		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   		NodeList nodelist;
   		Node latitude = null, longitude = null;
-          
-  		try {
-			db = dbf.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-  		url = "http://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + indirizzo + " " + comune + " " + provincia + " " + regione + " " + "Italia";
-  		/*try {
-			url = URLEncoder.encode(url, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-  		try {
-			doc = db.parse(url);
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		db = dbf.newDocumentBuilder();
+  		url = "http://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=" + URLEncoder.encode(indirizzo, "UTF-8") + "%20" + URLEncoder.encode(comune, "UTF-8") + "%20" + URLEncoder.encode(provincia, "UTF-8") + "%20" + URLEncoder.encode(regione, "UTF-8") + "%20" + "Italia";	
+		doc = db.parse(url);
           
   		doc.getDocumentElement().normalize();
-  		
   		nodelist = doc.getElementsByTagName("location");
   		if(nodelist!=null) {
   			Node locationNode = nodelist.item(0);
-  			latitude = locationNode.getFirstChild();
-  			longitude = locationNode.getLastChild();
-  		}
-      
+  			NodeList locationNodeChilds = locationNode.getChildNodes();
+  			latitude = locationNodeChilds.item(1);
+  			longitude = locationNodeChilds.item(3);
+  		} 
         latitudine = latitude.getTextContent();
         longitudine = longitude.getTextContent();
         
@@ -291,6 +271,6 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
         
         return mappaLatLon;       	
   	}
-  
+
     
 }

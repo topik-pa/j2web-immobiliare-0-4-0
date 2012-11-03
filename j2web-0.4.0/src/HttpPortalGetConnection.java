@@ -59,7 +59,7 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
            
         if(debugMode) {
             //Print connection properties
-            printConnectionProperties(connectionDescription, httpget, responseHeaders, responseBody);
+            printConnectionProperties(connectionDescription, httpget, responseHeaders, responseBody, null);
         }        
         
         //Close the request
