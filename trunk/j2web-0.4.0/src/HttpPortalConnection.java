@@ -1,6 +1,10 @@
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -9,6 +13,9 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 
 
 public class HttpPortalConnection implements parametriGenerali {
@@ -36,7 +43,7 @@ public class HttpPortalConnection implements parametriGenerali {
 	}
 	
 	//Stampa a video le proprietà della connessione corrente
-	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody) throws IOException {
+	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody, List<NameValuePair> postParameters) throws IOException {
 		
 		//Show Request URL
 		System.out.println("\n\n\n");
@@ -56,6 +63,17 @@ public class HttpPortalConnection implements parametriGenerali {
         System.out.println("Request method: " + httpRequest.getMethod());
         System.out.println("Protocol version: " + httpRequest.getProtocolVersion());
         System.out.println("----------------------------------------");
+        
+        if(postParameters!=null) {
+        	//Show post parameters
+            System.out.println("Post parameters: " + "\n");
+            Iterator<NameValuePair> iterator = postParameters.iterator();
+            while(iterator.hasNext()) {
+            	BasicNameValuePair currentParam = (BasicNameValuePair) iterator.next();
+            	System.out.println(currentParam.getName() + "-->" + currentParam.getValue());      	
+            }
+            System.out.println("----------------------------------------");
+        }     
         
         //Show request headers
         requestHeaders = httpRequest.getAllHeaders(); 

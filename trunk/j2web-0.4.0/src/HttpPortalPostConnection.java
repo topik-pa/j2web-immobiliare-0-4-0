@@ -67,7 +67,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
             
         if(debugMode) {
             //Print connection properties
-        	printConnectionProperties(connectionDescription, httppost, responseHeaders, responseBody);
+        	printConnectionProperties(connectionDescription, httppost, responseHeaders, responseBody, postParameters);
         }
         
         //Close the request
@@ -122,7 +122,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
          
         if(debugMode) {
             //Print connection properties
-        	printConnectionProperties(connectionDescription, httppost, responseHeaders, responseBody);
+        	printConnectionProperties(connectionDescription, httppost, responseHeaders, responseBody, null);
         }
         
         //Close the request
