@@ -9,7 +9,7 @@ import javax.swing.JComponent;
 public interface parametriGenerali {
 
 	//Versione di J2Web
-	final String  j2web_version = "0.4.1.0";
+	final String  j2web_version = "0.4.1.1";
 	
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
