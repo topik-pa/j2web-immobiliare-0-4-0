@@ -1,12 +1,10 @@
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;

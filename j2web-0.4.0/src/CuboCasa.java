@@ -4,6 +4,8 @@
 */ 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -17,6 +19,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
 import org.jsoup.Jsoup;
@@ -159,7 +162,7 @@ public class CuboCasa extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("classe_energetica", mappaDeiParamerti.get("classe_energetica")));
         postParameters.add(new BasicNameValuePair("code_maps", mappaDeiParamerti.get("code_maps")));
         postParameters.add(new BasicNameValuePair("codice", mappaDeiParamerti.get("codice")));
-        if(scheda.clima=="Aria condizionata") {
+        if(scheda.clima.contains("Aria condizionata")) {
         	postParameters.add(new BasicNameValuePair("condizionato", mappaDeiParamerti.get("condizionato")));
         }
         postParameters.add(new BasicNameValuePair("contratto", mappaDeiParamerti.get("contratto")));
@@ -191,8 +194,12 @@ public class CuboCasa extends PortaleImmobiliare {
         	Header[] responseHeaders = (Header[])response[0];	     	
         	BasicStatusLine responseStatus = (BasicStatusLine) response[2];
         	if( (responseStatus.getStatusCode()==302)) {
-        		codiceInserzione = getHeaderValueByName(responseHeaders, "Location");
-        		inserimentoOK = true;
+        		String locationHeader = getHeaderValueByName(responseHeaders, "Location");
+        		if(locationHeader.contains("id=")) {
+        			codiceInserzione = locationHeader.substring(locationHeader.indexOf("id=")+3);
+        			System.out.println("Codice inserzione: " + codiceInserzione);
+            		inserimentoOK = true;
+        		}	
         	}
         	else {
         		throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto: mi aspettavo un 302"));
@@ -208,7 +215,7 @@ public class CuboCasa extends PortaleImmobiliare {
         //Connessione 6 - GET di redirect
         HttpPortalGetConnection connessione_6 = new HttpPortalGetConnection();
     	try {
-			connessione_6.get("Connessione 6 - GET di redirect", URLROOT + "dett-annuncio.php?id=" + codiceInserzione, debugMode);
+			connessione_6.get("Connessione 6 - GET di redirect", URLROOT + "/agenzie/dett-annuncio.php?id=" + codiceInserzione, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -227,8 +234,14 @@ public class CuboCasa extends PortaleImmobiliare {
     			HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
     	    	
     			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-    	        FileBody bin = new FileBody(scheda.arrayImages[i]);
-    	        reqEntity.addPart("foto", bin );
+    	        FileBody bin = new FileBody(scheda.arrayImages[i]); 	        
+    	        try {
+    	        	reqEntity.addPart("foto", bin);
+        	        reqEntity.addPart("id", new StringBody(codiceInserzione));
+					reqEntity.addPart("Submit", new StringBody("Invia la foto"));
+				} catch (UnsupportedEncodingException e1) {
+					throw new HttpCommunicationException(e1);
+				}
     	    	
     	        try {
     	        	connessione_8.post("Connessioni 8 - inserimento immagine " + i, URLROOT + "/agenzie/_foto.php", reqEntity, debugMode);
@@ -321,7 +334,7 @@ public class CuboCasa extends PortaleImmobiliare {
         //Connessione 9 - GET della pagina Gestione annunci per eliminare un annuncio
     	HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
     	try {
-			connessione_9.get("Connessione 3 - GET della pagina Gestione annunci per eliminare un annuncio", URLROOT + "/agenzie/_del_annunci.php?id=" + codiceInserzione, debugMode);
+			connessione_9.get("Connessione 9 - GET della pagina Gestione annunci per eliminare un annuncio", URLROOT + "/agenzie/_del_annunci.php?id=" + codiceInserzione, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}	
@@ -346,8 +359,8 @@ public class CuboCasa extends PortaleImmobiliare {
 	//Metodo per la valutazione dei parametri
 	public void inizializzaParametri() throws HttpCommunicationException  {		
 		
-		String provincia = scheda.provincia;
-		switch (provincia)
+		String provincia = "";
+		switch (scheda.provincia)
 		{
 		    case "Agrigento":
 		    	provincia = "AG";
@@ -412,7 +425,7 @@ public class CuboCasa extends PortaleImmobiliare {
 		    case "Campobasso":
 		    	provincia = "CB";
 		        break;
-		    case "Carbonia-Iglesias":
+		    case "Carbonia Iglesias":
 		    	provincia = "CI";
 		        break;
 		    case "Caserta":
@@ -592,10 +605,10 @@ public class CuboCasa extends PortaleImmobiliare {
 		    case "Ravenna":
 		    	provincia = "RA";
 		        break;
-		    case "Reggio di Calabria":
+		    case "Reggio Calabria":
 		    	provincia = "RC";
 		        break;
-		    case "Reggio nell'Emilia":
+		    case "Reggio Emilia":
 		    	provincia = "RE";
 		        break;
 		    case "Rieti":
@@ -758,7 +771,7 @@ public class CuboCasa extends PortaleImmobiliare {
 		String codice = scheda.codiceInserzione;
 		mappaDeiParamerti.put("codice", codice);
 				
-		String condizionato = "si";
+		String condizionato = "si";	//inviato sse è selezionato (checkbox)
 		mappaDeiParamerti.put("condizionato", condizionato);
 				
 		String contratto = "";
@@ -781,10 +794,10 @@ public class CuboCasa extends PortaleImmobiliare {
 		String descrizione = scheda.testoAnnuncio;
 		mappaDeiParamerti.put("descrizione", descrizione);
 				
-		String garage = scheda.parcheggio=="Garage"?"Presente":"Non disponibile";
+		String garage = scheda.parcheggio.contains("Garage")?"Presente":"Non disponibile";
 		mappaDeiParamerti.put("garage", garage);
 				
-		String giardino = (scheda.giardino=="Giardino condominiale" || scheda.giardino=="Giardino ad uso esclusivo")?"Presente":"Non disponibile";
+		String giardino = (scheda.giardino.contains("Giardino condominiale") || scheda.giardino.contains("Giardino ad uso esclusivo"))?"Presente":"Non disponibile";
 		mappaDeiParamerti.put("giardino", giardino);
 				
 		String idComune = matchedComune;
@@ -862,7 +875,7 @@ public class CuboCasa extends PortaleImmobiliare {
 		String indirizzo = scheda.indirizzoLocalita;
 		mappaDeiParamerti.put("indirizzo", indirizzo);		
 		
-		String ipe = "";
+		String ipe = "23.38 kWh/mq anno";
 		mappaDeiParamerti.put("ipe", ipe);		
 		
 		Map<String, String> latLon;
@@ -887,10 +900,20 @@ public class CuboCasa extends PortaleImmobiliare {
 		String n_camere = scheda.numeroCamere;
 		mappaDeiParamerti.put("n_camere", n_camere);
 				
-		String piano = scheda.piano;
+		String piano = "";
+		switch (scheda.piano) {
+		    case "Piano terra":
+		    	piano = "0";
+		        break;
+		    case "Primo piano":
+		    	piano = "1";
+		    	break;
+		    default:
+		    	piano = "";
+		}
 		mappaDeiParamerti.put("piano", piano);
 				
-		String postoauto = (scheda.parcheggio=="Posto auto coperto" || scheda.parcheggio=="Posto auto scoperto")?"Presente":"Non disponibile";
+		String postoauto = (scheda.parcheggio.contains("Posto auto coperto") || scheda.parcheggio.contains("Posto auto scoperto"))?"Presente":"Non disponibile";
 		mappaDeiParamerti.put("postoauto", postoauto);		
 		
 		String prezzo = scheda.prezzoImmobile;
@@ -915,7 +938,7 @@ public class CuboCasa extends PortaleImmobiliare {
 			}
 		mappaDeiParamerti.put("riscaldamento", riscaldamento);
 				
-		String soffitta = "";
+		String soffitta = "";	//non supportato
 		mappaDeiParamerti.put("soffitta", soffitta);
 				
 		String stato = "";
