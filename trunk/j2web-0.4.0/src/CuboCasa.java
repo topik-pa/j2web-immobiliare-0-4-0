@@ -5,7 +5,6 @@
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;

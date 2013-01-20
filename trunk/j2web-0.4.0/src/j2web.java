@@ -300,7 +300,7 @@ public class j2web implements parametriGenerali {
 		PortaleImmobiliare cuboCasa = new CuboCasa("./images/cubocasa.gif", "1 - cubocasa.it", "001");
     	j2web_GUI.listPortaliImmobiliari.add(cuboCasa);
     	
-		PortaleImmobiliare case24 = new Case24("./images/case24.gif", "2 - case24.it (testing)", "002");
+		PortaleImmobiliare case24 = new _Case24("./images/case24.gif", "2 - case24.it (testing)", "002");
     	j2web_GUI.listPortaliImmobiliari.add(case24);
 
     }
