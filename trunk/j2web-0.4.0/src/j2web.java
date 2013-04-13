@@ -297,14 +297,35 @@ public class j2web implements parametriGenerali {
 	//Inizializza la lista dei portali attivi
 	public static void inizializzaPortaliAttivi() {
 		
-		/*PortaleImmobiliare cuboCasa = new CuboCasa("./images/cubocasa.gif", "1 - cubocasa.it", "001");
-    	j2web_GUI.listPortaliImmobiliari.add(cuboCasa);
+		PortaleImmobiliare _casaIt = new _casaIt("./images/_casaIt.jpg", "1 - casa.it", "001");
+    	j2web_GUI.listPortaliImmobiliari.add(_casaIt);
     	
-		PortaleImmobiliare case24 = new _Case24("./images/case24.gif", "2 - case24.it (testing)", "002");
-    	j2web_GUI.listPortaliImmobiliari.add(case24);*/
+    	PortaleImmobiliare _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt.jpg", "2 - immobiliare.it", "002");
+    	j2web_GUI.listPortaliImmobiliari.add(_immobiliareIt);
     	
-    	/*PortaleImmobiliare immobiliare_it = new ImmobiliareIt("./images/immobiliare_it.gif", "1 - immobiliare.it", "001");
-    	j2web_GUI.listPortaliImmobiliari.add(immobiliare_it);*/
+    	PortaleImmobiliare _idealistaIt = new _idealistaIt("./images/_idealistaIt.jpg", "3 - idealista.it", "003");
+    	j2web_GUI.listPortaliImmobiliari.add(_idealistaIt);
+    	
+    	PortaleImmobiliare _casabIt = new _casabIt("./images/_casabIt.jpg", "4 - casab.it", "004");
+    	j2web_GUI.listPortaliImmobiliari.add(_casabIt);
+    	
+    	PortaleImmobiliare _case24It = new _case24It("./images/_case24It.jpg", "5 - case24.it", "005");
+    	j2web_GUI.listPortaliImmobiliari.add(_case24It);
+    	
+    	PortaleImmobiliare _tuttoannunciOrg = new _tuttoannunciOrg("./images/_tuttoannunciOrg.jpg", "6 - tuttoannunci.org", "006");
+    	j2web_GUI.listPortaliImmobiliari.add(_tuttoannunciOrg);
+    	
+    	PortaleImmobiliare _gazzettaimmobiliareNet = new _gazzettaimmobiliareNet("./images/_gazzettaimmobiliareNet.jpg", "7 - gazzettaimmobiliare.net", "007");
+    	j2web_GUI.listPortaliImmobiliari.add(_gazzettaimmobiliareNet);
+    	
+    	PortaleImmobiliare _livellocasaIt = new _livellocasaIt("./images/_livellocasaIt.jpg", "8 - livellocasa.it", "008");
+    	j2web_GUI.listPortaliImmobiliari.add(_livellocasaIt);
+    	
+    	PortaleImmobiliare _cercacasaIt = new _cercacasaIt("./images/_cercacasaIt.jpg", "9 - cercacasa.it", "009");
+    	j2web_GUI.listPortaliImmobiliari.add(_cercacasaIt);
+    	
+    	PortaleImmobiliare _trovacasaNet = new _trovacasaNet("./images/_trovacasaNet.jpg", "10 - trovacasa.net", "010");
+    	j2web_GUI.listPortaliImmobiliari.add(_trovacasaNet);
 
     }
 	
