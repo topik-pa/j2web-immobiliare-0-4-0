@@ -4,7 +4,6 @@
 */ 
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,19 +14,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
-import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.message.BasicStatusLine;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -35,36 +30,32 @@ import org.xml.sax.SAXException;
  */
 
 //La classe principale
-public class Case24 extends PortaleImmobiliare {     
+public class _templatePortaleImmobiliare extends PortaleImmobiliare {     
 
-    //Variabili generali
-	private final String NOMEPORTALE = "case24.it";
-	private final String SESSIONCOOKIENAME = "PHPSESSID";
-	private final String SESSIONCOOKIEDOMAIN = "www.case24.it";
-	private final String URLROOT = "http://www.case24.it";
-	private final String USERNAME = "vgltoove@sharklasers.com";
-    private final String PASSWORD = "nki9stjl";
-    private final String CODICE_CLIENTE ="1340103900";
-    private String codiceInserzione;    
-    private boolean inserimentoOK = false;
+    //Parametri generali
+	private final String CASE24_NOMEPORTALE = "case24.it";
+	private final String CASE24_SESSIONCOOKIENAME = "PHPSESSID";
+	private final String CASE24_SESSIONCOOKIEDOMAIN = "www.case24.it";
+	private final String CASE24_URLROOT = "http://www.case24.it";
+	private final String CASE24_USERNAME = "vgltoove@sharklasers.com";
+    private final String CASE24_PASSWORD = "nki9stjl";
+    private final String CASE24_CODICE_CLIENTE ="1340103900";
+
+    private String CASE24_CODICEINSERZIONE;    
+    private String NOME_IMMAGINE_1;
+    private String NOME_IMMAGINE_2;
+    private String NOME_IMMAGINE_3;
+    private String NOME_IMMAGINE_4;
+    private String NOME_IMMAGINE_5;
+    private String NOME_IMMAGINE_6;
+    private String NOME_IMMAGINE_7;
+    private String NOME_IMMAGINE_8;
+    private boolean INSERIMENTO_OK = false;
     private boolean debugMode = true;
-    
-    private String nomeImmagine1;
-    private String nomeImmagine2;
-    private String nomeImmagine3;
-    private String nomeImmagine4;
-    private String nomeImmagine5;
-    private String nomeImmagine6;
-    private String nomeImmagine7;
-    private String nomeImmagine8;
-    
-    //Altre variabili
-    String matchedComune = "";  
+   
 
-    //Mappa dei parametri da inviare
     Map<String,String> mappaDeiParamerti;
     
-    //Lista dei parametri inviati in una singola connessione
     List<NameValuePair> postParameters;  
 
     //La scheda immobile su cui si lavora
@@ -72,7 +63,7 @@ public class Case24 extends PortaleImmobiliare {
     
     
 	//Costruttore
-	public Case24 (String urlIcona, String valoreLabel, String idPortale) {		
+	public _templatePortaleImmobiliare (String urlIcona, String valoreLabel, String idPortale) {		
 		
 		super(urlIcona, valoreLabel, idPortale);
 		
@@ -87,47 +78,53 @@ public class Case24 extends PortaleImmobiliare {
     public boolean inserisciScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException {
     	System.out.println("Inserimento scheda: " + scheda.codiceInserzione + "...");
     	
-    	//Inizializzazione scheda
+    	//Inizializzazione parametri
     	this.scheda=scheda;
-    	     	
+    	    
+    	
     	//Inizializza i parametri http del portale 
 		inizializzaParametri();
+
     	
-		//Connessione 0 - GET della home page
+    	//Connessione 0 - GET della home page
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
     	try {
-			connessione_0.get("Connessione 0 - GET della home page", URLROOT, debugMode);
+			connessione_0.get("Connessione 0 - GET della home page", CASE24_URLROOT, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	  	
+    	
+    	
     	//Connessione 1 - GET della pagina di login
     	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
     	try {
-			connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/mycase24-areariservata-vendita-appartamenti.php", debugMode);
+			connessione_1.get("Connessione 1 - GET della pagina di login", CASE24_URLROOT + "/mycase24-areariservata-vendita-appartamenti.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
-		}	
+		}
+    	
     	
     	//Connessione 2 - GET della pagina "Area Riservata"
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
-    		Object[] response = connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, debugMode);
+    		Object[] response = connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
     		Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_2, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+    		findAndSetLocalCookie(connessione_2, responseHeaders, CASE24_SESSIONCOOKIENAME, CASE24_SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	   	
+    	
+    	
     	//Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
-    		connessione_3.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
-			connessione_3.get("Connessione 3 - GET della pagina \"Inserisci annuncio\" (step 1)", URLROOT + "/area_clienti/index.php", debugMode);
+    		connessione_3.setSessionCookieDomain(CASE24_SESSIONCOOKIEDOMAIN);
+			connessione_3.get("Connessione 3 - GET della pagina \"Inserisci annuncio\" (step 1)", CASE24_URLROOT + "/area_clienti/index.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	   	
+    	
+    	
     	//Connessione 4 - POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
     	HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
@@ -135,23 +132,25 @@ public class Case24 extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("x", "10"));
         postParameters.add(new BasicNameValuePair("y", "10"));   	
         try {
-			connessione_4.post("POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+			connessione_4.post("POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio", CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	finally {
     		postParameters.clear();
-    	} 	
-    	  	
-      //Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio
+    	}
+        
+        
+        //Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio
         HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
     	try {
     		String encodedSchedaCodice = URLEncoder.encode(mappaDeiParamerti.get("rif_agenzia"),"UTF-8");
-			connessione_5.get("Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio", URLROOT + "/area_clienti/include/ajax.php?edit=valida_rif_agenzia&rif_agenzia=" + encodedSchedaCodice + "&codice_inserzione=&codice_cliente=" + CODICE_CLIENTE, debugMode);
+			connessione_5.get("Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio", CASE24_URLROOT + "/area_clienti/include/ajax.php?edit=valida_rif_agenzia&rif_agenzia=" + encodedSchedaCodice + "&codice_inserzione=&codice_cliente=" + CASE24_CODICE_CLIENTE, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-               
+    	
+    	
     	//Connessioni 6 - inserimento immagine
     	for(int i=0; i<scheda.arrayImages.length; i++) {
     		if(scheda.arrayImages[i]!=null) {
@@ -162,7 +161,7 @@ public class Case24 extends PortaleImmobiliare {
     	        reqEntity.addPart("image_" + i, bin );
     	    	
     	        try {
-    	        	Object[] response = connessione_6.post("Connessioni 6 - inserimento immagine " + i, URLROOT + "/area_clienti/include/upload_foto.php?i=" + i + "&codice_cliente=" + CODICE_CLIENTE, reqEntity, debugMode);
+    	        	Object[] response = connessione_6.post("Connessioni 6 - inserimento immagine " + i, CASE24_URLROOT + "/area_clienti/include/upload_foto.php?i=" + i + "&codice_cliente=" + CASE24_CODICE_CLIENTE, reqEntity, debugMode);
     	        	String responseBody = (String)response[1];
     				boolean control = true;
     		          int start;
@@ -173,35 +172,35 @@ public class Case24 extends PortaleImmobiliare {
     		        	  switch (i)
     		      		{
     		      		    case 0:
-    		      		    	nomeImmagine1 = responseBody.substring(start, end);
+    		      		    	NOME_IMMAGINE_1 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		        break;
     		      		    case 1:
-    		      		    	nomeImmagine2 = responseBody.substring(start, end);
+    		      		    	NOME_IMMAGINE_2 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		    	break;
     		      		    case 2:
-    		      		    	nomeImmagine3 = responseBody.substring(start, end);
+    		      		    	NOME_IMMAGINE_3 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		    	break;
     		      		    case 3:
-    		      		    	nomeImmagine4 = responseBody.substring(start, end);
+    		      		    	NOME_IMMAGINE_4 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		    	break;
     		      		    case 4:
-    		      		    	nomeImmagine5 = responseBody.substring(start, end);
+    		      		    	NOME_IMMAGINE_5 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		    	break;
     		      		    case 5:
-    		      		    	nomeImmagine6 = responseBody.substring(start, end);
+	  		      		    	NOME_IMMAGINE_5 = responseBody.substring(start, end);
 	  		      		    	control=false;
 	  		      		    	break;
     		      		    case 6:
-    		      		    	nomeImmagine7 = responseBody.substring(start, end);
+			      		    	NOME_IMMAGINE_6 = responseBody.substring(start, end);
 			      		    	control=false;
 			      		    	break;
     		      		    default:
-    		      		    	nomeImmagine8 = responseBody.substring(start, end);
+    		      		    	NOME_IMMAGINE_7 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		}
     		          }
@@ -213,91 +212,92 @@ public class Case24 extends PortaleImmobiliare {
     	    	}
             }
     	}
-    	   	
+
+    	
     	//Connessione 7 - POST dello step 1 (e unico...)
     	HttpPortalPostConnection connessione_7 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
-        postParameters.add(new BasicNameValuePair("action", "inserisci_nuovo_annuncio"));
+        postParameters.add(new BasicNameValuePair("action", mappaDeiParamerti.get("action")));
         postParameters.add(new BasicNameValuePair("data_annuncio", mappaDeiParamerti.get("data_annuncio")));
         postParameters.add(new BasicNameValuePair("no_reload", mappaDeiParamerti.get("no_reload")));
-        postParameters.add(new BasicNameValuePair("codice_cliente", CODICE_CLIENTE));
-        postParameters.add(new BasicNameValuePair("InserzionistaPrivato", "0"));
-        postParameters.add(new BasicNameValuePair("codice_inserzione", ""));
-        postParameters.add(new BasicNameValuePair("foto_tmp_0", nomeImmagine1));
-        postParameters.add(new BasicNameValuePair("foto_tmp_1", nomeImmagine2));
-        postParameters.add(new BasicNameValuePair("foto_tmp_2", nomeImmagine3));
-        postParameters.add(new BasicNameValuePair("foto_tmp_3", nomeImmagine4));
-        postParameters.add(new BasicNameValuePair("foto_tmp_4", nomeImmagine5));
-        postParameters.add(new BasicNameValuePair("foto_tmp_5", nomeImmagine6));
-        postParameters.add(new BasicNameValuePair("foto_tmp_6", nomeImmagine7));
-        postParameters.add(new BasicNameValuePair("foto_tmp_7", nomeImmagine8));
-        postParameters.add(new BasicNameValuePair("galleria_valore", "0"));
+        postParameters.add(new BasicNameValuePair("codice_cliente", mappaDeiParamerti.get("codice_cliente")));
+        postParameters.add(new BasicNameValuePair("InserzionistaPrivato", mappaDeiParamerti.get("InserzionistaPrivato")));
+        postParameters.add(new BasicNameValuePair("codice_inserzione", mappaDeiParamerti.get("codice_inserzione")));
+        postParameters.add(new BasicNameValuePair("foto_tmp_0", NOME_IMMAGINE_1));
+        postParameters.add(new BasicNameValuePair("foto_tmp_1", NOME_IMMAGINE_2));
+        postParameters.add(new BasicNameValuePair("foto_tmp_2", NOME_IMMAGINE_3));
+        postParameters.add(new BasicNameValuePair("foto_tmp_3", NOME_IMMAGINE_4));
+        postParameters.add(new BasicNameValuePair("foto_tmp_4", NOME_IMMAGINE_5));
+        postParameters.add(new BasicNameValuePair("foto_tmp_5", NOME_IMMAGINE_6));
+        postParameters.add(new BasicNameValuePair("foto_tmp_6", NOME_IMMAGINE_7));
+        postParameters.add(new BasicNameValuePair("foto_tmp_7", NOME_IMMAGINE_8));
+        postParameters.add(new BasicNameValuePair("galleria_valore", mappaDeiParamerti.get("galleria_valore")));
         postParameters.add(new BasicNameValuePair("rif_agenzia", mappaDeiParamerti.get("rif_agenzia")));
         postParameters.add(new BasicNameValuePair("codice_provincia_inserzione", mappaDeiParamerti.get("codice_provincia_inserzione")));
         postParameters.add(new BasicNameValuePair("codice_comune_inserzione", mappaDeiParamerti.get("codice_comune_inserzione")));
-        postParameters.add(new BasicNameValuePair("zona", "0"));
+        postParameters.add(new BasicNameValuePair("zona", mappaDeiParamerti.get("zona")));
         postParameters.add(new BasicNameValuePair("indirizzo", mappaDeiParamerti.get("indirizzo")));
-        postParameters.add(new BasicNameValuePair("visua_indirizzo", "1"));
+        postParameters.add(new BasicNameValuePair("visua_indirizzo", mappaDeiParamerti.get("visua_indirizzo")));
         postParameters.add(new BasicNameValuePair("tipo_proposta", mappaDeiParamerti.get("tipo_proposta")));
         postParameters.add(new BasicNameValuePair("tipo_immobile", mappaDeiParamerti.get("tipo_immobile")));
         postParameters.add(new BasicNameValuePair("superficie", mappaDeiParamerti.get("superficie")));
         postParameters.add(new BasicNameValuePair("prezzo", mappaDeiParamerti.get("prezzo")));
-        postParameters.add(new BasicNameValuePair("numero_camere_old", ""));
+        postParameters.add(new BasicNameValuePair("numero_camere_old", mappaDeiParamerti.get("numero_camere_old")));
         postParameters.add(new BasicNameValuePair("numero_camere_bis", mappaDeiParamerti.get("numero_camere_bis")));
         postParameters.add(new BasicNameValuePair("stato_immobile", mappaDeiParamerti.get("stato_immobile")));
         postParameters.add(new BasicNameValuePair("numero_bagni", mappaDeiParamerti.get("numero_bagni")));
-        postParameters.add(new BasicNameValuePair("numero_piani", ""));//il  numero piani è difficile da mettere
-        postParameters.add(new BasicNameValuePair("numero_terrazze", "0"));
-        postParameters.add(new BasicNameValuePair("numero_posti_auto_coperti", "0"));
-        postParameters.add(new BasicNameValuePair("numero_posti_auto", "0"));
-        postParameters.add(new BasicNameValuePair("numero_posti_auto_garage", ""));
+        postParameters.add(new BasicNameValuePair("numero_piani", mappaDeiParamerti.get("numero_piani")));//il  numero piani è difficile da mettere
+        postParameters.add(new BasicNameValuePair("numero_terrazze", mappaDeiParamerti.get("numero_terrazze")));
+        postParameters.add(new BasicNameValuePair("numero_posti_auto_coperti", mappaDeiParamerti.get("numero_posti_auto_coperti")));
+        postParameters.add(new BasicNameValuePair("numero_posti_auto", mappaDeiParamerti.get("numero_posti_auto")));
+        postParameters.add(new BasicNameValuePair("numero_posti_auto_garage", mappaDeiParamerti.get("numero_posti_auto_garage")));
         postParameters.add(new BasicNameValuePair("riscaldamento", mappaDeiParamerti.get("riscaldamento")));
-        postParameters.add(new BasicNameValuePair("riscaldamento_tipo", "")); 
-        postParameters.add(new BasicNameValuePair("anno", "")); //una select...
-        postParameters.add(new BasicNameValuePair("spese_condominiali", ""));
-        postParameters.add(new BasicNameValuePair("stato_rogito", ""));
-        postParameters.add(new BasicNameValuePair("orientamento", ""));
+        postParameters.add(new BasicNameValuePair("riscaldamento_tipo", mappaDeiParamerti.get("riscaldamento_tipo"))); 
+        postParameters.add(new BasicNameValuePair("anno", mappaDeiParamerti.get("anno"))); //una select...
+        postParameters.add(new BasicNameValuePair("spese_condominiali", mappaDeiParamerti.get("spese_condominiali")));
+        postParameters.add(new BasicNameValuePair("stato_rogito", mappaDeiParamerti.get("stato_rogito")));
+        postParameters.add(new BasicNameValuePair("orientamento", mappaDeiParamerti.get("orientamento")));
         postParameters.add(new BasicNameValuePair("tipologia_giardino", mappaDeiParamerti.get("tipologia_giardino")));
-        postParameters.add(new BasicNameValuePair("scoperto", ""));
+        postParameters.add(new BasicNameValuePair("scoperto", mappaDeiParamerti.get("scoperto")));
         postParameters.add(new BasicNameValuePair("classe_energetica", mappaDeiParamerti.get("classe_energetica")));
-        postParameters.add(new BasicNameValuePair("ipe", ""));
+        postParameters.add(new BasicNameValuePair("ipe", mappaDeiParamerti.get("ipe")));
         postParameters.add(new BasicNameValuePair("descrizione", mappaDeiParamerti.get("descrizione")));
-        postParameters.add(new BasicNameValuePair("attivo", "1"));
-        postParameters.add(new BasicNameValuePair("opt_ascensore", "0"));
-        postParameters.add(new BasicNameValuePair("opt_servizi_disabili", "0"));
-        postParameters.add(new BasicNameValuePair("opt_angolo_cottura", "0"));
-        postParameters.add(new BasicNameValuePair("opt_satellite", "0"));
-        postParameters.add(new BasicNameValuePair("opt_arredato", "0"));
-        postParameters.add(new BasicNameValuePair("opt_bagno_con_vasca", "0"));
-        postParameters.add(new BasicNameValuePair("opt_caminetto", "0"));
-        postParameters.add(new BasicNameValuePair("opt_cantina", "0"));
-        postParameters.add(new BasicNameValuePair("opt_cassaforte", "0"));
-        postParameters.add(new BasicNameValuePair("opt_climatizzatore", "0"));
-        postParameters.add(new BasicNameValuePair("opt_cucina_vivibile", "0"));
-        postParameters.add(new BasicNameValuePair("opt_idromassaggio", "0"));
-        postParameters.add(new BasicNameValuePair("opt_allarme", "0"));
-        postParameters.add(new BasicNameValuePair("opt_lavanderia", "0"));
-        postParameters.add(new BasicNameValuePair("opt_mansarda", "0"));
-        postParameters.add(new BasicNameValuePair("opt_fotovoltaico", "0"));
-        postParameters.add(new BasicNameValuePair("opt_pannelli_solari", "0"));
-        postParameters.add(new BasicNameValuePair("opt_piscina", "0"));
-        postParameters.add(new BasicNameValuePair("opt_porta_blindata", "0"));
-        postParameters.add(new BasicNameValuePair("opt_possibilita_animali", "0"));
-        postParameters.add(new BasicNameValuePair("opt_ripostiglio", "0"));
-        postParameters.add(new BasicNameValuePair("opt_riscaldamento_pavimento", "0"));
-        postParameters.add(new BasicNameValuePair("opt_sauna", "0"));
-        postParameters.add(new BasicNameValuePair("opt_taverna", "0"));
-        postParameters.add(new BasicNameValuePair("opt_terra_cielo", "0"));
-        postParameters.add(new BasicNameValuePair("opt_travi", "0"));
-        postParameters.add(new BasicNameValuePair("opt_vista_panoramica", "0"));
-        postParameters.add(new BasicNameValuePair("opt_in_campagna", "0"));
-        postParameters.add(new BasicNameValuePair("optional_valore", "0")); 	
+        postParameters.add(new BasicNameValuePair("attivo", mappaDeiParamerti.get("attivo")));
+        postParameters.add(new BasicNameValuePair("opt_ascensore", mappaDeiParamerti.get("opt_ascensore")));
+        postParameters.add(new BasicNameValuePair("opt_servizi_disabili", mappaDeiParamerti.get("opt_servizi_disabili")));
+        postParameters.add(new BasicNameValuePair("opt_angolo_cottura", mappaDeiParamerti.get("opt_angolo_cottura")));
+        postParameters.add(new BasicNameValuePair("opt_satellite", mappaDeiParamerti.get("opt_satellite")));
+        postParameters.add(new BasicNameValuePair("opt_arredato", mappaDeiParamerti.get("opt_arredato")));
+        postParameters.add(new BasicNameValuePair("opt_bagno_con_vasca", mappaDeiParamerti.get("opt_bagno_con_vasca")));
+        postParameters.add(new BasicNameValuePair("opt_caminetto", mappaDeiParamerti.get("opt_caminetto")));
+        postParameters.add(new BasicNameValuePair("opt_cantina", mappaDeiParamerti.get("opt_cantina")));
+        postParameters.add(new BasicNameValuePair("opt_cassaforte", mappaDeiParamerti.get("opt_cassaforte")));
+        postParameters.add(new BasicNameValuePair("opt_climatizzatore", mappaDeiParamerti.get("opt_climatizzatore")));
+        postParameters.add(new BasicNameValuePair("opt_cucina_vivibile", mappaDeiParamerti.get("opt_cucina_vivibile")));
+        postParameters.add(new BasicNameValuePair("opt_idromassaggio", mappaDeiParamerti.get("opt_idromassaggio")));
+        postParameters.add(new BasicNameValuePair("opt_allarme", mappaDeiParamerti.get("opt_allarme")));
+        postParameters.add(new BasicNameValuePair("opt_lavanderia", mappaDeiParamerti.get("opt_lavanderia")));
+        postParameters.add(new BasicNameValuePair("opt_mansarda", mappaDeiParamerti.get("opt_mansarda")));
+        postParameters.add(new BasicNameValuePair("opt_fotovoltaico", mappaDeiParamerti.get("opt_fotovoltaico")));
+        postParameters.add(new BasicNameValuePair("opt_pannelli_solari", mappaDeiParamerti.get("opt_pannelli_solari")));
+        postParameters.add(new BasicNameValuePair("opt_piscina", mappaDeiParamerti.get("opt_piscina")));
+        postParameters.add(new BasicNameValuePair("opt_porta_blindata", mappaDeiParamerti.get("opt_porta_blindata")));
+        postParameters.add(new BasicNameValuePair("opt_possibilita_animali", mappaDeiParamerti.get("opt_possibilita_animali")));
+        postParameters.add(new BasicNameValuePair("opt_ripostiglio", mappaDeiParamerti.get("opt_ripostiglio")));
+        postParameters.add(new BasicNameValuePair("opt_riscaldamento_pavimento", mappaDeiParamerti.get("opt_riscaldamento_pavimento")));
+        postParameters.add(new BasicNameValuePair("opt_sauna", mappaDeiParamerti.get("opt_sauna")));
+        postParameters.add(new BasicNameValuePair("opt_taverna", mappaDeiParamerti.get("opt_taverna")));
+        postParameters.add(new BasicNameValuePair("opt_terra_cielo", mappaDeiParamerti.get("opt_terra_cielo")));
+        postParameters.add(new BasicNameValuePair("opt_travi", mappaDeiParamerti.get("opt_travi")));
+        postParameters.add(new BasicNameValuePair("opt_vista_panoramica", mappaDeiParamerti.get("opt_vista_panoramica")));
+        postParameters.add(new BasicNameValuePair("opt_in_campagna", mappaDeiParamerti.get("opt_in_campagna")));
+        postParameters.add(new BasicNameValuePair("optional_valore", mappaDeiParamerti.get("optional_valore"))); 	
         try {
-        	Object[] response = connessione_7.post("Connessione 7 - POST dello step 1 (e unico...)", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+        	Object[] response = connessione_7.post("Connessione 7 - POST dello step 1 (e unico...)", CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
         	String responseBody = (String)response[1];
         	
 			if(responseBody.contains("ANNUNCIO INSERITO CORRETTAMENTE")) {
-            	inserimentoOK = true;
+            	INSERIMENTO_OK = true;
             }
             else {
             	throw(new HttpWrongResponseBodyException("Non trovo il testo \"ANNUNCIO INSERITO CORRETTAMENTE\" che stabilisce se l'annuncio è stato inserito correttamente"));
@@ -313,9 +313,9 @@ public class Case24 extends PortaleImmobiliare {
 	            	if(currentElement.html().contains("CODICE RIFERIMENTO AGENZIA:")) {
 	            		String text = currentElement.html().substring(currentElement.html().indexOf("AGENZIA:")+8).trim();
 	            		if(scheda.codiceInserzione.equals(text)) {
-	            			codiceInserzione = currentElement.attr("name");
+	            			CASE24_CODICEINSERZIONE = currentElement.attr("name");
 	            		}		
-	            		System.out.println("CODICEINSERZIONE: " + codiceInserzione);
+	            		System.out.println("CODICEINSERZIONE: " + CASE24_CODICEINSERZIONE);
 	            	}
 	            }
             }
@@ -324,92 +324,99 @@ public class Case24 extends PortaleImmobiliare {
 		}
     	finally {
     		postParameters.clear();
-    	}  	   	
-    		    	    
-      //Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
-    	if(inserimentoOK) {
+    	}	    	
+      
+    	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
+    	if(INSERIMENTO_OK) {
     		
     		//Aggiorna la lista dei portali in cui è inserita la scheda
-    		scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
+    		scheda.aggiungiInserimentoPortale(idPortale, CASE24_CODICEINSERZIONE);
     		      	
     		if(!isSequential) {   			
-    			System.out.println("Inserita in: " + NOMEPORTALE);       		
+    			System.out.println("Inserita in: " + CASE24_NOMEPORTALE);       		
         		
     			//Aggiorna i pulsanti del pannello inserimento
     			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
     			
     			//Invio mail di conferma inserimento 
-            	sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+            	sendConfirmationMail(scheda, CASE24_NOMEPORTALE, CASE24_CODICEINSERZIONE);
            	
             	//Stampo a video un messaggio informativo
-                JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + CASE24_NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
               
     		}
     		
-    		return inserimentoOK;        	
+    		return INSERIMENTO_OK;        	
         	
     	}
     	else {
     		
     		if(!isSequential) {
     			//Stampo a video un messaggio informativo
-        		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
+        		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + CASE24_NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
     		}
     		
-    		return inserimentoOK;
+    		return INSERIMENTO_OK;
  		
     	}
        
 	}
-	 
-  //Metodo per la visualizzazione della scheda immobile nel portale immobiliare
-  	public boolean visualizzaScheda(SchedaImmobile scheda) {
-  		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
-  		//Apro il browser e inserisco credenziali		
-  		try {
-  			String url = URLROOT + "/area_clienti/annunci.php";
-  			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
-  			System.out.println("Visualizzata in: " + NOMEPORTALE);
-  			
-  		} catch (IOException e ) {
-  			//manageErrors(e, 3);
-  		}
-  		
-  		return true;
-  	
-  	}
+	
+    
+    
+    //Metodo per la visualizzazione della scheda immobile nel portale immobiliare
+	public boolean visualizzaScheda(SchedaImmobile scheda) {
+		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
+		//Apro il browser e inserisco credenziali		
+		try {
+			String url = CASE24_URLROOT + "/area_clienti/annunci.php";
+			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+			System.out.println("Visualizzata in: " + CASE24_NOMEPORTALE);
+			
+		} catch (IOException e ) {
+			//manageErrors(e, 3);
+		}
+		
+		return true;
+	
+	}
 
+	
+	
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException {		
 		System.out.println("Eliminazione scheda: " + scheda.codiceInserzione + "...");
-		codiceInserzione = scheda.getCodiceInserimento(idPortale);	
-			
+		CASE24_CODICEINSERZIONE = scheda.getCodiceInserimento(idPortale);	
+		
+		
 		//Connessione 2 - GET della pagina "Area Riservata"
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
-			connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, debugMode);
+			connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
-		}     
+		}
+        
     	
-    	//Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio
+        //Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio
     	HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();	
     	postParameters = new ArrayList<NameValuePair>();          
     	postParameters.add(new BasicNameValuePair("bottone_cancella", "Cancella annuncio"));
         postParameters.add(new BasicNameValuePair("cancella_annuncio", "cancella"));
-        postParameters.add(new BasicNameValuePair("codice_inserzione", codiceInserzione));
+        postParameters.add(new BasicNameValuePair("codice_inserzione", CASE24_CODICEINSERZIONE));
         postParameters.add(new BasicNameValuePair("order_by", ""));
         postParameters.add(new BasicNameValuePair("order_direction", ""));
         postParameters.add(new BasicNameValuePair("page", ""));	
         try {
-			connessione_8.post("Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+			connessione_8.post("Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio", CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	finally {
     		postParameters.clear();
     	}	
-    	       
+    	
+        
         //Aggiorno la lista dei portali in cui è presenta la scheda corrente
   		scheda.eliminaInserimentoPortale(idPortale);			
   	 		
@@ -417,16 +424,18 @@ public class Case24 extends PortaleImmobiliare {
   			//Aggiorno i pulsanti del pannello inserimento
   			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
   			
-  			System.out.println("Eliminata da: " + NOMEPORTALE);
+  			System.out.println("Eliminata da: " + CASE24_NOMEPORTALE);
   		  	
   	  		//Stampo a video un messaggio informativo
-  	        JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + NOMEPORTALE);
+  	        JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + CASE24_NOMEPORTALE);
 		}
   		
   		return true;
 	
 	}
 		
+	
+	
 	//Metodo per la valutazione dei parametri
 	public void inizializzaParametri()  {
 		
@@ -438,6 +447,69 @@ public class Case24 extends PortaleImmobiliare {
 		
 		String y = "10";
 		mappaDeiParamerti.put("y", y);
+		
+		String action = "inserisci_nuovo_annuncio";
+		mappaDeiParamerti.put("action", action);
+		
+		String codice_cliente = CASE24_CODICE_CLIENTE;
+		mappaDeiParamerti.put("codice_cliente", codice_cliente);
+		
+		String InserzionistaPrivato = "0";
+		mappaDeiParamerti.put("InserzionistaPrivato", InserzionistaPrivato);
+		
+		String codice_inserzione = "";
+		mappaDeiParamerti.put("codice_inserzione", codice_inserzione);
+		
+		String galleria_valore = "0";
+		mappaDeiParamerti.put("galleria_valore", galleria_valore);
+		
+		String zona = "0";
+		mappaDeiParamerti.put("zona", zona);
+		
+		String visua_indirizzo = "1";
+		mappaDeiParamerti.put("visua_indirizzo", visua_indirizzo);
+		
+		String numero_camere_old = "";
+		mappaDeiParamerti.put("numero_camere_old", numero_camere_old);
+		
+		String numero_piani = "";
+		mappaDeiParamerti.put("numero_piani", numero_piani);
+		
+		String numero_terrazze = "0";
+		mappaDeiParamerti.put("numero_terrazze", numero_terrazze);
+		
+		String numero_posti_auto_coperti = "0";
+		mappaDeiParamerti.put("numero_posti_auto_coperti", numero_posti_auto_coperti);
+		
+		String numero_posti_auto = "0";
+		mappaDeiParamerti.put("numero_posti_auto", numero_posti_auto);
+		
+		String numero_posti_auto_garage = "";
+		mappaDeiParamerti.put("numero_posti_auto_garage", numero_posti_auto_garage);
+		
+		String riscaldamento_tipo = "";
+		mappaDeiParamerti.put("riscaldamento_tipo", riscaldamento_tipo);
+		
+		String anno = "";
+		mappaDeiParamerti.put("anno", anno);
+		
+		String spese_condominiali = "";
+		mappaDeiParamerti.put("spese_condominiali", spese_condominiali);
+		
+		String stato_rogito = "";
+		mappaDeiParamerti.put("stato_rogito", stato_rogito);
+		
+		String orientamento = "";
+		mappaDeiParamerti.put("orientamento", orientamento);
+		
+		String scoperto = "";
+		mappaDeiParamerti.put("scoperto", scoperto);
+		
+		String ipe = "";
+		mappaDeiParamerti.put("ipe", ipe);
+		
+		String attivo = "1";
+		mappaDeiParamerti.put("attivo", attivo);
 		
 		String opt_ascensore = "0";
 		mappaDeiParamerti.put("opt_ascensore", opt_ascensore);
@@ -501,6 +573,9 @@ public class Case24 extends PortaleImmobiliare {
 		
 		String opt_ripostiglio = "0";
 		mappaDeiParamerti.put("opt_ripostiglio", opt_ripostiglio);
+		
+		String opt_riscaldamento_pavimento = "0";
+		mappaDeiParamerti.put("opt_riscaldamento_pavimento", opt_riscaldamento_pavimento);
 		
 		String opt_sauna = "0";
 		mappaDeiParamerti.put("opt_sauna", opt_sauna);

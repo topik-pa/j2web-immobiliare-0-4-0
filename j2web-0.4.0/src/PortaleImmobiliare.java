@@ -212,7 +212,6 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
             		connessione.setSessionCookieName(cookieName);
             		connessione.setSessionCookieValue(cookie_value);
             		connessione.setSessionCookieDomain(cookieDomain);
-            		break;
                 }   
         	}       	
         }       

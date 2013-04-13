@@ -297,11 +297,14 @@ public class j2web implements parametriGenerali {
 	//Inizializza la lista dei portali attivi
 	public static void inizializzaPortaliAttivi() {
 		
-		PortaleImmobiliare cuboCasa = new CuboCasa("./images/cubocasa.gif", "1 - cubocasa.it", "001");
+		/*PortaleImmobiliare cuboCasa = new CuboCasa("./images/cubocasa.gif", "1 - cubocasa.it", "001");
     	j2web_GUI.listPortaliImmobiliari.add(cuboCasa);
     	
 		PortaleImmobiliare case24 = new _Case24("./images/case24.gif", "2 - case24.it (testing)", "002");
-    	j2web_GUI.listPortaliImmobiliari.add(case24);
+    	j2web_GUI.listPortaliImmobiliari.add(case24);*/
+    	
+    	/*PortaleImmobiliare immobiliare_it = new ImmobiliareIt("./images/immobiliare_it.gif", "1 - immobiliare.it", "001");
+    	j2web_GUI.listPortaliImmobiliari.add(immobiliare_it);*/
 
     }
 	
