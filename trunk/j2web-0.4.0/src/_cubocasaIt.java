@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
  */
 
 //La classe principale
-public class CuboCasa extends PortaleImmobiliare {     
+public class _cubocasaIt extends PortaleImmobiliare {     
 
     //Variabili generali
 	private final String NOMEPORTALE = "cubocasa.it";
@@ -58,7 +58,7 @@ public class CuboCasa extends PortaleImmobiliare {
     
     
 	//Costruttore
-	public CuboCasa (String urlIcona, String valoreLabel, String idPortale) {		
+	public _cubocasaIt (String urlIcona, String valoreLabel, String idPortale) {		
 		
 		super(urlIcona, valoreLabel, idPortale);
 		
