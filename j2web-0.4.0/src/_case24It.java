@@ -72,9 +72,9 @@ public class _case24It extends PortaleImmobiliare {
     
     
 	//Costruttore
-	public _case24It (String urlIcona, String valoreLabel, String idPortale) {		
+	public _case24It (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {		
 		
-		super(urlIcona, valoreLabel, idPortale);
+		super(urlIcona, valoreLabel, idPortale, isActive);
 		
 		mappaDeiParamerti =  new Hashtable<String,String>();
 	    
