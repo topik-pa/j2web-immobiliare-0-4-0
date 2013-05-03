@@ -41,12 +41,14 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	String urlIcona;
 	String valoreLabel;
 	String idPortale;
+	boolean isActive;
 
-	public PortaleImmobiliare (String urlIcona, String valoreLabel, String idPortale) {
+	public PortaleImmobiliare (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {
 	
 		this.urlIcona = urlIcona;
 		this.valoreLabel = valoreLabel;
 		this.idPortale = idPortale;
+		this.isActive = isActive;
 
 	}
 	

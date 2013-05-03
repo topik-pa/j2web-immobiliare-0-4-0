@@ -10,6 +10,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.Header;
@@ -38,11 +40,23 @@ public class _cubocasaIt extends PortaleImmobiliare {
 	private final String SESSIONCOOKIENAME = "PHPSESSID";
 	private final String SESSIONCOOKIEDOMAIN = "www.cubocasa.it";
 	private final String URLROOT = "http://www.cubocasa.it";
-	private final String USERNAME = "testAccount01";
-    private final String PASSWORD = "test1234";
-    private String codiceInserzione;    
-    private boolean inserimentoOK = false;
+	private final String USERNAME = "???";
+    private final String PASSWORD = "???";
+    //private String codiceInserzione;
+    private String codiceInserzione = UUID.randomUUID().toString();   
+    private boolean inserimentoOK = true; //forzato a true
     private boolean debugMode = true;
+    
+    private String nomeImmagine0;
+    private String nomeImmagine1;
+    private String nomeImmagine2;
+    private String nomeImmagine3;
+    private String nomeImmagine4;
+    private String nomeImmagine5;
+    private String nomeImmagine6;
+    private String nomeImmagine7;
+    private String nomeImmagine8;
+    private String nomeImmagine9;
     
     //Altre variabili
     String matchedComune = "";  
@@ -54,13 +68,13 @@ public class _cubocasaIt extends PortaleImmobiliare {
     List<NameValuePair> postParameters;  
 
     //La scheda immobile su cui si lavora
-    SchedaImmobile scheda;   	   
+    SchedaImmobile scheda;  	   
     
     
 	//Costruttore
-	public _cubocasaIt (String urlIcona, String valoreLabel, String idPortale) {		
+	public _cubocasaIt (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {		
 		
-		super(urlIcona, valoreLabel, idPortale);
+		super(urlIcona, valoreLabel, idPortale, isActive);
 		
 		mappaDeiParamerti =  new Hashtable<String,String>();
 	    
@@ -77,16 +91,16 @@ public class _cubocasaIt extends PortaleImmobiliare {
     	this.scheda=scheda;
     	     	
     	//Inizializza i parametri http del portale 
-		inizializzaParametri();
+		//inizializzaParametri();
     	
-    	//Connessione 0 - GET della home page
+    	//Connessione 0 - GET della home page - Opzionale
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
     	try {
 			connessione_0.get("Connessione 0 - GET della home page", URLROOT, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	  	
+    	 /* 	
     	//Connessione 1 - POST della pagina di login
     	HttpPortalPostConnection connessione_1 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
@@ -250,7 +264,7 @@ public class _cubocasaIt extends PortaleImmobiliare {
     	    		postParameters.clear();
     	    	}
             }
-    	}
+    	}*/
     		    	    
     	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
     	if(inserimentoOK) {
@@ -355,7 +369,7 @@ public class _cubocasaIt extends PortaleImmobiliare {
 	}
 		
 	//Metodo per la valutazione dei parametri
-	public void inizializzaParametri() throws HttpCommunicationException  {		
+	/*public void inizializzaParametri() throws HttpCommunicationException  {		
 		
 		String provincia = "";
 		switch (scheda.provincia)
@@ -974,7 +988,7 @@ public class _cubocasaIt extends PortaleImmobiliare {
 		String zona = scheda.indirizzoLocalita;
 		mappaDeiParamerti.put("zona", zona);
 		
-	}
+	}*/
 	
 	
 }

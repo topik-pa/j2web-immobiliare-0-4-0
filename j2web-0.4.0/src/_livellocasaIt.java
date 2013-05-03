@@ -13,6 +13,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.swing.JOptionPane;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
@@ -32,30 +34,36 @@ import org.jsoup.select.Elements;
 //La classe principale
 public class _livellocasaIt extends PortaleImmobiliare {     
 
-    //Parametri generali
-	private final String CASE24_NOMEPORTALE = "case24.it";
-	private final String CASE24_SESSIONCOOKIENAME = "PHPSESSID";
-	private final String CASE24_SESSIONCOOKIEDOMAIN = "www.case24.it";
-	private final String CASE24_URLROOT = "http://www.case24.it";
-	private final String CASE24_USERNAME = "vgltoove@sharklasers.com";
-    private final String CASE24_PASSWORD = "nki9stjl";
-    private final String CASE24_CODICE_CLIENTE ="1340103900";
-
-    private String CASE24_CODICEINSERZIONE;    
-    private String NOME_IMMAGINE_1;
-    private String NOME_IMMAGINE_2;
-    private String NOME_IMMAGINE_3;
-    private String NOME_IMMAGINE_4;
-    private String NOME_IMMAGINE_5;
-    private String NOME_IMMAGINE_6;
-    private String NOME_IMMAGINE_7;
-    private String NOME_IMMAGINE_8;
-    private boolean INSERIMENTO_OK = false;
+    //Variabili generali
+	private final String NOMEPORTALE = "livellocasa.it";
+	private final String SESSIONCOOKIENAME = "virtuemart";
+	private final String SESSIONCOOKIEDOMAIN = "www.livellocasa.it";
+	private final String URLROOT = "http://www.livellocasa.it";
+	private final String USERNAME = "???";
+    private final String PASSWORD = "???";
+    //private String codiceInserzione;
+    private String codiceInserzione = UUID.randomUUID().toString();  
+    private boolean inserimentoOK = true; //forzato a true
     private boolean debugMode = true;
-   
+    
+    private String nomeImmagine0;
+    private String nomeImmagine1;
+    private String nomeImmagine2;
+    private String nomeImmagine3;
+    private String nomeImmagine4;
+    private String nomeImmagine5;
+    private String nomeImmagine6;
+    private String nomeImmagine7;
+    private String nomeImmagine8;
+    private String nomeImmagine9;
+    
+    //Altre variabili
+    String matchedComune = "";  
 
+    //Mappa dei parametri da inviare
     Map<String,String> mappaDeiParamerti;
     
+    //Lista dei parametri inviati in una singola connessione
     List<NameValuePair> postParameters;  
 
     //La scheda immobile su cui si lavora
@@ -63,9 +71,9 @@ public class _livellocasaIt extends PortaleImmobiliare {
     
     
 	//Costruttore
-	public _livellocasaIt (String urlIcona, String valoreLabel, String idPortale) {		
+	public _livellocasaIt (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {		
 		
-		super(urlIcona, valoreLabel, idPortale);
+		super(urlIcona, valoreLabel, idPortale, isActive);
 		
 		mappaDeiParamerti =  new Hashtable<String,String>();
 	    
@@ -83,22 +91,22 @@ public class _livellocasaIt extends PortaleImmobiliare {
     	    
     	
     	//Inizializza i parametri http del portale 
-		inizializzaParametri();
+		//inizializzaParametri();
 
     	
-    	//Connessione 0 - GET della home page
+    	//Connessione 0 - GET della home page - Opzionale
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
     	try {
-			connessione_0.get("Connessione 0 - GET della home page", CASE24_URLROOT, debugMode);
+			connessione_0.get("Connessione 0 - GET della home page", URLROOT, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	
-    	
+    	/*
     	//Connessione 1 - GET della pagina di login
     	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
     	try {
-			connessione_1.get("Connessione 1 - GET della pagina di login", CASE24_URLROOT + "/mycase24-areariservata-vendita-appartamenti.php", debugMode);
+			connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/mycase24-areariservata-vendita-appartamenti.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -107,9 +115,9 @@ public class _livellocasaIt extends PortaleImmobiliare {
     	//Connessione 2 - GET della pagina "Area Riservata"
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
-    		Object[] response = connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
+    		Object[] response = connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, debugMode);
     		Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_2, responseHeaders, CASE24_SESSIONCOOKIENAME, CASE24_SESSIONCOOKIEDOMAIN);
+    		findAndSetLocalCookie(connessione_2, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -118,8 +126,8 @@ public class _livellocasaIt extends PortaleImmobiliare {
     	//Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
-    		connessione_3.setSessionCookieDomain(CASE24_SESSIONCOOKIEDOMAIN);
-			connessione_3.get("Connessione 3 - GET della pagina \"Inserisci annuncio\" (step 1)", CASE24_URLROOT + "/area_clienti/index.php", debugMode);
+    		connessione_3.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
+			connessione_3.get("Connessione 3 - GET della pagina \"Inserisci annuncio\" (step 1)", URLROOT + "/area_clienti/index.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -132,7 +140,7 @@ public class _livellocasaIt extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("x", "10"));
         postParameters.add(new BasicNameValuePair("y", "10"));   	
         try {
-			connessione_4.post("POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio", CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+			connessione_4.post("POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -145,7 +153,7 @@ public class _livellocasaIt extends PortaleImmobiliare {
         HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
     	try {
     		String encodedSchedaCodice = URLEncoder.encode(mappaDeiParamerti.get("rif_agenzia"),"UTF-8");
-			connessione_5.get("Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio", CASE24_URLROOT + "/area_clienti/include/ajax.php?edit=valida_rif_agenzia&rif_agenzia=" + encodedSchedaCodice + "&codice_inserzione=&codice_cliente=" + CASE24_CODICE_CLIENTE, debugMode);
+			connessione_5.get("Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio", URLROOT + "/area_clienti/include/ajax.php?edit=valida_rif_agenzia&rif_agenzia=" + encodedSchedaCodice + "&codice_inserzione=&codice_cliente=" + CODICE_CLIENTE, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -161,7 +169,7 @@ public class _livellocasaIt extends PortaleImmobiliare {
     	        reqEntity.addPart("image_" + i, bin );
     	    	
     	        try {
-    	        	Object[] response = connessione_6.post("Connessioni 6 - inserimento immagine " + i, CASE24_URLROOT + "/area_clienti/include/upload_foto.php?i=" + i + "&codice_cliente=" + CASE24_CODICE_CLIENTE, reqEntity, debugMode);
+    	        	Object[] response = connessione_6.post("Connessioni 6 - inserimento immagine " + i, URLROOT + "/area_clienti/include/upload_foto.php?i=" + i + "&codice_cliente=" + CODICE_CLIENTE, reqEntity, debugMode);
     	        	String responseBody = (String)response[1];
     				boolean control = true;
     		          int start;
@@ -293,7 +301,7 @@ public class _livellocasaIt extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("opt_in_campagna", mappaDeiParamerti.get("opt_in_campagna")));
         postParameters.add(new BasicNameValuePair("optional_valore", mappaDeiParamerti.get("optional_valore"))); 	
         try {
-        	Object[] response = connessione_7.post("Connessione 7 - POST dello step 1 (e unico...)", CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+        	Object[] response = connessione_7.post("Connessione 7 - POST dello step 1 (e unico...)", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
         	String responseBody = (String)response[1];
         	
 			if(responseBody.contains("ANNUNCIO INSERITO CORRETTAMENTE")) {
@@ -313,9 +321,9 @@ public class _livellocasaIt extends PortaleImmobiliare {
 	            	if(currentElement.html().contains("CODICE RIFERIMENTO AGENZIA:")) {
 	            		String text = currentElement.html().substring(currentElement.html().indexOf("AGENZIA:")+8).trim();
 	            		if(scheda.codiceInserzione.equals(text)) {
-	            			CASE24_CODICEINSERZIONE = currentElement.attr("name");
+	            			CODICEINSERZIONE = currentElement.attr("name");
 	            		}		
-	            		System.out.println("CODICEINSERZIONE: " + CASE24_CODICEINSERZIONE);
+	            		System.out.println("CODICEINSERZIONE: " + CODICEINSERZIONE);
 	            	}
 	            }
             }
@@ -324,39 +332,39 @@ public class _livellocasaIt extends PortaleImmobiliare {
 		}
     	finally {
     		postParameters.clear();
-    	}	    	
+    	}*/  	
       
     	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
-    	if(INSERIMENTO_OK) {
+    	if(inserimentoOK) {
     		
     		//Aggiorna la lista dei portali in cui è inserita la scheda
-    		scheda.aggiungiInserimentoPortale(idPortale, CASE24_CODICEINSERZIONE);
+    		scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
     		      	
     		if(!isSequential) {   			
-    			System.out.println("Inserita in: " + CASE24_NOMEPORTALE);       		
+    			System.out.println("Inserita in: " + NOMEPORTALE);       		
         		
     			//Aggiorna i pulsanti del pannello inserimento
     			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
     			
     			//Invio mail di conferma inserimento 
-            	sendConfirmationMail(scheda, CASE24_NOMEPORTALE, CASE24_CODICEINSERZIONE);
+            	sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
            	
             	//Stampo a video un messaggio informativo
-                JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + CASE24_NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
               
     		}
     		
-    		return INSERIMENTO_OK;        	
+    		return inserimentoOK;        	
         	
     	}
     	else {
     		
     		if(!isSequential) {
     			//Stampo a video un messaggio informativo
-        		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + CASE24_NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
+        		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
     		}
     		
-    		return INSERIMENTO_OK;
+    		return inserimentoOK;
  		
     	}
        
@@ -369,9 +377,9 @@ public class _livellocasaIt extends PortaleImmobiliare {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = CASE24_URLROOT + "/area_clienti/annunci.php";
+			String url = URLROOT + "/area_clienti/annunci.php";
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
-			System.out.println("Visualizzata in: " + CASE24_NOMEPORTALE);
+			System.out.println("Visualizzata in: " + NOMEPORTALE);
 			
 		} catch (IOException e ) {
 			//manageErrors(e, 3);
@@ -386,13 +394,13 @@ public class _livellocasaIt extends PortaleImmobiliare {
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException {		
 		System.out.println("Eliminazione scheda: " + scheda.codiceInserzione + "...");
-		CASE24_CODICEINSERZIONE = scheda.getCodiceInserimento(idPortale);	
+		//CODICEINSERZIONE = scheda.getCodiceInserimento(idPortale);	
 		
 		
 		//Connessione 2 - GET della pagina "Area Riservata"
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
-			connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
+			connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -403,12 +411,12 @@ public class _livellocasaIt extends PortaleImmobiliare {
     	postParameters = new ArrayList<NameValuePair>();          
     	postParameters.add(new BasicNameValuePair("bottone_cancella", "Cancella annuncio"));
         postParameters.add(new BasicNameValuePair("cancella_annuncio", "cancella"));
-        postParameters.add(new BasicNameValuePair("codice_inserzione", CASE24_CODICEINSERZIONE));
+        //postParameters.add(new BasicNameValuePair("codice_inserzione", CODICEINSERZIONE));
         postParameters.add(new BasicNameValuePair("order_by", ""));
         postParameters.add(new BasicNameValuePair("order_direction", ""));
         postParameters.add(new BasicNameValuePair("page", ""));	
         try {
-			connessione_8.post("Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio", CASE24_URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+			connessione_8.post("Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -424,10 +432,10 @@ public class _livellocasaIt extends PortaleImmobiliare {
   			//Aggiorno i pulsanti del pannello inserimento
   			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
   			
-  			System.out.println("Eliminata da: " + CASE24_NOMEPORTALE);
+  			System.out.println("Eliminata da: " + NOMEPORTALE);
   		  	
   	  		//Stampo a video un messaggio informativo
-  	        JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + CASE24_NOMEPORTALE);
+  	        JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + NOMEPORTALE);
 		}
   		
   		return true;
@@ -437,7 +445,7 @@ public class _livellocasaIt extends PortaleImmobiliare {
 	
 	
 	//Metodo per la valutazione dei parametri
-	public void inizializzaParametri()  {
+	/*public void inizializzaParametri()  {
 		
 		String inserisci_annuncio = "1";
 		mappaDeiParamerti.put("inserisci_annuncio", inserisci_annuncio);
@@ -451,7 +459,7 @@ public class _livellocasaIt extends PortaleImmobiliare {
 		String action = "inserisci_nuovo_annuncio";
 		mappaDeiParamerti.put("action", action);
 		
-		String codice_cliente = CASE24_CODICE_CLIENTE;
+		String codice_cliente = CODICE_CLIENTE;
 		mappaDeiParamerti.put("codice_cliente", codice_cliente);
 		
 		String InserzionistaPrivato = "0";
@@ -945,34 +953,7 @@ public class _livellocasaIt extends PortaleImmobiliare {
 		mappaDeiParamerti.put("nameComune", nameComune);
 		
 		String codice_comune_inserzione = "";
-		/*HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
-    	try {
-    		Object[] response = connessione_9.get(CASE24_URLROOT + "/area_clienti/include/ajax.php?funzione=select_geografico&etichetta=denominazione_comune&zona=X&valore_etichetta=" + codice_provincia_inserzione + "&valore_selezionato=&tabindex=3", debugMode);
-    		String responseBody = (String)response[1];
-    		
-    		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);              
-            //Ottengo il valore del parametro Provincia
-            Elements optionElements = doc.getElementsByTag("option");
-            if(optionElements.isEmpty()) {
-            	throw(new HttpResponseException("Non ho trovato tag di tipo \"option\""));
-            }
-            else {
-            	Iterator<Element> iterator = optionElements.iterator();
-            	double resultComparation = 0;
-            	while(iterator.hasNext()) {
-	            	Element currentElement = iterator.next();
-	            	List<char[]> charListPortale = bigram(currentElement.html());
-	        		List<char[]> charListImagination = bigram(nameComune);
-	        		double actualResultComparation = dice(charListPortale, charListImagination);
-	        		if(actualResultComparation>=resultComparation) {
-	        			resultComparation = actualResultComparation;
-	        			codice_comune_inserzione = currentElement.attr("value");            		
-	        		}       		
-            	}
-            }
-		} catch (IOException e) {
-			throw new HttpCommunicationException(e);
-		}*/
+
     	mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);
 		
 		mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);				
@@ -1217,7 +1198,7 @@ public class _livellocasaIt extends PortaleImmobiliare {
 		}
 		mappaDeiParamerti.put("classe_energetica", classe_energetica);
 
-	}
+	}*/
 	
 	
 }

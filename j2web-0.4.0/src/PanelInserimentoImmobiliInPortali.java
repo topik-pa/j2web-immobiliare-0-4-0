@@ -434,8 +434,8 @@ class InserimentoPortale extends JPanel {
 		
 		//Pulsante Inserisci
  		btnInserisci = new JButton(labelBtnInserisci);
- 		//Controllo se la scheda è inserita nel portale corrente     		
- 		if(isOnThisPortal){
+ 		//Controllo se la scheda è inserita nel portale corrente e se il portale è attivo 		
+ 		if(!portale.isActive || isOnThisPortal){
  			//Pulsante disabilitato
  			btnInserisci.setEnabled(false);			
  		}
@@ -466,8 +466,8 @@ class InserimentoPortale extends JPanel {
  			     		
  		//Pulsante Visualizza
  		btnVisualizza = new JButton(labelBtnVisualizza);
- 		//Controllo se la scheda è inserita nel portale corrente
- 		if(isOnThisPortal) {
+ 		//Controllo se la scheda è inserita nel portale corrente e se il portale è attivo
+ 		if(portale.isActive && isOnThisPortal) {
  			btnVisualizza.setEnabled(true);
  			btnVisualizza.addActionListener(new ActionListener() {
      			public void actionPerformed(ActionEvent e) {
@@ -491,8 +491,8 @@ class InserimentoPortale extends JPanel {
  		
  		//Pulsante Cancella
  		btnCancella = new JButton(labelBtnCancella);
- 		//Controllo se la scheda è inserita nel portale corrente
- 		if(isOnThisPortal){
+ 		//Controllo se la scheda è inserita nel portale corrente e se il portale è attivo
+ 		if(portale.isActive && isOnThisPortal){
  			btnCancella.setEnabled(true);
  			btnCancella.addActionListener(new ActionListener() {
      			public void actionPerformed(ActionEvent e) {
