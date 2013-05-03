@@ -63,9 +63,9 @@ public class _templatePortaleImmobiliare extends PortaleImmobiliare {
     
     
 	//Costruttore
-	public _templatePortaleImmobiliare (String urlIcona, String valoreLabel, String idPortale) {		
+	public _templatePortaleImmobiliare (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {		
 		
-		super(urlIcona, valoreLabel, idPortale);
+		super(urlIcona, valoreLabel, idPortale, isActive);
 		
 		mappaDeiParamerti =  new Hashtable<String,String>();
 	    

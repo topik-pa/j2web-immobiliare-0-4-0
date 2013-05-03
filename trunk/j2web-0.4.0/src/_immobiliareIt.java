@@ -14,6 +14,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.Header;
@@ -37,17 +39,19 @@ import org.xml.sax.SAXException;
 //La classe principale
 public class _immobiliareIt extends PortaleImmobiliare {     
 
-    //Variabili generali
+	//Variabili generali
 	private final String NOMEPORTALE = "immobiliare.it";
-	private final String SESSIONCOOKIENAME = "GETRIXSID";
-	private final String SESSIONCOOKIEDOMAIN = ".getrix.ekbl.net";
-	private final String URLROOT = "http://getrix.ekbl.net/";
-	private final String USERNAME = "c392718@rmqkr.net";
-    private final String PASSWORD = "1sc4w67b";
-    private String codiceInserzione;    
-    private boolean inserimentoOK = false;
+	private final String SESSIONCOOKIENAME = "PHPSESSID";
+	private final String SESSIONCOOKIEDOMAIN = ".immobiliare.it";
+	private final String URLROOT = "http://www.immobiliare.it";
+	private final String USERNAME = "???";
+    private final String PASSWORD = "???";
+    //private String codiceInserzione;
+    private String codiceInserzione = UUID.randomUUID().toString();   
+    private boolean inserimentoOK = true; //forzato a true
     private boolean debugMode = true;
     
+    private String nomeImmagine0;
     private String nomeImmagine1;
     private String nomeImmagine2;
     private String nomeImmagine3;
@@ -57,7 +61,6 @@ public class _immobiliareIt extends PortaleImmobiliare {
     private String nomeImmagine7;
     private String nomeImmagine8;
     private String nomeImmagine9;
-    private String nomeImmagine10;
     
     //Altre variabili
     String matchedComune = "";  
@@ -69,13 +72,13 @@ public class _immobiliareIt extends PortaleImmobiliare {
     List<NameValuePair> postParameters;  
 
     //La scheda immobile su cui si lavora
-    SchedaImmobile scheda;   	   
+    SchedaImmobile scheda;  	   
     
     
 	//Costruttore
-	public _immobiliareIt (String urlIcona, String valoreLabel, String idPortale) {		
+	public _immobiliareIt (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {		
 		
-		super(urlIcona, valoreLabel, idPortale);
+		super(urlIcona, valoreLabel, idPortale, isActive);
 		
 		mappaDeiParamerti =  new Hashtable<String,String>();
 	    
@@ -92,9 +95,9 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	this.scheda=scheda;
     	     	
     	//Inizializza i parametri http del portale 
-		inizializzaParametri();
+		//inizializzaParametri();
     	
-		//Connessione 0 - GET della home page
+		//Connessione 0 - GET della home page - Opzionale
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
     	try {
     		connessione_0.get("Connessione 0 - GET della home page", URLROOT + "index.php", debugMode);
@@ -102,6 +105,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 			throw new HttpCommunicationException(e);
 		}
     	
+    	/*
     	//Connessione 1 - POST della home page per il login
     	HttpPortalPostConnection connessione_1 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
@@ -137,7 +141,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 			connessione_4.get("Connessione 4 - GET della pagina \"/inserimento_annuncio.php\"",	URLROOT + "inserimento_annuncio.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
         
         
        
@@ -244,7 +248,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 	}
 		
 	//Metodo per la valutazione dei parametri
-	public void inizializzaParametri()  {
+	/*public void inizializzaParametri()  {
 		
 		
 		String backurl = "/home_gestionale.php";
@@ -320,9 +324,6 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		mappaDeiParamerti.put("tipo", tipo);
 		
 		
-		
-		/*String categoria = "1";
-		mappaDeiParamerti.put("inserisci_annuncio", inserisci_annuncio);*/
 		
 		
 		
@@ -768,34 +769,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		mappaDeiParamerti.put("nameComune", nameComune);
 		
 		String codice_comune_inserzione = "";
-		/*HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
-    	try {
-    		Object[] response = connessione_9.get(CASE24_URLROOT + "/area_clienti/include/ajax.php?funzione=select_geografico&etichetta=denominazione_comune&zona=X&valore_etichetta=" + codice_provincia_inserzione + "&valore_selezionato=&tabindex=3", debugMode);
-    		String responseBody = (String)response[1];
-    		
-    		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);              
-            //Ottengo il valore del parametro Provincia
-            Elements optionElements = doc.getElementsByTag("option");
-            if(optionElements.isEmpty()) {
-            	throw(new HttpResponseException("Non ho trovato tag di tipo \"option\""));
-            }
-            else {
-            	Iterator<Element> iterator = optionElements.iterator();
-            	double resultComparation = 0;
-            	while(iterator.hasNext()) {
-	            	Element currentElement = iterator.next();
-	            	List<char[]> charListPortale = bigram(currentElement.html());
-	        		List<char[]> charListImagination = bigram(nameComune);
-	        		double actualResultComparation = dice(charListPortale, charListImagination);
-	        		if(actualResultComparation>=resultComparation) {
-	        			resultComparation = actualResultComparation;
-	        			codice_comune_inserzione = currentElement.attr("value");            		
-	        		}       		
-            	}
-            }
-		} catch (IOException e) {
-			throw new HttpCommunicationException(e);
-		}*/
+
     	mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);
 		
 		mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);				
@@ -1040,7 +1014,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		}
 		mappaDeiParamerti.put("classe_energetica", classe_energetica);
 
-	}
+	}*/
 	
 	
 }
