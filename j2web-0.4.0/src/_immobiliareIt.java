@@ -95,27 +95,28 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	this.scheda=scheda;
     	     	
     	//Inizializza i parametri http del portale 
-		//inizializzaParametri();
+		inizializzaParametri();
     	
 		//Connessione 0 - GET della home page - Opzionale
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
     	try {
-    		connessione_0.get("Connessione 0 - GET della home page", URLROOT + "index.php", debugMode);
+    		connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/index.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	
-    	/*
-    	//Connessione 1 - POST della home page per il login
+    	
+    	//Connessione 1 - POST della pagina http://www.immobiliare.it/accesso_agenzie.php per il login
     	HttpPortalPostConnection connessione_1 = new HttpPortalPostConnection();   	
-    	postParameters = new ArrayList<NameValuePair>();          
-        postParameters.add(new BasicNameValuePair("accedi", "accedi"));
-        postParameters.add(new BasicNameValuePair("backurl", "/home_gestionale.php"));
-        postParameters.add(new BasicNameValuePair("openTab", ""));
-        postParameters.add(new BasicNameValuePair("password", PASSWORD));
-        postParameters.add(new BasicNameValuePair("username", "c179034@rmqkr.net"));
+    	postParameters = new ArrayList<NameValuePair>();  
+    	postParameters.add(new BasicNameValuePair("backurl", mappaDeiParamerti.get("backurl")));
+    	postParameters.add(new BasicNameValuePair("email", mappaDeiParamerti.get("email")));
+    	postParameters.add(new BasicNameValuePair("mode", mappaDeiParamerti.get("mode")));
+    	postParameters.add(new BasicNameValuePair("password", mappaDeiParamerti.get("password")));
+    	postParameters.add(new BasicNameValuePair("persistent", mappaDeiParamerti.get("persistent")));
+
         try {
-        	Object[] response = connessione_1.post("Connessione 1 - POST della home page per il login", URLROOT + "index.php", postParameters, debugMode);
+        	Object[] response = connessione_1.post("Connessione 1 - POST della pagina http://www.immobiliare.it/accesso_agenzie.php per il login", URLROOT + "/accesso_agenzie.php", postParameters, debugMode);
 			Header[] responseHeaders = (Header[])response[0];
     		findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
@@ -125,6 +126,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
     		postParameters.clear();
     	}
         
+        /*
         //Connessione 3 - GET della pagina "/home_gestionale.php"
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
@@ -156,10 +158,10 @@ public class _immobiliareIt extends PortaleImmobiliare {
     			System.out.println("Inserita in: " + NOMEPORTALE);       		
         		
     			//Aggiorna i pulsanti del pannello inserimento
-    			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
+    			//j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
     			
     			//Invio mail di conferma inserimento 
-            	sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+    			//sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
            	
             	//Stampo a video un messaggio informativo
                 JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
@@ -248,9 +250,24 @@ public class _immobiliareIt extends PortaleImmobiliare {
 	}
 		
 	//Metodo per la valutazione dei parametri
-	/*public void inizializzaParametri()  {
+	public void inizializzaParametri()  {
 		
+		String backurl = "";
+		mappaDeiParamerti.put("backurl", backurl);
 		
+		String email = USERNAME;
+		mappaDeiParamerti.put("email", email);
+		
+		String mode = "xml";
+		mappaDeiParamerti.put("mode", mode);
+		
+		String password = PASSWORD;
+		mappaDeiParamerti.put("password", password);
+		
+		String persistent = "1";
+		mappaDeiParamerti.put("persistent", persistent);
+		
+		/*
 		String backurl = "/home_gestionale.php";
 		mappaDeiParamerti.put("backurl", backurl);
 		
@@ -1013,8 +1030,8 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		    	classe_energetica = "";
 		}
 		mappaDeiParamerti.put("classe_energetica", classe_energetica);
-
-	}*/
+*/
+	}
 	
 	
 }

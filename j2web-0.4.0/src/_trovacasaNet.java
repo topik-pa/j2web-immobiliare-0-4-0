@@ -344,10 +344,10 @@ public class _trovacasaNet extends PortaleImmobiliare {
     			System.out.println("Inserita in: " + NOMEPORTALE);       		
         		
     			//Aggiorna i pulsanti del pannello inserimento
-    			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
+    			//j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
     			
     			//Invio mail di conferma inserimento 
-            	sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+    			//sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
            	
             	//Stampo a video un messaggio informativo
                 JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
