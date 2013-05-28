@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -20,10 +19,6 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.message.BasicNameValuePair;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.util.UUID;
 
 /**
@@ -58,7 +53,10 @@ public class _casaIt extends PortaleImmobiliare {
     private String nomeImmagine9;
     
     //Altre variabili
-    String matchedComune = "";  
+    String __EVENTARGUMENT = "";
+    String __EVENTTARGET = "";
+    String __EVENTVALIDATION = "";
+    String __VIEWSTATE = "";
 
     //Mappa dei parametri da inviare
     Map<String,String> mappaDeiParamerti;
@@ -91,7 +89,7 @@ public class _casaIt extends PortaleImmobiliare {
     	    
     	
     	//Inizializza i parametri http del portale 
-		//inizializzaParametri();
+		inizializzaParametri();
 
     	
     	//Connessione 0 - GET della home page - Opzionale
@@ -103,15 +101,20 @@ public class _casaIt extends PortaleImmobiliare {
 		}
     	
     	
-    	//Connessione 1 - GET della pagina di login
-    	/*HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
+    	//Connessione 1 - GET della pagina di login per recuperare i valori di alcuni parametri di sessione
+    	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
     	try {
-			connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/mycase24-areariservata-vendita-appartamenti.php", debugMode);
+    		Object[] response = connessione_1.get("//Connessione 1 - POST delle credenziali di accesso per recuperare il cookie di sessione", URLROOT + "/pubblica-annunci", debugMode);
+    		String responseBody = (String)response[1];
+    		__EVENTARGUMENT = getInputValueByName(responseBody, "__EVENTARGUMENT");
+    		__EVENTTARGET = getInputValueByName(responseBody, "__EVENTTARGET");
+    		__EVENTVALIDATION = getInputValueByName(responseBody, "__EVENTVALIDATION");
+    		__VIEWSTATE = getInputValueByName(responseBody, "__VIEWSTATE");
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	
-    	
+    	/*
     	//Connessione 2 - GET della pagina "Area Riservata"
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
@@ -344,10 +347,10 @@ public class _casaIt extends PortaleImmobiliare {
     			System.out.println("Inserita in: " + NOMEPORTALE);       		
         		
     			//Aggiorna i pulsanti del pannello inserimento
-    			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
+    			//j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
     			
     			//Invio mail di conferma inserimento 
-            	sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+            	//sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
            	
             	//Stampo a video un messaggio informativo
                 JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
@@ -445,9 +448,9 @@ public class _casaIt extends PortaleImmobiliare {
 	
 	
 	//Metodo per la valutazione dei parametri
-	/*public void inizializzaParametri()  {
+	public void inizializzaParametri()  {
 		
-		String inserisci_annuncio = "1";
+		/*String inserisci_annuncio = "1";
 		mappaDeiParamerti.put("inserisci_annuncio", inserisci_annuncio);
 		
 		String x = "10";
@@ -1197,8 +1200,8 @@ public class _casaIt extends PortaleImmobiliare {
 		    	classe_energetica = "";
 		}
 		mappaDeiParamerti.put("classe_energetica", classe_energetica);
-
-	}*/
+*/
+	}
 	
 	
 }

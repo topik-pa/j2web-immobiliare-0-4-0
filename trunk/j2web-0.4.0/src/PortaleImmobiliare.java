@@ -22,6 +22,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
+import java.util.Iterator;
 
 
 /*
@@ -209,6 +213,8 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
                 if(cookie_name.equals(cookieName)) {
                 	//Cookie di sessione trovato
             		cookieHeaderFound = true;
+            		//Stampo i valori trovati
+            		System.out.println("Method: findAndSetLocalCookie " + "cookie_header-->"+cookie_header + " cookieName-->"+cookieName + " cookie_value-->"+cookie_value + " cookieDomain-->"+cookieDomain);
             		//Scrive i valori del cookie trovato nell'oggetto connessione passato come argomento
             		connessione.setSessionCookieHeader(cookie_header);
             		connessione.setSessionCookieName(cookieName);
@@ -271,5 +277,23 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
         return mappaLatLon;       	
   	}
 
-    
+  	//Metodo per ottenere il valore di un input dato il nome dell'input stesso
+  	public String getInputValueByName(String responseBody, String inputName) {
+  		String inputValue = null;
+  		
+  		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
+  		Elements inputElements = doc.getElementsByTag("input");
+  		if(inputElements!=null) {
+            Iterator<Element> iterator = inputElements.iterator();
+            while(iterator.hasNext()) {
+            	Element currentElement = iterator.next();
+            	if(currentElement.attr("name").equals(inputName)) {
+            		inputValue = currentElement.attr("value");
+            	}
+            }
+        }
+  		System.out.println("Method: getInputValueByName: " + inputName + " --> " + inputValue);
+		return inputValue; 
+  	}
+  	
 }
