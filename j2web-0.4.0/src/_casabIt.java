@@ -39,8 +39,8 @@ public class _casabIt extends PortaleImmobiliare {
 	private final String SESSIONCOOKIENAME = "PHPSESSID";
 	private final String SESSIONCOOKIEDOMAIN = "casab.it";
 	private final String URLROOT = "http://casab.it";
-	private final String USERNAME = "???";
-    private final String PASSWORD = "???";
+	private final String USERNAME = "hsttdjjh@sharklasers.com";
+    private final String PASSWORD = "password";
     //private String codiceInserzione;
     private String codiceInserzione = UUID.randomUUID().toString();   
     private boolean inserimentoOK = true; //forzato a true
@@ -88,12 +88,10 @@ public class _casabIt extends PortaleImmobiliare {
     	
     	//Inizializzazione parametri
     	this.scheda=scheda;
-    	    
-    	
+    	    	
     	//Inizializza i parametri http del portale 
 		//inizializzaParametri();
-
-    	
+	
     	//Connessione 0 - GET della home page - Opzionale
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
     	try {
@@ -102,37 +100,42 @@ public class _casabIt extends PortaleImmobiliare {
 			throw new HttpCommunicationException(e);
 		}
     	
-    	/*
+    	
     	//Connessione 1 - GET della pagina di login
     	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
     	try {
-			connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/mycase24-areariservata-vendita-appartamenti.php", debugMode);
-		} catch (IOException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	
-    	
-    	//Connessione 2 - GET della pagina "Area Riservata"
-    	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
-    	try {
-    		Object[] response = connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, debugMode);
+    		Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/page/14/login_agenzie.html", debugMode);
     		Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_2, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+    		findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	
     	
-    	//Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
+    	//Connessione 2 - POST dei parametri di accesso
+    	HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();   	
+    	postParameters = new ArrayList<NameValuePair>();          
+        postParameters.add(new BasicNameValuePair("email", USERNAME));
+        postParameters.add(new BasicNameValuePair("password", PASSWORD));   	
+        try {
+			connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/funzioni/login_agenzia.php", postParameters, debugMode);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	finally {
+    		postParameters.clear();
+    	}
+        
+    	
+    	//Connessione 3 - GET della pagina "Annunci immobiliari"
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
-    		connessione_3.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
-			connessione_3.get("Connessione 3 - GET della pagina \"Inserisci annuncio\" (step 1)", URLROOT + "/area_clienti/index.php", debugMode);
+			connessione_3.get("Connessione 3 - GET della pagina \"Annunci immobiliari\"", URLROOT + "/area_riservata.php?pg=modimmo&tipo=age", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	
-    	
+    	/*
     	//Connessione 4 - POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
     	HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
@@ -338,7 +341,7 @@ public class _casabIt extends PortaleImmobiliare {
     	if(inserimentoOK) {
     		
     		//Aggiorna la lista dei portali in cui è inserita la scheda
-    		scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
+    		//scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
     		      	
     		if(!isSequential) {   			
     			System.out.println("Inserita in: " + NOMEPORTALE);       		
@@ -371,7 +374,6 @@ public class _casabIt extends PortaleImmobiliare {
 	}
 	
     
-    
     //Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaImmobile scheda) {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
@@ -389,7 +391,6 @@ public class _casabIt extends PortaleImmobiliare {
 	
 	}
 
-	
 	
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException {		
@@ -442,7 +443,6 @@ public class _casabIt extends PortaleImmobiliare {
 	
 	}
 		
-	
 	
 	//Metodo per la valutazione dei parametri
 	/*public void inizializzaParametri()  {

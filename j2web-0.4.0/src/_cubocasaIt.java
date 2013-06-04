@@ -40,8 +40,8 @@ public class _cubocasaIt extends PortaleImmobiliare {
 	private final String SESSIONCOOKIENAME = "PHPSESSID";
 	private final String SESSIONCOOKIEDOMAIN = "www.cubocasa.it";
 	private final String URLROOT = "http://www.cubocasa.it";
-	private final String USERNAME = "???";
-    private final String PASSWORD = "???";
+	private final String USERNAME = "Caseecase2";
+    private final String PASSWORD = "password";
     //private String codiceInserzione;
     private String codiceInserzione = UUID.randomUUID().toString();   
     private boolean inserimentoOK = true; //forzato a true
@@ -100,7 +100,8 @@ public class _cubocasaIt extends PortaleImmobiliare {
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	 /* 	
+    	
+	
     	//Connessione 1 - POST della pagina di login
     	HttpPortalPostConnection connessione_1 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
@@ -117,7 +118,8 @@ public class _cubocasaIt extends PortaleImmobiliare {
 		}
     	finally {
     		postParameters.clear();
-    	}	
+    	}
+        
     	
     	//Connessione 2 - GET di redirect 
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
@@ -126,7 +128,8 @@ public class _cubocasaIt extends PortaleImmobiliare {
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	   	
+    	   
+    	/*
     	//Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
@@ -302,6 +305,7 @@ public class _cubocasaIt extends PortaleImmobiliare {
        
 	}
 	 
+    
     //Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
@@ -319,6 +323,7 @@ public class _cubocasaIt extends PortaleImmobiliare {
 	
 	}
 
+	
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException {		
 		System.out.println("Eliminazione scheda: " + scheda.codiceInserzione + "...");
@@ -350,24 +355,44 @@ public class _cubocasaIt extends PortaleImmobiliare {
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}	
-    	       
-        //Aggiorno la lista dei portali in cui è presenta la scheda corrente
-  		scheda.eliminaInserimentoPortale(idPortale);			
-  	 		
-  		if(!isSequential) {
-  			//Aggiorno i pulsanti del pannello inserimento
-  			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
-  			
-  			System.out.println("Eliminata da: " + NOMEPORTALE);
-  		  	
-  	  		//Stampo a video un messaggio informativo
-  	        JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + NOMEPORTALE);
-		}
-  		
-  		return true;
+    	
+    	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
+    	if(inserimentoOK) {
+    		
+    		//Aggiorna la lista dei portali in cui è inserita la scheda
+    		//scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
+    		      	
+    		if(!isSequential) {   			
+    			System.out.println("Inserita in: " + NOMEPORTALE);       		
+        		
+    			//Aggiorna i pulsanti del pannello inserimento
+    			//j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
+    			
+    			//Invio mail di conferma inserimento 
+    			//sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+           	
+            	//Stampo a video un messaggio informativo
+                JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+              
+    		}
+    		
+    		return inserimentoOK;        	
+        	
+    	}
+    	else {
+    		
+    		if(!isSequential) {
+    			//Stampo a video un messaggio informativo
+        		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
+    		}
+    		
+    		return inserimentoOK;
+ 		
+    	}
 	
 	}
 		
+	
 	//Metodo per la valutazione dei parametri
 	/*public void inizializzaParametri() throws HttpCommunicationException  {		
 		

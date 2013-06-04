@@ -14,6 +14,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.Header;
@@ -42,13 +44,15 @@ public class _case24It extends PortaleImmobiliare {
 	private final String SESSIONCOOKIENAME = "PHPSESSID";
 	private final String SESSIONCOOKIEDOMAIN = "www.case24.it";
 	private final String URLROOT = "http://www.case24.it";
-	private final String USERNAME = "vgltoove@sharklasers.com";
-    private final String PASSWORD = "nki9stjl";
-    private final String CODICE_CLIENTE ="1340103900";
-    private String codiceInserzione;    
-    private boolean inserimentoOK = false;
+	private final String USERNAME = "hsttdjjh@sharklasers.com";
+    private final String PASSWORD = "mfdlogm9";
+    private final String CODICE_CLIENTE ="####";
+    //private String codiceInserzione;
+    private String codiceInserzione = UUID.randomUUID().toString();     
+    private boolean inserimentoOK = true; //forzato a true
     private boolean debugMode = true;
     
+    private String nomeImmagine0;
     private String nomeImmagine1;
     private String nomeImmagine2;
     private String nomeImmagine3;
@@ -57,6 +61,7 @@ public class _case24It extends PortaleImmobiliare {
     private String nomeImmagine6;
     private String nomeImmagine7;
     private String nomeImmagine8;
+    private String nomeImmagine9;
     
     //Altre variabili
     String matchedComune = "";  
@@ -91,7 +96,7 @@ public class _case24It extends PortaleImmobiliare {
     	this.scheda=scheda;
     	     	
     	//Inizializza i parametri http del portale 
-		inizializzaParametri();
+		//inizializzaParametri();
     	
 		//Connessione 0 - GET della home page
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -100,7 +105,8 @@ public class _case24It extends PortaleImmobiliare {
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	  	
+    	
+    	
     	//Connessione 1 - GET della pagina di login
     	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
     	try {
@@ -109,25 +115,25 @@ public class _case24It extends PortaleImmobiliare {
 			throw new HttpCommunicationException(e);
 		}	
     	
-    	//Connessione 2 - GET della pagina "Area Riservata"
+    	//Connessione 2 - GET dei parametri di accesso e recupero del cookie di sessione
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
-    		Object[] response = connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, debugMode);
+    		Object[] response = connessione_2.get("Connessione 2 - GET dei parametri di accesso e recupero del cookie di sessione", URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, debugMode);
     		Header[] responseHeaders = (Header[])response[0];
     		findAndSetLocalCookie(connessione_2, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	   	
-    	//Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
+    	
+    	//Connessione 3 - GET della pagina "Inserisci annuncio"
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
     		connessione_3.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
-			connessione_3.get("Connessione 3 - GET della pagina \"Inserisci annuncio\" (step 1)", URLROOT + "/area_clienti/index.php", debugMode);
+			connessione_3.get("Connessione 3 - GET della pagina \"Inserisci annuncio\"", URLROOT + "/area_clienti/index.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	   	
+    	/*
     	//Connessione 4 - POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
     	HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
@@ -325,21 +331,21 @@ public class _case24It extends PortaleImmobiliare {
     	finally {
     		postParameters.clear();
     	}  	   	
-    		    	    
-      //Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
+    	*/    	    
+    	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
     	if(inserimentoOK) {
     		
     		//Aggiorna la lista dei portali in cui è inserita la scheda
-    		scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
+    		//scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
     		      	
     		if(!isSequential) {   			
     			System.out.println("Inserita in: " + NOMEPORTALE);       		
         		
     			//Aggiorna i pulsanti del pannello inserimento
-    			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
+    			//j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
     			
     			//Invio mail di conferma inserimento 
-            	sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+            	//sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
            	
             	//Stampo a video un messaggio informativo
                 JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
