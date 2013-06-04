@@ -295,9 +295,20 @@ public class j2web implements parametriGenerali {
 	}
 
 	//Inizializza la lista dei portali attivi
-	public static void inizializzaPortaliAttivi() {			
+	public static void inizializzaPortaliAttivi() {	
 		
-		PortaleImmobiliare _casaIt = new _casaIt("./images/_casaIt.jpg", "1 - casa.it", "001", true);
+		/*Progetto J2Web-DEMO*/
+		PortaleImmobiliare _case24It = new _case24It("./images/_case24It.jpg", "1 - case24.it", "001", true);
+    	j2web_GUI.listPortaliImmobiliari.add(_case24It);
+    	
+    	PortaleImmobiliare _casabIt = new _casabIt("./images/_casabIt.jpg", "2 - casab.it", "002", true);
+    	j2web_GUI.listPortaliImmobiliari.add(_casabIt);
+    	
+    	PortaleImmobiliare _cubocasaIt = new _cubocasaIt("./images/_cubocasaIt.gif", "3 - cubocasa.it", "003", true);
+    	j2web_GUI.listPortaliImmobiliari.add(_cubocasaIt);
+    	/*Progetto J2Web-DEMO*/
+		
+		/*PortaleImmobiliare _casaIt = new _casaIt("./images/_casaIt.jpg", "1 - casa.it", "001", true);
     	j2web_GUI.listPortaliImmobiliari.add(_casaIt);
     	
     	PortaleImmobiliare _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt.jpg", "2 - immobiliare.it", "002", true);
@@ -325,7 +336,7 @@ public class j2web implements parametriGenerali {
     	j2web_GUI.listPortaliImmobiliari.add(_cercacasaIt);
     	
     	PortaleImmobiliare _trovacasaNet = new _trovacasaNet("./images/_trovacasaNet.jpg", "10 - trovacasa.net", "010", true);
-    	j2web_GUI.listPortaliImmobiliari.add(_trovacasaNet);
+    	j2web_GUI.listPortaliImmobiliari.add(_trovacasaNet);*/
 
     }
 	
