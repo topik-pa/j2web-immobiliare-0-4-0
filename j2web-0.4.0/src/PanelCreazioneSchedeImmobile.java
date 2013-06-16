@@ -1154,6 +1154,9 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	    case "Industriale":
 	    	comboBoxTipologiaImmobile.setModel(new DefaultComboBoxModel<String>(arrayTipologieImmobiliIndustriali));
 	    	break;
+	    case "Terreni":
+	    	comboBoxTipologiaImmobile.setModel(new DefaultComboBoxModel<String>(arrayTipologieTerreni));
+	    	break;
 	    default:
 	    	comboBoxTipologiaImmobile.removeAllItems();            	    	
 		}

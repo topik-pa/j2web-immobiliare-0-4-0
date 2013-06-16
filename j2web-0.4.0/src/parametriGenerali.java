@@ -82,11 +82,12 @@ public interface parametriGenerali {
     LinkedList<JComponent> listCampiFormObbligatori = new LinkedList<JComponent>();
 	
 	//Tutti gli array<String> che definiscono le combo box
-    final String[] arrayCategorieImmobili = {"Seleziona la categoria", "Residenziale", "Commerciale", "Industriale"};
+    final String[] arrayCategorieImmobili = {"Seleziona la categoria", "Residenziale", "Commerciale", "Industriale", "Terreni"};
     final String[] arrayTipologie = {"Seleziona la tipologia"};
-    final String[] arrayTipologieImmobiliResidenziali = {arrayTipologie[0], "Appartamento", "Attico", "Bifamiliare", "Casa", "Garage", "Palazzo", "Rustico", "Terreno agricolo", "Terreno edificabile", "Villa", "Villaschiera"};
+    final String[] arrayTipologieImmobiliResidenziali = {arrayTipologie[0], "Appartamento", "Attico", "Bifamiliare", "Casa", "Garage", "Palazzo", "Rustico", "Villa", "Villaschiera"};
     final String[] arrayTipologieImmobiliCommerciali = {arrayTipologie[0], "Agriturismo", "Albergo", "Bar", "Negozio", "Ristorante", "Ufficio"};
     final String[] arrayTipologieImmobiliIndustriali = {arrayTipologie[0], "Capannone", "Laboratorio", "Magazzino"};
+    final String[] arrayTipologieTerreni = {arrayTipologie[0], "Terreno residenziale", "Terreno agricolo", "Terreno industriale"};
 	final String[] arrayTipologieContratto = {arrayTipologie[0], "Affitto", "Vendita"};
 	final String[] arrayNumeroLocali = {"Seleziona", "1", "2", "3", "4", "5", "6", "7", ">7"};
 	final String[] arrayNumeroCamere = {"Seleziona", "1", "2", "3", "4", "5", ">5"};

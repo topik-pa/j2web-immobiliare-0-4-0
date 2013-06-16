@@ -21,6 +21,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -41,8 +42,8 @@ public class _casabIt extends PortaleImmobiliare {
 	private final String URLROOT = "http://casab.it";
 	private final String USERNAME = "hsttdjjh@sharklasers.com";
     private final String PASSWORD = "password";
-    //private String codiceInserzione;
-    private String codiceInserzione = UUID.randomUUID().toString();   
+    private String codiceInserzione;
+    //private String codiceInserzione = UUID.randomUUID().toString();   
     private boolean inserimentoOK = true; //forzato a true
     private boolean debugMode = true;
     
@@ -55,10 +56,7 @@ public class _casabIt extends PortaleImmobiliare {
     private String nomeImmagine6;
     private String nomeImmagine7;
     private String nomeImmagine8;
-    private String nomeImmagine9;
-    
-    //Altre variabili
-    String matchedComune = "";  
+    private String nomeImmagine9; 
 
     //Mappa dei parametri da inviare
     Map<String,String> mappaDeiParamerti;
@@ -67,7 +65,10 @@ public class _casabIt extends PortaleImmobiliare {
     List<NameValuePair> postParameters;  
 
     //La scheda immobile su cui si lavora
-    SchedaImmobile scheda;    	   
+    SchedaImmobile scheda;
+    
+    //Altre variabili
+    String idNazione = "91";	//91 è Italia (default)
     
     
 	//Costruttore
@@ -90,7 +91,7 @@ public class _casabIt extends PortaleImmobiliare {
     	this.scheda=scheda;
     	    	
     	//Inizializza i parametri http del portale 
-		//inizializzaParametri();
+		inizializzaParametri();
 	
     	//Connessione 0 - GET della home page - Opzionale
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -134,6 +135,167 @@ public class _casabIt extends PortaleImmobiliare {
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
+    	
+    	
+    	//Connessione 4 - GET della pagina "Inserisci un nuovo immobile"
+    	HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
+    	try {
+			connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo immobile\"", URLROOT + "/area_riservata.php?pg=newimmo&tipo=age", debugMode);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	//Connessione 5 - GET della pagina "Inserisci un nuovo immobile (con parametro circa la tipologia)"
+    	HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
+    	try {
+			connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo immobile (con parametro circa la tipologia)\"", URLROOT + "/moduli/agenzie/immobile2.php?tipo=" + mappaDeiParamerti.get("tipo") + "res&act=ins", debugMode);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	//Connessione 6 - POST dello step 1
+    	HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();   	
+    	postParameters = new ArrayList<NameValuePair>();          
+        postParameters.add(new BasicNameValuePair("Categoria", mappaDeiParamerti.get("Categoria")));
+        postParameters.add(new BasicNameValuePair("Codice", mappaDeiParamerti.get("Codice")));
+        postParameters.add(new BasicNameValuePair("ComuneSM", mappaDeiParamerti.get("ComuneSM")));
+        postParameters.add(new BasicNameValuePair("Locali", mappaDeiParamerti.get("Locali")));	//solo residenziali
+        postParameters.add(new BasicNameValuePair("Motivazione", mappaDeiParamerti.get("Motivazione")));
+        postParameters.add(new BasicNameValuePair("Nazione", mappaDeiParamerti.get("Nazione")));
+        postParameters.add(new BasicNameValuePair("Prezzo_Richiesto", mappaDeiParamerti.get("Prezzo_Richiesto")));
+        postParameters.add(new BasicNameValuePair("ProvinciaSM", mappaDeiParamerti.get("ProvinciaSM")));
+        postParameters.add(new BasicNameValuePair("RegioneSM", mappaDeiParamerti.get("RegioneSM")));
+        postParameters.add(new BasicNameValuePair("Totale_mq", mappaDeiParamerti.get("Totale_mq")));
+        postParameters.add(new BasicNameValuePair("act", mappaDeiParamerti.get("act")));
+        postParameters.add(new BasicNameValuePair("action", mappaDeiParamerti.get("action")));
+        postParameters.add(new BasicNameValuePair("bagni", mappaDeiParamerti.get("bagni")));	//solo residenziali
+        postParameters.add(new BasicNameValuePair("camere", mappaDeiParamerti.get("camere")));	//solo residenziali
+        postParameters.add(new BasicNameValuePair("certificazione_acustica", mappaDeiParamerti.get("certificazione_acustica")));
+        postParameters.add(new BasicNameValuePair("classe_energetica", mappaDeiParamerti.get("classe_energetica")));
+        postParameters.add(new BasicNameValuePair("epi", mappaDeiParamerti.get("epi")));
+        postParameters.add(new BasicNameValuePair("idImmobile", mappaDeiParamerti.get("idImmobile")));
+        postParameters.add(new BasicNameValuePair("indirizzo", mappaDeiParamerti.get("indirizzo")));
+        postParameters.add(new BasicNameValuePair("latitudine", mappaDeiParamerti.get("latitudine")));
+        postParameters.add(new BasicNameValuePair("longitudine", mappaDeiParamerti.get("longitudine")));
+        postParameters.add(new BasicNameValuePair("tipo", mappaDeiParamerti.get("tipo")));	
+        try {
+        	Object[] response = connessione_6.post("Connessione 6 - POST dello step 1", URLROOT + "/moduli/agenzie/immobile2.php", postParameters, debugMode);
+        	String responseBody = (String)response[1];
+        	
+        	//Parse HMTL to retrieve some informations
+            org.jsoup.nodes.Document doc = Jsoup.parse(responseBody); 
+            Elements inputElement = doc.select("input[name='idImmobile']");
+            codiceInserzione = inputElement.attr("value");
+            System.out.println("CODICEINSERZIONE: " + codiceInserzione);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	finally {
+    		postParameters.clear();
+    	}	
+        
+        //Connessione 7 - GET della pagina "Inserisci un nuovo immobile (step 2)"
+    	HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
+    	try {
+			connessione_7.get("Connessione 7 - GET della pagina \"Inserisci un nuovo immobile (step 2)\"", URLROOT + "/moduli/agenzie/immobile3.php?idImmobile=" + mappaDeiParamerti.get(codiceInserzione) + "&tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", debugMode);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	//Connessione 8 - POST dello step 2
+    	HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();   	
+    	postParameters = new ArrayList<NameValuePair>();          
+        postParameters.add(new BasicNameValuePair("Ascensore", mappaDeiParamerti.get("Ascensore"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("Balconi", mappaDeiParamerti.get("Balconi"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("Box", mappaDeiParamerti.get("Box"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("Cucina", mappaDeiParamerti.get("Cucina"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("Disposizione_interna", mappaDeiParamerti.get("Disposizione_interna")));
+        postParameters.add(new BasicNameValuePair("Eta_Costruzione", mappaDeiParamerti.get("Eta_Costruzione"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("Garage", mappaDeiParamerti.get("Garage"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("Giardino", mappaDeiParamerti.get("Giardino"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("Posto_Auto", mappaDeiParamerti.get("Posto_Auto"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("Riscaldamento_Autonomo", mappaDeiParamerti.get("Riscaldamento_Autonomo"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("Terrazzo", mappaDeiParamerti.get("Terrazzo"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("act", mappaDeiParamerti.get("act")));
+        postParameters.add(new BasicNameValuePair("action", mappaDeiParamerti.get("action")));
+        postParameters.add(new BasicNameValuePair("costruzione_presente", mappaDeiParamerti.get("costruzione_presente"))); //solo ter
+        postParameters.add(new BasicNameValuePair("arredato", mappaDeiParamerti.get("arredato"))); //solo comm e res
+        postParameters.add(new BasicNameValuePair("attivita_consentite", mappaDeiParamerti.get("attivita_consentite"))); //solo commerciale
+        postParameters.add(new BasicNameValuePair("esposizione", mappaDeiParamerti.get("esposizione"))); //solo res
+        postParameters.add(new BasicNameValuePair("idImmobile", mappaDeiParamerti.get("idImmobile")));
+        postParameters.add(new BasicNameValuePair("mq_agricoli", mappaDeiParamerti.get("mq_agricoli"))); //solo ter
+        postParameters.add(new BasicNameValuePair("mq_edificabili", mappaDeiParamerti.get("mq_edificabili"))); //solo ter
+        postParameters.add(new BasicNameValuePair("possibili_realizzazione", mappaDeiParamerti.get("possibili_realizzazione"))); //solo ter
+        postParameters.add(new BasicNameValuePair("progetto_approvato", mappaDeiParamerti.get("progetto_approvato"))); //solo ter
+        postParameters.add(new BasicNameValuePair("mq_coperti", mappaDeiParamerti.get("mq_coperti"))); //solo comm	
+        postParameters.add(new BasicNameValuePair("mq_copribili", mappaDeiParamerti.get("mq_copribili"))); //solo comm
+        postParameters.add(new BasicNameValuePair("mq_scoperti", mappaDeiParamerti.get("mq_scoperti"))); //solo comm	
+        postParameters.add(new BasicNameValuePair("num_vetrine", mappaDeiParamerti.get("num_vetrine"))); //solo comm	
+        postParameters.add(new BasicNameValuePair("piani_totali", mappaDeiParamerti.get("piani_totali"))); //solo residenziale
+        postParameters.add(new BasicNameValuePair("posizione", mappaDeiParamerti.get("posizione")));
+        postParameters.add(new BasicNameValuePair("riscaldamento_autonomo", mappaDeiParamerti.get("riscaldamento_autonomo"))); //solo commerciale
+        postParameters.add(new BasicNameValuePair("tipo", mappaDeiParamerti.get("tipo")));
+        postParameters.add(new BasicNameValuePair("tipo_terreno", mappaDeiParamerti.get("tipo_terreno"))); //solo ter
+        try {
+        	connessione_8.post("Connessione 8 - POST dello step 2", URLROOT + "/moduli/agenzie/immobile3.php", postParameters, debugMode);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	finally {
+    		postParameters.clear();
+    	}
+        
+        //Connessione 9 - GET della pagina "Inserisci un nuovo immobile (step 3)"
+    	HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
+    	try {
+			connessione_9.get("Connessione 9 - GET della pagina \"Inserisci un nuovo immobile (step 3)\"", URLROOT + "/moduli/agenzie/immobile4.php?idImmobile=" + mappaDeiParamerti.get(codiceInserzione) + "&tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", debugMode);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	//Connessioni 10 - inserimento immagini
+    	for(int i=0; i<scheda.arrayImages.length; i++) {
+    		if(scheda.arrayImages[i]!=null) {
+    			HttpPortalPostConnection connessione_10 = new HttpPortalPostConnection();
+    	    	
+    			try {
+	    			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+	    	        FileBody bin = new FileBody(scheda.arrayImages[i]);
+	    	        reqEntity.addPart("file", bin );
+	    	        reqEntity.addPart("action", new StringBody("1"));
+	    	        reqEntity.addPart("tipo", new StringBody(mappaDeiParamerti.get("tipo")));
+	    	        reqEntity.addPart("act", new StringBody("ins"));
+	    	        reqEntity.addPart("idImmobile", new StringBody(mappaDeiParamerti.get(mappaDeiParamerti.get("idImmobile"))));
+    	    	
+	    	        connessione_10.post("Connessione 10_" + i + " - inserimento immagine " + i, URLROOT + "/moduli/agenzie/immobile4.php", reqEntity, debugMode);
+    			} catch (IOException e) {
+    				throw new HttpCommunicationException(e);
+    			}
+    	    	finally {
+    	    		postParameters.clear();
+    	    	}
+            }
+    	}
+    	
+    	//Connessione 11 - GET della pagina "Modifica gli immobili" per verificare l'inserimento
+    	HttpPortalGetConnection connessione_11 = new HttpPortalGetConnection();
+    	try {
+    		Object[] response = connessione_11.get("Connessione 11 - GET della pagina \"Modifica gli immobili\" per verificare l'inserimento", URLROOT + "/area_riservata.php?pg=modimmo", debugMode);
+    		String responseBody = (String) response[1];
+    		
+    		if(responseBody.contains(mappaDeiParamerti.get(codiceInserzione))) {
+            	inserimentoOK = true;
+            }
+            else {
+            	throw(new HttpWrongResponseBodyException("Non trovo un riferimento all'annunncio appena inserito che stabiliscea se l'annuncio è stato inserito correttamente"));
+            }
+		} catch (IOException | HttpWrongResponseBodyException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	
+    	
+	
     	
     	/*
     	//Connessione 4 - POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
@@ -445,9 +607,176 @@ public class _casabIt extends PortaleImmobiliare {
 		
 	
 	//Metodo per la valutazione dei parametri
-	/*public void inizializzaParametri()  {
+	public void inizializzaParametri() throws HttpCommunicationException {
 		
-		String inserisci_annuncio = "1";
+		mappaDeiParamerti.put("idNazione", idNazione);
+		
+		String tipo = "";
+		switch (scheda.categoriaImmobile)
+    	{
+    	    case "Residenziale":
+    	    	tipo = "res";
+    	        break;
+    	    case "Commerciale":
+    	    	tipo = "com";
+    	    	break;
+    	    case "Industriale":
+    	    	tipo = "";
+    	    	break;
+    	    default:
+    	    	tipo = "";
+    	}
+		mappaDeiParamerti.put("tipo", tipo);
+		
+		String regioneSM = scheda.regione;
+		switch (regioneSM) {
+		case "Abruzzo":
+	    	regioneSM = "13";
+	        break;
+	    case "Basilicata":
+	    	regioneSM = "16";
+	    	break;
+	    case "Calabria":
+	    	regioneSM = "18";
+	    	break;
+	    case "Campania":
+	    	regioneSM = "15";
+	    	break;
+	    case "Emilia-Romagna":
+	    	regioneSM = "8";
+	    	break;
+	    case "Friuli-Venezia Giulia":
+	    	regioneSM = "5";
+	    	break;
+	    case "Lazio":
+	    	regioneSM = "11";
+	    	break;
+	    case "Liguria":
+	    	regioneSM = "3";
+	    	break;
+	    case "Lombardia":
+	    	regioneSM = "4";
+	    	break;
+	    case "Marche":
+	    	regioneSM = "12";
+	    	break;
+	    case "Molise":
+	    	regioneSM = "14";
+	    	break;
+	    case "Piemonte":
+	    	regioneSM = "2";
+	    	break;
+	    case "Puglia":
+	    	regioneSM = "17";
+	    	break;
+	    case "Sardegna":
+	    	regioneSM = "20";
+	    	break;
+	    case "Sicilia":
+	    	regioneSM = "19";
+	    	break;
+	    case "Toscana":
+	    	regioneSM = "0";
+	    	break;
+	    case "Trentino-Alto Adige":
+	    	regioneSM = "7";
+	    	break;
+	    case "Umbria":
+	    	regioneSM = "10";
+	    	break;
+	    case "Valle d'Aosta":
+	    	regioneSM = "1";
+	    	break;
+	    case "Veneto":
+	    	regioneSM = "6";
+	    	break;
+	    default:
+	    	regioneSM = "0";
+		}
+		mappaDeiParamerti.put("regioneSM", regioneSM);
+		
+		String provincia = scheda.provincia;
+		String ProvinciaSM = "";
+		//Recupero del codice della Provincia
+		HttpPortalGetConnection connessione_a = new HttpPortalGetConnection();
+    	try {
+    		Object[] response = connessione_a.get("Recupero del codice della Provincia", URLROOT + "/funzioni/select_provinceSM.php?idNazione=" + mappaDeiParamerti.get(idNazione) + "&idRegione=" + mappaDeiParamerti.get(regioneSM) + "&idProvincia=0", debugMode);
+    		String responseBody = (String)response[1];
+    		
+    		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);              
+            //Ottengo il valore del parametro Provincia
+            Elements optionElements = doc.getElementsByTag("option");
+            if(optionElements.isEmpty()) {
+            	throw(new HttpWrongResponseBodyException("Non ho trovato tag di tipo \"option\""));
+            }
+            else {
+            	Iterator<Element> iterator = optionElements.iterator();
+            	double resultComparation = 0;
+            	while(iterator.hasNext()) {
+	            	Element currentElement = iterator.next();
+	            	List<char[]> charListPortale = bigram(currentElement.html());
+	        		List<char[]> charListImagination = bigram(provincia);
+	        		double actualResultComparation = dice(charListPortale, charListImagination);
+	        		if(actualResultComparation>=resultComparation) {
+	        			resultComparation = actualResultComparation;
+	        			ProvinciaSM = currentElement.attr("value");            		
+	        		}       		
+            	}
+            }
+		} catch (IOException | HttpWrongResponseBodyException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	mappaDeiParamerti.put("ProvinciaSM", ProvinciaSM);
+    	
+    	String comune = scheda.comune;
+		String ComuneSM = "";
+		//Recupero del codice del Comune
+		HttpPortalGetConnection connessione_b = new HttpPortalGetConnection();
+    	try {
+    		Object[] response = connessione_b.get("Recupero del codice del Comune", URLROOT + "/funzioni/select_comuniSM.php?idNazione=" + mappaDeiParamerti.get(idNazione) + "&idProvincia=" + mappaDeiParamerti.get(ProvinciaSM), debugMode);
+    		String responseBody = (String)response[1];
+    		
+    		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);              
+            //Ottengo il valore del parametro Provincia
+            Elements optionElements = doc.getElementsByTag("option");
+            if(optionElements.isEmpty()) {
+            	throw(new HttpWrongResponseBodyException("Non ho trovato tag di tipo \"option\""));
+            }
+            else {
+            	Iterator<Element> iterator = optionElements.iterator();
+            	double resultComparation = 0;
+            	while(iterator.hasNext()) {
+	            	Element currentElement = iterator.next();
+	            	List<char[]> charListPortale = bigram(currentElement.html());
+	        		List<char[]> charListImagination = bigram(comune);
+	        		double actualResultComparation = dice(charListPortale, charListImagination);
+	        		if(actualResultComparation>=resultComparation) {
+	        			resultComparation = actualResultComparation;
+	        			ComuneSM = currentElement.attr("value");            		
+	        		}       		
+            	}
+            }
+		} catch (IOException | HttpWrongResponseBodyException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	mappaDeiParamerti.put("ComuneSM", ComuneSM);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*String inserisci_annuncio = "1";
 		mappaDeiParamerti.put("inserisci_annuncio", inserisci_annuncio);
 		
 		String x = "10";
@@ -1197,8 +1526,9 @@ public class _casabIt extends PortaleImmobiliare {
 		    	classe_energetica = "";
 		}
 		mappaDeiParamerti.put("classe_energetica", classe_energetica);
+		*/
 
-	}*/
+	}
 	
 	
 }
