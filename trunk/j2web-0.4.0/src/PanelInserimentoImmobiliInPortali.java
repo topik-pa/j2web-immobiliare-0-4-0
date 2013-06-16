@@ -130,7 +130,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
     	add(Box.createVerticalGlue());        	
     }
        
-    //Gestione degli errori
+    //Gestione degli errori di comunicazione con il server remoto
     public static void manageErrorsOnPortalSubmission(HttpCommunicationException e) {
     	
     	String errorType = e.getCatchedExceptionType();

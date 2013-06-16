@@ -4,8 +4,6 @@
 */ 
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,22 +12,17 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
+//import java.util.UUID;
 import javax.swing.JOptionPane;
-import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.message.BasicStatusLine;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -46,9 +39,9 @@ public class _case24It extends PortaleImmobiliare {
 	private final String URLROOT = "http://www.case24.it";
 	private final String USERNAME = "hsttdjjh@sharklasers.com";
     private final String PASSWORD = "mfdlogm9";
-    private final String CODICE_CLIENTE ="####";
-    //private String codiceInserzione;
-    private String codiceInserzione = UUID.randomUUID().toString();     
+    private final String CODICE_CLIENTE ="1369767940";
+    private String codiceInserzione;
+    //private String codiceInserzione = UUID.randomUUID().toString();     
     private boolean inserimentoOK = true; //forzato a true
     private boolean debugMode = true;
     
@@ -96,7 +89,7 @@ public class _case24It extends PortaleImmobiliare {
     	this.scheda=scheda;
     	     	
     	//Inizializza i parametri http del portale 
-		//inizializzaParametri();
+		inizializzaParametri();
     	
 		//Connessione 0 - GET della home page
     	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -115,6 +108,7 @@ public class _case24It extends PortaleImmobiliare {
 			throw new HttpCommunicationException(e);
 		}	
     	
+    	
     	//Connessione 2 - GET dei parametri di accesso e recupero del cookie di sessione
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
@@ -125,6 +119,7 @@ public class _case24It extends PortaleImmobiliare {
 			throw new HttpCommunicationException(e);
 		}
     	
+    	
     	//Connessione 3 - GET della pagina "Inserisci annuncio"
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
@@ -133,23 +128,26 @@ public class _case24It extends PortaleImmobiliare {
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	/*
-    	//Connessione 4 - POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio
+    	
+    	
+    	//Connessione 4 - POST per ottenere la pagina di inserzione annuncio
     	HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
         postParameters.add(new BasicNameValuePair("inserisci_annuncio", "1"));
         postParameters.add(new BasicNameValuePair("x", "10"));
         postParameters.add(new BasicNameValuePair("y", "10"));   	
         try {
-			connessione_4.post("POST della pagina Gestione annunci per ottenere la pagina di inserzione annuncio", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
+			connessione_4.post("POST per ottenere la pagina di inserzione annuncio", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
     	finally {
     		postParameters.clear();
     	} 	
-    	  	
-      //Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio
+	
+      
+        /*
+      	//Connessione 5 - GET di una pagina per passargli il codice agenzia e riferimento annuncio
         HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
     	try {
     		String encodedSchedaCodice = URLEncoder.encode(mappaDeiParamerti.get("rif_agenzia"),"UTF-8");
@@ -157,7 +155,9 @@ public class _case24It extends PortaleImmobiliare {
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
-               
+		*/
+           
+        
     	//Connessioni 6 - inserimento immagine
     	for(int i=0; i<scheda.arrayImages.length; i++) {
     		if(scheda.arrayImages[i]!=null) {
@@ -168,7 +168,7 @@ public class _case24It extends PortaleImmobiliare {
     	        reqEntity.addPart("image_" + i, bin );
     	    	
     	        try {
-    	        	Object[] response = connessione_6.post("Connessioni 6 - inserimento immagine " + i, URLROOT + "/area_clienti/include/upload_foto.php?i=" + i + "&codice_cliente=" + CODICE_CLIENTE, reqEntity, debugMode);
+    	        	Object[] response = connessione_6.post("Connessione 6_ " + i + " - inserimento immagine " + i, URLROOT + "/area_clienti/include/upload_foto.php?i=" + i + "&codice_cliente=" + CODICE_CLIENTE, reqEntity, debugMode);
     	        	String responseBody = (String)response[1];
     				boolean control = true;
     		          int start;
@@ -179,35 +179,43 @@ public class _case24It extends PortaleImmobiliare {
     		        	  switch (i)
     		      		{
     		      		    case 0:
-    		      		    	nomeImmagine1 = responseBody.substring(start, end);
+    		      		    	nomeImmagine0 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		        break;
     		      		    case 1:
-    		      		    	nomeImmagine2 = responseBody.substring(start, end);
+    		      		    	nomeImmagine1 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		    	break;
     		      		    case 2:
-    		      		    	nomeImmagine3 = responseBody.substring(start, end);
+    		      		    	nomeImmagine2 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		    	break;
     		      		    case 3:
-    		      		    	nomeImmagine4 = responseBody.substring(start, end);
+    		      		    	nomeImmagine3 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		    	break;
     		      		    case 4:
-    		      		    	nomeImmagine5 = responseBody.substring(start, end);
+    		      		    	nomeImmagine4 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		    	break;
     		      		    case 5:
-    		      		    	nomeImmagine6 = responseBody.substring(start, end);
+    		      		    	nomeImmagine5 = responseBody.substring(start, end);
 	  		      		    	control=false;
 	  		      		    	break;
     		      		    case 6:
+    		      		    	nomeImmagine6 = responseBody.substring(start, end);
+			      		    	control=false;
+			      		    	break;
+    		      		    case 7:
     		      		    	nomeImmagine7 = responseBody.substring(start, end);
 			      		    	control=false;
 			      		    	break;
-    		      		    default:
+    		      		    case 8:
     		      		    	nomeImmagine8 = responseBody.substring(start, end);
+			      		    	control=false;
+			      		    	break;
+    		      		    default:
+    		      		    	nomeImmagine9 = responseBody.substring(start, end);
     		      		    	control=false;
     		      		}
     		          }
@@ -219,7 +227,8 @@ public class _case24It extends PortaleImmobiliare {
     	    	}
             }
     	}
-    	   	
+    	  
+    	
     	//Connessione 7 - POST dello step 1 (e unico...)
     	HttpPortalPostConnection connessione_7 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
@@ -229,14 +238,16 @@ public class _case24It extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("codice_cliente", CODICE_CLIENTE));
         postParameters.add(new BasicNameValuePair("InserzionistaPrivato", "0"));
         postParameters.add(new BasicNameValuePair("codice_inserzione", ""));
-        postParameters.add(new BasicNameValuePair("foto_tmp_0", nomeImmagine1));
-        postParameters.add(new BasicNameValuePair("foto_tmp_1", nomeImmagine2));
-        postParameters.add(new BasicNameValuePair("foto_tmp_2", nomeImmagine3));
-        postParameters.add(new BasicNameValuePair("foto_tmp_3", nomeImmagine4));
-        postParameters.add(new BasicNameValuePair("foto_tmp_4", nomeImmagine5));
-        postParameters.add(new BasicNameValuePair("foto_tmp_5", nomeImmagine6));
-        postParameters.add(new BasicNameValuePair("foto_tmp_6", nomeImmagine7));
+        postParameters.add(new BasicNameValuePair("foto_tmp_0", nomeImmagine0));
+        postParameters.add(new BasicNameValuePair("foto_tmp_1", nomeImmagine1));
+        postParameters.add(new BasicNameValuePair("foto_tmp_2", nomeImmagine2));
+        postParameters.add(new BasicNameValuePair("foto_tmp_3", nomeImmagine3));
+        postParameters.add(new BasicNameValuePair("foto_tmp_4", nomeImmagine4));
+        postParameters.add(new BasicNameValuePair("foto_tmp_5", nomeImmagine5));
+        postParameters.add(new BasicNameValuePair("foto_tmp_6", nomeImmagine6));
+        postParameters.add(new BasicNameValuePair("foto_tmp_7", nomeImmagine7));
         postParameters.add(new BasicNameValuePair("foto_tmp_7", nomeImmagine8));
+        postParameters.add(new BasicNameValuePair("foto_tmp_7", nomeImmagine9));
         postParameters.add(new BasicNameValuePair("galleria_valore", "0"));
         postParameters.add(new BasicNameValuePair("rif_agenzia", mappaDeiParamerti.get("rif_agenzia")));
         postParameters.add(new BasicNameValuePair("codice_provincia_inserzione", mappaDeiParamerti.get("codice_provincia_inserzione")));
@@ -331,21 +342,21 @@ public class _case24It extends PortaleImmobiliare {
     	finally {
     		postParameters.clear();
     	}  	   	
-    	*/    	    
+    	   	    
     	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
     	if(inserimentoOK) {
     		
     		//Aggiorna la lista dei portali in cui è inserita la scheda
-    		//scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
+    		scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
     		      	
     		if(!isSequential) {   			
     			System.out.println("Inserita in: " + NOMEPORTALE);       		
         		
     			//Aggiorna i pulsanti del pannello inserimento
-    			//j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
+    			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
     			
     			//Invio mail di conferma inserimento 
-            	//sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+            	sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
            	
             	//Stampo a video un messaggio informativo
                 JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
@@ -378,7 +389,7 @@ public class _case24It extends PortaleImmobiliare {
   			System.out.println("Visualizzata in: " + NOMEPORTALE);
   			
   		} catch (IOException e ) {
-  			//manageErrors(e, 3);
+  			//
   		}
   		
   		return true;
@@ -434,7 +445,7 @@ public class _case24It extends PortaleImmobiliare {
 	}
 		
 	//Metodo per la valutazione dei parametri
-	public void inizializzaParametri()  {
+	public void inizializzaParametri() throws HttpCommunicationException {
 		
 		String inserisci_annuncio = "1";
 		mappaDeiParamerti.put("inserisci_annuncio", inserisci_annuncio);
@@ -876,16 +887,17 @@ public class _case24It extends PortaleImmobiliare {
 		mappaDeiParamerti.put("nameComune", nameComune);
 		
 		String codice_comune_inserzione = "";
-		/*HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
+		//Recupero del codice del Comune
+		HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
     	try {
-    		Object[] response = connessione_9.get(CASE24_URLROOT + "/area_clienti/include/ajax.php?funzione=select_geografico&etichetta=denominazione_comune&zona=X&valore_etichetta=" + codice_provincia_inserzione + "&valore_selezionato=&tabindex=3", debugMode);
+    		Object[] response = connessione_9.get("Recupero del codice del Comune", URLROOT + "/area_clienti/include/ajax.php?funzione=select_geografico&etichetta=denominazione_comune&zona=X&valore_etichetta=" + codice_provincia_inserzione + "&valore_selezionato=&tabindex=3", debugMode);
     		String responseBody = (String)response[1];
     		
     		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);              
             //Ottengo il valore del parametro Provincia
             Elements optionElements = doc.getElementsByTag("option");
             if(optionElements.isEmpty()) {
-            	throw(new HttpResponseException("Non ho trovato tag di tipo \"option\""));
+            	throw(new HttpWrongResponseBodyException("Non ho trovato tag di tipo \"option\""));
             }
             else {
             	Iterator<Element> iterator = optionElements.iterator();
@@ -901,12 +913,10 @@ public class _case24It extends PortaleImmobiliare {
 	        		}       		
             	}
             }
-		} catch (IOException e) {
+		} catch (IOException | HttpWrongResponseBodyException e) {
 			throw new HttpCommunicationException(e);
-		}*/
-    	mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);
-		
-		mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);				
+		}
+    	mappaDeiParamerti.put("codice_comune_inserzione", codice_comune_inserzione);				
 		
 		String indirizzo = scheda.indirizzoLocalita;
 		mappaDeiParamerti.put("indirizzo", indirizzo);
