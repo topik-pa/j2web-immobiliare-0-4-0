@@ -28,6 +28,8 @@ import org.jsoup.nodes.Element;
 import java.util.Iterator;
 
 
+
+
 /*
  * Questa classe definische i metodi e gli attributi dell'oggetto portale immobiliare, qui definiti in termini generici, vengono riscritti nelle classi più specifiche
  *
