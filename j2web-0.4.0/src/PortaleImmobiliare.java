@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +49,12 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	String valoreLabel;
 	String idPortale;
 	boolean isActive;
+	
+	//Cookie
+	protected static String SESSIONCOOKIEHEADER;
+	protected static String SESSIONCOOKIENAME;
+	protected static String SESSIONCOOKIEVALUE;
+	protected static String SESSIONCOOKIEDOMAIN;
 
 	public PortaleImmobiliare (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {
 	
@@ -62,7 +69,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	//Metodi
 	
 	//Inserimento scheda (sovrascritto nelle sottoclassi)
-	public abstract boolean inserisciScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException;
+	public abstract boolean inserisciScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException, UnsupportedEncodingException;
 	
 	//Visualizzazione scheda (sovrascritto nelle sottoclassi)
 	public abstract boolean visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException;
@@ -196,8 +203,8 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
     }
   
 
-    //Trova e imposta il cookie di sessione
-    public boolean findAndSetLocalCookie(HttpPortalConnection connessione, Header[] headers, String cookieName, String cookieDomain) {
+    //Trova il cookie di sessione
+    public boolean findSessionCookie(Header[] headers, String cookieName, String cookieDomain) {
 		
 		boolean cookieHeaderFound = false;
         for(int i=0; i<headers.length; i++) {       	
@@ -216,12 +223,11 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
                 	//Cookie di sessione trovato
             		cookieHeaderFound = true;
             		//Stampo i valori trovati
-            		System.out.println("Method: findAndSetLocalCookie " + "cookie_header-->"+cookie_header + " cookieName-->"+cookieName + " cookie_value-->"+cookie_value + " cookieDomain-->"+cookieDomain);
-            		//Scrive i valori del cookie trovato nell'oggetto connessione passato come argomento
-            		connessione.setSessionCookieHeader(cookie_header);
-            		connessione.setSessionCookieName(cookieName);
-            		connessione.setSessionCookieValue(cookie_value);
-            		connessione.setSessionCookieDomain(cookieDomain);
+            		System.out.println("Method: findSessionCookie \n" + "cookie_header-->"+cookie_header + "\ncookieName-->"+cookieName + "\ncookie_value-->"+cookie_value + "\ncookieDomain-->"+cookieDomain);
+            		
+            		//Aggiorno i parametri dei cookie (del portale chiamante)
+            		SESSIONCOOKIEHEADER = cookie_header;
+            		SESSIONCOOKIEVALUE = cookie_value;
                 }   
         	}       	
         }       

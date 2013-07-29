@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -131,9 +132,9 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
     }
        
     //Gestione degli errori di comunicazione con il server remoto
-    public static void manageErrorsOnPortalSubmission(HttpCommunicationException e) {
+    public static void manageErrorsOnPortalSubmission(Exception e1) {
     	
-    	String errorType = e.getCatchedExceptionType();
+    	String errorType = ((HttpCommunicationException) e1).getCatchedExceptionType();
  	
     	switch (errorType)
 		{
@@ -155,9 +156,9 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
 		} 
     	
     	//Invio a me la mail di avviso errore runtime
-    	sendErrorMail(readStackTrace(e), errorType);
+    	sendErrorMail(readStackTrace(e1), errorType);
     	
-        e.printStackTrace();
+        e1.printStackTrace();
     }
     
     //Invio a me la mail in caso di errori runtime
@@ -290,7 +291,7 @@ class PanelInserimentoSequenziale extends JPanel {
          						rapportoInserimentiKO += "\n   " + portaleCorrente.idPortale;
          					} 					
          				}
-         				catch (HttpCommunicationException e1 ) {
+         				catch (HttpCommunicationException | UnsupportedEncodingException e1 ) { 
          					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
          				}
                 	}
@@ -454,7 +455,10 @@ class InserimentoPortale extends JPanel {
      				}
      				catch (HttpCommunicationException e1) {
      					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
-     				}
+     				} catch (UnsupportedEncodingException e3) {
+						// TODO Auto-generated catch block
+						e3.printStackTrace();
+					}
      				finally  {
      					//Il cursone viene messo in modalità standard
          				setCursor(Cursor.getDefaultCursor());

@@ -112,7 +112,7 @@ public class _cubocasaIt extends PortaleImmobiliare {
         try {
         	Object[] response = connessione_1.post("Connessione 1 - POST della pagina di login", URLROOT + "/_login.php", postParameters, debugMode);
 			Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+			findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -339,8 +339,8 @@ public class _cubocasaIt extends PortaleImmobiliare {
         try {
         	Object[] response = connessione_1.post("POST della pagina di login", URLROOT + "/_login.php", postParameters, debugMode);
 			Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-    		connessione_1.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
+    		//findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+    		//connessione_1.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}

@@ -109,7 +109,7 @@ public class _templatePortaleImmobiliare extends PortaleImmobiliare {
     	try {
     		Object[] response = connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", CASE24_URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + CASE24_USERNAME + "&password=" + CASE24_PASSWORD, debugMode);
     		Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_2, responseHeaders, CASE24_SESSIONCOOKIENAME, CASE24_SESSIONCOOKIEDOMAIN);
+    		//findAndSetLocalCookie(connessione_2, responseHeaders, CASE24_SESSIONCOOKIENAME, CASE24_SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -118,7 +118,7 @@ public class _templatePortaleImmobiliare extends PortaleImmobiliare {
     	//Connessione 3 - GET della pagina "Inserisci annuncio" (step 1)
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
-    		connessione_3.setSessionCookieDomain(CASE24_SESSIONCOOKIEDOMAIN);
+    		//connessione_3.setSessionCookieDomain(CASE24_SESSIONCOOKIEDOMAIN);
 			connessione_3.get("Connessione 3 - GET della pagina \"Inserisci annuncio\" (step 1)", CASE24_URLROOT + "/area_clienti/index.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
