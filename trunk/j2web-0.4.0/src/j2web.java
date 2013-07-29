@@ -281,7 +281,7 @@ public class j2web implements parametriGenerali {
 		MapModalWindowsDialogs.put("creazioneDellaSchedaImmobile_FormNonValido", "Attenzione: alcuni campi obbigatori non sono stati compilati. ");		
 		MapModalWindowsDialogs.put("selezioneFileImmagne_SelezioneNonValida", "Attenzione: formato di file non valido. Le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega. ");		
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_IOException", "Errore durante il collegamento al server remoto. ");
-		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_Generic", "Errore durante il collegamento al server remoto. ");
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_Generic", "Errore in fase di inserimento scheda immobile. ");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseStatusCodeException", "Errore durante il collegamento al server remoto: il server ha risposto con uno status code inatteso. ");		
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseHeaderException", "Errore durante il collegamento al server remoto: il server ha risposto con un response header inatteso. ");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseBodyException", "Errore durante il collegamento al server remoto: il server ha risposto con un response body inatteso. ");
@@ -304,8 +304,14 @@ public class j2web implements parametriGenerali {
     	PortaleImmobiliare _casabIt = new _casabIt("./images/_casabIt.jpg", "2 - casab.it", "002", true);
     	j2web_GUI.listPortaliImmobiliari.add(_casabIt);
     	
-    	PortaleImmobiliare _cubocasaIt = new _cubocasaIt("./images/_cubocasaIt.gif", "3 - cubocasa.it", "003", true);
+    	/*PortaleImmobiliare _cubocasaIt = new _cubocasaIt("./images/_cubocasaIt.gif", "3 - cubocasa.it", "003", false);
     	j2web_GUI.listPortaliImmobiliari.add(_cubocasaIt);
+    	
+    	PortaleImmobiliare _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt.jpg", "4 - immobiliare.it", "004", false);
+    	j2web_GUI.listPortaliImmobiliari.add(_immobiliareIt);
+    	
+    	PortaleImmobiliare _casaIt = new _casaIt("./images/_casaIt.jpg", "5 - casa.it", "005", false);
+    	j2web_GUI.listPortaliImmobiliari.add(_casaIt);*/
     	/*Progetto J2Web-DEMO*/
 		
 		/*PortaleImmobiliare _case24It = new _case24It("./images/_case24It.jpg", "1 - case24.it", "005", true);

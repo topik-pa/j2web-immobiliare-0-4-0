@@ -114,7 +114,7 @@ public class _case24It extends PortaleImmobiliare {
     	try {
     		Object[] response = connessione_2.get("Connessione 2 - GET dei parametri di accesso e recupero del cookie di sessione", URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, debugMode);
     		Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_2, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+    		findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -123,7 +123,7 @@ public class _case24It extends PortaleImmobiliare {
     	//Connessione 3 - GET della pagina "Inserisci annuncio"
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
-    		connessione_3.setSessionCookieDomain(SESSIONCOOKIEDOMAIN);
+    		connessione_3.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
 			connessione_3.get("Connessione 3 - GET della pagina \"Inserisci annuncio\"", URLROOT + "/area_clienti/index.php", debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
@@ -137,6 +137,7 @@ public class _case24It extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("x", "10"));
         postParameters.add(new BasicNameValuePair("y", "10"));   	
         try {
+        	connessione_4.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
 			connessione_4.post("POST per ottenere la pagina di inserzione annuncio", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
@@ -168,6 +169,7 @@ public class _case24It extends PortaleImmobiliare {
     	        reqEntity.addPart("image_" + i, bin );
     	    	
     	        try {
+    	        	connessione_6.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
     	        	Object[] response = connessione_6.post("Connessione 6_ " + i + " - inserimento immagine " + i, URLROOT + "/area_clienti/include/upload_foto.php?i=" + i + "&codice_cliente=" + CODICE_CLIENTE, reqEntity, debugMode);
     	        	String responseBody = (String)response[1];
     				boolean control = true;
@@ -310,6 +312,7 @@ public class _case24It extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("opt_in_campagna", "0"));
         postParameters.add(new BasicNameValuePair("optional_valore", "0")); 	
         try {
+        	connessione_7.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
         	Object[] response = connessione_7.post("Connessione 7 - POST dello step 1 (e unico...)", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
         	String responseBody = (String)response[1];
         	
@@ -404,6 +407,7 @@ public class _case24It extends PortaleImmobiliare {
 		//Connessione 2 - GET della pagina "Area Riservata"
     	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
     	try {
+    		connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
 			connessione_2.get("Connessione 2 - GET della pagina \"Area Riservata\"", URLROOT + "/area_clienti/include/ajax.php?tabella=utenti&username=" + USERNAME + "&password=" + PASSWORD, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
@@ -419,6 +423,7 @@ public class _case24It extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("order_direction", ""));
         postParameters.add(new BasicNameValuePair("page", ""));	
         try {
+        	connessione_8.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
 			connessione_8.post("Connessione 8 - POST della pagina Gestione annunci per eliminare un annuncio", URLROOT + "/area_clienti/annunci.php?pagina=1", postParameters, debugMode);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);

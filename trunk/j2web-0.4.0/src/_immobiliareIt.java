@@ -118,7 +118,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
         try {
         	Object[] response = connessione_1.post("Connessione 1 - POST della pagina http://www.immobiliare.it/accesso_agenzie.php per il login", URLROOT + "/accesso_agenzie.php", postParameters, debugMode);
 			Header[] responseHeaders = (Header[])response[0];
-    		findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+    		//findAndSetLocalCookie(connessione_1, responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
 		}

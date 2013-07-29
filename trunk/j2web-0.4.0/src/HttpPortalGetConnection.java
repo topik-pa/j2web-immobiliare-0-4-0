@@ -35,10 +35,11 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
         httpget.addHeader(requestHeader);
         
         //Set the cookies
-        if(SESSIONCOOKIE_HEADER!=null) {
+        if(isSessionCookieSet==true) {
 	        BasicCookieStore cookieStore = new BasicCookieStore(); 
 	        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
 	        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
+	        System.out.println("test :" + connectionDescription +  SESSIONCOOKIE_NAME + " " + SESSIONCOOKIE_VALUE + " " + SESSIONCOOKIE_DOMAIN);
 	        cookie.setPath("/");           
 	        cookieStore.addCookie(cookie); 
 	        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);

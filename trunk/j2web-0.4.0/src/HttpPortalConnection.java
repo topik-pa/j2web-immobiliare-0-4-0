@@ -21,6 +21,7 @@ public class HttpPortalConnection implements parametriGenerali {
 	protected static String SESSIONCOOKIE_NAME;
 	protected static String SESSIONCOOKIE_VALUE;
 	protected static String SESSIONCOOKIE_DOMAIN;
+	protected static boolean isSessionCookieSet = false;
 	
 	protected HttpGet httpget;
 	protected HttpPost httppost;
@@ -44,7 +45,7 @@ public class HttpPortalConnection implements parametriGenerali {
 		System.out.println("\n\n\n");
         System.out.println("----------------------------------------");
         System.out.println("Executing request: " + connectionDescription);
-        System.out.println("Request uri: " + httpRequest.getURI());
+        System.out.println("Request uri: " + httpRequest.getURI()); 
         System.out.println("----------------------------------------");
         
         //Show Request cookies
@@ -65,7 +66,7 @@ public class HttpPortalConnection implements parametriGenerali {
             Iterator<NameValuePair> iterator = postParameters.iterator();
             while(iterator.hasNext()) {
             	BasicNameValuePair currentParam = (BasicNameValuePair) iterator.next();
-            	System.out.println(currentParam.getName() + "-->" + currentParam.getValue());      	
+            	System.out.println(currentParam.getName() + "-->" + currentParam.getValue());  	
             }
             System.out.println("----------------------------------------");
         }     
@@ -106,20 +107,12 @@ public class HttpPortalConnection implements parametriGenerali {
 	}
 	 
 	//Metodi Set per definire il cookie di sessione
-	public void setSessionCookieDomain(String cookieDomain) {
+	public void setSessionCookie(String cookieHeader, String cookieName, String cookieValue, String cookieDomain) {
 		SESSIONCOOKIE_DOMAIN = cookieDomain;
-	}
-	
-	public void setSessionCookieHeader(String cookieHeader) {
 		SESSIONCOOKIE_HEADER = cookieHeader;
-	}
-	
-	public void setSessionCookieName(String cookieName) {
 		SESSIONCOOKIE_NAME = cookieName;
-	}
-	
-	public void setSessionCookieValue(String cookieValue) {
 		SESSIONCOOKIE_VALUE = cookieValue;
-	}	
+		isSessionCookieSet = true;
+	}
 
 }
