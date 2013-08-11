@@ -246,6 +246,8 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
         	//Get cookie
         	if(currentHeader.getName().contains(headerName)) {     		        		
         		headerValue = currentHeader.getValue();	
+        		//Stampo i valori trovati
+        		System.out.println("Method: getHeaderValueByName \n" + "headerValue-->" + headerValue);
         	}       	
         }       
         //Valore tornato
