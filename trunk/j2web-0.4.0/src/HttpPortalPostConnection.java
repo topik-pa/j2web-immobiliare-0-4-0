@@ -138,4 +138,63 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 		
 	}	
 	
+	
+	
+public Object[] post_test(String connectionDescription, String url, List<NameValuePair> postParameters, boolean debugMode, String referer) throws IOException {
+		
+		//La risposta che verrà restituita
+		Object[] headersAndBodyResponseAndStatus = new Object[3];
+		
+		//Inizializza la connessione
+		httppost = new HttpPost(url);
+		
+		//Add request headers
+        requestHeader = new BasicHeader("User-Agent", USER_AGENT);
+        httppost.addHeader(requestHeader);
+        requestHeader = new BasicHeader("Referer", referer);
+        httppost.addHeader(requestHeader);
+        
+        //Add request parameters
+        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
+        httppost.setEntity(formEntity);
+        
+        //Set the cookies
+        if(isSessionCookieSet==true) {
+	        BasicCookieStore cookieStore = new BasicCookieStore(); 
+	        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
+	        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
+	        System.out.println("test :" + connectionDescription +  SESSIONCOOKIE_NAME + " " + SESSIONCOOKIE_VALUE + " " + SESSIONCOOKIE_DOMAIN);
+	        cookie.setPath("/");           
+	        cookieStore.addCookie(cookie); 
+	        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
+        }
+        
+        //Send the request
+        response = httpclient.execute(httppost);
+        
+        //Get the response body
+        HttpEntity responseEntity = response.getEntity();
+        String responseBody = "";
+        if(responseEntity!=null) {
+        	responseBody = EntityUtils.toString(responseEntity);
+        }
+
+    	//Get the response headers
+        responseHeaders = response.getAllHeaders();
+            
+        if(debugMode) {
+            //Print connection properties
+        	printConnectionProperties(connectionDescription, httppost, responseHeaders, responseBody, postParameters);
+        }
+        
+        //Close the request
+        httpclient.getConnectionManager().shutdown();
+        
+        //Return the headers and response body
+        headersAndBodyResponseAndStatus[0] = responseHeaders;
+        headersAndBodyResponseAndStatus[1] = responseBody;
+        headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
+        return headersAndBodyResponseAndStatus; 
+        
+	}
 }
