@@ -89,7 +89,8 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
   	private static JComboBox<String> comboBoxTipologiaRiscaldamento = new JComboBox<String>();
   	private static JComboBox<String> comboBoxClima = new JComboBox<String>();
   	private static JComboBox<String> comboBoxParcheggio = new JComboBox<String>();
-  	private static JComboBox<String> comboBoxGiardino = new JComboBox<String>(); //12
+  	private static JComboBox<String> comboBoxGiardino = new JComboBox<String>();
+  	private static JComboBox<String> comboBoxCucina = new JComboBox<String>(); //13
   	//Pulsanti
   	private static JButton btnImmagine1 = new JButton("Immagine1");
   	private static JButton btnImmagine2 = new JButton("Immagine2");
@@ -104,14 +105,15 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
   	//Checkbox
   	private static JCheckBox chckbxBandaLarga = new JCheckBox("Banda larga");
   	private static JCheckBox chckbxAscensore = new JCheckBox("Ascensore");
-  	private static JCheckBox chckbxCasaEcologica = new JCheckBox("Casa ecologica");
-  	private static JCheckBox chckbxVicinanzeBus = new JCheckBox("Vicinanze bus");
+  	//private static JCheckBox chckbxCasaEcologica = new JCheckBox("Casa ecologica");
+  	//private static JCheckBox chckbxVicinanzeBus = new JCheckBox("Vicinanze bus");
+  	private static JCheckBox chckbxVicinanzeMezziPubblici = new JCheckBox("Vicinanza fermate mezzi pubblici");
   	private static JCheckBox chckbxCantina = new JCheckBox("Cantina");
   	private static JCheckBox chckbxSatellite = new JCheckBox("Satellite");
   	private static JCheckBox chckbxSistemaDiAllarme = new JCheckBox("Sistema di allarme");
   	private static JCheckBox chckbxCancelloElettrico = new JCheckBox("Cancello elettrico");
-  	private static JCheckBox chckbxVicinanzeMetro = new JCheckBox("Vicinanze metro");
-  	private static JCheckBox chckbxRampePerDisabili = new JCheckBox("Rampe per disabili");  //10
+  	//private static JCheckBox chckbxVicinanzeMetro = new JCheckBox("Vicinanze metro");
+  	private static JCheckBox chckbxRampePerDisabili = new JCheckBox("Rampe per disabili");  //8
   	//TOT:57
 	
 	//Costruttore del pannello
@@ -910,52 +912,64 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		lblNumeroBagni.setLabelFor(comboBoxNumeroBagni);
 		panelTabDatiSecondari.add(comboBoxNumeroBagni, "2, 6, left, default");
 		
+		//Tipologia cucina
+		JLabel lblTipologiaCucina = new JLabel("Tipologia cucina");
+		lblNumeroBagni.setToolTipText("Selezionare la tipologia cucina");
+		panelTabDatiSecondari.add(lblTipologiaCucina, "1, 8");
+		
+		mapCampiForm.put("comboBoxCucina", comboBoxCucina);
+		listCampiForm.add(comboBoxCucina);
+		comboBoxCucina.setModel(new DefaultComboBoxModel<String>(arrayCucina));
+		comboBoxCucina.setToolTipText("Selezionare la tipologia cucina");
+		lblNumeroBagni.setLabelFor(comboBoxCucina);
+		panelTabDatiSecondari.add(comboBoxCucina, "2, 8, left, default");
+		
 		//Stato dell'immmobile
 		JLabel lblStatoImmobile = new JLabel("Stato dell'immobile");
 		lblStatoImmobile.setToolTipText("Selezionare lo stato attuale dell'immobile");
-		panelTabDatiSecondari.add(lblStatoImmobile, "1, 8");
+		panelTabDatiSecondari.add(lblStatoImmobile, "1, 10");
 		
 		mapCampiForm.put("comboBoxStatoImmobile", comboBoxStatoImmobile);
 		listCampiForm.add(comboBoxStatoImmobile);
 		comboBoxStatoImmobile.setModel(new DefaultComboBoxModel<String>(arrayStatoImmobile));
 		comboBoxStatoImmobile.setToolTipText("Selezionare lo stato attuale dell'immobile");
 		lblStatoImmobile.setLabelFor(comboBoxStatoImmobile);
-		panelTabDatiSecondari.add(comboBoxStatoImmobile, "2, 8");
+		panelTabDatiSecondari.add(comboBoxStatoImmobile, "2, 10");
 		
 		//Arredamenti
 		JLabel lblArredamenti = new JLabel("Arredamenti");
 		lblArredamenti.setToolTipText("Selezionare la condizione attuale dell'arredamento");
-		panelTabDatiSecondari.add(lblArredamenti, "1, 10");
+		panelTabDatiSecondari.add(lblArredamenti, "1, 12");
 		
 		mapCampiForm.put("comboBoxArredamenti", comboBoxArredamenti);
 		listCampiForm.add(comboBoxArredamenti);
 		comboBoxArredamenti.setModel(new DefaultComboBoxModel<String>(arrayArredamenti));
 		comboBoxArredamenti.setToolTipText("Selezionr la condizione attuale dell'arredamento");
 		lblArredamenti.setLabelFor(comboBoxArredamenti);
-		panelTabDatiSecondari.add(comboBoxArredamenti, "2, 10");
+		panelTabDatiSecondari.add(comboBoxArredamenti, "2, 12");
 		
 		//Piano
 		JLabel lblPiano = new JLabel("Piano");
 		lblPiano.setToolTipText("Selezionare il piano in cui è situato l'immobile");
-		panelTabDatiSecondari.add(lblPiano, "1, 12");
+		panelTabDatiSecondari.add(lblPiano, "1, 14");
 		
 		mapCampiForm.put("comboBoxPiano", comboBoxPiano);
 		listCampiForm.add(comboBoxPiano);
 		comboBoxPiano.setModel(new DefaultComboBoxModel<String>(arrayPiano));
 		comboBoxPiano.setToolTipText("Selezionare il piano in cui è situato l'immobile");
 		lblPiano.setLabelFor(comboBoxPiano);
-		panelTabDatiSecondari.add(comboBoxPiano, "2, 12");
+		panelTabDatiSecondari.add(comboBoxPiano, "2, 14");
 		
 		//Tot piani
 		JLabel lblNumeroTotalePiani = new JLabel("Numero totale di piani");
 		lblNumeroTotalePiani.setToolTipText("Indicare il numero totale dei piani dell'immobile");
-		panelTabDatiSecondari.add(lblNumeroTotalePiani, "1, 14");
+		panelTabDatiSecondari.add(lblNumeroTotalePiani, "1, 16");
 		lblNumeroTotalePiani.setLabelFor(textFieldNumeroTotalePiani);
 		
 		mapCampiForm.put("textFieldNumeroTotalePiani", textFieldNumeroTotalePiani);
 		listCampiForm.add(textFieldNumeroTotalePiani);
 		textFieldNumeroTotalePiani.setToolTipText("Indicare il numero totale dei piani dell'immobile");
-		panelTabDatiSecondari.add(textFieldNumeroTotalePiani, "2, 14, left, default");
+		panelTabDatiSecondari.add(textFieldNumeroTotalePiani, "2, 16, left, default");
 		textFieldNumeroTotalePiani.setColumns(10);
 		textFieldNumeroTotalePiani.addKeyListener(new KeyAdapter() {     //Ascoltatore interno al JTextField per impedire l'immissione di caratteri non validi
             public void keyTyped(KeyEvent e) {
@@ -970,59 +984,59 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		//Certificazioni energetiche
 		JLabel lblCertificazioneIpe = new JLabel("Certificazioni ipe");
 		lblCertificazioneIpe.setToolTipText("Selezionare la certificazione ipe");
-		panelTabDatiSecondari.add(lblCertificazioneIpe, "1, 16");
+		panelTabDatiSecondari.add(lblCertificazioneIpe, "1, 18");
 		
 		mapCampiForm.put("comboBoxCertificazioneIpe", comboBoxCertificazioneIpe);
 		listCampiForm.add(comboBoxCertificazioneIpe);
 		comboBoxCertificazioneIpe.setModel(new DefaultComboBoxModel<String>(arrayCertificazioneIpe));
 		comboBoxCertificazioneIpe.setToolTipText("Selezionare la certificazione ipe");
 		lblCertificazioneIpe.setLabelFor(comboBoxCertificazioneIpe);
-		panelTabDatiSecondari.add(comboBoxCertificazioneIpe, "2, 16");
+		panelTabDatiSecondari.add(comboBoxCertificazioneIpe, "2, 18");
 		
 		//Tipologia riscaldamento
 		JLabel lbTipologiaRiscaldamento = new JLabel("Tipologia riscaldamento");
 		lbTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
-		panelTabDatiSecondari.add(lbTipologiaRiscaldamento, "1, 18");
+		panelTabDatiSecondari.add(lbTipologiaRiscaldamento, "1, 20");
 		
 		mapCampiForm.put("comboBoxTipologiaRiscaldamento", comboBoxTipologiaRiscaldamento);
 		listCampiForm.add(comboBoxTipologiaRiscaldamento);
 		comboBoxTipologiaRiscaldamento.setModel(new DefaultComboBoxModel<String>(arrayTipologieRiscaldamento));
 		comboBoxTipologiaRiscaldamento.setToolTipText("Selezionare la tipologia di riscaldamento dell'immobile");
-		panelTabDatiSecondari.add(comboBoxTipologiaRiscaldamento, "2, 18");
+		panelTabDatiSecondari.add(comboBoxTipologiaRiscaldamento, "2, 20");
 		
 		//Clima
 		JLabel lblClima = new JLabel("Clima");
 		lblClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
-		panelTabDatiSecondari.add(lblClima, "1, 20");
+		panelTabDatiSecondari.add(lblClima, "1, 22");
 		
 		mapCampiForm.put("comboBoxClima", comboBoxClima);
 		listCampiForm.add(comboBoxClima);
 		comboBoxClima.setModel(new DefaultComboBoxModel<String>(arrayClima));
 		comboBoxClima.setToolTipText("Selezionare la tipologia di climatizzazione dell'immobile");
-		panelTabDatiSecondari.add(comboBoxClima, "2, 20");
+		panelTabDatiSecondari.add(comboBoxClima, "2, 22");
 		
 		//Parcheggio
 		JLabel lblParcheggio = new JLabel("Parcheggio");
 		lblParcheggio.setToolTipText("Selezionare la tipologia di parcheggio disponibile");
-		panelTabDatiSecondari.add(lblParcheggio, "1, 22");
+		panelTabDatiSecondari.add(lblParcheggio, "1, 24");
 		
 		mapCampiForm.put("comboBoxParcheggio", comboBoxParcheggio);
 		listCampiForm.add(comboBoxParcheggio);
 		comboBoxParcheggio.setModel(new DefaultComboBoxModel<String>(arrayParcheggio));
 		comboBoxParcheggio.setToolTipText("Selezionare la tipologia di parcheggio disponibile");
-		panelTabDatiSecondari.add(comboBoxParcheggio, "2, 22");
+		panelTabDatiSecondari.add(comboBoxParcheggio, "2, 24");
 		lblParcheggio.setLabelFor(comboBoxParcheggio);
 		
 		//Anno costruzione
 		JLabel lblAnnoCostruzione = new JLabel("Anno costruzione");
 		lblAnnoCostruzione.setToolTipText("Inserire l'anno di costruzione dell'immobile");
-		panelTabDatiSecondari.add(lblAnnoCostruzione, "1, 24");
+		panelTabDatiSecondari.add(lblAnnoCostruzione, "1, 26");
 		
 		mapCampiForm.put("textFieldAnnoCostruzione", textFieldAnnoCostruzione);
 		listCampiForm.add(textFieldAnnoCostruzione);
 		textFieldAnnoCostruzione.setToolTipText("Inserire l'anno di costruzione dell'immobile");
 		lblAnnoCostruzione.setLabelFor(textFieldAnnoCostruzione);
-		panelTabDatiSecondari.add(textFieldAnnoCostruzione, "2, 24, left, default");
+		panelTabDatiSecondari.add(textFieldAnnoCostruzione, "2, 26, left, default");
 		textFieldAnnoCostruzione.setColumns(10);
 		textFieldAnnoCostruzione.addKeyListener(new KeyAdapter() {     //Ascoltatore interno al JTextField per impedire l'immissione di caratteri non validi
             public void keyTyped(KeyEvent e) {
@@ -1037,13 +1051,13 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		//Giardino
 		JLabel lblGiardino = new JLabel("Giardino");
 		lblGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
-		panelTabDatiSecondari.add(lblGiardino, "1, 26");
+		panelTabDatiSecondari.add(lblGiardino, "1, 28");
 		
 		mapCampiForm.put("comboBoxGiardino", comboBoxGiardino);
 		listCampiForm.add(comboBoxGiardino);
 		comboBoxGiardino.setModel(new DefaultComboBoxModel<String>(arrayGiardino));
 		comboBoxGiardino.setToolTipText("Selezionare la tipologia di giardino disponibile");
-		panelTabDatiSecondari.add(comboBoxGiardino, "2, 26");
+		panelTabDatiSecondari.add(comboBoxGiardino, "2, 28");
 		
 		//Banda larga
 		mapCampiForm.put("chckbxBandaLarga", chckbxBandaLarga);
@@ -1070,10 +1084,16 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		panelTabDatiSecondari.add(chckbxSistemaDiAllarme, "2, 32");
 		
 		//Casa ecologica
-		mapCampiForm.put("chckbxCasaEcologica", chckbxCasaEcologica);
+		/*mapCampiForm.put("chckbxCasaEcologica", chckbxCasaEcologica);
 		listCampiForm.add(chckbxCasaEcologica);
 		chckbxCasaEcologica.setToolTipText("Casa ecologica");
-		panelTabDatiSecondari.add(chckbxCasaEcologica, "1, 34");
+		panelTabDatiSecondari.add(chckbxCasaEcologica, "1, 34");*/
+		
+		//Vicinanza mezzi pubblici
+		mapCampiForm.put("chckbxCasaEcologica", chckbxVicinanzeMezziPubblici);
+		listCampiForm.add(chckbxVicinanzeMezziPubblici);
+		chckbxVicinanzeMezziPubblici.setToolTipText("Vicinanze fermate mezzi pubblici");
+		panelTabDatiSecondari.add(chckbxVicinanzeMezziPubblici, "1, 34");
 		
 		//Cancello elettrico
 		mapCampiForm.put("chckbxCancelloElettrico", chckbxCancelloElettrico);
@@ -1082,28 +1102,28 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		panelTabDatiSecondari.add(chckbxCancelloElettrico, "2, 34");
 		
 		//Vicinanze bus
-		mapCampiForm.put("chckbxVicinanzeBus", chckbxVicinanzeBus);
+		/*mapCampiForm.put("chckbxVicinanzeBus", chckbxVicinanzeBus);
 		listCampiForm.add(chckbxVicinanzeBus);
 		chckbxVicinanzeBus.setToolTipText("Vicinanze bus");
-		panelTabDatiSecondari.add(chckbxVicinanzeBus, "1, 36");
+		panelTabDatiSecondari.add(chckbxVicinanzeBus, "1, 36");*/
 		
 		//Vicinanze metro
-		mapCampiForm.put("chckbxVicinanzeMetro", chckbxVicinanzeMetro);
+		/*mapCampiForm.put("chckbxVicinanzeMetro", chckbxVicinanzeMetro);
 		listCampiForm.add(chckbxVicinanzeMetro);
 		chckbxVicinanzeMetro.setToolTipText("Vicinanze metro");
-		panelTabDatiSecondari.add(chckbxVicinanzeMetro, "2, 36");
+		panelTabDatiSecondari.add(chckbxVicinanzeMetro, "2, 36");*/
 		
 		//Cantina
 		mapCampiForm.put("chckbxCantina", chckbxCantina);
 		listCampiForm.add(chckbxCantina);
 		chckbxCantina.setToolTipText("Cantina");
-		panelTabDatiSecondari.add(chckbxCantina, "1, 38");
+		panelTabDatiSecondari.add(chckbxCantina, "1, 36");
 		
 		//Rampe per disabili
 		mapCampiForm.put("chckbxRampePerDisabili", chckbxRampePerDisabili);
 		listCampiForm.add(chckbxRampePerDisabili);
 		chckbxRampePerDisabili.setToolTipText("Rampe per disabili");
-		panelTabDatiSecondari.add(chckbxRampePerDisabili, "2, 38");
+		panelTabDatiSecondari.add(chckbxRampePerDisabili, "2, 36");
 		/*-----------------------------------------------------------------------------------------*/
 		
 		
@@ -1342,13 +1362,14 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	  	//Checkbox
 	  	chckbxBandaLarga.setSelected(scheda.bandaLarga);
 	  	chckbxAscensore.setSelected(scheda.ascensore);
-	  	chckbxCasaEcologica.setSelected(scheda.casaEcologica);
-	  	chckbxVicinanzeBus.setSelected(scheda.vicinanzeBus);
+	  	//chckbxCasaEcologica.setSelected(scheda.casaEcologica);
+	  	//chckbxVicinanzeBus.setSelected(scheda.vicinanzeBus);
 	  	chckbxCantina.setSelected(scheda.cantina);
 	  	chckbxSatellite.setSelected(scheda.satellite);
 	  	chckbxSistemaDiAllarme.setSelected(scheda.sistemaDiAllarme);
 	  	chckbxCancelloElettrico.setSelected(scheda.cancelloElettrico);
-	  	chckbxVicinanzeMetro.setSelected(scheda.vicinanzeMetro);
+	  	//chckbxVicinanzeMetro.setSelected(scheda.vicinanzeMetro);
+	  	chckbxVicinanzeMezziPubblici.setSelected(scheda.vicinanzeMezziPubblici);
 	  	chckbxRampePerDisabili.setSelected(scheda.rampePerDisabili);
 	  	//TOT:56
 

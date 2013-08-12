@@ -74,14 +74,15 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	//Checkbox
 	boolean bandaLarga;
 	boolean ascensore;
-	boolean casaEcologica;
-	boolean vicinanzeBus;
+	//boolean casaEcologica;
+	//boolean vicinanzeBus;
 	boolean cantina;
 	boolean satellite;
 	boolean sistemaDiAllarme;
 	boolean cancelloElettrico;
-	boolean vicinanzeMetro;
-	boolean rampePerDisabili;  //10
+	//boolean vicinanzeMetro;
+	boolean vicinanzeMezziPubblici;
+	boolean rampePerDisabili;  //8
 	//TOT:46
 	
 	//Gli indici delle combobox 
@@ -213,9 +214,9 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		
 		ascensore = (((JCheckBox) mapCampiForm.get("chckbxAscensore")).isSelected())?true:false;
 		
-		casaEcologica = (((JCheckBox) mapCampiForm.get("chckbxCasaEcologica")).isSelected())?true:false;
+		//casaEcologica = (((JCheckBox) mapCampiForm.get("chckbxCasaEcologica")).isSelected())?true:false;
 		
-		vicinanzeBus = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeBus")).isSelected())?true:false;
+		//vicinanzeBus = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeBus")).isSelected())?true:false;
 		
 		cantina = (((JCheckBox) mapCampiForm.get("chckbxCantina")).isSelected())?true:false;
 		
@@ -225,7 +226,8 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		
 		cancelloElettrico = (((JCheckBox) mapCampiForm.get("chckbxCancelloElettrico")).isSelected())?true:false;
 		
-		vicinanzeMetro = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeMetro")).isSelected())?true:false;
+		//vicinanzeMetro = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeMetro")).isSelected())?true:false;
+		vicinanzeMezziPubblici = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeMezziPubblici")).isSelected())?true:false;
 		
 		rampePerDisabili = (((JCheckBox) mapCampiForm.get("chckbxRampePerDisabili")).isSelected())?true:false;
 		
