@@ -38,15 +38,14 @@ public class _immobiliareIt extends PortaleImmobiliare {
 	private final String URLROOT2 = "http://media.getrix.ekbl.net";	//la root per le immagini è differente
 	private final String USERNAME = "nfjrpnqp@sharklasers.com";
     private final String PASSWORD = "ts2cj1n3";
-    
-	
+    	
     //private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
     private String codiceInserzione;
     private boolean inserimentoOK = false;
     private String location;
     private boolean debugMode = true;
     
-    private String nomeImmagine0;
+    /*private String nomeImmagine0;
     private String nomeImmagine1;
     private String nomeImmagine2;
     private String nomeImmagine3;
@@ -55,10 +54,10 @@ public class _immobiliareIt extends PortaleImmobiliare {
     private String nomeImmagine6;
     private String nomeImmagine7;
     private String nomeImmagine8;
-    private String nomeImmagine9;
+    private String nomeImmagine9;*/
 
     //Mappa dei parametri da inviare
-    Map<String,String> mappaDeiParamerti;
+    Map<String,String> mappaDeiParametri;
     
     //Lista dei parametri inviati in una singola connessione
     List<NameValuePair> postParameters;  
@@ -66,7 +65,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
     //La scheda immobile su cui si lavora
     SchedaImmobile scheda;
     
-    //Lista di alcuni dei parametri inviati
+    //Lista di alcuni (non necessariamente tutti) dei parametri inviati
     String categoria;
     String tipo;
     String fasciaprezzo;
@@ -74,80 +73,79 @@ public class _immobiliareIt extends PortaleImmobiliare {
     String gtxAnnoCostruzione;
     String codice;
     String prezzo;
-    String gtxNumeroSoggiornoSalotto; //non supportato
+    String gtxNumeroSoggiornoSalotto;
     String piano;
     String tipologia;
     String locali;
-    String gtxNumeroAltreCamereStanze; //non supportato
+    String gtxNumeroAltreCamereStanze;
     String numeroPiani;
     String stato;
     String superficie;
-    String gtxNumeroPostiAuto; //non supportato
-    String tipoProprieta; //non supportato
-    String tipoMandato; //non supportato
-    String gtxIdContatto; //vuoto
-    String idCont; //vuoto
-    String classeImmobile; //non supportato
-    String terreno_proprieta; //non supportato
-    String gtxScadenzaMandato; //non supportato
-    String spese_condominiali; //non supportato
-    String in_asta; //non supportato
-    String a_reddito; //non supportato
-    String libero; //non supportato
-    String spese; //non supportato
+    String gtxNumeroPostiAuto;
+    String tipoProprieta;
+    String tipoMandato;
+    String gtxIdContatto;
+    String idCont;
+    String classeImmobile;
+    String terreno_proprieta;
+    String gtxScadenzaMandato;
+    String spese_condominiali;
+    String in_asta;
+    String a_reddito;
+    String libero;
+    String spese;
     String classe_energetica;
-    String ipe; //valore id default
-    String ipe_unita_misura; //valore id default
-    String hidden_ipe; //valore id default
-    String hidden_default_mq; //valore id default
-    String hidden_default_mc; //valore id default
-    String costruttore; //valore id default
-    String statoCantiere; //valore id default
-    String riscaldamento; //da non inviare in certe condizioni
-    String cucina; //non supportato e da non inviare in certe condizioni
-    String boxauto; //non supportato in questa maniera
+    String ipe;
+    String ipe_unita_misura;
+    String hidden_ipe;
+    String hidden_default_mq;
+    String hidden_default_mc;
+    String costruttore;
+    String statoCantiere;
+    String riscaldamento;
+    String cucina;
+    String boxauto;
     String bagni;
     String idGiardino;
     String idArredamento;
-    String gtxIngresso; //non supportato
-    String gtxRipostiglio; //non supportato
+    String gtxIngresso;
+    String gtxRipostiglio;
     String gtxCantina;
-    String gtxMansarda; //non supportato
-    String gtxTaverna;  //non supportato
-    String gtxInfissiEsterni;  //non supportato
-    String gtxImpiantoTv;  //non supportato
+    String gtxMansarda;
+    String gtxTaverna; 
+    String gtxInfissiEsterni; 
+    String gtxImpiantoTv; 
     String gtxFibraOttica;
     String ascensore;
     String gtxImpiantoAllarme;
     String gtxCancelloElettrico;
     String flag_auto_it; 
     String descrizione_it; 
-    String flag_auto_en;  //non supportato
-    String descrizione_en;  //non supportato
-    String flag_auto_de;  //non supportato
-    String descrizione_de;  //non supportato
-    String flag_auto_fr;  //non supportato
-    String descrizione_fr;  //non supportato
-    String flag_auto_es;  //non supportato
-    String descrizione_es;  //non supportato
-    String flag_auto_pt;  //non supportato
-    String descrizione_pt;  //non supportato
-    String flag_auto_ru;  //non supportato
-    String descrizione_ru;  //non supportato
-    String flag_auto_gr;  //non supportato
-    String descrizione_gr;  //non supportato
+    String flag_auto_en; 
+    String descrizione_en; 
+    String flag_auto_de; 
+    String descrizione_de; 
+    String flag_auto_fr; 
+    String descrizione_fr; 
+    String flag_auto_es; 
+    String descrizione_es; 
+    String flag_auto_pt; 
+    String descrizione_pt; 
+    String flag_auto_ru; 
+    String descrizione_ru; 
+    String flag_auto_gr; 
+    String descrizione_gr; 
     String remLen_it;
-    String remLen_en = "3000";  //valore id default
-    String remLen_de = "3000";  //valore id default
-    String remLen_fr = "3000";  //valore id default
-    String remLen_es = "3000";  //valore id default
-    String remLen_pt = "3000";  //valore id default
-    String remLen_ru = "3000";  //valore id default
-    String remLen_gr = "3000";  //valore id default
-    String gtxTitolo_per_riviste;  //non supportato
-    String gtxDescrizione_per_riviste;  //non supportato
+    String remLen_en;  
+    String remLen_de;  
+    String remLen_fr;  
+    String remLen_es;  
+    String remLen_pt;  
+    String remLen_ru;  
+    String remLen_gr;  
+    String gtxTitolo_per_riviste; 
+    String gtxDescrizione_per_riviste; 
     String callback;
-    
     String _textComune;
     String action;
     String cap;
@@ -180,8 +178,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
     String textRegione;
     String virtual_tour;
     String zonaobbligatoria;
-    String zoom;
-    
+    String zoom;  
     String SelTipoPagamento;
     String address1;
     String amount;
@@ -212,12 +209,14 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		
 		super(urlIcona, valoreLabel, idPortale, isActive);
 		
-		//Inizializzo i cookie 
+		//Inizializzo il cookie di sessione 
 		SESSIONCOOKIENAME = "GETRIXSID";
 		SESSIONCOOKIEDOMAIN = ".getrix.ekbl.net";
 		
-		mappaDeiParamerti =  new Hashtable<String,String>();
+		//Inizializzo la mappa dei parametri
+		mappaDeiParametri =  new Hashtable<String,String>();
 	    
+		//Inizializzo la lista che conterrà i parametri da inviare
 	    postParameters = new ArrayList<NameValuePair>();		
 	
 	}
@@ -277,7 +276,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	//Connessione 3 - GET dello step 1 di inserimento immobile
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
-			connessione_3.get("Connessione 3 - GET dello step 1 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "2" + "&categoria=" + mappaDeiParamerti.get("categoria") + "&tipo=" + mappaDeiParamerti.get("tipo") + "&callback=refresh", debugMode);
+			connessione_3.get("Connessione 3 - GET dello step 1 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "2" + "&categoria=" + mappaDeiParametri.get("categoria") + "&tipo=" + mappaDeiParametri.get("tipo") + "&callback=refresh", debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -286,106 +285,106 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	//Connessione 4 - POST dello step 2 di inserimento immobile
     	HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
-        postParameters.add(new BasicNameValuePair("tipo", mappaDeiParamerti.get("tipo")));
+        postParameters.add(new BasicNameValuePair("tipo", mappaDeiParametri.get("tipo")));
         postParameters.add(new BasicNameValuePair("step", "2"));
-        postParameters.add(new BasicNameValuePair("categoria", mappaDeiParamerti.get("categoria")));
-        postParameters.add(new BasicNameValuePair("fasciaprezzo", mappaDeiParamerti.get("fasciaprezzo")));
-        postParameters.add(new BasicNameValuePair("gtxNumeroCamereDaLetto", mappaDeiParamerti.get("gtxNumeroCamereDaLetto")));
-        postParameters.add(new BasicNameValuePair("gtxAnnoCostruzione", mappaDeiParamerti.get("gtxAnnoCostruzione")));
-        postParameters.add(new BasicNameValuePair("codice", mappaDeiParamerti.get("codice")));
-        postParameters.add(new BasicNameValuePair("prezzo", mappaDeiParamerti.get("prezzo")));
-        postParameters.add(new BasicNameValuePair("gtxNumeroSoggiornoSalotto", mappaDeiParamerti.get("gtxNumeroSoggiornoSalotto")));
-        postParameters.add(new BasicNameValuePair("piano", mappaDeiParamerti.get("piano")));
-        postParameters.add(new BasicNameValuePair("tipologia", mappaDeiParamerti.get("tipologia")));
-        postParameters.add(new BasicNameValuePair("locali", mappaDeiParamerti.get("locali")));
-        postParameters.add(new BasicNameValuePair("gtxNumeroAltreCamereStanze", mappaDeiParamerti.get("gtxNumeroAltreCamereStanze")));
-        postParameters.add(new BasicNameValuePair("numeroPiani", mappaDeiParamerti.get("numeroPiani")));
-        postParameters.add(new BasicNameValuePair("stato", mappaDeiParamerti.get("stato")));
-        postParameters.add(new BasicNameValuePair("superficie", mappaDeiParamerti.get("superficie")));
-        postParameters.add(new BasicNameValuePair("gtxNumeroPostiAuto", mappaDeiParamerti.get("gtxNumeroPostiAuto")));
-        postParameters.add(new BasicNameValuePair("tipoProprieta", mappaDeiParamerti.get("tipoProprieta")));
-        postParameters.add(new BasicNameValuePair("tipoMandato", mappaDeiParamerti.get("tipoMandato")));
-        postParameters.add(new BasicNameValuePair("gtxIdContatto", mappaDeiParamerti.get("gtxIdContatto")));
-        postParameters.add(new BasicNameValuePair("idCont", mappaDeiParamerti.get("idCont")));
-        postParameters.add(new BasicNameValuePair("classeImmobile", mappaDeiParamerti.get("classeImmobile")));
-        postParameters.add(new BasicNameValuePair("terreno_proprieta", mappaDeiParamerti.get("terreno_proprieta")));
-        postParameters.add(new BasicNameValuePair("gtxScadenzaMandato", mappaDeiParamerti.get("gtxScadenzaMandato")));
-        postParameters.add(new BasicNameValuePair("spese_condominiali", mappaDeiParamerti.get("spese_condominiali")));
-        postParameters.add(new BasicNameValuePair("in_asta", mappaDeiParamerti.get("in_asta")));
-        postParameters.add(new BasicNameValuePair("a_reddito", mappaDeiParamerti.get("a_reddito")));
-        postParameters.add(new BasicNameValuePair("libero", mappaDeiParamerti.get("libero")));
-        postParameters.add(new BasicNameValuePair("spese", mappaDeiParamerti.get("spese")));
-        postParameters.add(new BasicNameValuePair("classe_energetica", mappaDeiParamerti.get("classe_energetica")));
-        postParameters.add(new BasicNameValuePair("ipe", mappaDeiParamerti.get("ipe")));
-        postParameters.add(new BasicNameValuePair("ipe_unita_misura", mappaDeiParamerti.get("ipe_unita_misura")));
-        postParameters.add(new BasicNameValuePair("hidden_ipe", mappaDeiParamerti.get("hidden_ipe")));
-        postParameters.add(new BasicNameValuePair("hidden_default_mq", mappaDeiParamerti.get("hidden_default_mq")));
-        postParameters.add(new BasicNameValuePair("hidden_default_mc", mappaDeiParamerti.get("hidden_default_mc")));
-        postParameters.add(new BasicNameValuePair("costruttore", mappaDeiParamerti.get("costruttore")));
-        postParameters.add(new BasicNameValuePair("statoCantiere", mappaDeiParamerti.get("statoCantiere")));
-        postParameters.add(new BasicNameValuePair("riscaldamento", mappaDeiParamerti.get("riscaldamento")));
-        postParameters.add(new BasicNameValuePair("cucina", mappaDeiParamerti.get("cucina")));
-        postParameters.add(new BasicNameValuePair("boxauto", mappaDeiParamerti.get("boxauto")));
-        postParameters.add(new BasicNameValuePair("bagni", mappaDeiParamerti.get("bagni")));
-        postParameters.add(new BasicNameValuePair("idGiardino", mappaDeiParamerti.get("idGiardino")));
-        postParameters.add(new BasicNameValuePair("idArredamento", mappaDeiParamerti.get("idArredamento")));
-        postParameters.add(new BasicNameValuePair("gtxIngresso", mappaDeiParamerti.get("gtxIngresso")));
-        postParameters.add(new BasicNameValuePair("gtxRipostiglio", mappaDeiParamerti.get("gtxRipostiglio")));
-        postParameters.add(new BasicNameValuePair("gtxCantina", mappaDeiParamerti.get("gtxCantina")));
-        postParameters.add(new BasicNameValuePair("gtxMansarda", mappaDeiParamerti.get("gtxMansarda")));
-        postParameters.add(new BasicNameValuePair("gtxTaverna", mappaDeiParamerti.get("gtxTaverna")));
-        postParameters.add(new BasicNameValuePair("gtxInfissiEsterni", mappaDeiParamerti.get("gtxInfissiEsterni")));
-        postParameters.add(new BasicNameValuePair("gtxImpiantoTv", mappaDeiParamerti.get("gtxImpiantoTv")));
-        postParameters.add(new BasicNameValuePair("gtxCaminetto", mappaDeiParamerti.get("gtxCaminetto")));
-        postParameters.add(new BasicNameValuePair("gtxPortaBlindata", mappaDeiParamerti.get("gtxPortaBlindata")));
-        postParameters.add(new BasicNameValuePair("gtxImpiantoAllarme", mappaDeiParamerti.get("gtxImpiantoAllarme")));
-        postParameters.add(new BasicNameValuePair("gtxPiscina", mappaDeiParamerti.get("gtxPiscina")));
-        postParameters.add(new BasicNameValuePair("gtxCampoTennis", mappaDeiParamerti.get("gtxCampoTennis")));
-        postParameters.add(new BasicNameValuePair("flag_auto_it", mappaDeiParamerti.get("flag_auto_it")));
-        postParameters.add(new BasicNameValuePair("descrizione_it", mappaDeiParamerti.get("descrizione_it")));
-        postParameters.add(new BasicNameValuePair("flag_auto_en", mappaDeiParamerti.get("flag_auto_en")));
-        postParameters.add(new BasicNameValuePair("descrizione_en", mappaDeiParamerti.get("descrizione_en")));
-        postParameters.add(new BasicNameValuePair("flag_auto_de", mappaDeiParamerti.get("flag_auto_de")));
-        postParameters.add(new BasicNameValuePair("descrizione_de", mappaDeiParamerti.get("descrizione_de")));
-        postParameters.add(new BasicNameValuePair("flag_auto_fr", mappaDeiParamerti.get("flag_auto_fr")));
-        postParameters.add(new BasicNameValuePair("descrizione_fr", mappaDeiParamerti.get("descrizione_fr")));
-        postParameters.add(new BasicNameValuePair("flag_auto_es", mappaDeiParamerti.get("flag_auto_es")));
-        postParameters.add(new BasicNameValuePair("descrizione_es", mappaDeiParamerti.get("descrizione_es")));
-        postParameters.add(new BasicNameValuePair("flag_auto_pt", mappaDeiParamerti.get("flag_auto_pt")));
-        postParameters.add(new BasicNameValuePair("descrizione_pt", mappaDeiParamerti.get("descrizione_pt")));
-        postParameters.add(new BasicNameValuePair("flag_auto_ru", mappaDeiParamerti.get("flag_auto_ru")));
-        postParameters.add(new BasicNameValuePair("descrizione_ru", mappaDeiParamerti.get("descrizione_ru")));
-        postParameters.add(new BasicNameValuePair("flag_auto_gr", mappaDeiParamerti.get("flag_auto_gr")));
-        postParameters.add(new BasicNameValuePair("descrizione_gr", mappaDeiParamerti.get("descrizione_gr")));
-        postParameters.add(new BasicNameValuePair("remLen_it", mappaDeiParamerti.get("remLen_it")));
-        postParameters.add(new BasicNameValuePair("remLen_en", mappaDeiParamerti.get("remLen_en")));
-        postParameters.add(new BasicNameValuePair("remLen_de", mappaDeiParamerti.get("remLen_de")));
-        postParameters.add(new BasicNameValuePair("remLen_fr", mappaDeiParamerti.get("remLen_fr")));
-        postParameters.add(new BasicNameValuePair("remLen_es", mappaDeiParamerti.get("remLen_es")));
-        postParameters.add(new BasicNameValuePair("remLen_pt", mappaDeiParamerti.get("remLen_pt")));
-        postParameters.add(new BasicNameValuePair("remLen_ru", mappaDeiParamerti.get("remLen_ru")));
-        postParameters.add(new BasicNameValuePair("remLen_gr", mappaDeiParamerti.get("remLen_gr")));
-        postParameters.add(new BasicNameValuePair("gtxTitolo_per_riviste", mappaDeiParamerti.get("gtxTitolo_per_riviste")));
-        postParameters.add(new BasicNameValuePair("gtxDescrizione_per_riviste", mappaDeiParamerti.get("gtxDescrizione_per_rivist...")));
-        postParameters.add(new BasicNameValuePair("callback", mappaDeiParamerti.get("callback")));   
+        postParameters.add(new BasicNameValuePair("categoria", mappaDeiParametri.get("categoria")));
+        postParameters.add(new BasicNameValuePair("fasciaprezzo", mappaDeiParametri.get("fasciaprezzo")));
+        postParameters.add(new BasicNameValuePair("gtxNumeroCamereDaLetto", mappaDeiParametri.get("gtxNumeroCamereDaLetto")));
+        postParameters.add(new BasicNameValuePair("gtxAnnoCostruzione", mappaDeiParametri.get("gtxAnnoCostruzione")));
+        postParameters.add(new BasicNameValuePair("codice", mappaDeiParametri.get("codice")));
+        postParameters.add(new BasicNameValuePair("prezzo", mappaDeiParametri.get("prezzo")));
+        postParameters.add(new BasicNameValuePair("gtxNumeroSoggiornoSalotto", mappaDeiParametri.get("gtxNumeroSoggiornoSalotto")));
+        postParameters.add(new BasicNameValuePair("piano", mappaDeiParametri.get("piano")));
+        postParameters.add(new BasicNameValuePair("tipologia", mappaDeiParametri.get("tipologia")));
+        postParameters.add(new BasicNameValuePair("locali", mappaDeiParametri.get("locali")));
+        postParameters.add(new BasicNameValuePair("gtxNumeroAltreCamereStanze", mappaDeiParametri.get("gtxNumeroAltreCamereStanze")));
+        postParameters.add(new BasicNameValuePair("numeroPiani", mappaDeiParametri.get("numeroPiani")));
+        postParameters.add(new BasicNameValuePair("stato", mappaDeiParametri.get("stato")));
+        postParameters.add(new BasicNameValuePair("superficie", mappaDeiParametri.get("superficie")));
+        postParameters.add(new BasicNameValuePair("gtxNumeroPostiAuto", mappaDeiParametri.get("gtxNumeroPostiAuto")));
+        postParameters.add(new BasicNameValuePair("tipoProprieta", mappaDeiParametri.get("tipoProprieta")));
+        postParameters.add(new BasicNameValuePair("tipoMandato", mappaDeiParametri.get("tipoMandato")));
+        postParameters.add(new BasicNameValuePair("gtxIdContatto", mappaDeiParametri.get("gtxIdContatto")));
+        postParameters.add(new BasicNameValuePair("idCont", mappaDeiParametri.get("idCont")));
+        postParameters.add(new BasicNameValuePair("classeImmobile", mappaDeiParametri.get("classeImmobile")));
+        postParameters.add(new BasicNameValuePair("terreno_proprieta", mappaDeiParametri.get("terreno_proprieta")));
+        postParameters.add(new BasicNameValuePair("gtxScadenzaMandato", mappaDeiParametri.get("gtxScadenzaMandato")));
+        postParameters.add(new BasicNameValuePair("spese_condominiali", mappaDeiParametri.get("spese_condominiali")));
+        postParameters.add(new BasicNameValuePair("in_asta", mappaDeiParametri.get("in_asta")));
+        postParameters.add(new BasicNameValuePair("a_reddito", mappaDeiParametri.get("a_reddito")));
+        postParameters.add(new BasicNameValuePair("libero", mappaDeiParametri.get("libero")));
+        postParameters.add(new BasicNameValuePair("spese", mappaDeiParametri.get("spese")));
+        postParameters.add(new BasicNameValuePair("classe_energetica", mappaDeiParametri.get("classe_energetica")));
+        postParameters.add(new BasicNameValuePair("ipe", mappaDeiParametri.get("ipe")));
+        postParameters.add(new BasicNameValuePair("ipe_unita_misura", mappaDeiParametri.get("ipe_unita_misura")));
+        postParameters.add(new BasicNameValuePair("hidden_ipe", mappaDeiParametri.get("hidden_ipe")));
+        postParameters.add(new BasicNameValuePair("hidden_default_mq", mappaDeiParametri.get("hidden_default_mq")));
+        postParameters.add(new BasicNameValuePair("hidden_default_mc", mappaDeiParametri.get("hidden_default_mc")));
+        postParameters.add(new BasicNameValuePair("costruttore", mappaDeiParametri.get("costruttore")));
+        postParameters.add(new BasicNameValuePair("statoCantiere", mappaDeiParametri.get("statoCantiere")));
+        postParameters.add(new BasicNameValuePair("riscaldamento", mappaDeiParametri.get("riscaldamento")));
+        postParameters.add(new BasicNameValuePair("cucina", mappaDeiParametri.get("cucina")));
+        postParameters.add(new BasicNameValuePair("boxauto", mappaDeiParametri.get("boxauto")));
+        postParameters.add(new BasicNameValuePair("bagni", mappaDeiParametri.get("bagni")));
+        postParameters.add(new BasicNameValuePair("idGiardino", mappaDeiParametri.get("idGiardino")));
+        postParameters.add(new BasicNameValuePair("idArredamento", mappaDeiParametri.get("idArredamento")));
+        postParameters.add(new BasicNameValuePair("gtxIngresso", mappaDeiParametri.get("gtxIngresso")));
+        postParameters.add(new BasicNameValuePair("gtxRipostiglio", mappaDeiParametri.get("gtxRipostiglio")));
+        postParameters.add(new BasicNameValuePair("gtxCantina", mappaDeiParametri.get("gtxCantina")));
+        postParameters.add(new BasicNameValuePair("gtxMansarda", mappaDeiParametri.get("gtxMansarda")));
+        postParameters.add(new BasicNameValuePair("gtxTaverna", mappaDeiParametri.get("gtxTaverna")));
+        postParameters.add(new BasicNameValuePair("gtxInfissiEsterni", mappaDeiParametri.get("gtxInfissiEsterni")));
+        postParameters.add(new BasicNameValuePair("gtxImpiantoTv", mappaDeiParametri.get("gtxImpiantoTv")));
+        postParameters.add(new BasicNameValuePair("gtxCaminetto", mappaDeiParametri.get("gtxCaminetto")));
+        postParameters.add(new BasicNameValuePair("gtxPortaBlindata", mappaDeiParametri.get("gtxPortaBlindata")));
+        postParameters.add(new BasicNameValuePair("gtxImpiantoAllarme", mappaDeiParametri.get("gtxImpiantoAllarme")));
+        postParameters.add(new BasicNameValuePair("gtxPiscina", mappaDeiParametri.get("gtxPiscina")));
+        postParameters.add(new BasicNameValuePair("gtxCampoTennis", mappaDeiParametri.get("gtxCampoTennis")));
+        postParameters.add(new BasicNameValuePair("flag_auto_it", mappaDeiParametri.get("flag_auto_it")));
+        postParameters.add(new BasicNameValuePair("descrizione_it", mappaDeiParametri.get("descrizione_it")));
+        postParameters.add(new BasicNameValuePair("flag_auto_en", mappaDeiParametri.get("flag_auto_en")));
+        postParameters.add(new BasicNameValuePair("descrizione_en", mappaDeiParametri.get("descrizione_en")));
+        postParameters.add(new BasicNameValuePair("flag_auto_de", mappaDeiParametri.get("flag_auto_de")));
+        postParameters.add(new BasicNameValuePair("descrizione_de", mappaDeiParametri.get("descrizione_de")));
+        postParameters.add(new BasicNameValuePair("flag_auto_fr", mappaDeiParametri.get("flag_auto_fr")));
+        postParameters.add(new BasicNameValuePair("descrizione_fr", mappaDeiParametri.get("descrizione_fr")));
+        postParameters.add(new BasicNameValuePair("flag_auto_es", mappaDeiParametri.get("flag_auto_es")));
+        postParameters.add(new BasicNameValuePair("descrizione_es", mappaDeiParametri.get("descrizione_es")));
+        postParameters.add(new BasicNameValuePair("flag_auto_pt", mappaDeiParametri.get("flag_auto_pt")));
+        postParameters.add(new BasicNameValuePair("descrizione_pt", mappaDeiParametri.get("descrizione_pt")));
+        postParameters.add(new BasicNameValuePair("flag_auto_ru", mappaDeiParametri.get("flag_auto_ru")));
+        postParameters.add(new BasicNameValuePair("descrizione_ru", mappaDeiParametri.get("descrizione_ru")));
+        postParameters.add(new BasicNameValuePair("flag_auto_gr", mappaDeiParametri.get("flag_auto_gr")));
+        postParameters.add(new BasicNameValuePair("descrizione_gr", mappaDeiParametri.get("descrizione_gr")));
+        postParameters.add(new BasicNameValuePair("remLen_it", mappaDeiParametri.get("remLen_it")));
+        postParameters.add(new BasicNameValuePair("remLen_en", mappaDeiParametri.get("remLen_en")));
+        postParameters.add(new BasicNameValuePair("remLen_de", mappaDeiParametri.get("remLen_de")));
+        postParameters.add(new BasicNameValuePair("remLen_fr", mappaDeiParametri.get("remLen_fr")));
+        postParameters.add(new BasicNameValuePair("remLen_es", mappaDeiParametri.get("remLen_es")));
+        postParameters.add(new BasicNameValuePair("remLen_pt", mappaDeiParametri.get("remLen_pt")));
+        postParameters.add(new BasicNameValuePair("remLen_ru", mappaDeiParametri.get("remLen_ru")));
+        postParameters.add(new BasicNameValuePair("remLen_gr", mappaDeiParametri.get("remLen_gr")));
+        postParameters.add(new BasicNameValuePair("gtxTitolo_per_riviste", mappaDeiParametri.get("gtxTitolo_per_riviste")));
+        postParameters.add(new BasicNameValuePair("gtxDescrizione_per_riviste", mappaDeiParametri.get("gtxDescrizione_per_rivist...")));
+        postParameters.add(new BasicNameValuePair("callback", mappaDeiParametri.get("callback")));   
         
         //Rimuovo i parametri che non devono essere inviati
         Iterator<NameValuePair> iterator = postParameters.iterator();
         while(iterator.hasNext()) {
         	BasicNameValuePair currentParam = (BasicNameValuePair) iterator.next();
-        	if(currentParam.getValue()=="***DONOTSEND***")  {
+        	if(currentParam.getValue() == dontSendThisParam)  {
         		iterator.remove();	
         	}
         }
         
         try {
-        	Object[] response = connessione_4.post("Connessione 4 - POST dello step 2 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "2" + "&categoria=" + mappaDeiParamerti.get("categoria") + "&tipo=" + mappaDeiParamerti.get("tipo") + "&callback=refresh", postParameters, debugMode);
+        	Object[] response = connessione_4.post("Connessione 4 - POST dello step 2 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "2" + "&categoria=" + mappaDeiParametri.get("categoria") + "&tipo=" + mappaDeiParametri.get("tipo") + "&callback=refresh", postParameters, debugMode);
         	Header[] responseHeaders = (Header[])response[0];
         	location = getHeaderValueByName(responseHeaders, "Location");
         	int start = location.indexOf("idAnnuncio=") + 11;
 	        int end = location.length();
 	        codiceInserzione = location.substring(start, end);
-	        mappaDeiParamerti.put("idAnnuncio", codiceInserzione);
+	        mappaDeiParametri.put("idAnnuncio", codiceInserzione);
         } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -397,7 +396,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
         //Connessione 5 - GET dello step 3 di inserimento immobile
     	HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
     	try {
-			connessione_5.get("Connessione 5 - GET dello step 3 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "3"  + "&tipo=" + mappaDeiParamerti.get("tipo") + "&idAnnuncio=" + mappaDeiParamerti.get("idAnnuncio"), debugMode);
+			connessione_5.get("Connessione 5 - GET dello step 3 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "3"  + "&tipo=" + mappaDeiParametri.get("tipo") + "&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio"), debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -411,7 +410,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("s", scheda.comune));
         postParameters.add(new BasicNameValuePair("showNation", "0"));
         try {
-        	Object[] response = connessione_a.post_test("Connessione a - POST per recupero codici Comune, Provincia e Regione", URLROOT + "/comune_suggestion.php", postParameters, debugMode, URLROOT + "/inserimento_annuncio.php?step=" + "3"  + "&tipo=" + mappaDeiParamerti.get("tipo") + "&idAnnuncio=" + mappaDeiParamerti.get("idAnnuncio"));
+        	Object[] response = connessione_a.post_test("Connessione a - POST per recupero codici Comune, Provincia e Regione", URLROOT + "/comune_suggestion.php", postParameters, debugMode, URLROOT + "/inserimento_annuncio.php?step=" + "3"  + "&tipo=" + mappaDeiParametri.get("tipo") + "&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio"));
         	String responseBody = (String)response[1];
         	JSONObject json = new JSONObject(responseBody);
         	JSONArray jsonResults = json.getJSONArray("results");
@@ -431,34 +430,34 @@ public class _immobiliareIt extends PortaleImmobiliare {
         		if(actualResultComparation>=resultComparation) {
         			resultComparation = actualResultComparation;
         			idComune = currentJson.getString("comune_idComune");
-        			mappaDeiParamerti.put("idComune", idComune);
+        			mappaDeiParametri.put("idComune", idComune);
         			
         			idNazione = currentJson.getString("nazione_idNazione");
-        			mappaDeiParamerti.put("idNazione", idNazione);
+        			mappaDeiParametri.put("idNazione", idNazione);
         			
         			idProvincia = currentJson.getString("provincia_idProvincia");
-        			mappaDeiParamerti.put("idProvincia", idProvincia);
+        			mappaDeiParametri.put("idProvincia", idProvincia);
         			
         			idRegione = currentJson.getString("regione_idRegione");
-        			mappaDeiParamerti.put("idRegione", idRegione);
+        			mappaDeiParametri.put("idRegione", idRegione);
         			
         			textComune = currentJson.getString("comune_nome");
-        			mappaDeiParamerti.put("textComune", textComune);
+        			mappaDeiParametri.put("textComune", textComune);
         			
         			textNazione = currentJson.getString("nazione_nome");
-        			mappaDeiParamerti.put("textNazione", textNazione);
+        			mappaDeiParametri.put("textNazione", textNazione);
         			
         			textProvincia = currentJson.getString("provincia_nome");
-        			mappaDeiParamerti.put("textProvincia", textProvincia);
+        			mappaDeiParametri.put("textProvincia", textProvincia);
         			
         			textRegione = currentJson.getString("regione_nome");
-        			mappaDeiParamerti.put("textRegione", textRegione);
+        			mappaDeiParametri.put("textRegione", textRegione);
         			
         			com_latitudine = currentJson.getString("comune_latitudine");
-        			mappaDeiParamerti.put("com_latitudine", com_latitudine);
+        			mappaDeiParametri.put("com_latitudine", com_latitudine);
         			
         			com_longitudine = currentJson.getString("comune_longitudine"); 
-        			mappaDeiParamerti.put("com_longitudine", com_longitudine);
+        			mappaDeiParametri.put("com_longitudine", com_longitudine);
         			
         			System.out.println("JSON1: " + idComune);
         			System.out.println("JSON2: " + idNazione);
@@ -490,8 +489,8 @@ public class _immobiliareIt extends PortaleImmobiliare {
 	    	        reqEntity.addPart("action", new StringBody("add"));
 	    	        reqEntity.addPart("imageid", new StringBody(""));
 	    	        reqEntity.addPart("pdftoremove", new StringBody(""));
-	    	        reqEntity.addPart("tipo", new StringBody(mappaDeiParamerti.get("tipo")));
-	    	        reqEntity.addPart("idAnnuncio", new StringBody(mappaDeiParamerti.get("idAnnuncio")));
+	    	        reqEntity.addPart("tipo", new StringBody(mappaDeiParametri.get("tipo")));
+	    	        reqEntity.addPart("idAnnuncio", new StringBody(mappaDeiParametri.get("idAnnuncio")));
 	    	        reqEntity.addPart("immagine", bin );
 	    	        
 	    	        connessione_6.post("Connessione 6_" + i + " - inserimento immagine " + i, URLROOT2 + "/inserimento_immagini.php", reqEntity, debugMode);
@@ -509,40 +508,40 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	//Connessione 7 - POST dello step 3 di inserimento immobile
     	HttpPortalPostConnection connessione_7 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();
-    	postParameters.add(new BasicNameValuePair("_textComune", mappaDeiParamerti.get("_textComune")));
+    	postParameters.add(new BasicNameValuePair("_textComune", mappaDeiParametri.get("_textComune")));
     	postParameters.add(new BasicNameValuePair("action", "save"));
-    	postParameters.add(new BasicNameValuePair("cap", mappaDeiParamerti.get("cap")));
-    	postParameters.add(new BasicNameValuePair("com_latitudine", mappaDeiParamerti.get("com_latitudine")));
-    	postParameters.add(new BasicNameValuePair("com_longitudine", mappaDeiParamerti.get("com_longitudine")));
-    	postParameters.add(new BasicNameValuePair("confirm_address", mappaDeiParamerti.get("confirm_address")));
-    	postParameters.add(new BasicNameValuePair("flagIndirizzo", mappaDeiParamerti.get("flagIndirizzo")));
-    	postParameters.add(new BasicNameValuePair("flagIndirizzo_fake", mappaDeiParamerti.get("flagIndirizzo_fake")));
-    	postParameters.add(new BasicNameValuePair("idAnnuncio", mappaDeiParamerti.get("idAnnuncio")));
-    	postParameters.add(new BasicNameValuePair("idComune", mappaDeiParamerti.get("idComune")));
-    	postParameters.add(new BasicNameValuePair("idLocalita", mappaDeiParamerti.get("idLocalita")));
-    	postParameters.add(new BasicNameValuePair("idMacrozona", mappaDeiParamerti.get("idMacrozona")));
-    	postParameters.add(new BasicNameValuePair("idMicrozona", mappaDeiParamerti.get("idMicrozona")));
-    	postParameters.add(new BasicNameValuePair("idNazione", mappaDeiParamerti.get("idNazione")));
-    	postParameters.add(new BasicNameValuePair("idProvincia", mappaDeiParamerti.get("idProvincia")));
-    	postParameters.add(new BasicNameValuePair("idRegione", mappaDeiParamerti.get("idRegione")));
-    	postParameters.add(new BasicNameValuePair("indirizzo", mappaDeiParamerti.get("indirizzo")));
-    	postParameters.add(new BasicNameValuePair("indirizzo_fake", mappaDeiParamerti.get("indirizzo_fake")));
-    	postParameters.add(new BasicNameValuePair("indirizzo_fake_orig", mappaDeiParamerti.get("indirizzo_fake_orig")));
-    	postParameters.add(new BasicNameValuePair("latitudine", mappaDeiParamerti.get("latitudine")));
-    	postParameters.add(new BasicNameValuePair("longitudine", mappaDeiParamerti.get("longitudine")));
-    	postParameters.add(new BasicNameValuePair("nextStep", mappaDeiParamerti.get("nextStep")));
-    	postParameters.add(new BasicNameValuePair("num_localita", mappaDeiParamerti.get("num_localita")));
-    	postParameters.add(new BasicNameValuePair("numeroCivico", mappaDeiParamerti.get("numeroCivico")));
-    	postParameters.add(new BasicNameValuePair("planimetria", mappaDeiParamerti.get("planimetria")));
+    	postParameters.add(new BasicNameValuePair("cap", mappaDeiParametri.get("cap")));
+    	postParameters.add(new BasicNameValuePair("com_latitudine", mappaDeiParametri.get("com_latitudine")));
+    	postParameters.add(new BasicNameValuePair("com_longitudine", mappaDeiParametri.get("com_longitudine")));
+    	postParameters.add(new BasicNameValuePair("confirm_address", mappaDeiParametri.get("confirm_address")));
+    	postParameters.add(new BasicNameValuePair("flagIndirizzo", mappaDeiParametri.get("flagIndirizzo")));
+    	postParameters.add(new BasicNameValuePair("flagIndirizzo_fake", mappaDeiParametri.get("flagIndirizzo_fake")));
+    	postParameters.add(new BasicNameValuePair("idAnnuncio", mappaDeiParametri.get("idAnnuncio")));
+    	postParameters.add(new BasicNameValuePair("idComune", mappaDeiParametri.get("idComune")));
+    	postParameters.add(new BasicNameValuePair("idLocalita", mappaDeiParametri.get("idLocalita")));
+    	postParameters.add(new BasicNameValuePair("idMacrozona", mappaDeiParametri.get("idMacrozona")));
+    	postParameters.add(new BasicNameValuePair("idMicrozona", mappaDeiParametri.get("idMicrozona")));
+    	postParameters.add(new BasicNameValuePair("idNazione", mappaDeiParametri.get("idNazione")));
+    	postParameters.add(new BasicNameValuePair("idProvincia", mappaDeiParametri.get("idProvincia")));
+    	postParameters.add(new BasicNameValuePair("idRegione", mappaDeiParametri.get("idRegione")));
+    	postParameters.add(new BasicNameValuePair("indirizzo", mappaDeiParametri.get("indirizzo")));
+    	postParameters.add(new BasicNameValuePair("indirizzo_fake", mappaDeiParametri.get("indirizzo_fake")));
+    	postParameters.add(new BasicNameValuePair("indirizzo_fake_orig", mappaDeiParametri.get("indirizzo_fake_orig")));
+    	postParameters.add(new BasicNameValuePair("latitudine", mappaDeiParametri.get("latitudine")));
+    	postParameters.add(new BasicNameValuePair("longitudine", mappaDeiParametri.get("longitudine")));
+    	postParameters.add(new BasicNameValuePair("nextStep", mappaDeiParametri.get("nextStep")));
+    	postParameters.add(new BasicNameValuePair("num_localita", mappaDeiParametri.get("num_localita")));
+    	postParameters.add(new BasicNameValuePair("numeroCivico", mappaDeiParametri.get("numeroCivico")));
+    	postParameters.add(new BasicNameValuePair("planimetria", mappaDeiParametri.get("planimetria")));
     	postParameters.add(new BasicNameValuePair("step", "3"));
-    	postParameters.add(new BasicNameValuePair("textComune", mappaDeiParamerti.get("textComune")));
-    	postParameters.add(new BasicNameValuePair("textNazione", mappaDeiParamerti.get("textNazione")));
-    	postParameters.add(new BasicNameValuePair("textProvincia", mappaDeiParamerti.get("textProvincia")));
-    	postParameters.add(new BasicNameValuePair("textRegione", mappaDeiParamerti.get("textRegione")));
-    	postParameters.add(new BasicNameValuePair("tipo", mappaDeiParamerti.get("tipo")));
-    	postParameters.add(new BasicNameValuePair("virtual_tour", mappaDeiParamerti.get("virtual_tour")));
-    	//postParameters.add(new BasicNameValuePair("zonaobbligatoria", mappaDeiParamerti.get("zonaobbligatoria")));
-    	postParameters.add(new BasicNameValuePair("zoom", mappaDeiParamerti.get("zoom")));
+    	postParameters.add(new BasicNameValuePair("textComune", mappaDeiParametri.get("textComune")));
+    	postParameters.add(new BasicNameValuePair("textNazione", mappaDeiParametri.get("textNazione")));
+    	postParameters.add(new BasicNameValuePair("textProvincia", mappaDeiParametri.get("textProvincia")));
+    	postParameters.add(new BasicNameValuePair("textRegione", mappaDeiParametri.get("textRegione")));
+    	postParameters.add(new BasicNameValuePair("tipo", mappaDeiParametri.get("tipo")));
+    	postParameters.add(new BasicNameValuePair("virtual_tour", mappaDeiParametri.get("virtual_tour")));
+    	//postParameters.add(new BasicNameValuePair("zonaobbligatoria", mappaDeiParametri.get("zonaobbligatoria")));
+    	postParameters.add(new BasicNameValuePair("zoom", mappaDeiParametri.get("zoom")));
         
         //Rimuovo i parametri che non devono essere inviati
         /*Iterator<NameValuePair> iterator_7 = postParameters.iterator();
@@ -555,7 +554,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	
         
         try {
-        	connessione_7.post("Connessione 7 - POST dello step 3 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "3" + "&tipo=" + mappaDeiParamerti.get("tipo") + "&idAnnuncio=" + mappaDeiParamerti.get("idAnnuncio"), postParameters, debugMode);
+        	connessione_7.post("Connessione 7 - POST dello step 3 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "3" + "&tipo=" + mappaDeiParametri.get("tipo") + "&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio"), postParameters, debugMode);
         } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -567,7 +566,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
         //Connessione 8 - GET dello step 4 di inserimento immobile
     	HttpPortalGetConnection connessione_8 = new HttpPortalGetConnection();
     	try {
-			connessione_8.get("Connessione 8 - GET dello step 4 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "4"  + "&idAnnuncio=" + mappaDeiParamerti.get("idAnnuncio") + "&tipo=" + mappaDeiParamerti.get("tipo") + "&azionePayPal=show", debugMode);
+			connessione_8.get("Connessione 8 - GET dello step 4 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "4"  + "&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio") + "&tipo=" + mappaDeiParametri.get("tipo") + "&azionePayPal=show", debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -576,32 +575,32 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	//Connessione 9 - POST dello step 4 di inserimento immobile
     	HttpPortalPostConnection connessione_9 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();
-    	postParameters.add(new BasicNameValuePair("SelTipoPagamento", mappaDeiParamerti.get("SelTipoPagamento")));
-    	postParameters.add(new BasicNameValuePair("address1", mappaDeiParamerti.get("address1")));
-    	postParameters.add(new BasicNameValuePair("amount", mappaDeiParamerti.get("amount")));
-    	postParameters.add(new BasicNameValuePair("azionePayPal", mappaDeiParamerti.get("azionePayPal")));
-    	postParameters.add(new BasicNameValuePair("bn", mappaDeiParamerti.get("bn")));
-    	postParameters.add(new BasicNameValuePair("business", mappaDeiParamerti.get("business")));
-    	postParameters.add(new BasicNameValuePair("check_1", mappaDeiParamerti.get("check_1")));
-    	postParameters.add(new BasicNameValuePair("check_108", mappaDeiParamerti.get("check_108")));
-    	postParameters.add(new BasicNameValuePair("cmd", mappaDeiParamerti.get("cmd")));
-    	postParameters.add(new BasicNameValuePair("currency_code", mappaDeiParamerti.get("currency_code")));
-    	postParameters.add(new BasicNameValuePair("first_name", mappaDeiParamerti.get("first_name")));
-    	postParameters.add(new BasicNameValuePair("idAnnuncio", mappaDeiParamerti.get("idAnnuncio")));
-    	postParameters.add(new BasicNameValuePair("item_name", mappaDeiParamerti.get("item_name")));
-    	postParameters.add(new BasicNameValuePair("item_number", mappaDeiParamerti.get("item_number")));
-    	postParameters.add(new BasicNameValuePair("last_name", mappaDeiParamerti.get("last_name")));
-    	postParameters.add(new BasicNameValuePair("lc", mappaDeiParamerti.get("lc")));
-    	postParameters.add(new BasicNameValuePair("no_note", mappaDeiParamerti.get("no_note")));
-    	postParameters.add(new BasicNameValuePair("no_shipping", mappaDeiParamerti.get("no_shipping")));
-    	postParameters.add(new BasicNameValuePair("notify_url", mappaDeiParamerti.get("notify_url")));
-    	postParameters.add(new BasicNameValuePair("prezzoTotale", mappaDeiParamerti.get("prezzoTotale")));
-    	postParameters.add(new BasicNameValuePair("_return", mappaDeiParamerti.get("_return")));
-    	postParameters.add(new BasicNameValuePair("return_cancel", mappaDeiParamerti.get("return_cancel")));
-    	postParameters.add(new BasicNameValuePair("richiesta", mappaDeiParamerti.get("richiesta")));
+    	postParameters.add(new BasicNameValuePair("SelTipoPagamento", mappaDeiParametri.get("SelTipoPagamento")));
+    	postParameters.add(new BasicNameValuePair("address1", mappaDeiParametri.get("address1")));
+    	postParameters.add(new BasicNameValuePair("amount", mappaDeiParametri.get("amount")));
+    	postParameters.add(new BasicNameValuePair("azionePayPal", mappaDeiParametri.get("azionePayPal")));
+    	postParameters.add(new BasicNameValuePair("bn", mappaDeiParametri.get("bn")));
+    	postParameters.add(new BasicNameValuePair("business", mappaDeiParametri.get("business")));
+    	postParameters.add(new BasicNameValuePair("check_1", mappaDeiParametri.get("check_1")));
+    	postParameters.add(new BasicNameValuePair("check_108", mappaDeiParametri.get("check_108")));
+    	postParameters.add(new BasicNameValuePair("cmd", mappaDeiParametri.get("cmd")));
+    	postParameters.add(new BasicNameValuePair("currency_code", mappaDeiParametri.get("currency_code")));
+    	postParameters.add(new BasicNameValuePair("first_name", mappaDeiParametri.get("first_name")));
+    	postParameters.add(new BasicNameValuePair("idAnnuncio", mappaDeiParametri.get("idAnnuncio")));
+    	postParameters.add(new BasicNameValuePair("item_name", mappaDeiParametri.get("item_name")));
+    	postParameters.add(new BasicNameValuePair("item_number", mappaDeiParametri.get("item_number")));
+    	postParameters.add(new BasicNameValuePair("last_name", mappaDeiParametri.get("last_name")));
+    	postParameters.add(new BasicNameValuePair("lc", mappaDeiParametri.get("lc")));
+    	postParameters.add(new BasicNameValuePair("no_note", mappaDeiParametri.get("no_note")));
+    	postParameters.add(new BasicNameValuePair("no_shipping", mappaDeiParametri.get("no_shipping")));
+    	postParameters.add(new BasicNameValuePair("notify_url", mappaDeiParametri.get("notify_url")));
+    	postParameters.add(new BasicNameValuePair("prezzoTotale", mappaDeiParametri.get("prezzoTotale")));
+    	postParameters.add(new BasicNameValuePair("_return", mappaDeiParametri.get("_return")));
+    	postParameters.add(new BasicNameValuePair("return_cancel", mappaDeiParametri.get("return_cancel")));
+    	postParameters.add(new BasicNameValuePair("richiesta", mappaDeiParametri.get("richiesta")));
     	postParameters.add(new BasicNameValuePair("step", "4"));
-    	postParameters.add(new BasicNameValuePair("tipo", mappaDeiParamerti.get("tipo")));
-    	postParameters.add(new BasicNameValuePair("zip", mappaDeiParamerti.get("zip")));
+    	postParameters.add(new BasicNameValuePair("tipo", mappaDeiParametri.get("tipo")));
+    	postParameters.add(new BasicNameValuePair("zip", mappaDeiParametri.get("zip")));
         
         //Rimuovo i parametri che non devono essere inviati
         Iterator<NameValuePair> iterator_9 = postParameters.iterator();
@@ -613,7 +612,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
         }  	
         
         try {
-        	connessione_9.post("Connessione 9 - POST dello step 9 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "4" + "&idAnnuncio=" + mappaDeiParamerti.get("idAnnuncio") + "&tipo=" + mappaDeiParamerti.get("tipo") + "&azionePayPal=show", postParameters, debugMode);
+        	connessione_9.post("Connessione 9 - POST dello step 9 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "4" + "&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio") + "&tipo=" + mappaDeiParametri.get("tipo") + "&azionePayPal=show", postParameters, debugMode);
         } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -721,7 +720,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			categoria = "";
 		}
-		mappaDeiParamerti.put("categoria", categoria);
+		mappaDeiParametri.put("categoria", categoria);
 		
 		
 		switch (scheda.tipologiaContratto) {
@@ -734,7 +733,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			tipo = "";
 		}
-		mappaDeiParamerti.put("tipo", tipo);
+		mappaDeiParametri.put("tipo", tipo);
 		
 		
 		int prezzoInserito = Integer.parseInt(scheda.prezzoImmobile);
@@ -785,7 +784,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	        }
     	    	break;
     	}
-		mappaDeiParamerti.put("fasciaprezzo", fasciaprezzo);
+		mappaDeiParametri.put("fasciaprezzo", fasciaprezzo);
 		
 				
 		switch (scheda.numeroCamere) {
@@ -810,23 +809,23 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			gtxNumeroCamereDaLetto = "";
 		}
-		mappaDeiParamerti.put("gtxNumeroCamereDaLetto", gtxNumeroCamereDaLetto);
+		mappaDeiParametri.put("gtxNumeroCamereDaLetto", gtxNumeroCamereDaLetto);
 		
 		
 		gtxAnnoCostruzione = scheda.annoCostruzione;
-		mappaDeiParamerti.put("gtxAnnoCostruzione", gtxAnnoCostruzione);
+		mappaDeiParametri.put("gtxAnnoCostruzione", gtxAnnoCostruzione);
 		
 		
 		codice = scheda.codiceInserzione;
-		mappaDeiParamerti.put("codice", codice);
+		mappaDeiParametri.put("codice", codice);
 				
 		
 		prezzo = scheda.prezzoImmobile;
-		mappaDeiParamerti.put("prezzo", prezzo);
+		mappaDeiParametri.put("prezzo", prezzo);
 		
 		
 		gtxNumeroSoggiornoSalotto = "";
-		mappaDeiParamerti.put("gtxNumeroSoggiornoSalotto", gtxNumeroSoggiornoSalotto);
+		mappaDeiParametri.put("gtxNumeroSoggiornoSalotto", gtxNumeroSoggiornoSalotto);
 		
 				
 		switch (scheda.piano) {
@@ -851,7 +850,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			piano = "";
 		}
-		mappaDeiParamerti.put("piano", piano);
+		mappaDeiParametri.put("piano", piano);
 		
 				
 		switch (scheda.tipologiaImmobile) {
@@ -921,7 +920,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			tipologia = "";
 		}
-		mappaDeiParamerti.put("tipologia", tipologia);
+		mappaDeiParametri.put("tipologia", tipologia);
 		
 					
 		switch (scheda.numeroLocali) {
@@ -952,15 +951,15 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			locali = "";
 		}
-		mappaDeiParamerti.put("locali", locali);
+		mappaDeiParametri.put("locali", locali);
 		
 		
 		gtxNumeroAltreCamereStanze = "";
-		mappaDeiParamerti.put("gtxNumeroAltreCamereStanze", gtxNumeroAltreCamereStanze);
+		mappaDeiParametri.put("gtxNumeroAltreCamereStanze", gtxNumeroAltreCamereStanze);
 
 		
 		numeroPiani = scheda.numeroTotalePiani;
-		mappaDeiParamerti.put("numeroPiani", numeroPiani);
+		mappaDeiParametri.put("numeroPiani", numeroPiani);
 		
 				
 		switch (scheda.statoImmobile) {
@@ -988,61 +987,61 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			stato = "";
 		}
-		mappaDeiParamerti.put("stato", stato);
+		mappaDeiParametri.put("stato", stato);
 		
 		 		
 		superficie = scheda.superficieImmobile;
-		mappaDeiParamerti.put("superficie", superficie);
+		mappaDeiParametri.put("superficie", superficie);
 				
 		
 		gtxNumeroPostiAuto = "";
-		mappaDeiParamerti.put("gtxNumeroPostiAuto", gtxNumeroPostiAuto);
+		mappaDeiParametri.put("gtxNumeroPostiAuto", gtxNumeroPostiAuto);
 		
 		
 		tipoProprieta = "";
-		mappaDeiParamerti.put("tipoProprieta", tipoProprieta);
+		mappaDeiParametri.put("tipoProprieta", tipoProprieta);
 		
 		
 		tipoMandato = "";
-		mappaDeiParamerti.put("tipoMandato", tipoMandato);
+		mappaDeiParametri.put("tipoMandato", tipoMandato);
 				
 		
 		gtxIdContatto = "";
-		mappaDeiParamerti.put("gtxIdContatto", gtxIdContatto);
+		mappaDeiParametri.put("gtxIdContatto", gtxIdContatto);
 		
 			
 		idCont = "";
-		mappaDeiParamerti.put("idCont", idCont);
+		mappaDeiParametri.put("idCont", idCont);
 		
 			
 		classeImmobile = "";
-		mappaDeiParamerti.put("classeImmobile", classeImmobile);
+		mappaDeiParametri.put("classeImmobile", classeImmobile);
 		
 		
 		terreno_proprieta = "";
-		mappaDeiParamerti.put("terreno_proprieta", terreno_proprieta);
+		mappaDeiParametri.put("terreno_proprieta", terreno_proprieta);
 		
 		
 		gtxScadenzaMandato = "";
-		mappaDeiParamerti.put("gtxScadenzaMandato", gtxScadenzaMandato);
+		mappaDeiParametri.put("gtxScadenzaMandato", gtxScadenzaMandato);
 		
 		
 		spese_condominiali = "";
-		mappaDeiParamerti.put("spese_condominiali", spese_condominiali);
+		mappaDeiParametri.put("spese_condominiali", spese_condominiali);
 		
 		in_asta = "***DONOTSEND***";
-		mappaDeiParamerti.put("in_asta", in_asta);
+		mappaDeiParametri.put("in_asta", in_asta);
 		
 		
 		a_reddito = "***DONOTSEND***";
-		mappaDeiParamerti.put("a_reddito", a_reddito);
+		mappaDeiParametri.put("a_reddito", a_reddito);
 		
 		libero = "***DONOTSEND***";
-		mappaDeiParamerti.put("libero", libero);
+		mappaDeiParametri.put("libero", libero);
 		
 				
 		spese = "";
-		mappaDeiParamerti.put("spese", spese);
+		mappaDeiParametri.put("spese", spese);
 			
 		
 		switch (scheda.certificazioniEnergetiche) {
@@ -1076,35 +1075,35 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			classe_energetica = "NC";
 		}
-		mappaDeiParamerti.put("classe_energetica", classe_energetica);
+		mappaDeiParametri.put("classe_energetica", classe_energetica);
 		
 		
 		ipe = "≥ 175";
-		mappaDeiParamerti.put("ipe", ipe);
+		mappaDeiParametri.put("ipe", ipe);
 		
 		
 		ipe_unita_misura = "m2";
-		mappaDeiParamerti.put("ipe_unita_misura", ipe_unita_misura);
+		mappaDeiParametri.put("ipe_unita_misura", ipe_unita_misura);
 		
 		
 		hidden_ipe = "-1";
-		mappaDeiParamerti.put("hidden_ipe", hidden_ipe);
+		mappaDeiParametri.put("hidden_ipe", hidden_ipe);
 		
 		
 		hidden_default_mq = "≥ 175";
-		mappaDeiParamerti.put("hidden_default_mq", hidden_default_mq);
+		mappaDeiParametri.put("hidden_default_mq", hidden_default_mq);
 		
 		
 		hidden_default_mc = "≥ 175";
-		mappaDeiParamerti.put("hidden_default_mc", hidden_default_mc);
+		mappaDeiParametri.put("hidden_default_mc", hidden_default_mc);
 		
 		
 		costruttore = "";
-		mappaDeiParamerti.put("costruttore", costruttore);
+		mappaDeiParametri.put("costruttore", costruttore);
 		
 		
 		statoCantiere = "";
-		mappaDeiParamerti.put("statoCantiere", statoCantiere);
+		mappaDeiParametri.put("statoCantiere", statoCantiere);
 		
 				
 		switch (scheda.tipologiaRiscaldamento) {
@@ -1122,15 +1121,15 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			riscaldamento = "***DONOTSEND***";
 		}
-		mappaDeiParamerti.put("riscaldamento", riscaldamento);
+		mappaDeiParametri.put("riscaldamento", riscaldamento);
 		
 			
 		cucina = "***DONOTSEND***";
-		mappaDeiParamerti.put("cucina", cucina);
+		mappaDeiParametri.put("cucina", cucina);
 		
 		
 		boxauto = "***DONOTSEND***";
-		mappaDeiParamerti.put("boxauto", boxauto);
+		mappaDeiParametri.put("boxauto", boxauto);
 		
 		
 		switch (scheda.numeroBagni) {
@@ -1155,7 +1154,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			bagni = "***DONOTSEND***";
 		}
-		mappaDeiParamerti.put("bagni", bagni);
+		mappaDeiParametri.put("bagni", bagni);
 		
 				
 		switch (scheda.giardino) {
@@ -1171,7 +1170,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			idGiardino = "***DONOTSEND***";
 		}
-		mappaDeiParamerti.put("idGiardino", idGiardino);
+		mappaDeiParametri.put("idGiardino", idGiardino);
 		
 				
 		switch (scheda.arredamenti) {
@@ -1187,168 +1186,168 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		default:
 			idArredamento = "***DONOTSEND***";
 		}
-		mappaDeiParamerti.put("idArredamento", idArredamento);
+		mappaDeiParametri.put("idArredamento", idArredamento);
 		
 		
 		gtxIngresso = "0";
-		mappaDeiParamerti.put("gtxIngresso", gtxIngresso);
+		mappaDeiParametri.put("gtxIngresso", gtxIngresso);
 		
 		
 		gtxRipostiglio = "0";
-		mappaDeiParamerti.put("gtxRipostiglio", gtxRipostiglio);
+		mappaDeiParametri.put("gtxRipostiglio", gtxRipostiglio);
 		
 		
 		gtxCantina = scheda.cantina?"1":"0";
-		mappaDeiParamerti.put("gtxCantina", gtxCantina);
+		mappaDeiParametri.put("gtxCantina", gtxCantina);
 		
 		
 		gtxMansarda = "0";
-		mappaDeiParamerti.put("gtxMansarda", gtxMansarda);
+		mappaDeiParametri.put("gtxMansarda", gtxMansarda);
 		
 		
 		gtxTaverna = "0";
-		mappaDeiParamerti.put("gtxTaverna", gtxTaverna);
+		mappaDeiParametri.put("gtxTaverna", gtxTaverna);
 		
 		
 		gtxInfissiEsterni = "0";
-		mappaDeiParamerti.put("gtxInfissiEsterni", gtxInfissiEsterni);
+		mappaDeiParametri.put("gtxInfissiEsterni", gtxInfissiEsterni);
 		
 		
 		gtxImpiantoTv = "0";
-		mappaDeiParamerti.put("gtxImpiantoTv", gtxImpiantoTv);
+		mappaDeiParametri.put("gtxImpiantoTv", gtxImpiantoTv);
 		
 		
 		gtxFibraOttica = scheda.bandaLarga?"on":"***DONOTSEND***";
-		mappaDeiParamerti.put("gtxFibraOttica", gtxFibraOttica);
+		mappaDeiParametri.put("gtxFibraOttica", gtxFibraOttica);
 		
 		
 		ascensore = scheda.ascensore?"on":"***DONOTSEND***";
-		mappaDeiParamerti.put("ascensore", ascensore);		
+		mappaDeiParametri.put("ascensore", ascensore);		
 				
 		
 		gtxImpiantoAllarme = scheda.sistemaDiAllarme?"on":"***DONOTSEND***";
-		mappaDeiParamerti.put("gtxImpiantoAllarme", gtxImpiantoAllarme);
+		mappaDeiParametri.put("gtxImpiantoAllarme", gtxImpiantoAllarme);
 		
 				
 		gtxCancelloElettrico = scheda.cancelloElettrico?"on":"***DONOTSEND***";
-		mappaDeiParamerti.put("gtxCancelloElettrico", gtxCancelloElettrico);
+		mappaDeiParametri.put("gtxCancelloElettrico", gtxCancelloElettrico);
 				
 		
 		flag_auto_it = "";
-		mappaDeiParamerti.put("flag_auto_it", flag_auto_it);
+		mappaDeiParametri.put("flag_auto_it", flag_auto_it);
 		
 		
 		descrizione_it = scheda.testoAnnuncio;
-		mappaDeiParamerti.put("descrizione_it", descrizione_it);
+		mappaDeiParametri.put("descrizione_it", descrizione_it);
 		
 		
 		flag_auto_en = "";
-		mappaDeiParamerti.put("flag_auto_en", flag_auto_en);
+		mappaDeiParametri.put("flag_auto_en", flag_auto_en);
 		
 		
 		descrizione_en = "";
-		mappaDeiParamerti.put("descrizione_en", descrizione_en);
+		mappaDeiParametri.put("descrizione_en", descrizione_en);
 		
 		
 		flag_auto_de = "";
-		mappaDeiParamerti.put("flag_auto_de", flag_auto_de);
+		mappaDeiParametri.put("flag_auto_de", flag_auto_de);
 		
 		
 		descrizione_de = "";
-		mappaDeiParamerti.put("descrizione_de", descrizione_de);
+		mappaDeiParametri.put("descrizione_de", descrizione_de);
 		
 		
 		flag_auto_fr = "";
-		mappaDeiParamerti.put("flag_auto_fr", flag_auto_fr);
+		mappaDeiParametri.put("flag_auto_fr", flag_auto_fr);
 		
 		
 		descrizione_fr = "";
-		mappaDeiParamerti.put("descrizione_fr", descrizione_fr);
+		mappaDeiParametri.put("descrizione_fr", descrizione_fr);
 		
 		
 		flag_auto_es = "";
-		mappaDeiParamerti.put("flag_auto_es", flag_auto_es);
+		mappaDeiParametri.put("flag_auto_es", flag_auto_es);
 		
 		
 		descrizione_es = "";
-		mappaDeiParamerti.put("descrizione_es", descrizione_es);
+		mappaDeiParametri.put("descrizione_es", descrizione_es);
 		
 		
 		flag_auto_pt = "";
-		mappaDeiParamerti.put("flag_auto_pt", flag_auto_pt);
+		mappaDeiParametri.put("flag_auto_pt", flag_auto_pt);
 		
 		
 		descrizione_pt = "";
-		mappaDeiParamerti.put("descrizione_pt", descrizione_pt);
+		mappaDeiParametri.put("descrizione_pt", descrizione_pt);
 		
 		
 		flag_auto_ru = "";
-		mappaDeiParamerti.put("flag_auto_ru", flag_auto_ru);
+		mappaDeiParametri.put("flag_auto_ru", flag_auto_ru);
 		
 		
 		descrizione_ru = "";
-		mappaDeiParamerti.put("descrizione_ru", descrizione_ru);
+		mappaDeiParametri.put("descrizione_ru", descrizione_ru);
 		
 		
 		flag_auto_gr = "";
-		mappaDeiParamerti.put("flag_auto_gr", flag_auto_gr);
+		mappaDeiParametri.put("flag_auto_gr", flag_auto_gr);
 		
 		
 		descrizione_gr = "";
-		mappaDeiParamerti.put("descrizione_gr", descrizione_gr);
+		mappaDeiParametri.put("descrizione_gr", descrizione_gr);
 		
 		
 		int lunghezzaDescrizione = scheda.testoAnnuncio.length();
 		remLen_it = Integer.toString(3000 - lunghezzaDescrizione);
-		mappaDeiParamerti.put("remLen_it", remLen_it);
+		mappaDeiParametri.put("remLen_it", remLen_it);
 		
 				
-		remLen_en = "300";
-		mappaDeiParamerti.put("remLen_en", remLen_en);
+		remLen_en = "3000";
+		mappaDeiParametri.put("remLen_en", remLen_en);
 		
 		
-		remLen_de = "300";
-		mappaDeiParamerti.put("remLen_de", remLen_de);
+		remLen_de = "3000";
+		mappaDeiParametri.put("remLen_de", remLen_de);
 		
 		
-		remLen_fr = "300";
-		mappaDeiParamerti.put("remLen_fr", remLen_fr);
+		remLen_fr = "3000";
+		mappaDeiParametri.put("remLen_fr", remLen_fr);
 		
 		
-		remLen_es = "300";
-		mappaDeiParamerti.put("remLen_es", remLen_es);
+		remLen_es = "3000";
+		mappaDeiParametri.put("remLen_es", remLen_es);
 		
 		
-		remLen_pt = "300";
-		mappaDeiParamerti.put("remLen_pt", remLen_pt);
+		remLen_pt = "3000";
+		mappaDeiParametri.put("remLen_pt", remLen_pt);
 		
 		
-		remLen_ru = "300";
-		mappaDeiParamerti.put("remLen_ru", remLen_ru);
+		remLen_ru = "3000";
+		mappaDeiParametri.put("remLen_ru", remLen_ru);
 		
 		
-		remLen_gr = "300";
-		mappaDeiParamerti.put("remLen_gr", remLen_gr);
+		remLen_gr = "3000";
+		mappaDeiParametri.put("remLen_gr", remLen_gr);
 			
 		
 		gtxTitolo_per_riviste = "";
-		mappaDeiParamerti.put("gtxTitolo_per_riviste", gtxTitolo_per_riviste);
+		mappaDeiParametri.put("gtxTitolo_per_riviste", gtxTitolo_per_riviste);
 		
 		
 		gtxDescrizione_per_riviste = "";
-		mappaDeiParamerti.put("gtxDescrizione_per_riviste", gtxDescrizione_per_riviste);
+		mappaDeiParametri.put("gtxDescrizione_per_riviste", gtxDescrizione_per_riviste);
 		
 		
 		callback = "submit";
-		mappaDeiParamerti.put("callback", callback);
+		mappaDeiParametri.put("callback", callback);
 		
 		
 		_textComune = scheda.comune;
-		mappaDeiParamerti.put("_textComune", _textComune);
+		mappaDeiParametri.put("_textComune", _textComune);
 		
 				
 		cap = scheda.cap;
-		mappaDeiParamerti.put("cap", cap);
+		mappaDeiParametri.put("cap", cap);
 		
 				
 		Map<String, String> latLon;
@@ -1359,167 +1358,167 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		}
 		
 		latitudine = latLon.get("latitudine");
-		mappaDeiParamerti.put("latitudine", latitudine);
+		mappaDeiParametri.put("latitudine", latitudine);
 		
 		longitudine = latLon.get("longitudine");
-		mappaDeiParamerti.put("longitudine", longitudine);
+		mappaDeiParametri.put("longitudine", longitudine);
 		
 		
 		confirm_address = "1";
-		mappaDeiParamerti.put("confirm_address", confirm_address);
+		mappaDeiParametri.put("confirm_address", confirm_address);
 		
 		
 		flagIndirizzo = "2";
-		mappaDeiParamerti.put("flagIndirizzo", flagIndirizzo);
+		mappaDeiParametri.put("flagIndirizzo", flagIndirizzo);
 		
 				
 		flagIndirizzo_fake = "2";
-		mappaDeiParamerti.put("flagIndirizzo_fake", flagIndirizzo_fake);
+		mappaDeiParametri.put("flagIndirizzo_fake", flagIndirizzo_fake);
 		
     
         idLocalita = "";
-		mappaDeiParamerti.put("idLocalita", idLocalita);
+		mappaDeiParametri.put("idLocalita", idLocalita);
         
 				
 		idMacrozona = "10197";
-		mappaDeiParamerti.put("idMacrozona", idMacrozona);
+		mappaDeiParametri.put("idMacrozona", idMacrozona);
 		
 		
 		idMicrozona = "11098";
-		mappaDeiParamerti.put("idMicrozona", idMicrozona);
+		mappaDeiParametri.put("idMicrozona", idMicrozona);
 		
 				
 		indirizzo = scheda.indirizzoLocalita;
-		mappaDeiParamerti.put("indirizzo", indirizzo);
+		mappaDeiParametri.put("indirizzo", indirizzo);
 		
 		
 		indirizzo_fake = scheda.indirizzoLocalita;
-		mappaDeiParamerti.put("indirizzo_fake", indirizzo_fake);
+		mappaDeiParametri.put("indirizzo_fake", indirizzo_fake);
 		
 		
 		indirizzo_fake_orig = scheda.indirizzoLocalita;
-		mappaDeiParamerti.put("indirizzo_fake_orig", indirizzo_fake_orig);
+		mappaDeiParametri.put("indirizzo_fake_orig", indirizzo_fake_orig);
 		
 				
 		nextStep = "";
-		mappaDeiParamerti.put("nextStep", nextStep);
+		mappaDeiParametri.put("nextStep", nextStep);
 		
 				
 		num_localita = "";
-		mappaDeiParamerti.put("num_localita", num_localita);
+		mappaDeiParametri.put("num_localita", num_localita);
 		
 				
 		numeroCivico = "";
-		mappaDeiParamerti.put("numeroCivico", numeroCivico);
+		mappaDeiParametri.put("numeroCivico", numeroCivico);
 		
 		
 		
 		planimetria = "";
-		mappaDeiParamerti.put("planimetria", planimetria);
+		mappaDeiParametri.put("planimetria", planimetria);
 		
 				
 		virtual_tour = "";
-		mappaDeiParamerti.put("virtual_tour", virtual_tour);
+		mappaDeiParametri.put("virtual_tour", virtual_tour);
 		
 				
 		zonaobbligatoria = "***DONOTSEND***";
-		mappaDeiParamerti.put("zonaobbligatoria", zonaobbligatoria);
+		mappaDeiParametri.put("zonaobbligatoria", zonaobbligatoria);
 		
 				
 		zoom = "15";
-		mappaDeiParamerti.put("zoom", zoom);
+		mappaDeiParametri.put("zoom", zoom);
 		
 				
 		SelTipoPagamento = "borsellino";
-		mappaDeiParamerti.put("SelTipoPagamento", SelTipoPagamento);
+		mappaDeiParametri.put("SelTipoPagamento", SelTipoPagamento);
 		
 				
 		address1 = "";
-		mappaDeiParamerti.put("address1", address1);
+		mappaDeiParametri.put("address1", address1);
 		
 				
 		amount = "";
-		mappaDeiParamerti.put("amount", amount);
+		mappaDeiParametri.put("amount", amount);
 		
 				
 		azionePayPal = "compraSubito";
-		mappaDeiParamerti.put("azionePayPal", azionePayPal);
+		mappaDeiParametri.put("azionePayPal", azionePayPal);
 				
 		
 		bn = "PP-BuyNowBF";
-		mappaDeiParamerti.put("bn", bn);
+		mappaDeiParametri.put("bn", bn);
 		
 				
 		business = "SELLER";
-		mappaDeiParamerti.put("business", business);
+		mappaDeiParametri.put("business", business);
 		
 				
 		check_1 = "on";
-		mappaDeiParamerti.put("check_1", check_1);
+		mappaDeiParametri.put("check_1", check_1);
 		
 		
 		check_108 = "on";
-		mappaDeiParamerti.put("check_108", check_108);
+		mappaDeiParametri.put("check_108", check_108);
 		
 				
 		cmd = "_xclick";
-		mappaDeiParamerti.put("cmd", cmd);
+		mappaDeiParametri.put("cmd", cmd);
 		
 				
 		currency_code = "EUR";
-		mappaDeiParamerti.put("currency_code", currency_code);
+		mappaDeiParametri.put("currency_code", currency_code);
 		
 				
 		first_name = "";
-		mappaDeiParamerti.put("first_name", first_name);
+		mappaDeiParametri.put("first_name", first_name);
 		
 				
 		item_name = "acquisto pubblicazione e visibilita";
-		mappaDeiParamerti.put("item_name", item_name);
+		mappaDeiParametri.put("item_name", item_name);
 		
 		
 		item_number = "pubblicazione";
-		mappaDeiParamerti.put("item_number", item_number);
+		mappaDeiParametri.put("item_number", item_number);
 		
 		
 		last_name = "";
-		mappaDeiParamerti.put("last_name", last_name);
+		mappaDeiParametri.put("last_name", last_name);
 		
 				
 		lc = "IT";
-		mappaDeiParamerti.put("lc", lc);
+		mappaDeiParametri.put("lc", lc);
 		
 		
 		no_note = "1";
-		mappaDeiParamerti.put("no_note", no_note);
+		mappaDeiParametri.put("no_note", no_note);
 		
 		
 		no_shipping = "1";
-		mappaDeiParamerti.put("no_shipping", no_shipping);
+		mappaDeiParametri.put("no_shipping", no_shipping);
 		
 		
 		notify_url = "NOTIFY_URL";
-		mappaDeiParamerti.put("notify_url", notify_url);
+		mappaDeiParametri.put("notify_url", notify_url);
 		
 		
 		prezzoTotale = "";
-		mappaDeiParamerti.put("prezzoTotale", prezzoTotale);
+		mappaDeiParametri.put("prezzoTotale", prezzoTotale);
 		
 		
 		_return = "http://getrix.ekbl.net/inserimento_annuncio.php?step=5&azionePayPal=notifica&idAnnuncio=" + "42575673" + "&tipo=" + "1" + "&buyedVis=0";
-		mappaDeiParamerti.put("return", _return);
+		mappaDeiParametri.put("return", _return);
 		
 		
 		return_cancel = "http://getrix.ekbl.net/inserimento_annuncio.php?step=4&azionePayPal=show&idAnnuncio=" + "42575673" + "&tipo=" + "1" + "&buyedVis=0";
-		mappaDeiParamerti.put("return_cancel", return_cancel);
+		mappaDeiParametri.put("return_cancel", return_cancel);
 		
 		
 		richiesta = "";
-		mappaDeiParamerti.put("richiesta", richiesta);
+		mappaDeiParametri.put("richiesta", richiesta);
 		
 		
 		zip = "";
-		mappaDeiParamerti.put("zip", zip);
+		mappaDeiParametri.put("zip", zip);
 		
 	}
 	

@@ -89,18 +89,19 @@ public interface parametriGenerali {
     final String[] arrayTipologieImmobiliIndustriali = {arrayTipologie[0], "Capannone", "Laboratorio", "Magazzino"};
     final String[] arrayTipologieTerreni = {arrayTipologie[0], "Terreno residenziale", "Terreno agricolo", "Terreno industriale"};
 	final String[] arrayTipologieContratto = {arrayTipologie[0], "Affitto", "Vendita"};
-	final String[] arrayNumeroLocali = {"Seleziona", "1", "2", "3", "4", "5", "6", "7", ">7"};
+	final String[] arrayNumeroLocali = {"Seleziona", "1", "2", "3", "4", "5", ">5"};
 	final String[] arrayNumeroCamere = {"Seleziona", "1", "2", "3", "4", "5", ">5"};
 	final String[] arrayNumeroBagni = {"Seleziona", "1", "2", "3", "4", "5", ">5"};
 	final String[] arrayStatoImmobile = {"Seleziona", "Nuovo", "Ristrutturato", "Da ristrutturare", "In buono stato", "Abitabile", "Ottimo", "In costruzione"};
 	final String[] arrayArredamenti = {"Seleziona", "Arredato", "Semi arredato", "Non arredato"};
-	final String[] arrayPiano = {"Seleziona", "Piano terra", "Primo piano", "Piano intermedio", "Piano alto", "Ultimo piano", "Su più livelli"};
+	final String[] arrayPiano = {"Seleziona","Interrato", "Seminterrato", "Piano terra", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", ">10", "Ultimo piano", "Su più livelli"};
 	final String[] arrayCertificazioniEnergetiche = {"Seleziona", "Certificazione energetica A+", "Certificazione energetica A", "Certificazione energetica B", "Certificazione energetica C", "Certificazione energetica D", "Certificazione energetica E", "Certificazione energetica F", "Certificazione energetica G", "Non specificata"};
 	final String[] arrayCertificazioneIpe = {"Seleziona", "Immobile certificato", "Immobile esente da certificazione", "Documentazione non esistente"};
 	final String[] arrayTipologieRiscaldamento = {"Seleziona", "Assente", "Centralizzato", "Autonomo", "Stufa"};
 	final String[] arrayClima = {"Seleziona", "Assente", "Aria condizionata", "Climatizzatore"};
-	final String[] arrayParcheggio = {"Seleziona", "Nessuno", "Garage", "Posto auto coperto", "Posto auto scoperto"};
-	final String[] arrayGiardino = {"Seleziona", "Assente", "Giardino condominiale", "Giardino ad uso esclusivo"};	
+	final String[] arrayParcheggio = {"Seleziona", "Nessuno", "Box auto singolo", "Box auto doppio", "Posto auto scoperto"};
+	final String[] arrayGiardino = {"Seleziona", "Assente", "Giardino condominiale", "Giardino ad uso esclusivo"};
+	final String[] arrayCucina = {"Seleziona", "Abitabile", "Angolo cottura", "Semi abitabile"};	
     //Array delle Regioni
 	final String[] arrayRegioni = {"Seleziona la Regione", "Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"};
 	//Array delle Provincie

@@ -48,13 +48,16 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	String urlIcona;
 	String valoreLabel;
 	String idPortale;
-	boolean isActive;
+	boolean isActive;	
 	
 	//Cookie
 	protected static String SESSIONCOOKIEHEADER;
 	protected static String SESSIONCOOKIENAME;
 	protected static String SESSIONCOOKIEVALUE;
 	protected static String SESSIONCOOKIEDOMAIN;
+	
+	//La label che identifica i parametri da non inviare
+	protected static String dontSendThisParam = "***DONOTSEND***";
 
 	public PortaleImmobiliare (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {
 	
@@ -62,6 +65,8 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 		this.valoreLabel = valoreLabel;
 		this.idPortale = idPortale;
 		this.isActive = isActive;
+		
+		
 
 	}
 	
