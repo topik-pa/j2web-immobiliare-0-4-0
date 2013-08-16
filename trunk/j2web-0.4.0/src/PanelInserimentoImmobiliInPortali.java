@@ -490,6 +490,22 @@ class InserimentoPortale extends JPanel {
  		}
  		else {
  			btnVisualizza.setEnabled(false);
+ 			
+ 			btnVisualizza.setEnabled(true);
+ 			/*btnVisualizza.addActionListener(new ActionListener() {
+     			public void actionPerformed(ActionEvent e) {
+     				//Il cursone viene messo in modalità attesa
+     				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+ 					System.out.println("Visualizza: " + scheda.codiceInserzione + " in " + portale.idPortale);
+ 					try {
+						portale.visualizzaScheda(scheda);
+					} catch (HttpCommunicationException e1) {
+						PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
+					}
+ 					//Il cursone viene messo in modalità standard
+     				setCursor(Cursor.getDefaultCursor());
+     			}
+     		});*/
  		}
  		
  		
