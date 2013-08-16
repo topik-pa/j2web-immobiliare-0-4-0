@@ -1,16 +1,23 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 
 public class HttpPortalConnection implements parametriGenerali {
@@ -115,4 +122,98 @@ public class HttpPortalConnection implements parametriGenerali {
 		isSessionCookieSet = true;
 	}
 
+	//Una connessione di test con parametri, headers e cookie statici
+  	public void testConnection(String request, String url, ArrayList<NameValuePair> headersList, ArrayList<NameValuePair> paramsList, String[] sessionCookie) throws IOException {
+  		
+  		//Inizializza le variabili
+  		BasicHeader newHeader;	//un nuovo header per ogni elemento dentro headersList
+		Iterator<NameValuePair> headersListIterator = headersList.iterator();
+		HttpEntity responseEntity;	//la risposta ricevuta dopo la connessione
+		String responseBody = "";
+		
+		//Set the cookies
+		BasicCookieStore cookieStore = new BasicCookieStore(); 
+        BasicClientCookie cookie = new BasicClientCookie(sessionCookie[0], sessionCookie [1]);
+        cookie.setDomain(sessionCookie[2]);
+        cookie.setPath("/");           
+        cookieStore.addCookie(cookie); 
+        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
+	
+	  	switch (request) {
+			case "GET":
+				//Inizializza la connessione
+				httpget = new HttpGet(url);
+				
+				//Add request headers
+		        while(headersListIterator.hasNext()) {
+		        	BasicNameValuePair currentHeaderListItem = (BasicNameValuePair) headersListIterator.next();
+		        	newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
+		        	httpget.addHeader(newHeader);
+		        }
+		        
+		        //Send the request
+		        response = httpclient.execute(httpget);
+		        		        
+		        //Get the response body
+		        responseEntity = response.getEntity();
+		        if(responseEntity!=null) {
+		        	responseBody = EntityUtils.toString(responseEntity);
+		        }
+		               
+		    	//Get the response headers
+		        responseHeaders = response.getAllHeaders();
+		        
+		        //Print connection properties
+	            printConnectionProperties("Connessione test", httpget, responseHeaders, responseBody, null);		        	           
+				
+				break;
+				
+			case "URLENCODED_POST":
+				
+				//Inizializza la connessione
+				httppost = new HttpPost(url);
+				
+				//Add request headers
+		        while(headersListIterator.hasNext()) {
+		        	BasicNameValuePair currentHeaderListItem = (BasicNameValuePair) headersListIterator.next();
+		        	newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
+		        	httppost.addHeader(newHeader);
+		        }
+		        
+		        //Add request parameters
+		        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(paramsList);
+		        httppost.setEntity(formEntity);
+		        
+		        //Send the request
+		        response = httpclient.execute(httppost);
+		        
+		        //Get the response body
+		        responseEntity = response.getEntity();
+		        if(responseEntity!=null) {
+		        	responseBody = EntityUtils.toString(responseEntity);
+		        }
+		               
+		    	//Get the response headers
+		        responseHeaders = response.getAllHeaders();
+		        
+		        //Print connection properties
+	            printConnectionProperties("Connessione test", httppost, responseHeaders, responseBody, null);
+				
+				break;
+	
+			case "MULTIPART_POST":
+				
+				break;
+	
+	
+			default:
+				break;
+			}
+	  	
+	  	//Close the request
+        httpclient.getConnectionManager().shutdown();
+  		  		
+  	
+  	}
+	
 }

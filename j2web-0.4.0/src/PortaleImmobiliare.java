@@ -19,6 +19,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.Header;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -207,7 +209,6 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
         return (double) matches / (bigram1.size() + bigram2.size());
     }
   
-
     //Trova il cookie di sessione
     public boolean findSessionCookie(Header[] headers, String cookieName, String cookieDomain) {
 		
@@ -311,4 +312,17 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 		return inputValue; 
   	}
   	
+  	public List<NameValuePair> removeNotUsedParams(List<NameValuePair> paramList) {	
+  		
+  		List<NameValuePair> cleanedList = paramList;
+  		
+  		Iterator<NameValuePair> iterator = cleanedList.iterator();
+        while(iterator.hasNext()) {
+        	BasicNameValuePair currentParam = (BasicNameValuePair) iterator.next();
+        	if(currentParam.getValue() == dontSendThisParam)  {
+        		iterator.remove();	
+        	}
+        }
+  		return cleanedList;
+  	}
 }
