@@ -21,6 +21,9 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.xml.sax.SAXException;
 
 
@@ -60,7 +63,10 @@ public class _immobiliareIt extends PortaleImmobiliare {
     Map<String,String> mappaDeiParametri;
     
     //Lista dei parametri inviati in una singola connessione
-    List<NameValuePair> postParameters;  
+    List<NameValuePair> postParameters;
+    
+    //Lista degli headers inviati in una singola connessione
+    List<NameValuePair> requestHeaders; 
 
     //La scheda immobile su cui si lavora
     SchedaImmobile scheda;
@@ -226,7 +232,10 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		mappaDeiParametri =  new Hashtable<String,String>();
 	    
 		//Inizializzo la lista che conterrà i parametri da inviare
-	    postParameters = new ArrayList<NameValuePair>();		
+	    postParameters = new ArrayList<NameValuePair>();
+	    
+	    //Inizializzo la lista che conterrà gli headers
+	    requestHeaders = new ArrayList<NameValuePair>();
 	
 	}
 
@@ -416,8 +425,12 @@ public class _immobiliareIt extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("maxRes", mappaDeiParametri.get("maxRes")));
         postParameters.add(new BasicNameValuePair("s", mappaDeiParametri.get("s")));
         postParameters.add(new BasicNameValuePair("showNation", mappaDeiParametri.get("showNation")));
+        
+        requestHeaders = new ArrayList<NameValuePair>();          
+        requestHeaders.add(new BasicNameValuePair("Referer", URLROOT + location));
+        
         try {
-        	Object[] response = connessione_a.post_test("Connessione a - POST di servizio per recupero codici Comune, Provincia e Regione", URLROOT + "/comune_suggestion.php", postParameters, debugMode, URLROOT + "/inserimento_annuncio.php?step=" + "3"  + "&tipo=" + mappaDeiParametri.get("tipo") + "&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio"));
+        	Object[] response = connessione_a.post("Connessione a - POST di servizio per recupero codici Comune, Provincia e Regione", URLROOT + "/comune_suggestion.php", postParameters, requestHeaders, debugMode);
         	String responseBody = (String)response[1];
         	JSONObject json = new JSONObject(responseBody);
         	JSONArray jsonResults = json.getJSONArray("results");        	
@@ -469,6 +482,53 @@ public class _immobiliareIt extends PortaleImmobiliare {
 	        }
 	        
         } catch (IOException | RuntimeException | ParseException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	finally {
+    		postParameters.clear();
+    	}
+        
+        
+        //POST di servizio per recupero Macroregioe e Microregione (e eventualmente zonaobbligatoria)
+    	HttpPortalPostConnection connessione_b = new HttpPortalPostConnection();   	
+        
+        requestHeaders = new ArrayList<NameValuePair>();          
+        requestHeaders.add(new BasicNameValuePair("Referer", URLROOT + location));
+        
+        try {
+        	Object[] response = connessione_b.post("Connessione b - POST di servizio per recupero Macroregioe e Microregione (e eventualmente zonaobbligatoria)", URLROOT + "/getZonaFromCoords.php?lat=" + mappaDeiParametri.get("latitudine") + "&lon=" + mappaDeiParametri.get("longitudine") + "&idComune=" + mappaDeiParametri.get("idComune"), postParameters, requestHeaders, debugMode);
+        	String responseBody = (String)response[1];
+        	
+        	//Parse HMTL to retrieve some informations
+            org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
+            Elements id_macrozonaElements = doc.getElementsByTag("id_macrozona");
+            if(id_macrozonaElements!=null) {
+            	Element id_macrozonaElement = id_macrozonaElements.first();
+            	idMacrozona = id_macrozonaElement.text();
+            	mappaDeiParametri.put("idMacrozona", idMacrozona);          	
+            	
+            	Elements microzonaElements = doc.getElementsByTag("microzona");
+            	Element microzonaElement = microzonaElements.first();         	
+            	Element microzonaIdElement = microzonaElement.child(0);
+            	idMicrozona = microzonaIdElement.text();
+            	mappaDeiParametri.put("idMicrozona", idMicrozona);
+            	
+            	zonaobbligatoria = "1";
+            	mappaDeiParametri.put("zonaobbligatoria", zonaobbligatoria);
+            	
+            }
+            else {
+            	idMacrozona = "";
+            	mappaDeiParametri.put("idMacrozona", idMacrozona); 
+            	
+            	idMicrozona = "";
+            	mappaDeiParametri.put("idMicrozona", idMicrozona);
+            	
+            	zonaobbligatoria = dontSendThisParam;
+            	mappaDeiParametri.put("zonaobbligatoria", zonaobbligatoria);
+            }
+        
+        } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
     	finally {
@@ -537,14 +597,17 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	postParameters.add(new BasicNameValuePair("textRegione", mappaDeiParametri.get("textRegione")));
     	postParameters.add(new BasicNameValuePair("tipo", mappaDeiParametri.get("tipo")));
     	postParameters.add(new BasicNameValuePair("virtual_tour", mappaDeiParametri.get("virtual_tour")));
-    	//postParameters.add(new BasicNameValuePair("zonaobbligatoria", mappaDeiParametri.get("zonaobbligatoria")));
+    	postParameters.add(new BasicNameValuePair("zonaobbligatoria", mappaDeiParametri.get("zonaobbligatoria")));
     	postParameters.add(new BasicNameValuePair("zoom", mappaDeiParametri.get("zoom")));
         
         //Rimuovo i parametri che non devono essere inviati
     	postParameters.retainAll(removeNotUsedParams(postParameters));
         
         try {
-        	connessione_7.post("Connessione 7 - POST dello step 3 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "3" + "&tipo=" + mappaDeiParametri.get("tipo") + "&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio"), postParameters, debugMode);
+        	Object[] response = connessione_7.post("Connessione 7 - POST dello step 3 di inserimento immobile", URLROOT + location, postParameters, debugMode);
+        	Header[] responseHeaders = (Header[])response[0];
+        	//Leggo la location del redirect
+        	location = getHeaderValueByName(responseHeaders, "Location");
         } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -556,7 +619,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
         //Connessione 8 - GET dello step 4 di inserimento immobile
     	HttpPortalGetConnection connessione_8 = new HttpPortalGetConnection();
     	try {
-			connessione_8.get("Connessione 8 - GET dello step 4 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "4"  + "&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio") + "&tipo=" + mappaDeiParametri.get("tipo") + "&azionePayPal=show", debugMode);
+			connessione_8.get("Connessione 8 - GET dello step 4 di inserimento immobile", URLROOT + location, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -596,29 +659,58 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	postParameters.retainAll(removeNotUsedParams(postParameters)); 	
         
         try {
-        	connessione_9.post("Connessione 9 - POST dello step 9 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=" + "4" + "&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio") + "&tipo=" + mappaDeiParametri.get("tipo") + "&azionePayPal=show", postParameters, debugMode);
+        	Object[] response = connessione_9.post("Connessione 9 - POST dello step 4 di inserimento immobile", URLROOT + location, postParameters, debugMode);
+        	Header[] responseHeaders = (Header[])response[0];
+        	//Leggo la location del redirect
+        	location = getHeaderValueByName(responseHeaders, "Location");
         } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
     	finally {
     		postParameters.clear();
     	}
+        
+        
+        //Connessione 10 - GET dello step 5 di inserimento immobile
+    	HttpPortalGetConnection connessione_10 = new HttpPortalGetConnection();
+    	try {
+    		Object[] response = connessione_10.get("Connessione 10 - GET dello step 5 di inserimento immobile", URLROOT + location, debugMode);
+			String responseBody = (String)response[1];
+        	
+        	//Parse HMTL to retrieve some informations
+            org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
+            Elements strongElements = doc.select("#msg strong");
+            if(strongElements.isEmpty()) {
+            	throw(new HttpWrongResponseBodyException("Non ho trovato tag di tipo \"strong\""));
+            }
+            else {
+            	Iterator<Element> iterator = strongElements.iterator();
+            	while(iterator.hasNext()) {
+	            	Element currentElement = iterator.next();
+	            	if(currentElement.text()=="Immobile inserito correttamente") {
+	            		inserimentoOK = true;
+	            	}
+            	}
+            }
+    	} catch (IOException | RuntimeException | HttpWrongResponseBodyException e) {
+			throw new HttpCommunicationException(e);
+		}
 		      
     	
     	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
     	if(inserimentoOK) {
     		
     		//Aggiorna la lista dei portali in cui è inserita la scheda
-    		//scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
+    		scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
     		      	
     		if(!isSequential) {   			
     			System.out.println("Inserita in: " + NOMEPORTALE);       		
         		
     			//Aggiorna i pulsanti del pannello inserimento
-    			//j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
+    			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
     			
     			//Invio mail di conferma inserimento 
-    			//sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+    			sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
            	
             	//Stampo a video un messaggio informativo
                 JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
@@ -644,22 +736,45 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT + "/risultati_ricerca.php";
+			String url = URLROOT + "/annunci_agenzia.php?stato=attivo";
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			System.out.println("Visualizzata in: " + NOMEPORTALE);
 			
 		} catch (IOException e ) {
 			//Eventualità non gestita
-		}	
+		}
 
 		//CONNESSIONI DI TEST
 		/*ArrayList<NameValuePair> headers = new ArrayList<NameValuePair>();
 		headers.add(new BasicNameValuePair("User-Agent", "USER_AGENT"));
-		headers.add(new BasicNameValuePair("Connection", "keep-alive"));	
-		String[] cookie =  {"", "", ""};
+		headers.add(new BasicNameValuePair("Connection", "keep-alive"));
+		headers.add(new BasicNameValuePair("Referer", "http://getrix.ekbl.net/inserimento_annuncio.php?step=3&tipo=1&idAnnuncio=42590053"));
+		String[] cookie =  {"GETRIXSID", "a715d783cc6e20ae324503f96e9ba941", ".getrix.ekbl.net"};
 		HttpPortalConnection connessione_test = new HttpPortalConnection();			
 		try {
-			connessione_test.testConnection("GET", URLROOT, headers, null, cookie);
+			Object[] response = connessione_test.testConnection("GET", "http://getrix.ekbl.net/getZonaFromCoords.php?lat=44.4870246&lon=11.365381800000023&idComune=5890", headers, null, cookie);
+			String responseBody = (String)response[1];
+			
+			//Parse HMTL to retrieve some informations
+            org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
+            Elements id_macrozonaElements = doc.getElementsByTag("id_macrozona");
+            if(id_macrozonaElements!=null) {
+            	Element id_macrozonaElement = id_macrozonaElements.first();
+            	idMacrozona = id_macrozonaElement.text();
+            	mappaDeiParametri.put("idMacrozona", idMacrozona);  
+            	System.out.println("idMacrozona " + idMacrozona);
+            	
+            	Elements microzonaElements = doc.getElementsByTag("microzona");
+            	Element microzonaElement = microzonaElements.first();         	
+            	Element microzonaIdElement = microzonaElement.child(0);
+            	idMicrozona = microzonaIdElement.text();
+            	mappaDeiParametri.put("idMicrozona", idMicrozona);
+            	System.out.println("idMicrozona " + idMicrozona);
+            	
+            	zonaobbligatoria = "1";
+            	mappaDeiParametri.put("zonaobbligatoria", zonaobbligatoria);
+            	
+            }
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}*/
@@ -694,8 +809,39 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);			
 		
-	
-		//CONNESSIONI...
+		
+		//Connessione 0 - GET della home page Getrix - Opzionale
+    	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
+    	try {
+			connessione_0.get("Connessione 0 - GET della home page Getrix", URLROOT, debugMode);
+    	} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	
+    	//Connessione 1 - POST dei parametri di accesso e recupero del cookie di sessione
+    	HttpPortalPostConnection connessione_1 = new HttpPortalPostConnection();   	
+    	postParameters = new ArrayList<NameValuePair>();
+        postParameters.add(new BasicNameValuePair("accedi", mappaDeiParametri.get("accedi")));
+        postParameters.add(new BasicNameValuePair("backurl", mappaDeiParametri.get("backurl")));
+        postParameters.add(new BasicNameValuePair("openTab", mappaDeiParametri.get("openTab")));
+        postParameters.add(new BasicNameValuePair("password", mappaDeiParametri.get("password")));
+        postParameters.add(new BasicNameValuePair("username", mappaDeiParametri.get("username")));
+        try {
+        	Object[] response = connessione_1.post("Connessione 1 - POST dei parametri di accesso e recupero del cookie di sessione", URLROOT + "/index.php", postParameters, debugMode);
+        	Header[] responseHeaders = (Header[])response[0];
+        	//Trovo il cookie di sessione
+        	findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+        	//Leggo la location del redirect
+        	location = getHeaderValueByName(responseHeaders, "Location");
+        	//Imposto il cookie di sessione per tutte le successive connessioni
+        	connessione_1.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
+        } catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	finally {
+    		postParameters.clear();
+    	}
     	
         
         //Aggiorno la lista dei portali in cui è presenta la scheda corrente
@@ -1429,16 +1575,8 @@ public class _immobiliareIt extends PortaleImmobiliare {
     
         idLocalita = "";
 		mappaDeiParametri.put("idLocalita", idLocalita);
-        
-				
-		idMacrozona = "10197";
-		mappaDeiParametri.put("idMacrozona", idMacrozona);
+       
 		
-		
-		idMicrozona = "11098";
-		mappaDeiParametri.put("idMicrozona", idMicrozona);
-		
-				
 		indirizzo = scheda.indirizzoLocalita;
 		mappaDeiParametri.put("indirizzo", indirizzo);
 		
@@ -1469,10 +1607,6 @@ public class _immobiliareIt extends PortaleImmobiliare {
 				
 		virtual_tour = "";
 		mappaDeiParametri.put("virtual_tour", virtual_tour);
-		
-				
-		zonaobbligatoria = dontSendThisParam;
-		mappaDeiParametri.put("zonaobbligatoria", zonaobbligatoria);
 		
 				
 		zoom = "15";
@@ -1555,11 +1689,11 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		mappaDeiParametri.put("prezzoTotale", prezzoTotale);
 		
 		
-		_return = "http://getrix.ekbl.net/inserimento_annuncio.php?step=5&azionePayPal=notifica&idAnnuncio=" + "42575673" + "&tipo=" + "1" + "&buyedVis=0";
+		_return = "http://getrix.ekbl.net/inserimento_annuncio.php?step=5&azionePayPal=notifica&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio") + "&tipo=" + mappaDeiParametri.get("tipo") + "&buyedVis=0";
 		mappaDeiParametri.put("return", _return);
 		
 		
-		return_cancel = "http://getrix.ekbl.net/inserimento_annuncio.php?step=4&azionePayPal=show&idAnnuncio=" + "42575673" + "&tipo=" + "1" + "&buyedVis=0";
+		return_cancel = "http://getrix.ekbl.net/inserimento_annuncio.php?step=4&azionePayPal=show&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio") + "&tipo=" + mappaDeiParametri.get("tipo") + "&buyedVis=0";
 		mappaDeiParametri.put("return_cancel", return_cancel);
 		
 		
