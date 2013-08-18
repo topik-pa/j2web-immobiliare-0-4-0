@@ -491,8 +491,9 @@ class InserimentoPortale extends JPanel {
  		else {
  			btnVisualizza.setEnabled(false);
  			
+ 			/*In caso mi serva per dei test
  			btnVisualizza.setEnabled(true);
- 			/*btnVisualizza.addActionListener(new ActionListener() {
+ 			btnVisualizza.addActionListener(new ActionListener() {
      			public void actionPerformed(ActionEvent e) {
      				//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -505,7 +506,8 @@ class InserimentoPortale extends JPanel {
  					//Il cursone viene messo in modalità standard
      				setCursor(Cursor.getDefaultCursor());
      			}
-     		});*/
+     		});
+ 			In caso mi serva per dei test*/
  		}
  		
  		

@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -12,6 +13,7 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 
@@ -124,7 +126,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
          
         if(debugMode) {
             //Print connection properties
-        	printConnectionProperties(connectionDescription, httppost, responseHeaders, responseBody, null);
+        	printConnectionProperties(connectionDescription, httppost, responseHeaders, responseBody, reqEntity);
         }
         
         //Close the request
@@ -137,10 +139,9 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         return headersAndBodyResponseAndStatus;     
 		
 	}	
-	
-	
-	
-public Object[] post_test(String connectionDescription, String url, List<NameValuePair> postParameters, boolean debugMode, String referer) throws IOException {
+		
+	//POST URLENCODED VALUES (2)
+	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, List<NameValuePair> requestHeaders, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
@@ -149,9 +150,18 @@ public Object[] post_test(String connectionDescription, String url, List<NameVal
 		httppost = new HttpPost(url);
 		
 		//Add request headers
+		BasicHeader newHeader;
+		BasicNameValuePair currentHeaderListItem;
+		Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
+        while(headersIterator.hasNext()) {
+        	currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
+        	if(currentHeaderListItem.getName()!= "User-Agent") { //Non aggiungo unn ulteriore header User-Agent
+	        	newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
+	        	httppost.addHeader(newHeader);
+        	}
+        }
+        //L'header User-Agent è aggiunto sempre in modo predefinito
         requestHeader = new BasicHeader("User-Agent", USER_AGENT);
-        httppost.addHeader(requestHeader);
-        requestHeader = new BasicHeader("Referer", referer);
         httppost.addHeader(requestHeader);
         
         //Add request parameters
@@ -197,4 +207,7 @@ public Object[] post_test(String connectionDescription, String url, List<NameVal
         return headersAndBodyResponseAndStatus; 
         
 	}
+	
+	
+	
 }
