@@ -87,6 +87,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
     String gtxNumeroSoggiornoSalotto;
     String piano;
     String tipologia;
+    String sottotipologia;
     String locali;
     String gtxNumeroAltreCamereStanze;
     String numeroPiani;
@@ -317,6 +318,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("gtxNumeroSoggiornoSalotto", mappaDeiParametri.get("gtxNumeroSoggiornoSalotto")));
         postParameters.add(new BasicNameValuePair("piano", mappaDeiParametri.get("piano")));
         postParameters.add(new BasicNameValuePair("tipologia", mappaDeiParametri.get("tipologia")));
+        postParameters.add(new BasicNameValuePair("sottotipologia", mappaDeiParametri.get("sottotipologia")));
         postParameters.add(new BasicNameValuePair("locali", mappaDeiParametri.get("locali")));
         postParameters.add(new BasicNameValuePair("gtxNumeroAltreCamereStanze", mappaDeiParametri.get("gtxNumeroAltreCamereStanze")));
         postParameters.add(new BasicNameValuePair("numeroPiani", mappaDeiParametri.get("numeroPiani")));
@@ -502,7 +504,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
         	//Parse HMTL to retrieve some informations
             org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
             Elements id_macrozonaElements = doc.getElementsByTag("id_macrozona");
-            if(id_macrozonaElements!=null) {
+            if(!id_macrozonaElements.isEmpty()) {
             	Element id_macrozonaElement = id_macrozonaElements.first();
             	idMacrozona = id_macrozonaElement.text();
             	mappaDeiParametri.put("idMacrozona", idMacrozona);          	
@@ -619,7 +621,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
         //Connessione 8 - GET dello step 4 di inserimento immobile
     	HttpPortalGetConnection connessione_8 = new HttpPortalGetConnection();
     	try {
-			connessione_8.get("Connessione 8 - GET dello step 4 di inserimento immobile", URLROOT + location, debugMode);
+			connessione_8.get("Connessione 8 - GET dello step 4 di inserimento immobile", URLROOT + "/" + location, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -659,7 +661,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	postParameters.retainAll(removeNotUsedParams(postParameters)); 	
         
         try {
-        	Object[] response = connessione_9.post("Connessione 9 - POST dello step 4 di inserimento immobile", URLROOT + location, postParameters, debugMode);
+        	Object[] response = connessione_9.post("Connessione 9 - POST dello step 4 di inserimento immobile", URLROOT + "/inserimento_annuncio.php?step=4&idAnnuncio=" + mappaDeiParametri.get("idAnnuncio") + "&tipo=" + mappaDeiParametri.get("tipo") + "&azionePayPal=show", postParameters, debugMode);
         	Header[] responseHeaders = (Header[])response[0];
         	//Leggo la location del redirect
         	location = getHeaderValueByName(responseHeaders, "Location");
@@ -674,23 +676,14 @@ public class _immobiliareIt extends PortaleImmobiliare {
         //Connessione 10 - GET dello step 5 di inserimento immobile
     	HttpPortalGetConnection connessione_10 = new HttpPortalGetConnection();
     	try {
-    		Object[] response = connessione_10.get("Connessione 10 - GET dello step 5 di inserimento immobile", URLROOT + location, debugMode);
+    		Object[] response = connessione_10.get("Connessione 10 - GET dello step 5 di inserimento immobile", URLROOT + "/" + location, debugMode);
 			String responseBody = (String)response[1];
         	
-        	//Parse HMTL to retrieve some informations
-            org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
-            Elements strongElements = doc.select("#msg strong");
-            if(strongElements.isEmpty()) {
-            	throw(new HttpWrongResponseBodyException("Non ho trovato tag di tipo \"strong\""));
+            if(responseBody.contains("Immobile inserito correttamente")) {
+            	inserimentoOK = true;            	
             }
             else {
-            	Iterator<Element> iterator = strongElements.iterator();
-            	while(iterator.hasNext()) {
-	            	Element currentElement = iterator.next();
-	            	if(currentElement.text()=="Immobile inserito correttamente") {
-	            		inserimentoOK = true;
-	            	}
-            	}
+            	throw(new HttpWrongResponseBodyException("Non è stato possibile verificare l'inserimento, verificarlo manualmente"));
             }
     	} catch (IOException | RuntimeException | HttpWrongResponseBodyException e) {
 			throw new HttpCommunicationException(e);
@@ -822,11 +815,11 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	//Connessione 1 - POST dei parametri di accesso e recupero del cookie di sessione
     	HttpPortalPostConnection connessione_1 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();
-        postParameters.add(new BasicNameValuePair("accedi", mappaDeiParametri.get("accedi")));
-        postParameters.add(new BasicNameValuePair("backurl", mappaDeiParametri.get("backurl")));
-        postParameters.add(new BasicNameValuePair("openTab", mappaDeiParametri.get("openTab")));
-        postParameters.add(new BasicNameValuePair("password", mappaDeiParametri.get("password")));
-        postParameters.add(new BasicNameValuePair("username", mappaDeiParametri.get("username")));
+        postParameters.add(new BasicNameValuePair("accedi", "accedi"));
+        postParameters.add(new BasicNameValuePair("backurl", "annunci_agenzia.php?stato=attivo"));
+        postParameters.add(new BasicNameValuePair("openTab", "accedi"));
+        postParameters.add(new BasicNameValuePair("password", PASSWORD));
+        postParameters.add(new BasicNameValuePair("username", USERNAME));
         try {
         	Object[] response = connessione_1.post("Connessione 1 - POST dei parametri di accesso e recupero del cookie di sessione", URLROOT + "/index.php", postParameters, debugMode);
         	Header[] responseHeaders = (Header[])response[0];
@@ -842,6 +835,15 @@ public class _immobiliareIt extends PortaleImmobiliare {
     	finally {
     		postParameters.clear();
     	}
+        
+        
+        //Connessione 2 - GET della pagina Annunci agenzia per l'eliminazione dell'annuncio
+    	HttpPortalGetConnection connessione_2 = new HttpPortalGetConnection();
+    	try {
+			connessione_2.get("Connessione 2 - GET della pagina Annunci agenzia per l'eliminazione dell'annuncio", URLROOT + "/annunci_agenzia.php?multimedia=no&action=delete&stato=attivo&newStatus=&pag=1&selectedItems=&idAnnuncio=&numAnnunci=20&selectAll=true&idAnnuncio%5B%5D=" + codiceInserzione, debugMode);
+    	} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
     	
         
         //Aggiorno la lista dei portali in cui è presenta la scheda corrente
@@ -849,7 +851,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
   	 		
   		if(!isSequential) {
   			//Aggiorno i pulsanti del pannello inserimento
-  			//j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
+  			j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
   			
   			System.out.println("Eliminata da: " + NOMEPORTALE);
   		  	
@@ -1010,17 +1012,47 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		
 				
 		switch (scheda.piano) {
+		case "Interrato":
+			piano = "1";
+			break;
+		case "Seminterrato":
+			piano = "2";
+			break;
 		case "Piano terra":
 			piano = "3";
 			break;
-		case "Primo piano":
+		case "1":
 			piano = "4";
 			break;
-		case "Piano intermedio":
-			piano = "";
+		case "2":
+			piano = "5";
 			break;
-		case "Piano alto":
-			piano = "";
+		case "3":
+			piano = "6";
+			break;
+		case "4":
+			piano = "7";
+			break;
+		case "5":
+			piano = "8";
+			break;
+		case "6":
+			piano = "9";
+			break;
+		case "7":
+			piano = "10";
+			break;
+		case "8":
+			piano = "11";
+			break;
+		case "9":
+			piano = "12";
+			break;
+		case "10":
+			piano = "13";
+			break;
+		case ">10":
+			piano = "14";
 			break;
 		case "Ultimo piano":
 			piano = "15";
@@ -1064,44 +1096,58 @@ public class _immobiliareIt extends PortaleImmobiliare {
 			break;
 		case "Agriturismo":
 			tipologia = "63";
+			sottotipologia = "75";
 			break;
 		case "Albergo":
 			tipologia = "63";
+			sottotipologia = "101";
 			break;
 		case "Bar":
 			tipologia = "63";
+			sottotipologia = "103";
 			break;
 		case "Negozio":
 			tipologia = "63";
+			sottotipologia = "79";
 			break;
 		case "Ristorante":
 			tipologia = "63";
+			sottotipologia = "101";
 			break;
 		case "Ufficio":
 			tipologia = "63";
+			sottotipologia = "81";
 			break;
 		case "Capannone":
 			tipologia = "63";
+			sottotipologia = "73";
 			break;
 		case "Laboratorio":
 			tipologia = "63";
+			sottotipologia = "99";
 			break;
 		case "Magazzino":
 			tipologia = "63";
+			sottotipologia = "91";
 			break;
 		case "Terreno residenziale":
 			tipologia = "28";
+			sottotipologia = "67";
 			break;
 		case "Terreno agricolo":
 			tipologia = "28";
+			sottotipologia = "71";
 			break;
 		case "Terreno industriale":
 			tipologia = "28";
+			sottotipologia = "70";
 			break;
 		default:
 			tipologia = "";
+			sottotipologia = dontSendThisParam;
 		}
 		mappaDeiParametri.put("tipologia", tipologia);
+		mappaDeiParametri.put("sottotipologia", sottotipologia);
 		
 					
 		switch (scheda.numeroLocali) {
@@ -1120,13 +1166,7 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		case "5":
 			locali = "5 ";
 			break;
-		case "6":
-			locali = ">5 ";
-			break;
-		case "7":
-			locali = ">5 ";
-			break;
-		case ">7":
+		case ">5":
 			locali = ">5 ";
 			break;
 		default:
@@ -1305,11 +1345,38 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		mappaDeiParametri.put("riscaldamento", riscaldamento);
 		
 			
-		cucina = dontSendThisParam;
+		switch (scheda.tipologiaCucina) {
+		case "Abitabile":
+			cucina = "1";
+			break;
+		case "Angolo cottura":
+			cucina = "2";
+			break;
+		case "Semi abitabile":
+			cucina = "4";
+			break;
+		default:
+			cucina = dontSendThisParam;
+		}
 		mappaDeiParametri.put("cucina", cucina);
 		
 		
-		boxauto = dontSendThisParam;
+		switch (scheda.parcheggio) {
+		case "Nessuno":
+			boxauto = "2";
+			break;
+		case "Box auto singolo":
+			boxauto = "1";
+			break;
+		case "Box auto doppio":
+			boxauto = "3";
+			break;
+		case "Posto auto scoperto":
+			boxauto = "4";
+			break;
+		default:
+			boxauto = dontSendThisParam;
+		}
 		mappaDeiParametri.put("boxauto", boxauto);
 		
 		
@@ -1641,8 +1708,8 @@ public class _immobiliareIt extends PortaleImmobiliare {
 		mappaDeiParametri.put("check_1", check_1);
 		
 		
-		check_108 = "on";
-		mappaDeiParametri.put("check_108", check_108);
+		/*check_108 = "on";
+		mappaDeiParametri.put("check_108", check_108);*/
 		
 				
 		cmd = "_xclick";

@@ -1090,7 +1090,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 		panelTabDatiSecondari.add(chckbxCasaEcologica, "1, 34");*/
 		
 		//Vicinanza mezzi pubblici
-		mapCampiForm.put("chckbxCasaEcologica", chckbxVicinanzeMezziPubblici);
+		mapCampiForm.put("chckbxVicinanzeMezziPubblici", chckbxVicinanzeMezziPubblici);
 		listCampiForm.add(chckbxVicinanzeMezziPubblici);
 		chckbxVicinanzeMezziPubblici.setToolTipText("Vicinanze fermate mezzi pubblici");
 		panelTabDatiSecondari.add(chckbxVicinanzeMezziPubblici, "1, 34");

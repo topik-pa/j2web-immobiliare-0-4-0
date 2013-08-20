@@ -62,6 +62,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	String numeroLocali;
 	String numeroCamere;
 	String numeroBagni;
+	String tipologiaCucina;
 	String statoImmobile;
 	String arredamenti;
 	String piano;
@@ -70,7 +71,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	String tipologiaRiscaldamento;
 	String clima;
 	String parcheggio;
-	String giardino; //11
+	String giardino; //12
 	//Checkbox
 	boolean bandaLarga;
 	boolean ascensore;
@@ -95,6 +96,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 	int comboBoxNumeroLocaliIndex;
 	int comboBoxNumeroCamereIndex;
 	int comboBoxNumeroBagniIndex;
+	int comboBoxTipologiaCucinaIndex;
 	int comboBoxStatoImmobileIndex;
 	int comboBoxArredamentiIndex;
 	int comboBoxPianoIndex;
@@ -191,6 +193,8 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		
 		numeroBagni = ((String)((JComboBox)mapCampiForm.get("comboBoxNumeroBagni")).getSelectedItem());
 		
+		tipologiaCucina = ((String)((JComboBox)mapCampiForm.get("comboBoxCucina")).getSelectedItem());
+		
 		statoImmobile = ((String)((JComboBox)mapCampiForm.get("comboBoxStatoImmobile")).getSelectedItem());
 		
 		arredamenti = ((String)((JComboBox)mapCampiForm.get("comboBoxArredamenti")).getSelectedItem());
@@ -228,7 +232,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		
 		//vicinanzeMetro = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeMetro")).isSelected())?true:false;
 		vicinanzeMezziPubblici = (((JCheckBox) mapCampiForm.get("chckbxVicinanzeMezziPubblici")).isSelected())?true:false;
-		
+
 		rampePerDisabili = (((JCheckBox) mapCampiForm.get("chckbxRampePerDisabili")).isSelected())?true:false;
 		
 		
@@ -245,6 +249,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 		comboBoxNumeroLocaliIndex=((int)((JComboBox)mapCampiForm.get("comboBoxNumeroLocali")).getSelectedIndex());
 		comboBoxNumeroCamereIndex=((int)((JComboBox)mapCampiForm.get("comboBoxNumeroCamere")).getSelectedIndex());
 		comboBoxNumeroBagniIndex=((int)((JComboBox)mapCampiForm.get("comboBoxNumeroBagni")).getSelectedIndex());
+		comboBoxTipologiaCucinaIndex=((int)((JComboBox)mapCampiForm.get("comboBoxCucina")).getSelectedIndex());
 		comboBoxStatoImmobileIndex=((int)((JComboBox)mapCampiForm.get("comboBoxStatoImmobile")).getSelectedIndex());
 		comboBoxArredamentiIndex=((int)((JComboBox)mapCampiForm.get("comboBoxArredamenti")).getSelectedIndex());
 		comboBoxPianoIndex=((int)((JComboBox)mapCampiForm.get("comboBoxPiano")).getSelectedIndex());
