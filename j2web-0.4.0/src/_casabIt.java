@@ -37,14 +37,6 @@ public class _casabIt extends PortaleImmobiliare {
 	private final String URLROOT = "http://casab.it";
 	private final String USERNAME = "hsttdjjh@sharklasers.com";
     private final String PASSWORD = "password";
-    
-    //private String SESSIONCOOKIENAME = "PHPSESSID";
-    //private String SESSIONCOOKIEDOMAIN = "casab.it";
-    
-	/*private String SESSIONCOOKIEHEADER = "";
-	private String SESSIONCOOKIENAME = "PHPSESSID";
-	private String SESSIONCOOKIEVALUE = "";
-	private String SESSIONCOOKIEDOMAIN = "casab.it";*/
 	
     //private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();   
     private boolean inserimentoOK = false;
@@ -65,63 +57,66 @@ public class _casabIt extends PortaleImmobiliare {
     Map<String,String> mappaDeiParamerti;
     
     //Lista dei parametri inviati in una singola connessione
-    List<NameValuePair> postParameters;  
+    List<NameValuePair> postParameters;
+    
+    //Lista degli headers inviati in una singola connessione
+    List<NameValuePair> requestHeaders;
 
     //La scheda immobile su cui si lavora
     SchedaImmobile scheda;
     
     //Lista di alcuni dei parametri inviati
-    String idNazione = "91";	//91 è Italia (default)
-    String tipo = "";
-    String Categoria = "";
-    String Codice = "";
-    String ComuneSM = "";
-    String Locali = "";
-    String Motivazione = "";
-    String Nazione = "91";
-    String Prezzo_Richiesto = "";
-    String ProvinciaSM = "";
-    String RegioneSM = "";
-    String Totale_mq = "";
-    String act = "ins";
-    String action = "1";
-    String bagni = "";
-    String camere = "";
-    String certificazione_acustica = "";  //non supportato
-    String classe_energetica = "";
-    String epi = "";
-    String idImmobile = "";
-    String indirizzo = "";
-    String latitudine = "";
-    String longitudine = "";
-    String codiceInserzione = "";
-    String Ascensore = "";
-    String Balconi = "";	//non supportato
-    String Box = "";  //non supportato
-    String Cucina = "";  //non supportato
-    String Disposizione_interna = "";
-    String Eta_Costruzione = "";
-    String Garage = "";
-    String Giardino = "";
-    String Posto_Auto = "";
-    String Riscaldamento_Autonomo = "";
-    String Terrazzo = "";  //non supportato
-    String costruzione_presente = "";  //non supportato
-    String arredato = "";
-    String attivita_consentite = "";  //non supportato
-    String esposizione = "";  //non supportato
-    String mq_agricoli = "";  //non supportato
-    String mq_edificabili = "";  //non supportato
-    String possibili_realizzazione = "";  //non supportato
-    String progetto_approvato = "";  //non supportato
-    String mq_coperti = "";  //non supportato
-    String mq_copribili = "";  //non supportato
-    String mq_scoperti = "";  //non supportato
-    String num_vetrine = "";  //non supportato
-    String piani_totali = "";
-    String posizione = "";  //non supportato
-    String riscaldamento_autonomo = "";
-    String tipo_terreno = "";
+    String idNazione;
+    String tipo;
+    String Categoria;
+    String Codice;
+    String ComuneSM;
+    String Locali;
+    String Motivazione;
+    String Nazione;
+    String Prezzo_Richiesto;
+    String ProvinciaSM;
+    String RegioneSM;
+    String Totale_mq;
+    String act;
+    String action;
+    String bagni;
+    String camere;
+    String certificazione_acustica;  //non supportato
+    String classe_energetica;
+    String epi;
+    String idImmobile;
+    String indirizzo;
+    String latitudine;
+    String longitudine;
+    String codiceInserzione;
+    String Ascensore;
+    String Balconi;	//non supportato
+    String Box;  //non supportato
+    String Cucina;  //non supportato
+    String Disposizione_interna;
+    String Eta_Costruzione;
+    String Garage;
+    String Giardino;
+    String Posto_Auto;
+    String Riscaldamento_Autonomo;
+    String Terrazzo;  //non supportato
+    String costruzione_presente;  //non supportato
+    String arredato;
+    String attivita_consentite;  //non supportato
+    String esposizione;  //non supportato
+    String mq_agricoli;  //non supportato
+    String mq_edificabili;  //non supportato
+    String possibili_realizzazione;  //non supportato
+    String progetto_approvato;  //non supportato
+    String mq_coperti;  //non supportato
+    String mq_copribili;  //non supportato
+    String mq_scoperti;  //non supportato
+    String num_vetrine;  //non supportato
+    String piani_totali;
+    String posizione;  //non supportato
+    String riscaldamento_autonomo;
+    String tipo_terreno;
     
     
 	//Costruttore
@@ -134,7 +129,9 @@ public class _casabIt extends PortaleImmobiliare {
 		
 		mappaDeiParamerti =  new Hashtable<String,String>();
 	    
-	    postParameters = new ArrayList<NameValuePair>();		
+	    postParameters = new ArrayList<NameValuePair>();	
+	    
+	    requestHeaders = new ArrayList<NameValuePair>();
 	
 	}
 
@@ -169,19 +166,19 @@ public class _casabIt extends PortaleImmobiliare {
 		}
     	
     	
-    	//Connessione 2 - POST dei parametri di accesso
+    	//Connessione 2 - POST dei parametri di accesso (1)
     	HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
         postParameters.add(new BasicNameValuePair("email", USERNAME));
         postParameters.add(new BasicNameValuePair("password", PASSWORD));
-        try {
-        	//connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-        	
-        	Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/funzioni/login_agenzia.php", postParameters, debugMode);
-        	
+        
+        try {        	
+        	Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso (1)", URLROOT + "/funzioni/login_agenzia.php", postParameters, debugMode);
         	Header[] responseHeaders = (Header[])response[0];
+        	//Trovo il cookie di sessione
         	findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-        	System.out.println("Il cookie di sessione è: " + SESSIONCOOKIEHEADER + " " + SESSIONCOOKIENAME + " " +  SESSIONCOOKIEVALUE);
+        	//Imposto il cookie di sessione per tutte le successive connessioni
+        	connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
         } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -190,16 +187,8 @@ public class _casabIt extends PortaleImmobiliare {
     	}
         
         
-        //Connessione 2b - POST dei parametri di accesso
+        //Connessione 2b - POST dei parametri di accesso (2)
     	HttpPortalPostConnection connessione_2b = new HttpPortalPostConnection();   	
-    	/*postParameters = new ArrayList<NameValuePair>();          
-        postParameters.add(new BasicNameValuePair("email", USERNAME));
-        postParameters.add(new BasicNameValuePair("password", PASSWORD));
-        postParameters.add(new BasicNameValuePair("action", "1"));
-        postParameters.add(new BasicNameValuePair("permalinkPaginaOspite", "http://www.casab.it/page/14/login_agenzie.html"));*/
-    	
-    	
-    	
         try {
         	MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
         	reqEntity.addPart("email", new StringBody(USERNAME));
@@ -207,38 +196,25 @@ public class _casabIt extends PortaleImmobiliare {
         	reqEntity.addPart("action", new StringBody("1"));
         	reqEntity.addPart("permalinkPaginaOspite", new StringBody("http://www.casab.it/page/14/login_agenzie.html"));
         	
-        	connessione_2b.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-        	
-        	connessione_2b.post("Connessione 2b - POST dei parametri di accesso", URLROOT + "/page/14/login_agenzie.html", reqEntity, debugMode);
-        	
-        	//Header[] responseHeaders = (Header[])response[0];
-        	//findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-        	//System.out.println("Il cookie di sessione è: " + SESSIONCOOKIEHEADER + " " + SESSIONCOOKIENAME + " " +  SESSIONCOOKIEVALUE);
+        	//Immposto qui gli headers che saranno utilizzati in tutte le altre connessioni
+        	requestHeaders = new ArrayList<NameValuePair>();
+            requestHeaders.add(new BasicNameValuePair("Host", "www.casab.it"));
+        	requestHeaders.add(new BasicNameValuePair("Cookie", SESSIONCOOKIENAME + "=" + SESSIONCOOKIEVALUE));
+        	        	
+        	connessione_2b.post("Connessione 2b - POST dei parametri di accesso (2)", URLROOT + "/page/14/login_agenzie.html", reqEntity, requestHeaders, debugMode);
+
         } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
     	finally {
     		postParameters.clear();
     	}
-        
-      //Connessione 1 - GET della pagina di login
-    	HttpPortalGetConnection connessione_test = new HttpPortalGetConnection();
-    	try {
-    		connessione_test.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-    		connessione_test.get("connessione_test - GET della pagina di login", URLROOT + "/area_riservata.php?pg=profilo&tipo=age", debugMode);
-    		//Header[] responseHeaders = (Header[])response[0];
-        	//findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-        	System.out.println("Il cookie di sessione è: " + SESSIONCOOKIEHEADER + " " + SESSIONCOOKIENAME + " " +  SESSIONCOOKIEVALUE);
-    	} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-        
+   
     	
     	//Connessione 3 - GET della pagina "Annunci immobiliari"
     	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
-    		connessione_3.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-			connessione_3.get("Connessione 3 - GET della pagina \"Annunci immobiliari\"", URLROOT + "/area_riservata.php?pg=modimmo&tipo=age", debugMode);
+            connessione_3.get("Connessione 3 - GET della pagina \"Annunci immobiliari\"", URLROOT + "/area_riservata.php?pg=modimmo&tipo=age", requestHeaders, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -247,8 +223,7 @@ public class _casabIt extends PortaleImmobiliare {
     	//Connessione 4 - GET della pagina "Inserisci un nuovo immobile"
     	HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
     	try {
-    		connessione_4.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-			connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo immobile\"", URLROOT + "/area_riservata.php?pg=newimmo&tipo=age", debugMode);
+			connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo immobile\"", URLROOT + "/area_riservata.php?pg=newimmo&tipo=age", requestHeaders, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -257,8 +232,7 @@ public class _casabIt extends PortaleImmobiliare {
     	//Connessione 5 - GET della pagina "Inserisci un nuovo immobile (con parametro circa la tipologia)"
     	HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
     	try {
-    		connessione_5.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-			connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo immobile (con parametro circa la tipologia)\"", URLROOT + "/moduli/agenzie/immobile2.php?tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", debugMode);
+			connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo immobile (con parametro circa la tipologia)\"", URLROOT + "/moduli/agenzie/immobile2.php?tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", requestHeaders, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -290,15 +264,14 @@ public class _casabIt extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("longitudine", mappaDeiParamerti.get("longitudine")));
         postParameters.add(new BasicNameValuePair("tipo", mappaDeiParamerti.get("tipo")));	
         try {
-        	connessione_6.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-        	Object[] response = connessione_6.post("Connessione 6 - POST dello step 1", URLROOT + "/moduli/agenzie/immobile2.php", postParameters, debugMode);
+        	Object[] response = connessione_6.post("Connessione 6 - POST dello step 1", URLROOT + "/moduli/agenzie/immobile2.php", postParameters, requestHeaders, debugMode);
         	String responseBody = (String)response[1];
         	
         	//Parse HMTL to retrieve some informations
             org.jsoup.nodes.Document doc = Jsoup.parse(responseBody); 
             Elements inputElement = doc.select("input[name=idImmobile]");
             codiceInserzione = inputElement.attr("value");
-            System.out.println("CODICEINSERZIONE: " + codiceInserzione);
+            //System.out.println("CODICEINSERZIONE: " + codiceInserzione);
             mappaDeiParamerti.put("codiceInserzione", codiceInserzione);
             mappaDeiParamerti.put("idImmobile", codiceInserzione); //Da questo momento, questo parametro cambia valore
         } catch (IOException | RuntimeException e) {
@@ -312,8 +285,7 @@ public class _casabIt extends PortaleImmobiliare {
         //Connessione 7 - GET della pagina "Inserisci un nuovo immobile (step 2)"
     	HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
     	try {
-    		connessione_7.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-			connessione_7.get("Connessione 7 - GET della pagina \"Inserisci un nuovo immobile (step 2)\"", URLROOT + "/moduli/agenzie/immobile3.php?idImmobile=" + mappaDeiParamerti.get("codiceInserzione") + "&tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", debugMode);
+			connessione_7.get("Connessione 7 - GET della pagina \"Inserisci un nuovo immobile (step 2)\"", URLROOT + "/moduli/agenzie/immobile3.php?idImmobile=" + mappaDeiParamerti.get("codiceInserzione") + "&tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", requestHeaders, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -335,27 +307,26 @@ public class _casabIt extends PortaleImmobiliare {
         postParameters.add(new BasicNameValuePair("Terrazzo", mappaDeiParamerti.get("Terrazzo"))); //solo residenziale
         postParameters.add(new BasicNameValuePair("act", mappaDeiParamerti.get("act")));
         postParameters.add(new BasicNameValuePair("action", mappaDeiParamerti.get("action")));
-        //postParameters.add(new BasicNameValuePair("costruzione_presente", mappaDeiParamerti.get("costruzione_presente"))); //solo ter
+        postParameters.add(new BasicNameValuePair("costruzione_presente", mappaDeiParamerti.get("costruzione_presente"))); //solo ter
         postParameters.add(new BasicNameValuePair("arredato", mappaDeiParamerti.get("arredato"))); //solo comm e res
-        //postParameters.add(new BasicNameValuePair("attivita_consentite", mappaDeiParamerti.get("attivita_consentite"))); //solo commerciale
+        postParameters.add(new BasicNameValuePair("attivita_consentite", mappaDeiParamerti.get("attivita_consentite"))); //solo commerciale
         postParameters.add(new BasicNameValuePair("esposizione", mappaDeiParamerti.get("esposizione"))); //solo res
         postParameters.add(new BasicNameValuePair("idImmobile", mappaDeiParamerti.get("idImmobile")));
-        //postParameters.add(new BasicNameValuePair("mq_agricoli", mappaDeiParamerti.get("mq_agricoli"))); //solo ter
-        //postParameters.add(new BasicNameValuePair("mq_edificabili", mappaDeiParamerti.get("mq_edificabili"))); //solo ter
-        //postParameters.add(new BasicNameValuePair("possibili_realizzazione", mappaDeiParamerti.get("possibili_realizzazione"))); //solo ter
-        //postParameters.add(new BasicNameValuePair("progetto_approvato", mappaDeiParamerti.get("progetto_approvato"))); //solo ter
-        //postParameters.add(new BasicNameValuePair("mq_coperti", mappaDeiParamerti.get("mq_coperti"))); //solo comm	
-        //postParameters.add(new BasicNameValuePair("mq_copribili", mappaDeiParamerti.get("mq_copribili"))); //solo comm
-        //postParameters.add(new BasicNameValuePair("mq_scoperti", mappaDeiParamerti.get("mq_scoperti"))); //solo comm	
-        //postParameters.add(new BasicNameValuePair("num_vetrine", mappaDeiParamerti.get("num_vetrine"))); //solo comm	
+        postParameters.add(new BasicNameValuePair("mq_agricoli", mappaDeiParamerti.get("mq_agricoli"))); //solo ter
+        postParameters.add(new BasicNameValuePair("mq_edificabili", mappaDeiParamerti.get("mq_edificabili"))); //solo ter
+        postParameters.add(new BasicNameValuePair("possibili_realizzazione", mappaDeiParamerti.get("possibili_realizzazione"))); //solo ter
+        postParameters.add(new BasicNameValuePair("progetto_approvato", mappaDeiParamerti.get("progetto_approvato"))); //solo ter
+        postParameters.add(new BasicNameValuePair("mq_coperti", mappaDeiParamerti.get("mq_coperti"))); //solo comm	
+        postParameters.add(new BasicNameValuePair("mq_copribili", mappaDeiParamerti.get("mq_copribili"))); //solo comm
+        postParameters.add(new BasicNameValuePair("mq_scoperti", mappaDeiParamerti.get("mq_scoperti"))); //solo comm	
+        postParameters.add(new BasicNameValuePair("num_vetrine", mappaDeiParamerti.get("num_vetrine"))); //solo comm	
         postParameters.add(new BasicNameValuePair("piani_totali", mappaDeiParamerti.get("piani_totali"))); //solo residenziale
         postParameters.add(new BasicNameValuePair("posizione", mappaDeiParamerti.get("posizione")));
-        //postParameters.add(new BasicNameValuePair("riscaldamento_autonomo", mappaDeiParamerti.get("riscaldamento_autonomo"))); //solo commerciale
+        postParameters.add(new BasicNameValuePair("riscaldamento_autonomo", mappaDeiParamerti.get("riscaldamento_autonomo"))); //solo commerciale
         postParameters.add(new BasicNameValuePair("tipo", mappaDeiParamerti.get("tipo")));
-        //postParameters.add(new BasicNameValuePair("tipo_terreno", mappaDeiParamerti.get("tipo_terreno"))); //solo ter
+        postParameters.add(new BasicNameValuePair("tipo_terreno", mappaDeiParamerti.get("tipo_terreno"))); //solo ter
         try {
-        	connessione_8.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-        	connessione_8.post("Connessione 8 - POST dello step 2", URLROOT + "/moduli/agenzie/immobile3.php", postParameters, debugMode);
+        	connessione_8.post("Connessione 8 - POST dello step 2", URLROOT + "/moduli/agenzie/immobile3.php", postParameters, requestHeaders, debugMode);
         } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -367,8 +338,7 @@ public class _casabIt extends PortaleImmobiliare {
         //Connessione 9 - GET della pagina "Inserisci un nuovo immobile (step 3)"
     	HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
     	try {
-    		connessione_9.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-			connessione_9.get("Connessione 9 - GET della pagina \"Inserisci un nuovo immobile (step 3)\"", URLROOT + "/moduli/agenzie/immobile4.php?idImmobile=" + mappaDeiParamerti.get("codiceInserzione") + "&tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", debugMode);
+			connessione_9.get("Connessione 9 - GET della pagina \"Inserisci un nuovo immobile (step 3)\"", URLROOT + "/moduli/agenzie/immobile4.php?idImmobile=" + mappaDeiParamerti.get("codiceInserzione") + "&tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", requestHeaders, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -388,8 +358,7 @@ public class _casabIt extends PortaleImmobiliare {
 	    	        reqEntity2.addPart("act", new StringBody(mappaDeiParamerti.get("act")));
 	    	        reqEntity2.addPart("idImmobile", new StringBody(mappaDeiParamerti.get("idImmobile")));
     	    	
-	    	        connessione_10.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-	    	        connessione_10.post("Connessione 10_" + i + " - inserimento immagine " + i, URLROOT + "/moduli/agenzie/immobile4.php", reqEntity2, debugMode);
+	    	        connessione_10.post("Connessione 10_" + i + " - inserimento immagine " + i, URLROOT + "/moduli/agenzie/immobile4.php", reqEntity2, requestHeaders, debugMode);
     			} catch (IOException | RuntimeException e) {
     				throw new HttpCommunicationException(e);
     			}
@@ -403,8 +372,7 @@ public class _casabIt extends PortaleImmobiliare {
     	//Connessione 11 - GET della pagina "Modifica gli immobili" per verificare l'inserimento
     	HttpPortalGetConnection connessione_11 = new HttpPortalGetConnection();
     	try {
-    		connessione_11.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-    		Object[] response = connessione_11.get("Connessione 11 - GET della pagina \"Modifica gli immobili\" per verificare l'inserimento", URLROOT + "/area_riservata.php?pg=modimmo", debugMode);
+    		Object[] response = connessione_11.get("Connessione 11 - GET della pagina \"Modifica gli immobili\" per verificare l'inserimento", URLROOT + "/area_riservata.php?pg=modimmo", requestHeaders, debugMode);
     		String responseBody = (String) response[1];
     		
     		if(responseBody.contains("idImmobile=" + mappaDeiParamerti.get("codiceInserzione"))) {
@@ -457,7 +425,7 @@ public class _casabIt extends PortaleImmobiliare {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceInserzione + "...");
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT + "/risultati_ricerca.php";
+			String url = URLROOT + "/area_riservata.php?pg=modimmo&tipo=age";
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			System.out.println("Visualizzata in: " + NOMEPORTALE);
 			
@@ -476,25 +444,38 @@ public class _casabIt extends PortaleImmobiliare {
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);			
 		
 	
-		//Connessione 1 - GET della pagina di login
-    	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
+		//Connessione 0 - GET della home page - Opzionale
+    	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
     	try {
-    		Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/page/14/login_agenzie.html", debugMode);
-    		Header[] responseHeaders = (Header[])response[0];
-    		findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+			connessione_0.get("Connessione 0 - GET della home page", URLROOT, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
     	
     	
-    	//Connessione 2 - POST dei parametri di accesso
+    	//Connessione 1 - GET della pagina di login
+    	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
+    	try {
+    		connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/page/14/login_agenzie.html", debugMode);
+    		
+    	} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	
+    	
+    	//Connessione 2 - POST dei parametri di accesso (1)
     	HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
         postParameters.add(new BasicNameValuePair("email", USERNAME));
-        postParameters.add(new BasicNameValuePair("password", PASSWORD));   	
-        try {
+        postParameters.add(new BasicNameValuePair("password", PASSWORD));
+        
+        try {        	
+        	Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso (1)", URLROOT + "/funzioni/login_agenzia.php", postParameters, debugMode);
+        	Header[] responseHeaders = (Header[])response[0];
+        	//Trovo il cookie di sessione
+        	findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+        	//Imposto il cookie di sessione per tutte le successive connessioni
         	connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-			connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/funzioni/login_agenzia.php", postParameters, debugMode);
         } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -503,21 +484,34 @@ public class _casabIt extends PortaleImmobiliare {
     	}
         
         
-        //Connessione 3 - GET della pagina "Annunci immobiliari"
-    	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
-    	try {
-    		connessione_3.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-			connessione_3.get("Connessione 3 - GET della pagina \"Annunci immobiliari\"", URLROOT + "/area_riservata.php?pg=modimmo&tipo=age", debugMode);
-    	} catch (IOException | RuntimeException e) {
+        //Connessione 2b - POST dei parametri di accesso (2)
+    	HttpPortalPostConnection connessione_2b = new HttpPortalPostConnection();   	
+        try {
+        	MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+        	reqEntity.addPart("email", new StringBody(USERNAME));
+        	reqEntity.addPart("password", new StringBody(PASSWORD));
+        	reqEntity.addPart("action", new StringBody("1"));
+        	reqEntity.addPart("permalinkPaginaOspite", new StringBody("http://www.casab.it/page/14/login_agenzie.html"));
+        	
+        	//Immposto qui gli headers che saranno utilizzati in tutte le altre connessioni
+        	requestHeaders = new ArrayList<NameValuePair>();
+            requestHeaders.add(new BasicNameValuePair("Host", "www.casab.it"));
+        	requestHeaders.add(new BasicNameValuePair("Cookie", SESSIONCOOKIENAME + "=" + SESSIONCOOKIEVALUE));
+        	        	
+        	connessione_2b.post("Connessione 2b - POST dei parametri di accesso (2)", URLROOT + "/page/14/login_agenzie.html", reqEntity, requestHeaders, debugMode);
+
+        } catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
+    	finally {
+    		postParameters.clear();
+    	}
         
     	
-    	//Connessione 4 - GET della pagina "Elimina immobile"
-    	HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
+    	//Connessione 3 - GET della pagina "Elimina immobile"
+    	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
-    		connessione_4.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-			connessione_4.get("Connessione 4 - GET della pagina \"Elimina immobile\"", URLROOT + "/moduli/agenzie/elimina_immobile.php?idImmobile=" + codiceInserzione, debugMode);
+			connessione_3.get("Connessione 3 - GET della pagina \"Elimina immobile\"", URLROOT + "/moduli/agenzie/elimina_immobile.php?idImmobile=" + codiceInserzione, requestHeaders, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -629,10 +623,13 @@ public class _casabIt extends PortaleImmobiliare {
 		    case "Terreno industriale":
 		    	Categoria = "32";
 		        break;
+		    default:
+		    	Categoria = "";
 		}
 		mappaDeiParamerti.put("Categoria", Categoria);	
 		
 		
+		idNazione = "91";	//91 è Italia (default)
 		mappaDeiParamerti.put("idNazione", idNazione);
 		
 		
@@ -704,8 +701,9 @@ public class _casabIt extends PortaleImmobiliare {
 		
 		
 		//Recupero del codice della Provincia
+		ProvinciaSM = "";
 		HttpPortalGetConnection connessione_a = new HttpPortalGetConnection();
-    	try {
+    	try {    		
     		Object[] response = connessione_a.get("Recupero del codice della Provincia", URLROOT + "/funzioni/select_provinceSM.php?idNazione=" + mappaDeiParamerti.get("idNazione") + "&idRegione=" + mappaDeiParamerti.get("RegioneSM") + "&idProvincia=0", debugMode);
     		String responseBody = (String)response[1];
     		
@@ -736,6 +734,7 @@ public class _casabIt extends PortaleImmobiliare {
     	
     	
 		//Recupero del codice del Comune
+    	ComuneSM = "";
 		HttpPortalGetConnection connessione_b = new HttpPortalGetConnection();
     	try {
     		Object[] response = connessione_b.get("Recupero del codice del Comune", URLROOT + "/funzioni/select_comuniSM.php?idNazione=" + mappaDeiParamerti.get("idNazione") + "&idProvincia=" + mappaDeiParamerti.get("ProvinciaSM"), debugMode);
@@ -811,10 +810,13 @@ public class _casabIt extends PortaleImmobiliare {
 		    case "Vendita":
 		    	Motivazione = "1";
 		    	break;
+		    default:
+		    	Motivazione = "";
 		}
 		mappaDeiParamerti.put("Motivazione", Motivazione);
 		
 		
+		Nazione = "91";
 		mappaDeiParamerti.put("Nazione", Nazione);	
 		
 		
@@ -826,9 +828,11 @@ public class _casabIt extends PortaleImmobiliare {
 		mappaDeiParamerti.put("Totale_mq", Totale_mq);
 		
 		
+		act = "ins";
 		mappaDeiParamerti.put("act", act);
 		
 		
+		action = "1";
 		mappaDeiParamerti.put("action", action);
 		
 		
@@ -884,6 +888,7 @@ public class _casabIt extends PortaleImmobiliare {
 		mappaDeiParamerti.put("camere", camere);
 		
 		
+		certificazione_acustica = "";
 		mappaDeiParamerti.put("certificazione_acustica", certificazione_acustica);
 		
 		
@@ -939,6 +944,7 @@ public class _casabIt extends PortaleImmobiliare {
 		mappaDeiParamerti.put("epi", epi);
 		
 		
+		idImmobile = "";
 		mappaDeiParamerti.put("idImmobile", idImmobile);
 		
 		
@@ -963,13 +969,13 @@ public class _casabIt extends PortaleImmobiliare {
 		Ascensore = scheda.ascensore?"1":"0";
 		mappaDeiParamerti.put("Ascensore", Ascensore);
 		
-		
+		Balconi = "";
 		mappaDeiParamerti.put("Balconi", Balconi);
 		
-		
+		Box = "";
 		mappaDeiParamerti.put("Box", Box);
 		
-		
+		Cucina = "";
 		mappaDeiParamerti.put("Cucina", Cucina);
 		
 		
@@ -1020,6 +1026,7 @@ public class _casabIt extends PortaleImmobiliare {
 		    	break;
 		    default:
 		    	Posto_Auto = "";
+		    	Garage = "";
 		}
 		mappaDeiParamerti.put("Posto_Auto", Posto_Auto);
 		mappaDeiParamerti.put("Garage", Garage);
@@ -1032,22 +1039,21 @@ public class _casabIt extends PortaleImmobiliare {
 		        break;
 		    case "Centralizzato":
 		    	Riscaldamento_Autonomo = "Centralizzato";
-		    	riscaldamento_autonomo = "Assente";
+		    	riscaldamento_autonomo = "Centralizzato";
 		    	break;
 		    case "Autonomo":
 		    	Riscaldamento_Autonomo = "Autonomo";
-		    	riscaldamento_autonomo = "Assente";
+		    	riscaldamento_autonomo = "Autonomo";
 		    	break;
 		    case "Stufa":
 		    	Riscaldamento_Autonomo = "Autonomo"; //è autonomo...
-		    	riscaldamento_autonomo = "Assente";
+		    	riscaldamento_autonomo = "Autonomo";
 		    	break;
 		    default:
 		    	Riscaldamento_Autonomo = "";
-		    	riscaldamento_autonomo = "Assente";
+		    	riscaldamento_autonomo = "";
 			}
-		
-		
+			
 		switch (scheda.clima)
 		{
 		    case "Assente":
@@ -1064,9 +1070,11 @@ public class _casabIt extends PortaleImmobiliare {
 		mappaDeiParamerti.put("riscaldamento_autonomo", Riscaldamento_Autonomo);
 		
 		
+		Terrazzo = "";
 		mappaDeiParamerti.put("Terrazzo", Terrazzo);
 		
 		
+		costruzione_presente = "";
 		mappaDeiParamerti.put("costruzione_presente", costruzione_presente);
 			
 		
@@ -1087,33 +1095,43 @@ public class _casabIt extends PortaleImmobiliare {
 		mappaDeiParamerti.put("arredato", arredato);
 		
 		
+		attivita_consentite = "";
 		mappaDeiParamerti.put("attivita_consentite", attivita_consentite);
 		
 		
+		esposizione = "";
 		mappaDeiParamerti.put("esposizione", esposizione);
 		
 		
+		mq_agricoli = "";
 		mappaDeiParamerti.put("mq_agricoli", mq_agricoli);
 		
 		
+		mq_edificabili = "";
 		mappaDeiParamerti.put("mq_edificabili", mq_edificabili);
 		
 		
+		possibili_realizzazione = "";
 		mappaDeiParamerti.put("possibili_realizzazione", possibili_realizzazione);
 		
 		
+		progetto_approvato = "";
 		mappaDeiParamerti.put("progetto_approvato", progetto_approvato);
 		
 		
+		mq_coperti = "";
 		mappaDeiParamerti.put("mq_coperti", mq_coperti);
 		
 		
+		mq_copribili = "";
 		mappaDeiParamerti.put("mq_copribili", mq_copribili);
 		
 		
+		mq_scoperti = "";
 		mappaDeiParamerti.put("mq_scoperti", mq_scoperti);
 		
 		
+		num_vetrine = "";
 		mappaDeiParamerti.put("num_vetrine", num_vetrine);
 		
 		
@@ -1126,9 +1144,11 @@ public class _casabIt extends PortaleImmobiliare {
 		mappaDeiParamerti.put("piani_totali", piani_totali);
 		
 		
+		posizione = "";
 		mappaDeiParamerti.put("posizione", posizione);
 		
 		
+		tipo_terreno = "";
 		mappaDeiParamerti.put("tipo_terreno", tipo_terreno);
 		
 
