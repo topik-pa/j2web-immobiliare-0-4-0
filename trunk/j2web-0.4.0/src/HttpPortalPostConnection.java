@@ -206,5 +206,70 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	}
 	
 	
+	//POST MULTIPART/FORM-DATA (2)
+	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, List<NameValuePair> requestHeaders, boolean debugMode) throws IOException {
+		
+		//La risposta che verrà restituita
+		Object[] headersAndBodyResponseAndStatus = new Object[3];
+		
+		//Inizializza la connessione
+		httppost = new HttpPost(url);
+		
+		//Add request headers
+		BasicHeader newHeader;
+		BasicNameValuePair currentHeaderListItem;
+		Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
+        while(headersIterator.hasNext()) {
+        	currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
+        	if(currentHeaderListItem.getName()!= "User-Agent") { //Non aggiungo unn ulteriore header User-Agent
+	        	newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
+	        	httppost.addHeader(newHeader);
+        	}
+        }
+        //L'header User-Agent è aggiunto sempre in modo predefinito
+        requestHeader = new BasicHeader("User-Agent", USER_AGENT);
+        httppost.addHeader(requestHeader);
+        
+        //Add request parameters
+        httppost.setEntity(reqEntity);
+        
+        //Set the cookies
+        if(isSessionCookieSet==true) {
+	        BasicCookieStore cookieStore = new BasicCookieStore(); 
+	        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
+	        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
+	        cookie.setPath("/");           
+	        cookieStore.addCookie(cookie); 
+	        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
+        }
+        
+        //Send the request
+        response = httpclient.execute(httppost);
+        
+        //Get the response body
+        HttpEntity responseEntity = response.getEntity();
+        String responseBody = "";
+        if(responseEntity!=null) {
+        	responseBody = EntityUtils.toString(responseEntity);
+        }
+                
+    	//Get the response headers
+        responseHeaders = response.getAllHeaders();
+         
+        if(debugMode) {
+            //Print connection properties
+        	printConnectionProperties(connectionDescription, httppost, responseHeaders, responseBody, reqEntity);
+        }
+        
+        //Close the request
+        httpclient.getConnectionManager().shutdown();
+		
+        //Return the headers and response body
+        headersAndBodyResponseAndStatus[0] = responseHeaders;
+        headersAndBodyResponseAndStatus[1] = responseBody;
+        headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
+        return headersAndBodyResponseAndStatus;     
+		
+	}
 	
 }

@@ -304,8 +304,8 @@ public class j2web implements parametriGenerali {
     	PortaleImmobiliare _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt.jpg", "2 - immobiliare.it", "002", true);
     	j2web_GUI.listPortaliImmobiliari.add(_immobiliareIt);
     	
-    	/*PortaleImmobiliare _casabIt = new _casabIt("./images/_casabIt.jpg", "2 - casab.it", "002", true);
-    	j2web_GUI.listPortaliImmobiliari.add(_casabIt);*/
+    	PortaleImmobiliare _casabIt = new _casabIt("./images/_casabIt.jpg", "3 - casab.it", "003", true);
+    	j2web_GUI.listPortaliImmobiliari.add(_casabIt);
     	
     	/*PortaleImmobiliare _cubocasaIt = new _cubocasaIt("./images/_cubocasaIt.gif", "3 - cubocasa.it", "003", false);
     	j2web_GUI.listPortaliImmobiliari.add(_cubocasaIt);
