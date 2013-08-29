@@ -297,55 +297,10 @@ public class j2web implements parametriGenerali {
 	//Inizializza la lista dei portali attivi
 	public static void inizializzaPortaliAttivi() {	
 		
-		/*Progetto J2Web-DEMO*/
-		PortaleImmobiliare _case24It = new _case24It("./images/_case24It.jpg", "1 - case24.it", "001", true);
-    	j2web_GUI.listPortaliImmobiliari.add(_case24It);
-    	
-    	
-    	
-    	PortaleImmobiliare _casabIt = new _casabIt("./images/_casabIt.jpg", "3 - casab.it", "003", true);
-    	j2web_GUI.listPortaliImmobiliari.add(_casabIt);
-    	
     	
     	PortaleImmobiliare _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt.jpg", "2 - immobiliare.it", "002", true);
     	j2web_GUI.listPortaliImmobiliari.add(_immobiliareIt);
     	
-    	/*PortaleImmobiliare _cubocasaIt = new _cubocasaIt("./images/_cubocasaIt.gif", "3 - cubocasa.it", "003", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_cubocasaIt);
-    	
-    	PortaleImmobiliare _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt.jpg", "4 - immobiliare.it", "004", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_immobiliareIt);
-    	
-    	PortaleImmobiliare _casaIt = new _casaIt("./images/_casaIt.jpg", "5 - casa.it", "005", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_casaIt);*/
-    	/*Progetto J2Web-DEMO*/
-		
-		/*PortaleImmobiliare _case24It = new _case24It("./images/_case24It.jpg", "1 - case24.it", "005", true);
-    	j2web_GUI.listPortaliImmobiliari.add(_case24It);
-		
-		PortaleImmobiliare _casaIt = new _case24It("./images/_casaIt.jpg", "2 - casa.it", "001", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_casaIt);
-    	
-    	PortaleImmobiliare _immobiliareIt = new _case24It("./images/_immobiliareIt.jpg", "3 - immobiliare.it", "002", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_immobiliareIt);
-    	
-    	PortaleImmobiliare _idealistaIt = new _case24It("./images/_idealistaIt.jpg", "4 - idealista.it", "003", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_idealistaIt);
-    	
-    	PortaleImmobiliare _tuttoannunciOrg = new _case24It("./images/_tuttoannunciOrg.jpg", "5 - tuttoannunci.org", "006", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_tuttoannunciOrg);
-    	
-    	PortaleImmobiliare _gazzettaimmobiliareNet = new _case24It("./images/_gazzettaimmobiliareNet.jpg", "6 - gazzettaimmobiliare.net", "007", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_gazzettaimmobiliareNet);
-    	
-    	PortaleImmobiliare _livellocasaIt = new _case24It("./images/_livellocasaIt.jpg", "7 - livellocasa.it", "008", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_livellocasaIt);
-    	
-    	PortaleImmobiliare _cercacasaIt = new _case24It("./images/_cercacasaIt.jpg", "8 - cercacasa.it", "009", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_cercacasaIt);
-    	
-    	PortaleImmobiliare _trovacasaNet = new _case24It("./images/_trovacasaNet.jpg", "9 - trovacasa.net", "010", false);
-    	j2web_GUI.listPortaliImmobiliari.add(_trovacasaNet);*/
 
     }
 	
