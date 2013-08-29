@@ -9,12 +9,12 @@ import javax.swing.JComponent;
 public interface parametriGenerali {
 
 	//Versione di J2Web
-	final String  j2web_version = "0.4.1.1";
+	final String  j2web_version = "0.1";
 	
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
 	
-	//Mail dell back end
+	//Mail del back end
 	final String BACKEND_EMAIL ="marcopavan.mp@gmail.com";
 	final String BACKEND_EMAIL_DOMAIN ="@gmail.com";
 	final String BACKEND_EMAIL_PSW ="IsMPsd80";
@@ -25,7 +25,7 @@ public interface parametriGenerali {
 	final String EMAIL_UTENTE ="marco--pavan@libero.it";
 	
 	//Nome della GUI
-	final String nomeGUI = "J2Web - Immobiliare" + " " + j2web_version;
+	final String nomeGUI = "J2Web - Automotive" + " " + j2web_version;
 	
 	//Dimensioni di default della GUI 
 	final int[] GUI_bounds = {20, 20, 1230, 635};
@@ -33,7 +33,7 @@ public interface parametriGenerali {
 	//Icona della finestra principale
     final Image frameIcon = new ImageIcon("./images/imaginationLogo.png").getImage();
     
-    //User agent utilizzato per le connssioni
+    //User agent utilizzato per le connessioni
     final String USER_AGENT_VALUE = "Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20100101 Firefox/12.0";
     
     //Messaggi delle finestre modali
