@@ -111,13 +111,15 @@ public class J2Web_UI implements parametriGenerali{
 	private JCheckBox chckbxClima;
 	private JComboBox comboBox_Motore;
 	private JTextField textField;
+	private JRadioButton rdbtnAutoveicolo;
+	private JRadioButton rdbtnMotoScooter;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -273,24 +275,24 @@ public class J2Web_UI implements parametriGenerali{
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JRadioButton rdbtnSelezionaAutoveicolo = new JRadioButton("Autoveicolo");
-		rdbtnSelezionaAutoveicolo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		rdbtnAutoveicolo = new JRadioButton("Autoveicolo");
+		rdbtnAutoveicolo.setSelected(true);
+		rdbtnAutoveicolo.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
 				selezioneAutoVeicolo();
 			}
 		});
-		rdbtnSelezionaAutoveicolo.setSelected(true);
-		buttonGroup.add(rdbtnSelezionaAutoveicolo);
-		panel_20.add(rdbtnSelezionaAutoveicolo, "2, 2");
+		buttonGroup.add(rdbtnAutoveicolo);
+		panel_20.add(rdbtnAutoveicolo, "2, 2");
 		
-		JRadioButton rdbtnSelezionaMotoScooter = new JRadioButton("Moto/Scooter");
-		rdbtnSelezionaMotoScooter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		rdbtnMotoScooter = new JRadioButton("Moto/Scooter");
+		rdbtnMotoScooter.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
 				selezioneMotoScooter();
 			}
 		});
-		buttonGroup.add(rdbtnSelezionaMotoScooter);
-		panel_20.add(rdbtnSelezionaMotoScooter, "6, 2");
+		buttonGroup.add(rdbtnMotoScooter);
+		panel_20.add(rdbtnMotoScooter, "6, 2");
 		
 		JLabel lblMarca = new JLabel("Marca");
 		panel_20.add(lblMarca, "2, 4");
@@ -308,7 +310,7 @@ public class J2Web_UI implements parametriGenerali{
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
 					String marcaVeicolo = (String) comboBox_Marca.getSelectedItem();
 					
-					if(!marcaVeicolo.equals("Seleziona")) {
+					if(!marcaVeicolo.equals("Seleziona") && rdbtnAutoveicolo.isSelected()) {
 						try {
 							popolaModelloVeicolo(marcaVeicolo);
 						} catch (HttpCommunicationException e) {
@@ -326,6 +328,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_20.add(comboBox_Marca, "2, 6, fill, default");
 		
 		comboBox_Modello = new JComboBox();
+		comboBox_Modello.setEditable(true);
 		panel_20.add(comboBox_Modello, "6, 6, fill, default");
 		
 		textField_5 = new JTextField();
@@ -948,7 +951,7 @@ public class J2Web_UI implements parametriGenerali{
 		scrollPane_9.setViewportView(panel_8);
 		panel_8.setBackground(new Color(255, 255, 224));
 		
-		panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnSelezionaAutoveicolo, rdbtnSelezionaMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox, comboBox_1, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtKw, txtCv, lblColoreEsterno, comboBox_4, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_8, textField_3, lblPrezzo, textField_4, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane, panel_23, btnNewButton_2, panel_25, btnNewButton_3, panel_26, btnNewButton_4, panel_27, btnNewButton_5, panel_28, btnNewButton_6, panel_29, btnNewButton_7, panel_30, btnNewButton_8, panel_31, btnNewButton_9, panel_32, btnNewButton_10, panel_33, btnNewButton_11, panel_34, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_13, comboBox_14, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_15, comboBox_16, comboBox_17, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
+		panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnAutoveicolo, rdbtnMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox, comboBox_1, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtKw, txtCv, lblColoreEsterno, comboBox_4, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_8, textField_3, lblPrezzo, textField_4, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane, panel_23, btnNewButton_2, panel_25, btnNewButton_3, panel_26, btnNewButton_4, panel_27, btnNewButton_5, panel_28, btnNewButton_6, panel_29, btnNewButton_7, panel_30, btnNewButton_8, panel_31, btnNewButton_9, panel_32, btnNewButton_10, panel_33, btnNewButton_11, panel_34, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_13, comboBox_14, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_15, comboBox_16, comboBox_17, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmJwebAutomotive.getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -981,10 +984,15 @@ public class J2Web_UI implements parametriGenerali{
 	
 	
 	private void selezioneAutoVeicolo() {
+				
 		//Modifico le opzioni della combobox Tipologia con le opzioni per i motoveicoli
 		JComboBox comboBoxMarca = getComboBox_Marca();
 		comboBoxMarca.removeAllItems();
 		comboBoxMarca.setModel(new DefaultComboBoxModel<String>(marcheAutoveicoli));
+		
+		//Svuoto la combobox Modello
+		JComboBox comboBoxModello = getComboBox_Modello();
+		comboBoxModello.removeAllItems();
 		
 		//Attivo le combobox che servono nel caso di autoveicolo
 		JComboBox comboBoxCarrozzeria = getComboBox_Carrozzeria();
@@ -1052,10 +1060,17 @@ public class J2Web_UI implements parametriGenerali{
 	}
 	
 	private void selezioneMotoScooter() {
+				
 		//Modifico le opzioni della combobox Tipologia con le opzioni per i motoveicoli
 		JComboBox comboBoxMarca = getComboBox_Marca();
 		comboBoxMarca.removeAllItems();
 		comboBoxMarca.setModel(new DefaultComboBoxModel<String>(marcheMotoveicoli));
+		
+		//Svuoto la combobox Modello
+		JComboBox comboBoxModello = getComboBox_Modello();
+		comboBoxModello.removeAllItems();
+		comboBoxModello.addItem("Inserire nome modello");
+		
 		
 		//Disattivo le combobox che non servono nel caso di motoveicolo
 		JComboBox comboBoxCarrozzeria = getComboBox_Carrozzeria();
@@ -1247,5 +1262,12 @@ public class J2Web_UI implements parametriGenerali{
 	}
 	protected JComboBox getComboBox_Modello() {
 		return comboBox_Modello;
+	}
+	
+	protected JRadioButton getRdbtnAutoveicolo() {
+		return rdbtnAutoveicolo;
+	}
+	protected JRadioButton getRdbtnMotoScooter() {
+		return rdbtnMotoScooter;
 	}
 }
