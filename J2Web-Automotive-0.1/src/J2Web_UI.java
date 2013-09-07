@@ -1,9 +1,11 @@
 import java.awt.EventQueue;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Window.Type;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -22,6 +24,10 @@ import java.awt.event.MouseEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JSplitPane;
 import javax.swing.JMenuBar;
@@ -58,6 +64,7 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -66,6 +73,8 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.image.BufferedImage;
+import javax.swing.border.EtchedBorder;
 
 
 public class J2Web_UI implements parametriGenerali{
@@ -113,6 +122,17 @@ public class J2Web_UI implements parametriGenerali{
 	private JTextField textField;
 	private JRadioButton rdbtnAutoveicolo;
 	private JRadioButton rdbtnMotoScooter;
+	private JComboBox comboBox_Carburante;
+	private JLabel label_Immagine1;
+	private JLabel label_Immagine5;
+	private JLabel label_Immagine10;
+	private JLabel label_Immagine6;
+	private JLabel label_Immagine2;
+	private JLabel label_Immagine8;
+	private JLabel label_Immagine3;
+	private JLabel label_Immagine4;
+	private JLabel label_Immagine7;
+	private JLabel label_Immagine9;
 
 	/**
 	 * Launch the application.
@@ -350,9 +370,9 @@ public class J2Web_UI implements parametriGenerali{
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Anno", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000", "1999", "1998", "1997", "1996", "1995", "1994", "1993", "1992", "1991", "1990", "1989", "1988", "1987", "1986", "1985", "1984", "1983", "1982", "1981", "1980", "1979", "1978", "1977", "1976", "1975", "1974", "1973", "1972", "1971", "1970", "1969", "1968", "1967", "1966", "1965", "1964", "1963", "1962", "1961", "1960", "1959", "1958", "1957", "1956", "1955", "1954", "1953", "1952", "1951", "1950", "1949", "1948", "1947", "1946", "1945", "1944", "1943", "1942", "1941", "1940", "1939", "1938", "1937", "1936", "1935", "1934", "1933", "1932", "1931", "1930", "1929", "1928", "1927", "1926", "1925", "1924", "1923", "1922", "1921", "1920", "1919", "1918", "1917", "1916", "1915", "1914", "1913", "1912", "1911", "1910", "1909", "1908", "1907", "1906", "1905", "1904", "1903", "1902", "1901", "1900"}));
 		panel_20.add(comboBox_1, "6, 10, fill, default");
 		
-		JComboBox comboBox_7 = new JComboBox();
-		comboBox_7.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Benzina", "Diesel", "GPL", "Metano", "Elettrica/Benzina", "Elettrica/Diesel", "Etanolo", "Elettrica", "Idrogeno", "Altro"}));
-		panel_20.add(comboBox_7, "10, 10, fill, default");
+		comboBox_Carburante = new JComboBox();
+		comboBox_Carburante.setModel(new DefaultComboBoxModel(carburantiAutoveicoli));
+		panel_20.add(comboBox_Carburante, "10, 10, fill, default");
 		
 		JLabel lblTipologia = new JLabel("Tipologia");
 		panel_20.add(lblTipologia, "2, 12");
@@ -364,7 +384,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_20.add(lblPostiASedere, "10, 12");
 		
 		comboBox_Tipologia = new JComboBox();
-		comboBox_Tipologia.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Veicolo d'epoca", "Veicolo incidentato", "Veicolo km 0", "Veicolo nuovo", "Veicolo semestrale", "Veicolo usato", "Veicolo aziendale", "Veicolo a noleggio", "Veicolo  d'occasione"}));
+		comboBox_Tipologia.setModel(new DefaultComboBoxModel(tipologiaAutoveicoli));
 		panel_20.add(comboBox_Tipologia, "2, 14, fill, default");
 		
 		comboBox_Carrozzeria = new JComboBox();
@@ -644,7 +664,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_16.add(panel_23, gbc_panel_23);
 		panel_23.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
+				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("70px"),
 				FormFactory.RELATED_GAP_COLSPEC,
@@ -670,75 +690,125 @@ public class J2Web_UI implements parametriGenerali{
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JButton btnNewButton_2 = new JButton("Immagine 1");
-		panel_23.add(btnNewButton_2, "2, 2");
+		JButton btnImmagine1 = new JButton("Immagine 1");
+		btnImmagine1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				selezionaImmagine(label_Immagine1);
+			}
+		});
+		panel_23.add(btnImmagine1, "2, 2");
 		
-		JPanel panel_25 = new JPanel();
-		panel_25.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_23.add(panel_25, "4, 2, fill, fill");
+		label_Immagine1 = new JLabel();
+		label_Immagine1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_23.add(label_Immagine1, "4, 2, fill, fill");
 		
-		JButton btnNewButton_3 = new JButton("Immagine 2");
-		panel_23.add(btnNewButton_3, "8, 2");
+		JButton btnImmagine_2 = new JButton("Immagine 2");
+		btnImmagine_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selezionaImmagine(label_Immagine2);
+			}
+		});
+		panel_23.add(btnImmagine_2, "8, 2");
 		
-		JPanel panel_26 = new JPanel();
-		panel_26.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_23.add(panel_26, "10, 2, fill, fill");
+		label_Immagine2 = new JLabel();
+		label_Immagine2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_23.add(label_Immagine2, "10, 2, fill, fill");
 		
-		JButton btnNewButton_4 = new JButton("Immagine 3");
-		panel_23.add(btnNewButton_4, "2, 4");
+		JButton btnImmagine_3 = new JButton("Immagine 3");
+		btnImmagine_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selezionaImmagine(label_Immagine3);
+			}
+		});
+		panel_23.add(btnImmagine_3, "2, 4");
 		
-		JPanel panel_27 = new JPanel();
-		panel_27.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_23.add(panel_27, "4, 4, fill, fill");
+		label_Immagine3 = new JLabel();
+		label_Immagine3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_23.add(label_Immagine3, "4, 4, fill, fill");
 		
-		JButton btnNewButton_5 = new JButton("Immagine 4");
-		panel_23.add(btnNewButton_5, "8, 4");
+		JButton btnImmagine_4 = new JButton("Immagine 4");
+		btnImmagine_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selezionaImmagine(label_Immagine4);
+			}
+		});
+		panel_23.add(btnImmagine_4, "8, 4");
 		
-		JPanel panel_28 = new JPanel();
-		panel_28.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_23.add(panel_28, "10, 4, fill, fill");
+		label_Immagine4 = new JLabel();
+		label_Immagine4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_23.add(label_Immagine4, "10, 4, fill, fill");
 		
-		JButton btnNewButton_6 = new JButton("Immagine 5");
-		panel_23.add(btnNewButton_6, "2, 6");
+		JButton btnImmagine_5 = new JButton("Immagine 5");
+		btnImmagine_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selezionaImmagine(label_Immagine5);
+			}
+		});
+		panel_23.add(btnImmagine_5, "2, 6");
 		
-		JPanel panel_29 = new JPanel();
-		panel_29.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_23.add(panel_29, "4, 6, fill, fill");
+		label_Immagine5 = new JLabel();
+		label_Immagine5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_23.add(label_Immagine5, "4, 6, fill, fill");
 		
-		JButton btnNewButton_7 = new JButton("Immagine 6");
-		panel_23.add(btnNewButton_7, "8, 6");
+		JButton btnImmagine_6 = new JButton("Immagine 6");
+		btnImmagine_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				selezionaImmagine(label_Immagine6);
+			}
+		});
+		panel_23.add(btnImmagine_6, "8, 6");
 		
-		JPanel panel_30 = new JPanel();
-		panel_30.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_23.add(panel_30, "10, 6, fill, fill");
+		label_Immagine6 = new JLabel();
+		label_Immagine6.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_23.add(label_Immagine6, "10, 6, fill, fill");
 		
-		JButton btnNewButton_8 = new JButton("Immagine 7");
-		panel_23.add(btnNewButton_8, "2, 8");
+		JButton btnImmagine_7 = new JButton("Immagine 7");
+		btnImmagine_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selezionaImmagine(label_Immagine7);
+			}
+		});
+		panel_23.add(btnImmagine_7, "2, 8");
 		
-		JPanel panel_31 = new JPanel();
-		panel_31.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_23.add(panel_31, "4, 8, fill, fill");
+		label_Immagine7 = new JLabel();
+		label_Immagine7.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_23.add(label_Immagine7, "4, 8, fill, fill");
 		
-		JButton btnNewButton_9 = new JButton("Immagine 8");
-		panel_23.add(btnNewButton_9, "8, 8");
+		JButton btnImmagine_8 = new JButton("Immagine 8");
+		btnImmagine_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				selezionaImmagine(label_Immagine8);
+			}
+		});
+		panel_23.add(btnImmagine_8, "8, 8");
 		
-		JPanel panel_32 = new JPanel();
-		panel_32.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_23.add(panel_32, "10, 8, fill, fill");
+		label_Immagine8 = new JLabel();
+		label_Immagine8.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_23.add(label_Immagine8, "10, 8, fill, fill");
 		
-		JButton btnNewButton_10 = new JButton("Immagine 9");
-		panel_23.add(btnNewButton_10, "2, 10");
+		JButton btnImmagine_9 = new JButton("Immagine 9");
+		btnImmagine_9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selezionaImmagine(label_Immagine9);
+			}
+		});
+		panel_23.add(btnImmagine_9, "2, 10");
 		
-		JPanel panel_33 = new JPanel();
-		panel_33.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_23.add(panel_33, "4, 10, fill, fill");
+		label_Immagine9 = new JLabel();
+		label_Immagine9.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_23.add(label_Immagine9, "4, 10, fill, fill");
 		
-		JButton btnNewButton_11 = new JButton("Immagine 10");
-		panel_23.add(btnNewButton_11, "8, 10");
+		JButton btnImmagine_10 = new JButton("Immagine 10");
+		btnImmagine_10.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				selezionaImmagine(label_Immagine10);
+			}
+		});
+		panel_23.add(btnImmagine_10, "8, 10");
 		
-		JPanel panel_34 = new JPanel();
-		panel_34.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_23.add(panel_34, "10, 10, fill, fill");
+		label_Immagine10 = new JLabel();
+		label_Immagine10.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_23.add(label_Immagine10, "10, 10, fill, fill");
 		
 		JLabel lblNewLabel_3 = new JLabel("Url video di YouTube");
 		panel_23.add(lblNewLabel_3, "2, 12");
@@ -951,7 +1021,7 @@ public class J2Web_UI implements parametriGenerali{
 		scrollPane_9.setViewportView(panel_8);
 		panel_8.setBackground(new Color(255, 255, 224));
 		
-		panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnAutoveicolo, rdbtnMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox, comboBox_1, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtKw, txtCv, lblColoreEsterno, comboBox_4, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_8, textField_3, lblPrezzo, textField_4, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane, panel_23, btnNewButton_2, panel_25, btnNewButton_3, panel_26, btnNewButton_4, panel_27, btnNewButton_5, panel_28, btnNewButton_6, panel_29, btnNewButton_7, panel_30, btnNewButton_8, panel_31, btnNewButton_9, panel_32, btnNewButton_10, panel_33, btnNewButton_11, panel_34, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_13, comboBox_14, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_15, comboBox_16, comboBox_17, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
+		panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnAutoveicolo, rdbtnMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox, comboBox_1, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtKw, txtCv, lblColoreEsterno, comboBox_4, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_8, textField_3, lblPrezzo, textField_4, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane, panel_23, btnImmagine1, label_Immagine1, btnImmagine_2, label_Immagine2, btnImmagine_3, label_Immagine3, btnImmagine_4, label_Immagine4, btnImmagine_5, label_Immagine5, btnImmagine_6, label_Immagine6, btnImmagine_7, label_Immagine7, btnImmagine_8, label_Immagine8, btnImmagine_9, label_Immagine9, btnImmagine_10, label_Immagine10, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_13, comboBox_14, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_15, comboBox_16, comboBox_17, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmJwebAutomotive.getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -985,7 +1055,7 @@ public class J2Web_UI implements parametriGenerali{
 	
 	private void selezioneAutoVeicolo() {
 				
-		//Modifico le opzioni della combobox Tipologia con le opzioni per i motoveicoli
+		//Modifico le opzioni della combobox Marca con le opzioni per i autoveicoli
 		JComboBox comboBoxMarca = getComboBox_Marca();
 		comboBoxMarca.removeAllItems();
 		comboBoxMarca.setModel(new DefaultComboBoxModel<String>(marcheAutoveicoli));
@@ -1006,7 +1076,7 @@ public class J2Web_UI implements parametriGenerali{
 		JComboBox comboBoxMotore = getComboBox_Motore();
 		comboBoxMotore.setEnabled(true);
 		
-		//Disattivo le checkbox che non servono nel caso di motoveicolo
+		//Disattivo le checkbox che non servono nel caso di autoveicolo
 		JCheckBox chckbxHandicap = getChckbxHandicap();
 		chckbxHandicap.setEnabled(true);
 		JCheckBox chckbxServosterzo = getChckbxServosterzo();
@@ -1057,11 +1127,21 @@ public class J2Web_UI implements parametriGenerali{
 		chckbxAvviamentoAPedale.setEnabled(false);
 		JCheckBox chckbxAvviamentoElettrico = getChckbxAvviamentoElettrico();
 		chckbxAvviamentoElettrico.setEnabled(false);
+		
+		//Modifico le opzioni della combobox Carburante con le opzioni per gli autoveicoli
+		JComboBox comboBoxCarburante = getComboBox_Carburante();
+		comboBoxCarburante.removeAllItems();
+		comboBoxCarburante.setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
+		
+		//Modifico le opzioni della combobox Tipologia con le opzioni per gli autoveicoli
+		JComboBox comboBoxTipologia = getComboBox_Tipologia();
+		comboBoxTipologia.removeAllItems();
+		comboBoxTipologia.setModel(new DefaultComboBoxModel<String>(tipologiaAutoveicoli));
 	}
 	
 	private void selezioneMotoScooter() {
 				
-		//Modifico le opzioni della combobox Tipologia con le opzioni per i motoveicoli
+		//Modifico le opzioni della combobox Marca con le opzioni per i motoveicoli
 		JComboBox comboBoxMarca = getComboBox_Marca();
 		comboBoxMarca.removeAllItems();
 		comboBoxMarca.setModel(new DefaultComboBoxModel<String>(marcheMotoveicoli));
@@ -1070,8 +1150,7 @@ public class J2Web_UI implements parametriGenerali{
 		JComboBox comboBoxModello = getComboBox_Modello();
 		comboBoxModello.removeAllItems();
 		comboBoxModello.addItem("Inserire nome modello");
-		
-		
+			
 		//Disattivo le combobox che non servono nel caso di motoveicolo
 		JComboBox comboBoxCarrozzeria = getComboBox_Carrozzeria();
 		comboBoxCarrozzeria.setEnabled(false);		
@@ -1136,6 +1215,16 @@ public class J2Web_UI implements parametriGenerali{
 		JCheckBox chckbxAvviamentoElettrico = getChckbxAvviamentoElettrico();
 		chckbxAvviamentoElettrico.setEnabled(true);
 		
+		//Modifico le opzioni della combobox Carburante con le opzioni per i motoveicoli
+		JComboBox comboBoxCarburante = getComboBox_Carburante();
+		comboBoxCarburante.removeAllItems();
+		comboBoxCarburante.setModel(new DefaultComboBoxModel<String>(carburantiMotoveicoli));
+		
+		//Modifico le opzioni della combobox Tipologia con le opzioni per i motoveicoli
+		JComboBox comboBoxTipologia = getComboBox_Tipologia();
+		comboBoxTipologia.removeAllItems();
+		comboBoxTipologia.setModel(new DefaultComboBoxModel<String>(tipologiaMotoveicoli));
+		
 	}
 	
 	
@@ -1163,6 +1252,38 @@ public class J2Web_UI implements parametriGenerali{
 			throw new HttpCommunicationException(e);
 		}				
 	}
+	
+	private void selezionaImmagine(JLabel labelImmagine) {
+		JFileChooser dlgFile;
+        String absPath;
+        
+        //Selezione del file immagine
+        dlgFile = new JFileChooser();
+        if (dlgFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        	File selectedFile = dlgFile.getSelectedFile(); 
+        	Long fileSize = selectedFile.length();
+        	BufferedImage img = null;
+        	String selectedFileName = selectedFile.getName().toLowerCase();   
+        	
+            if(selectedFile.isFile() && selectedFileName.endsWith(format) && fileSize<=maxFileSize) {   	
+                absPath = selectedFile.getAbsolutePath();
+				try {
+					img = ImageIO.read(selectedFile);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                Image resizedimg = img.getScaledInstance(70, 50, img.SCALE_FAST);          
+                Icon icoImmagine = new ImageIcon(resizedimg);
+                labelImmagine.setIcon(icoImmagine);
+            }
+            else {
+            	JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("selezioneFileImmagne_SelezioneNonValida"), "Errore", JOptionPane.ERROR_MESSAGE);
+            }	
+        }
+	}
+	
+	
 	
 	protected JComboBox getComboBox_Tipologia() {
 		return comboBox_Tipologia;
@@ -1269,5 +1390,38 @@ public class J2Web_UI implements parametriGenerali{
 	}
 	protected JRadioButton getRdbtnMotoScooter() {
 		return rdbtnMotoScooter;
+	}
+	protected JComboBox getComboBox_Carburante() {
+		return comboBox_Carburante;
+	}
+	protected JLabel getLabel_Immagine1() {
+		return label_Immagine1;
+	}
+	protected JLabel getLabel_immagine5() {
+		return label_Immagine5;
+	}
+	protected JLabel getLabel_immagine10() {
+		return label_Immagine10;
+	}
+	protected JLabel getLabel_immagine6() {
+		return label_Immagine6;
+	}
+	protected JLabel getLabel_immagine2() {
+		return label_Immagine2;
+	}
+	protected JLabel getLabel_immagine8() {
+		return label_Immagine8;
+	}
+	protected JLabel getLabel_immagine3() {
+		return label_Immagine3;
+	}
+	protected JLabel getLabel_immagine4() {
+		return label_Immagine4;
+	}
+	protected JLabel getLabel_immagine7() {
+		return label_Immagine7;
+	}
+	protected JLabel getLabel_immagine9() {
+		return label_Immagine9;
 	}
 }
