@@ -26,6 +26,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -68,23 +69,28 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 import javax.swing.ButtonGroup;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.border.EtchedBorder;
+import javax.swing.text.JTextComponent;
 
 
 public class J2Web_UI implements parametriGenerali{
 
 	private JFrame frmJwebAutomotive;
-	private JTextField txtKw;
-	private JTextField txtCv;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
+	private JTextField txtFieldKw;
+	private JTextField txtFieldCv;
+	private JTextField textField_Chilometraggio;
+	private JTextField textField_Prezzo;
+	private JComboBox comboBox_Versione;
 	private JComboBox comboBox_Marca;
 	private JComboBox comboBox_Modello;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -119,7 +125,7 @@ public class J2Web_UI implements parametriGenerali{
 	private JCheckBox chckbxSediliRiscaldati;
 	private JCheckBox chckbxClima;
 	private JComboBox comboBox_Motore;
-	private JTextField textField;
+	private JTextField txtField_YouTubeUrl;
 	private JRadioButton rdbtnAutoveicolo;
 	private JRadioButton rdbtnMotoScooter;
 	private JComboBox comboBox_Carburante;
@@ -133,6 +139,21 @@ public class J2Web_UI implements parametriGenerali{
 	private JLabel label_Immagine4;
 	private JLabel label_Immagine7;
 	private JLabel label_Immagine9;
+	private JComboBox comboBox_MeseImmatricolazione;
+	private JComboBox comboBox_AnnoImmatricolazione;
+	private JComboBox comboBox_ColoreEsterno;
+	private JCheckBox chckbxMetallizzato;
+	private JComboBox comboBox_PrecedentiProprietari;
+	private JCheckBox chckbxTrattabile;
+	private JCheckBox chckbxIvaDeducibile;
+	private JComboBox comboBox_Cambio;
+	private JComboBox comboBox_NumeroRapporti;
+	private JTextField comboBox_ConsumoMedio;
+	private JComboBox comboBox_ClasseEmissioni;
+	private JTextField comboBox_Cilindrata;
+	private JTextPane textPane_Descrizione;
+	
+	LinkedList<String> listVersioniVeicoli = new LinkedList<String>();
 
 	/**
 	 * Launch the application.
@@ -162,6 +183,7 @@ public class J2Web_UI implements parametriGenerali{
 	public J2Web_UI() {
 		initialize();
 		selezioneAutoVeicolo();
+		popolaListaCampiForm();
 	}
 
 	/**
@@ -327,6 +349,7 @@ public class J2Web_UI implements parametriGenerali{
 		comboBox_Marca = new JComboBox();
 		comboBox_Marca.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
+				System.out.println("marca");
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
 					String marcaVeicolo = (String) comboBox_Marca.getSelectedItem();
 					
@@ -348,13 +371,55 @@ public class J2Web_UI implements parametriGenerali{
 		panel_20.add(comboBox_Marca, "2, 6, fill, default");
 		
 		comboBox_Modello = new JComboBox();
+		comboBox_Modello.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				System.out.println("modello");
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					
+					String marcaVeicolo = (String) comboBox_Marca.getSelectedItem();
+					String modelloVeicolo = (String) comboBox_Modello.getSelectedItem();
+					
+					if(modelloVeicolo!=null && !modelloVeicolo.equals("Seleziona") && rdbtnAutoveicolo.isSelected()) {
+						try {
+							popolaVersioneVeicolo(marcaVeicolo, modelloVeicolo);
+						} catch (HttpCommunicationException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+					
+					
+				}
+			}
+		});
 		comboBox_Modello.setEditable(true);
 		panel_20.add(comboBox_Modello, "6, 6, fill, default");
 		
-		textField_5 = new JTextField();
-		textField_5.setToolTipText("Indicare la versione del modello di veicolo selezionato");
-		panel_20.add(textField_5, "10, 6, fill, default");
-		textField_5.setColumns(10);
+		comboBox_Versione = new JComboBox();
+		comboBox_Versione.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				
+				System.out.println("versione");
+				
+				String versioneVeicolo = (String) comboBox_Versione.getSelectedItem();
+				if(versioneVeicolo!=null && !versioneVeicolo.equals("Seleziona") && rdbtnAutoveicolo.isSelected()) {
+					
+					int selectedComboboxIndex = comboBox_Versione.getSelectedIndex();
+					String selectedModel = listVersioniVeicoli.get(selectedComboboxIndex);
+					try {
+						popolaInfoVeicolo(selectedModel);
+					} catch (HttpCommunicationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				
+			}
+		});
+		comboBox_Versione.setEditable(true);
+		comboBox_Versione.setToolTipText("Indicare la versione del modello di veicolo selezionato");
+		panel_20.add(comboBox_Versione, "10, 6, fill, default");
 		
 		JLabel lblDataPrimaImmatricolazione = new JLabel("Data prima immatricolazione");
 		panel_20.add(lblDataPrimaImmatricolazione, "2, 8");
@@ -362,13 +427,13 @@ public class J2Web_UI implements parametriGenerali{
 		JLabel lblCarburante = new JLabel("Carburante");
 		panel_20.add(lblCarburante, "10, 8");
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Mese", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"}));
-		panel_20.add(comboBox, "2, 10, fill, default");
+		comboBox_MeseImmatricolazione = new JComboBox();
+		comboBox_MeseImmatricolazione.setModel(new DefaultComboBoxModel(new String[] {"Mese", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"}));
+		panel_20.add(comboBox_MeseImmatricolazione, "2, 10, fill, default");
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Anno", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000", "1999", "1998", "1997", "1996", "1995", "1994", "1993", "1992", "1991", "1990", "1989", "1988", "1987", "1986", "1985", "1984", "1983", "1982", "1981", "1980", "1979", "1978", "1977", "1976", "1975", "1974", "1973", "1972", "1971", "1970", "1969", "1968", "1967", "1966", "1965", "1964", "1963", "1962", "1961", "1960", "1959", "1958", "1957", "1956", "1955", "1954", "1953", "1952", "1951", "1950", "1949", "1948", "1947", "1946", "1945", "1944", "1943", "1942", "1941", "1940", "1939", "1938", "1937", "1936", "1935", "1934", "1933", "1932", "1931", "1930", "1929", "1928", "1927", "1926", "1925", "1924", "1923", "1922", "1921", "1920", "1919", "1918", "1917", "1916", "1915", "1914", "1913", "1912", "1911", "1910", "1909", "1908", "1907", "1906", "1905", "1904", "1903", "1902", "1901", "1900"}));
-		panel_20.add(comboBox_1, "6, 10, fill, default");
+		comboBox_AnnoImmatricolazione = new JComboBox();
+		comboBox_AnnoImmatricolazione.setModel(new DefaultComboBoxModel(new String[] {"Anno", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000", "1999", "1998", "1997", "1996", "1995", "1994", "1993", "1992", "1991", "1990", "1989", "1988", "1987", "1986", "1985", "1984", "1983", "1982", "1981", "1980", "1979", "1978", "1977", "1976", "1975", "1974", "1973", "1972", "1971", "1970", "1969", "1968", "1967", "1966", "1965", "1964", "1963", "1962", "1961", "1960", "1959", "1958", "1957", "1956", "1955", "1954", "1953", "1952", "1951", "1950", "1949", "1948", "1947", "1946", "1945", "1944", "1943", "1942", "1941", "1940", "1939", "1938", "1937", "1936", "1935", "1934", "1933", "1932", "1931", "1930", "1929", "1928", "1927", "1926", "1925", "1924", "1923", "1922", "1921", "1920", "1919", "1918", "1917", "1916", "1915", "1914", "1913", "1912", "1911", "1910", "1909", "1908", "1907", "1906", "1905", "1904", "1903", "1902", "1901", "1900"}));
+		panel_20.add(comboBox_AnnoImmatricolazione, "6, 10, fill, default");
 		
 		comboBox_Carburante = new JComboBox();
 		comboBox_Carburante.setModel(new DefaultComboBoxModel(carburantiAutoveicoli));
@@ -395,29 +460,29 @@ public class J2Web_UI implements parametriGenerali{
 		comboBox_PostiASedere.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
 		panel_20.add(comboBox_PostiASedere, "10, 14, fill, default");
 		
-		JLabel lblPotenzaKw = new JLabel("Potenza");
+		JLabel lblPotenzaKw = new JLabel("Potenza (KW/CV)");
 		panel_20.add(lblPotenzaKw, "2, 16");
 		
-		txtKw = new JTextField();
-		txtKw.setForeground(Color.LIGHT_GRAY);
-		txtKw.setText("KW");
-		panel_20.add(txtKw, "2, 18, fill, default");
-		txtKw.setColumns(10);
+		txtFieldKw = new JTextField();
+		txtFieldKw.setForeground(Color.LIGHT_GRAY);
+		txtFieldKw.setText("KW");
+		panel_20.add(txtFieldKw, "2, 18, fill, default");
+		txtFieldKw.setColumns(10);
 		
-		txtCv = new JTextField();
-		txtCv.setForeground(Color.LIGHT_GRAY);
-		txtCv.setText("CV");
-		panel_20.add(txtCv, "6, 18, fill, default");
-		txtCv.setColumns(10);
+		txtFieldCv = new JTextField();
+		txtFieldCv.setForeground(Color.LIGHT_GRAY);
+		txtFieldCv.setText("CV");
+		panel_20.add(txtFieldCv, "6, 18, fill, default");
+		txtFieldCv.setColumns(10);
 		
 		JLabel lblColoreEsterno = new JLabel("Colore esterno");
 		panel_20.add(lblColoreEsterno, "2, 20");
 		
-		JComboBox comboBox_4 = new JComboBox();
-		comboBox_4.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Arancione", "Argento", "Beige", "Bianco", "Blu/Azzurro", "Bronzo", "Giallo", "Grigio", "Lilla", "Marrone", "Nero", "Oro", "Rosso", "Verde"}));
-		panel_20.add(comboBox_4, "2, 22, fill, default");
+		comboBox_ColoreEsterno = new JComboBox();
+		comboBox_ColoreEsterno.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Arancione", "Argento", "Beige", "Bianco", "Blu/Azzurro", "Bronzo", "Giallo", "Grigio", "Lilla", "Marrone", "Nero", "Oro", "Rosso", "Verde"}));
+		panel_20.add(comboBox_ColoreEsterno, "2, 22, fill, default");
 		
-		JCheckBox chckbxMetallizzato = new JCheckBox("Metallizzato");
+		chckbxMetallizzato = new JCheckBox("Metallizzato");
 		panel_20.add(chckbxMetallizzato, "6, 22");
 		
 		JLabel lblPrecedentiProprietari = new JLabel("Precedenti proprietari");
@@ -426,25 +491,25 @@ public class J2Web_UI implements parametriGenerali{
 		JLabel lblChilometraggio = new JLabel("Chilometraggio");
 		panel_20.add(lblChilometraggio, "6, 24");
 		
-		JComboBox comboBox_8 = new JComboBox();
-		comboBox_8.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
-		panel_20.add(comboBox_8, "2, 26, fill, default");
+		comboBox_PrecedentiProprietari = new JComboBox();
+		comboBox_PrecedentiProprietari.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
+		panel_20.add(comboBox_PrecedentiProprietari, "2, 26, fill, default");
 		
-		textField_3 = new JTextField();
-		panel_20.add(textField_3, "6, 26, fill, default");
-		textField_3.setColumns(10);
+		textField_Chilometraggio = new JTextField();
+		panel_20.add(textField_Chilometraggio, "6, 26, fill, default");
+		textField_Chilometraggio.setColumns(10);
 		
 		JLabel lblPrezzo = new JLabel("Prezzo");
 		panel_20.add(lblPrezzo, "2, 28");
 		
-		textField_4 = new JTextField();
-		panel_20.add(textField_4, "2, 30, fill, default");
-		textField_4.setColumns(10);
+		textField_Prezzo = new JTextField();
+		panel_20.add(textField_Prezzo, "2, 30, fill, default");
+		textField_Prezzo.setColumns(10);
 		
-		JCheckBox chckbxTrattabile = new JCheckBox("Trattabile");
+		chckbxTrattabile = new JCheckBox("Trattabile");
 		panel_20.add(chckbxTrattabile, "6, 30");
 		
-		JCheckBox chckbxIvaDeducibile = new JCheckBox("IVA deducibile");
+		chckbxIvaDeducibile = new JCheckBox("IVA deducibile");
 		panel_20.add(chckbxIvaDeducibile, "10, 30");
 		
 		JLabel lblFinitureInterne = new JLabel("Finiture interni");
@@ -627,13 +692,13 @@ public class J2Web_UI implements parametriGenerali{
 		comboBox_Motore.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "4x4", "6wd", "Anteriore", "Posteriore"}));
 		panel_22.add(comboBox_Motore, "2, 4, fill, default");
 		
-		JComboBox comboBox_13 = new JComboBox();
-		comboBox_13.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Automatico", "Manuale", "Semiautomatico", "Nessuno"}));
-		panel_22.add(comboBox_13, "6, 4, fill, default");
+		comboBox_Cambio = new JComboBox();
+		comboBox_Cambio.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Automatico", "Manuale", "Semiautomatico", "Nessuno"}));
+		panel_22.add(comboBox_Cambio, "6, 4, fill, default");
 		
-		JComboBox comboBox_14 = new JComboBox();
-		comboBox_14.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "3", "4", "5", "6", "7"}));
-		panel_22.add(comboBox_14, "10, 4, fill, default");
+		comboBox_NumeroRapporti = new JComboBox();
+		comboBox_NumeroRapporti.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "3", "4", "5", "6", "7"}));
+		panel_22.add(comboBox_NumeroRapporti, "10, 4, fill, default");
 		
 		JLabel lblCilindrata = new JLabel("Cilindrata");
 		panel_22.add(lblCilindrata, "2, 6");
@@ -644,15 +709,15 @@ public class J2Web_UI implements parametriGenerali{
 		JLabel lblConsumoMedio = new JLabel("Consumo medio");
 		panel_22.add(lblConsumoMedio, "10, 6");
 		
-		JTextField comboBox_15 = new JTextField();
-		panel_22.add(comboBox_15, "2, 8, fill, default");
+		comboBox_Cilindrata = new JTextField();
+		panel_22.add(comboBox_Cilindrata, "2, 8, fill, default");
 		
-		JComboBox comboBox_16 = new JComboBox();
-		comboBox_16.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Euro 1", "Euro 2", "Euro 3", "Euro 4", "Euro 5", "Euro 6"}));
-		panel_22.add(comboBox_16, "6, 8, fill, default");
+		comboBox_ClasseEmissioni = new JComboBox();
+		comboBox_ClasseEmissioni.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Euro 1", "Euro 2", "Euro 3", "Euro 4", "Euro 5", "Euro 6"}));
+		panel_22.add(comboBox_ClasseEmissioni, "6, 8, fill, default");
 		
-		JTextField comboBox_17 = new JTextField();
-		panel_22.add(comboBox_17, "10, 8, fill, default");
+		comboBox_ConsumoMedio = new JTextField();
+		panel_22.add(comboBox_ConsumoMedio, "10, 8, fill, default");
 		
 		JPanel panel_23 = new JPanel();
 		panel_23.setBorder(new TitledBorder(null, "Foto/Video", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -810,12 +875,12 @@ public class J2Web_UI implements parametriGenerali{
 		label_Immagine10.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_23.add(label_Immagine10, "10, 10, fill, fill");
 		
-		JLabel lblNewLabel_3 = new JLabel("Url video di YouTube");
-		panel_23.add(lblNewLabel_3, "2, 12");
+		JLabel label_YouTubeUrl = new JLabel("Url video di YouTube");
+		panel_23.add(label_YouTubeUrl, "2, 12");
 		
-		textField = new JTextField();
-		panel_23.add(textField, "2, 14, fill, fill");
-		textField.setColumns(10);
+		txtField_YouTubeUrl = new JTextField();
+		panel_23.add(txtField_YouTubeUrl, "2, 14, fill, fill");
+		txtField_YouTubeUrl.setColumns(10);
 		
 		
 		JPanel panel_24 = new JPanel();
@@ -839,9 +904,9 @@ public class J2Web_UI implements parametriGenerali{
 		
 		
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setContentType("text/plain\r\ntext/xml\r\ntext/html");
-		panel_24.add(textPane, "2, 4, fill, fill");
+		textPane_Descrizione = new JTextPane();
+		textPane_Descrizione.setContentType("text/plain\r\ntext/xml\r\ntext/html");
+		panel_24.add(textPane_Descrizione, "2, 4, fill, fill");
 		
 		JPanel panel_17 = new JPanel();
 		panel_17.setBorder(null);
@@ -855,20 +920,25 @@ public class J2Web_UI implements parametriGenerali{
 		JPanel panel_18 = new JPanel();
 		panel_17.add(panel_18);
 		
-		JButton btnNewButton = new JButton("Resetta");
-		btnNewButton.setIcon(new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\refresh.png"));
-		panel_18.add(btnNewButton);
+		JButton btnResetta = new JButton("Cancella campi");
+		btnResetta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resettaForm();
+			}
+		});
+		btnResetta.setIcon(new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\refresh.png"));
+		panel_18.add(btnResetta);
 		
 		JPanel panel_19 = new JPanel();
 		panel_17.add(panel_19);
 		
-		JButton btnNewButton_1 = new JButton("Inserisci");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JButton btnInserisci = new JButton("Crea scheda");
+		btnInserisci.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnNewButton_1.setIcon(new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\forward.png"));
-		panel_19.add(btnNewButton_1);
+		btnInserisci.setIcon(new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\forward.png"));
+		panel_19.add(btnInserisci);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
@@ -1021,7 +1091,7 @@ public class J2Web_UI implements parametriGenerali{
 		scrollPane_9.setViewportView(panel_8);
 		panel_8.setBackground(new Color(255, 255, 224));
 		
-		panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnAutoveicolo, rdbtnMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox, comboBox_1, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtKw, txtCv, lblColoreEsterno, comboBox_4, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_8, textField_3, lblPrezzo, textField_4, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane, panel_23, btnImmagine1, label_Immagine1, btnImmagine_2, label_Immagine2, btnImmagine_3, label_Immagine3, btnImmagine_4, label_Immagine4, btnImmagine_5, label_Immagine5, btnImmagine_6, label_Immagine6, btnImmagine_7, label_Immagine7, btnImmagine_8, label_Immagine8, btnImmagine_9, label_Immagine9, btnImmagine_10, label_Immagine10, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_13, comboBox_14, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_15, comboBox_16, comboBox_17, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
+		panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnAutoveicolo, rdbtnMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox_MeseImmatricolazione, comboBox_AnnoImmatricolazione, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtFieldKw, txtFieldCv, lblColoreEsterno, comboBox_ColoreEsterno, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_PrecedentiProprietari, textField_Chilometraggio, lblPrezzo, textField_Prezzo, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane_Descrizione, panel_23, btnImmagine1, label_Immagine1, btnImmagine_2, label_Immagine2, btnImmagine_3, label_Immagine3, btnImmagine_4, label_Immagine4, btnImmagine_5, label_Immagine5, btnImmagine_6, label_Immagine6, btnImmagine_7, label_Immagine7, btnImmagine_8, label_Immagine8, btnImmagine_9, label_Immagine9, btnImmagine_10, label_Immagine10, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_Cambio, comboBox_NumeroRapporti, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_Cilindrata, comboBox_ClasseEmissioni, comboBox_ConsumoMedio, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmJwebAutomotive.getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -1230,28 +1300,209 @@ public class J2Web_UI implements parametriGenerali{
 	
 	private void popolaModelloVeicolo(String marcaVeicolo) throws HttpCommunicationException {
 		
-		marcaVeicolo = marcaVeicolo.toLowerCase().replace(" ", "-");
+		marcaVeicolo = marcaVeicolo.toLowerCase().trim().replace(" ", "-");
+		
+		Date now = new Date(); 
+		Object[] response = null;
+		JSONObject json = null;
+		
 		JComboBox comboboxModello = getComboBox_Modello();
+		JComboBox comboboxVersione = getComboBox_Versione();
 		String modelloAttuale = null;
 		
 		comboboxModello.removeAllItems();
+		comboboxVersione.removeAllItems();
 		
 		HttpPortalGetConnection getModelloVeicolo = new HttpPortalGetConnection();
-    	try {
-    		Object[] response = getModelloVeicolo.get("GET della marca veicolo per ottenere il modello", "http://www.carqueryapi.com/api/0.3/?cmd=getModels&make=" + marcaVeicolo, true);
-    		String responseBody = (String)response[1];
-        	JSONObject json = new JSONObject(responseBody);
-        	JSONArray jsonResults = json.getJSONArray("Models");
-        	        	
-        	for(int i=0; i<jsonResults.length(); i++) {
-	        	JSONObject currentJson = jsonResults.getJSONObject(i);
-	        	modelloAttuale = currentJson.getString("model_name");
-	        	comboboxModello.addItem(modelloAttuale);
-        	}
-    	} catch (IOException | RuntimeException | ParseException e) {
+		try {
+			response = getModelloVeicolo.get("GET della marca veicolo per ottenere il modello", "http://www.carqueryapi.com/api/0.3/?cmd=getModels&make=" + marcaVeicolo + "&sold_in_us=&_=" + now.getTime(), true);
+		} catch (IOException e) {
 			throw new HttpCommunicationException(e);
-		}				
+		}
+    	String responseBody = (String)response[1];
+        	
+		try {
+			json = new JSONObject(responseBody);
+		} catch (ParseException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	JSONArray jsonResults = json.getJSONArray("Models");    
+    	comboboxModello.addItem("Seleziona");
+    	for(int i=0; i<jsonResults.length(); i++) {
+        	JSONObject currentJson = jsonResults.getJSONObject(i);
+        	modelloAttuale = currentJson.getString("model_name");
+        	comboboxModello.addItem(modelloAttuale);
+    	}	
+		
+				
 	}
+	
+	
+	private void popolaVersioneVeicolo(String marcaVeicolo, String modelloVeicolo) throws HttpCommunicationException {
+		
+		listVersioniVeicoli.clear();
+		
+		marcaVeicolo = marcaVeicolo.toLowerCase().trim().replace(" ", "-");
+		modelloVeicolo = modelloVeicolo.toLowerCase().trim().replace(" ", "+");
+		Date now = new Date(); 
+		Object[] response = null;
+		JSONObject json = null;
+		
+		JComboBox comboboxVersione = getComboBox_Versione();
+		String versioneAttuale = null;
+		
+		String annoFabbricazione = null;
+		String nomeVersione = null;
+		String nomeModello = null;
+		
+		comboboxVersione.removeAllItems();
+		
+		HttpPortalGetConnection getVersioneVeicolo = new HttpPortalGetConnection();
+
+		try {
+			response = getVersioneVeicolo.get("GET del modello veicolo per ottenere la versione", "http://www.carqueryapi.com/api/0.3/?cmd=getTrims&make=" + marcaVeicolo + "&year=-1&model=" + modelloVeicolo + "&sold_in_us=&full_results=0&_=" + "&sold_in_us=&_=" + now.getTime(), true);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	String responseBody = (String)response[1];
+        	
+		try {
+			json = new JSONObject(responseBody);
+		} catch (ParseException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	JSONArray jsonResults = json.getJSONArray("Trims");
+    	comboboxVersione.addItem("Seleziona");
+    	for(int i=0; i<jsonResults.length(); i++) {
+        	JSONObject currentJson = jsonResults.getJSONObject(i);
+        	listVersioniVeicoli.add(currentJson.getString("model_id"));
+        	annoFabbricazione = currentJson.getString("model_year");
+        	nomeVersione = currentJson.getString("model_trim");
+        	nomeModello = currentJson.getString("model_name");
+        	comboboxVersione.addItem(annoFabbricazione + " - " +  nomeVersione + " - " + nomeModello);
+    	}	
+    	
+	}
+	
+	
+	private void popolaInfoVeicolo(String modelloVeicolo) throws HttpCommunicationException {
+				
+		Date now = new Date(); 
+		Object[] response = null;
+		JSONObject json = null;
+		JSONArray jsonResults = null;
+		
+		JComboBox comboboxCarburante = getComboBox_Carburante();
+		JComboBox comboboxPostiASedere = getComboBox_PostiASedere();
+		JTextField txtFieldCV = getTextField_Cv();
+		JTextField txtFieldKW = getTextField_Kw();
+		JComboBox comboboxMotore = getComboBox_Motore();
+		JComboBox comboboxCambio = getComboBox_Cambio();
+		JTextField txtFieldCilindrata = getTextField_Cilindrata();
+		JTextField txtFieldConsumoMedio = getTextField_ConsumoMedio();
+		
+		
+		
+		String versioneAttuale = null;
+		
+		String tipologiaCarburante = null;
+		String postiASedere = null;
+		String numeroCV = null;
+		String numeroKW = null;
+		String posizioneMotore = null;
+		String tipologiaCambio = null;
+		String cilindrata = null;
+		String consumoMedio = null;
+		
+		//comboboxVersione.removeAllItems();
+		
+		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
+		try {
+			response = getInfoVeicolo.get("GET delle informazioni veicolo", "http://www.carqueryapi.com/api/0.3/?cmd=getModel&model=" + modelloVeicolo + "&_=" + now.getTime(), true);
+		} catch (IOException e) {
+			throw new HttpCommunicationException(e);
+		}
+    	String responseBody = (String)response[1];
+    	
+    	/*try {
+			json = new JSONObject(responseBody);
+		} catch (ParseException e) {
+			throw new HttpCommunicationException(e);
+		}*/
+    	try {
+			jsonResults = new JSONArray(responseBody);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	try {
+			json = new JSONObject(jsonResults.getString(0));
+		} catch (NoSuchElementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	 //JSONArray newjson = jsonResults.getJSONArray(0);
+        	
+		//json = new JSONObject(responseBody);
+		//JSONArray jsonResults = json.getJSONArray(responseBody);
+			
+		tipologiaCarburante = json.getString("model_engine_fuel");
+		postiASedere = json.getString("model_seats");
+		numeroCV = json.getString("model_engine_power_hp");
+		numeroKW = json.getString("model_engine_power_kw");
+		posizioneMotore = json.getString("model_engine_position");
+		tipologiaCambio = json.getString("model_transmission_type");
+		cilindrata = json.getString("model_engine_cc");
+		consumoMedio = json.getString("model_lkm_mixed");
+		
+		switch (tipologiaCarburante)
+		{
+		    case "Gasoline": 
+		    	comboboxCarburante.setSelectedItem("Benzina");
+		        break;
+		    case "Diesel":
+		    	comboboxCarburante.setSelectedItem("Diesel");
+		        break;
+		    default:
+		    	comboboxCarburante.setSelectedIndex(0);
+		}
+		
+		comboboxPostiASedere.setSelectedItem(postiASedere);
+		
+		txtFieldCV.setText(numeroCV);
+		
+		txtFieldKW.setText(numeroKW);
+		
+		switch (posizioneMotore)
+		{
+		    case "Front": 
+		    	comboboxCarburante.setSelectedItem("Anteriore");
+		        break;
+		    default:
+		    	comboboxCarburante.setSelectedIndex(0);
+		}
+		
+		switch (tipologiaCambio)
+		{
+		    case "Automatic": 
+		    	comboboxCambio.setSelectedItem("Automatico");
+		        break;
+		    case "Manual": 
+		    	comboboxCambio.setSelectedItem("Manuale");
+		        break;
+		    default:
+		    	comboboxCambio.setSelectedIndex(0);
+		}
+		
+		
+		
+	}
+
 	
 	private void selezionaImmagine(JLabel labelImmagine) {
 		JFileChooser dlgFile;
@@ -1281,6 +1532,117 @@ public class J2Web_UI implements parametriGenerali{
             	JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("selezioneFileImmagne_SelezioneNonValida"), "Errore", JOptionPane.ERROR_MESSAGE);
             }	
         }
+	}
+	
+	//Resetta la form
+	@SuppressWarnings("unchecked")
+	private void resettaForm() {
+		
+		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
+		while(iteratorListCampiForm.hasNext()) {
+			JComponent campoCorrente = (JComponent)iteratorListCampiForm.next();
+			switch (campoCorrente.getClass().getName())
+			{
+			    case "javax.swing.JTextField": //Campo testuale
+			    	((JTextComponent) campoCorrente).setText("");
+			    	campoCorrente.setEnabled(true);
+			        break;
+			    case "javax.swing.JTextPane": //TextPane
+			    	((JTextComponent) campoCorrente).setText("");
+			    	((JTextComponent) campoCorrente).setEnabled(true);
+			        break;
+			    case "javax.swing.JComboBox": //Select
+			    	if(((JComboBox<String>) campoCorrente).getItemCount()>0) {	//se la checkbox è popolata...
+			    		((JComboBox<String>) campoCorrente).setSelectedIndex(0);
+			    	}
+			    	((JComboBox<String>) campoCorrente).setEnabled(true);
+			        break;
+			    case "javax.swing.JButton": //Pulsante
+			    	((JButton) campoCorrente).setEnabled(true);
+			        break;
+			    case "javax.swing.JCheckBox": //Checkbox
+			    	((JCheckBox) campoCorrente).setSelected(false);
+			    	((JCheckBox) campoCorrente).setEnabled(true);
+			        break;  
+			    case "javax.swing.JLabel": //Label
+			    	((JLabel) campoCorrente).setIcon(null);
+			        break;
+			    default://
+			}
+		}	
+		
+		selezioneAutoVeicolo();
+		getRdbtnAutoveicolo().setSelected(true);
+	}	
+	
+	private void popolaListaCampiForm() {
+		listCampiForm.add(getComboBox_Marca());
+		listCampiForm.add(getComboBox_Modello());
+		listCampiForm.add(getComboBox_MeseImmatricolazione());
+		listCampiForm.add(getComboBox_AnnoImmatricolazione());
+		listCampiForm.add(getComboBox_Carburante());
+		listCampiForm.add(getComboBox_Tipologia());
+		listCampiForm.add(getComboBox_Carrozzeria());
+		listCampiForm.add(getComboBox_PostiASedere());
+		listCampiForm.add(getComboBox_ColoreEsterno());
+		listCampiForm.add(getComboBox_PrecedentiProprietari());
+		listCampiForm.add(getComboBox_FinitureInterni());
+		listCampiForm.add(getComboBox_ColoreInterni());
+		listCampiForm.add(getComboBox_Motore());
+		listCampiForm.add(getComboBox_Cambio());
+		listCampiForm.add(getComboBox_NumeroRapporti());
+		listCampiForm.add(getComboBox_ClasseEmissioni());	
+		listCampiForm.add(getComboBox_Versione());
+		
+		listCampiForm.add(getTextField_Kw());
+		listCampiForm.add(getTextField_Cv());
+		listCampiForm.add(getTextField_Chilometraggio());
+		listCampiForm.add(getTextField_Prezzo());
+		listCampiForm.add(getTextField_Cilindrata());
+		listCampiForm.add(getTextField_ConsumoMedio());
+		listCampiForm.add(getTextField_YouTubeUrl());
+		
+		listCampiForm.add(getChckbxMetallizzato());
+		listCampiForm.add(getChckbxTrattabile());
+		listCampiForm.add(getChckbxIvaDeducibile());
+		listCampiForm.add(getChckbxAbs());
+		listCampiForm.add(getChckbxAirbag());
+		listCampiForm.add(getChckbxAntifurto());
+		listCampiForm.add(getChckbxChiusuraCentralizzata());
+		listCampiForm.add(getChckbxContrAutomTrazione());
+		listCampiForm.add(getChckbxEsp());
+		listCampiForm.add(getChckbxImmobilizer());
+		listCampiForm.add(getChckbxFreniADisco());
+		listCampiForm.add(getChckbxCupolino());
+		listCampiForm.add(getChckbxAlzacristalliElettrici());
+		listCampiForm.add(getChckbxClima());
+		listCampiForm.add(getChckbxNavigatoreSatellitare());
+		listCampiForm.add(getChckbxRadiolettoreCd());
+		listCampiForm.add(getChckbxParkDistControl());
+		listCampiForm.add(getChckbxSediliRiscaldati());
+		listCampiForm.add(getChckbxServosterzo());
+		listCampiForm.add(getChckbxVolanteMultifunzione());
+		listCampiForm.add(getChckbxHandicap());
+		listCampiForm.add(getChckbxCerchiInLega());
+		listCampiForm.add(getChckbxGancioTraino());
+		listCampiForm.add(getChckbxPortapacchi());
+		listCampiForm.add(getChckbxSediliSportivi());
+		listCampiForm.add(getChckbxBauletto());
+		listCampiForm.add(getChckbxAvviamentoAPedale());
+		listCampiForm.add(getChckbxAvviamentoElettrico());
+		
+		listCampiForm.add(getTextPane_Descrizione());
+		
+		listCampiForm.add(getLabel_Immagine1());
+		listCampiForm.add(getLabel_Immagine2());
+		listCampiForm.add(getLabel_Immagine3());
+		listCampiForm.add(getLabel_Immagine4());
+		listCampiForm.add(getLabel_Immagine5());
+		listCampiForm.add(getLabel_Immagine6());
+		listCampiForm.add(getLabel_Immagine7());
+		listCampiForm.add(getLabel_Immagine8());
+		listCampiForm.add(getLabel_Immagine9());
+		listCampiForm.add(getLabel_Immagine10());
 	}
 	
 	
@@ -1397,31 +1759,88 @@ public class J2Web_UI implements parametriGenerali{
 	protected JLabel getLabel_Immagine1() {
 		return label_Immagine1;
 	}
-	protected JLabel getLabel_immagine5() {
+	protected JLabel getLabel_Immagine5() {
 		return label_Immagine5;
 	}
-	protected JLabel getLabel_immagine10() {
+	protected JLabel getLabel_Immagine10() {
 		return label_Immagine10;
 	}
-	protected JLabel getLabel_immagine6() {
+	protected JLabel getLabel_Immagine6() {
 		return label_Immagine6;
 	}
-	protected JLabel getLabel_immagine2() {
+	protected JLabel getLabel_Immagine2() {
 		return label_Immagine2;
 	}
-	protected JLabel getLabel_immagine8() {
+	protected JLabel getLabel_Immagine8() {
 		return label_Immagine8;
 	}
-	protected JLabel getLabel_immagine3() {
+	protected JLabel getLabel_Immagine3() {
 		return label_Immagine3;
 	}
-	protected JLabel getLabel_immagine4() {
+	protected JLabel getLabel_Immagine4() {
 		return label_Immagine4;
 	}
-	protected JLabel getLabel_immagine7() {
+	protected JLabel getLabel_Immagine7() {
 		return label_Immagine7;
 	}
-	protected JLabel getLabel_immagine9() {
+	protected JLabel getLabel_Immagine9() {
 		return label_Immagine9;
+	}
+	protected JComboBox getComboBox_Versione() {
+		return comboBox_Versione;
+	}
+	protected JComboBox getComboBox_MeseImmatricolazione() {
+		return comboBox_MeseImmatricolazione;
+	}
+	protected JComboBox getComboBox_AnnoImmatricolazione() {
+		return comboBox_AnnoImmatricolazione;
+	}
+	protected JTextField getTextField_Kw() {
+		return txtFieldKw;
+	}
+	protected JTextField getTextField_Cv() {
+		return txtFieldCv;
+	}
+	protected JComboBox getComboBox_ColoreEsterno() {
+		return comboBox_ColoreEsterno;
+	}
+	protected JCheckBox getChckbxMetallizzato() {
+		return chckbxMetallizzato;
+	}
+	protected JComboBox getComboBox_PrecedentiProprietari() {
+		return comboBox_PrecedentiProprietari;
+	}
+	protected JTextField getTextField_Chilometraggio() {
+		return textField_Chilometraggio;
+	}
+	protected JTextField getTextField_Prezzo() {
+		return textField_Prezzo;
+	}
+	protected JCheckBox getChckbxTrattabile() {
+		return chckbxTrattabile;
+	}
+	protected JCheckBox getChckbxIvaDeducibile() {
+		return chckbxIvaDeducibile;
+	}
+	protected JComboBox getComboBox_Cambio() {
+		return comboBox_Cambio;
+	}
+	protected JComboBox getComboBox_NumeroRapporti() {
+		return comboBox_NumeroRapporti;
+	}
+	protected JTextField getTextField_ConsumoMedio() {
+		return comboBox_ConsumoMedio;
+	}
+	protected JComboBox getComboBox_ClasseEmissioni() {
+		return comboBox_ClasseEmissioni;
+	}
+	protected JTextField getTextField_Cilindrata() {
+		return comboBox_Cilindrata;
+	}
+	protected JTextField getTextField_YouTubeUrl() {
+		return txtField_YouTubeUrl;
+	}
+	protected JTextPane getTextPane_Descrizione() {
+		return textPane_Descrizione;
 	}
 }
