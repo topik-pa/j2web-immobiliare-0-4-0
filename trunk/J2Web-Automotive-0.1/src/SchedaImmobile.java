@@ -379,7 +379,7 @@ public class SchedaImmobile implements Serializable, parametriGenerali  {
 
 
 //Classi Comparator per l'ordinamento delle schede secondo specifici criteri
-class IdComparator implements Comparator<SchedaImmobile> {
+/*class IdComparator implements Comparator<SchedaImmobile> {
 
     public int compare(SchedaImmobile s1, SchedaImmobile s2) {
         if (s1.idScheda > s2.idScheda)
@@ -446,4 +446,4 @@ class RegionComparator implements Comparator<SchedaImmobile>	{
         else
             return 0;
     }
-}
+}*/

@@ -81,77 +81,93 @@ import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.JTextComponent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class J2Web_UI implements parametriGenerali{
 
-	private JFrame frmJwebAutomotive;
-	private JTextField txtFieldKw;
-	private JTextField txtFieldCv;
-	private JTextField textField_Chilometraggio;
-	private JTextField textField_Prezzo;
-	private JComboBox comboBox_Versione;
-	private JComboBox comboBox_Marca;
-	private JComboBox comboBox_Modello;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JComboBox comboBox_Tipologia;
-	private JComboBox comboBox_Carrozzeria;
-	private JComboBox comboBox_PostiASedere;
-	private JComboBox comboBox_FinitureInterni;
-	private JComboBox comboBox_ColoreInterni;
-	private JCheckBox chckbxCupolino;
-	private JCheckBox chckbxHandicap;
-	private JCheckBox chckbxServosterzo;
-	private JCheckBox chckbxSediliSportivi;
-	private JCheckBox chckbxBauletto;
-	private JCheckBox chckbxAvviamentoAPedale;
-	private JCheckBox chckbxAvviamentoElettrico;
-	private JCheckBox chckbxParkDistControl;
-	private JCheckBox chckbxFreniADisco;
-	private JCheckBox chckbxRadiolettoreCd;
-	private JCheckBox chckbxAntifurto;
-	private JCheckBox chckbxAbs;
-	private JCheckBox chckbxGancioTraino;
-	private JCheckBox chckbxVolanteMultifunzione;
-	private JCheckBox chckbxImmobilizer;
-	private JCheckBox chckbxPortapacchi;
-	private JCheckBox chckbxAirbag;
-	private JCheckBox chckbxEsp;
-	private JCheckBox chckbxAlzacristalliElettrici;
-	private JCheckBox chckbxNavigatoreSatellitare;
-	private JCheckBox chckbxCerchiInLega;
-	private JCheckBox chckbxContrAutomTrazione;
-	private JCheckBox chckbxChiusuraCentralizzata;
-	private JCheckBox chckbxSediliRiscaldati;
-	private JCheckBox chckbxClima;
-	private JComboBox comboBox_Motore;
-	private JTextField txtField_YouTubeUrl;
-	private JRadioButton rdbtnAutoveicolo;
-	private JRadioButton rdbtnMotoScooter;
-	private JComboBox comboBox_Carburante;
-	private JLabel label_Immagine1;
-	private JLabel label_Immagine5;
-	private JLabel label_Immagine10;
-	private JLabel label_Immagine6;
-	private JLabel label_Immagine2;
-	private JLabel label_Immagine8;
-	private JLabel label_Immagine3;
-	private JLabel label_Immagine4;
-	private JLabel label_Immagine7;
-	private JLabel label_Immagine9;
-	private JComboBox comboBox_MeseImmatricolazione;
-	private JComboBox comboBox_AnnoImmatricolazione;
-	private JComboBox comboBox_ColoreEsterno;
-	private JCheckBox chckbxMetallizzato;
-	private JComboBox comboBox_PrecedentiProprietari;
-	private JCheckBox chckbxTrattabile;
-	private JCheckBox chckbxIvaDeducibile;
-	private JComboBox comboBox_Cambio;
-	private JComboBox comboBox_NumeroRapporti;
-	private JTextField comboBox_ConsumoMedio;
-	private JComboBox comboBox_ClasseEmissioni;
-	private JTextField comboBox_Cilindrata;
-	private JTextPane textPane_Descrizione;
+	private static JFrame frmJwebAutomotive;
+	private static JTextField txtFieldKw;
+	private static JTextField txtFieldCv;
+	private static JTextField textField_Chilometraggio;
+	private static JTextField textField_Prezzo;
+	private static JComboBox comboBox_Versione;
+	private static JComboBox comboBox_Marca;
+	private static JComboBox comboBox_Modello;
+	private static final ButtonGroup buttonGroup = new ButtonGroup();
+	private static JComboBox comboBox_Tipologia;
+	private static JComboBox comboBox_Carrozzeria;
+	private static JComboBox comboBox_PostiASedere;
+	private static JComboBox comboBox_FinitureInterni;
+	private static JComboBox comboBox_ColoreInterni;
+	private static JCheckBox chckbxCupolino;
+	private static JCheckBox chckbxHandicap;
+	private static JCheckBox chckbxServosterzo;
+	private static JCheckBox chckbxSediliSportivi;
+	private static JCheckBox chckbxBauletto;
+	private static JCheckBox chckbxAvviamentoAPedale;
+	private static JCheckBox chckbxAvviamentoElettrico;
+	private static JCheckBox chckbxParkDistControl;
+	private static JCheckBox chckbxFreniADisco;
+	private static JCheckBox chckbxRadiolettoreCd;
+	private static JCheckBox chckbxAntifurto;
+	private static JCheckBox chckbxAbs;
+	private static JCheckBox chckbxGancioTraino;
+	private static JCheckBox chckbxVolanteMultifunzione;
+	private static JCheckBox chckbxImmobilizer;
+	private static JCheckBox chckbxPortapacchi;
+	private static JCheckBox chckbxAirbag;
+	private static JCheckBox chckbxEsp;
+	private static JCheckBox chckbxAlzacristalliElettrici;
+	private static JCheckBox chckbxNavigatoreSatellitare;
+	private static JCheckBox chckbxCerchiInLega;
+	private static JCheckBox chckbxContrAutomTrazione;
+	private static JCheckBox chckbxChiusuraCentralizzata;
+	private static JCheckBox chckbxSediliRiscaldati;
+	private static JCheckBox chckbxClima;
+	private static JComboBox comboBox_Motore;
+	private static JTextField txtField_YouTubeUrl;
+	private static JRadioButton rdbtnAutoveicolo;
+	private static JRadioButton rdbtnMotoScooter;
+	private static JComboBox comboBox_Carburante;
+	private static JLabel label_Immagine1;
+	private static JLabel label_Immagine5;
+	private static JLabel label_Immagine10;
+	private static JLabel label_Immagine6;
+	private static JLabel label_Immagine2;
+	private static JLabel label_Immagine8;
+	private static JLabel label_Immagine3;
+	private static JLabel label_Immagine4;
+	private static JLabel label_Immagine7;
+	private static JLabel label_Immagine9;
+	private static JComboBox comboBox_MeseImmatricolazione;
+	private static JComboBox comboBox_AnnoImmatricolazione;
+	private static JComboBox comboBox_ColoreEsterno;
+	private static JCheckBox chckbxMetallizzato;
+	private static JComboBox comboBox_PrecedentiProprietari;
+	private static JCheckBox chckbxTrattabile;
+	private static JCheckBox chckbxIvaDeducibile;
+	private static JComboBox comboBox_Cambio;
+	private static JComboBox comboBox_NumeroRapporti;
+	private static JTextField comboBox_ConsumoMedio;
+	private static JComboBox comboBox_ClasseEmissioni;
+	private static JTextField comboBox_Cilindrata;
+	private static JTextPane textPane_Descrizione;
+	
+	private static File imgFile1;
+	private static File imgFile2;
+	private static File imgFile3;
+	private static File imgFile4;
+	private static File imgFile5;
+	private static File imgFile6;
+	private static File imgFile7;
+	private static File imgFile8;
+	private static File imgFile9;
+	private static File imgFile10;
+	
+	//La struttura dati che contiene le schede veicolo create
+  	public static LinkedList<SchedaVeicolo> listSchedeVeicolo = new LinkedList<SchedaVeicolo>();
 	
 	LinkedList<String> listVersioniVeicoli = new LinkedList<String>();
 
@@ -464,12 +480,32 @@ public class J2Web_UI implements parametriGenerali{
 		panel_20.add(lblPotenzaKw, "2, 16");
 		
 		txtFieldKw = new JTextField();
+		txtFieldKw.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		txtFieldKw.setForeground(Color.LIGHT_GRAY);
 		txtFieldKw.setText("KW");
 		panel_20.add(txtFieldKw, "2, 18, fill, default");
 		txtFieldKw.setColumns(10);
 		
 		txtFieldCv = new JTextField();
+		txtFieldCv.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		txtFieldCv.setForeground(Color.LIGHT_GRAY);
 		txtFieldCv.setText("CV");
 		panel_20.add(txtFieldCv, "6, 18, fill, default");
@@ -496,6 +532,16 @@ public class J2Web_UI implements parametriGenerali{
 		panel_20.add(comboBox_PrecedentiProprietari, "2, 26, fill, default");
 		
 		textField_Chilometraggio = new JTextField();
+		textField_Chilometraggio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		panel_20.add(textField_Chilometraggio, "6, 26, fill, default");
 		textField_Chilometraggio.setColumns(10);
 		
@@ -503,6 +549,16 @@ public class J2Web_UI implements parametriGenerali{
 		panel_20.add(lblPrezzo, "2, 28");
 		
 		textField_Prezzo = new JTextField();
+		textField_Prezzo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		panel_20.add(textField_Prezzo, "2, 30, fill, default");
 		textField_Prezzo.setColumns(10);
 		
@@ -710,6 +766,16 @@ public class J2Web_UI implements parametriGenerali{
 		panel_22.add(lblConsumoMedio, "10, 6");
 		
 		comboBox_Cilindrata = new JTextField();
+		comboBox_Cilindrata.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		panel_22.add(comboBox_Cilindrata, "2, 8, fill, default");
 		
 		comboBox_ClasseEmissioni = new JComboBox();
@@ -717,6 +783,16 @@ public class J2Web_UI implements parametriGenerali{
 		panel_22.add(comboBox_ClasseEmissioni, "6, 8, fill, default");
 		
 		comboBox_ConsumoMedio = new JTextField();
+		comboBox_ConsumoMedio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		panel_22.add(comboBox_ConsumoMedio, "10, 8, fill, default");
 		
 		JPanel panel_23 = new JPanel();
@@ -758,7 +834,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnImmagine1 = new JButton("Immagine 1");
 		btnImmagine1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				selezionaImmagine(label_Immagine1);
+				selezionaImmagine(label_Immagine1, imgFile1);
 			}
 		});
 		panel_23.add(btnImmagine1, "2, 2");
@@ -770,7 +846,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnImmagine_2 = new JButton("Immagine 2");
 		btnImmagine_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine2);
+				selezionaImmagine(label_Immagine2, imgFile2);
 			}
 		});
 		panel_23.add(btnImmagine_2, "8, 2");
@@ -782,7 +858,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnImmagine_3 = new JButton("Immagine 3");
 		btnImmagine_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine3);
+				selezionaImmagine(label_Immagine3, imgFile3);
 			}
 		});
 		panel_23.add(btnImmagine_3, "2, 4");
@@ -794,7 +870,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnImmagine_4 = new JButton("Immagine 4");
 		btnImmagine_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine4);
+				selezionaImmagine(label_Immagine4, imgFile4);
 			}
 		});
 		panel_23.add(btnImmagine_4, "8, 4");
@@ -806,7 +882,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnImmagine_5 = new JButton("Immagine 5");
 		btnImmagine_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine5);
+				selezionaImmagine(label_Immagine5, imgFile5);
 			}
 		});
 		panel_23.add(btnImmagine_5, "2, 6");
@@ -818,7 +894,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnImmagine_6 = new JButton("Immagine 6");
 		btnImmagine_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				selezionaImmagine(label_Immagine6);
+				selezionaImmagine(label_Immagine6, imgFile6);
 			}
 		});
 		panel_23.add(btnImmagine_6, "8, 6");
@@ -830,7 +906,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnImmagine_7 = new JButton("Immagine 7");
 		btnImmagine_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine7);
+				selezionaImmagine(label_Immagine7, imgFile7);
 			}
 		});
 		panel_23.add(btnImmagine_7, "2, 8");
@@ -842,7 +918,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnImmagine_8 = new JButton("Immagine 8");
 		btnImmagine_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				selezionaImmagine(label_Immagine8);
+				selezionaImmagine(label_Immagine8, imgFile8);
 			}
 		});
 		panel_23.add(btnImmagine_8, "8, 8");
@@ -854,7 +930,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnImmagine_9 = new JButton("Immagine 9");
 		btnImmagine_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine9);
+				selezionaImmagine(label_Immagine9, imgFile9);
 			}
 		});
 		panel_23.add(btnImmagine_9, "2, 10");
@@ -866,7 +942,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnImmagine_10 = new JButton("Immagine 10");
 		btnImmagine_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				selezionaImmagine(label_Immagine10);
+				selezionaImmagine(label_Immagine10, imgFile10);
 			}
 		});
 		panel_23.add(btnImmagine_10, "8, 10");
@@ -935,6 +1011,31 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnInserisci = new JButton("Crea scheda");
 		btnInserisci.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//JOptionPane.showMessageDialog(null, "Funzionaliità non ancora gestita", "Errore", JOptionPane.WARNING_MESSAGE);
+				
+				System.out.print("Creazione della scheda veicolo...");				
+				if(isFormValid()) { 
+					System.out.println(" ...form valido... ");
+					
+					//Disabilito i campi della form
+					disabilitaCampiForm();
+					
+					//Istanzio l'oggetto scheda e lo salvo nel file
+             	   	SchedaVeicolo schedaVeicolo = new SchedaVeicolo();
+             	   	aggiungiScheda(schedaVeicolo);
+             	 
+             	   	//Il pannello centrale viene ridisegnato
+             	    //j2web_GUI.panelListaSchedeImmobile.updatePanello();
+             	   
+             	    //Il pannello di destra viene ridisegnato
+             	    //j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello();
+             	    
+             	    System.out.print(" fatto." + "\n");
+				}
+				else {
+					System.out.println(" ...form non valido. Scheda non creata.");
+					JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("creazioneDellaSchedaImmobile_FormNonValido"), "Errore", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnInserisci.setIcon(new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\forward.png"));
@@ -1123,6 +1224,11 @@ public class J2Web_UI implements parametriGenerali{
 	}
 	
 	
+	protected void disabilitaCampiForm() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void selezioneAutoVeicolo() {
 				
 		//Modifico le opzioni della combobox Marca con le opzioni per i autoveicoli
@@ -1499,12 +1605,16 @@ public class J2Web_UI implements parametriGenerali{
 		    	comboboxCambio.setSelectedIndex(0);
 		}
 		
+		txtFieldCilindrata.setText(cilindrata);
+		
+		txtFieldConsumoMedio.setText(consumoMedio);
+		
 		
 		
 	}
 
 	
-	private void selezionaImmagine(JLabel labelImmagine) {
+	private void selezionaImmagine(JLabel labelImmagine, File immagine) {
 		JFileChooser dlgFile;
         String absPath;
         
@@ -1512,6 +1622,7 @@ public class J2Web_UI implements parametriGenerali{
         dlgFile = new JFileChooser();
         if (dlgFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
         	File selectedFile = dlgFile.getSelectedFile(); 
+        	immagine = selectedFile;
         	Long fileSize = selectedFile.length();
         	BufferedImage img = null;
         	String selectedFileName = selectedFile.getName().toLowerCase();   
@@ -1646,201 +1757,246 @@ public class J2Web_UI implements parametriGenerali{
 	}
 	
 	
+	private boolean isFormValid() {
+		return true;
+	}
 	
-	protected JComboBox getComboBox_Tipologia() {
+	//Il nuovo oggetto scheda immobile viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
+	static void aggiungiScheda(SchedaVeicolo scheda) {
+	
+		//Aggiorno la lista delle schede immobile
+		listSchedeVeicolo.add(scheda);
+			
+		//Aggiorno il file dat delle schede
+		j2web.salvaListaSchedeImmobiliCreate();
+		
+	}
+	
+	
+	protected static JComboBox getComboBox_Tipologia() {
 		return comboBox_Tipologia;
 	}
-	protected JComboBox getComboBox_Marca() {
+	protected static JComboBox getComboBox_Marca() {
 		return comboBox_Marca;
 	}
-	protected JComboBox getComboBox_Carrozzeria() {
+	protected static JComboBox getComboBox_Carrozzeria() {
 		return comboBox_Carrozzeria;
 	}
-	protected JComboBox getComboBox_PostiASedere() {
+	protected static JComboBox getComboBox_PostiASedere() {
 		return comboBox_PostiASedere;
 	}
-	protected JComboBox getComboBox_FinitureInterni() {
+	protected static JComboBox getComboBox_FinitureInterni() {
 		return comboBox_FinitureInterni;
 	}
-	protected JComboBox getComboBox_ColoreInterni() {
+	protected static JComboBox getComboBox_ColoreInterni() {
 		return comboBox_ColoreInterni;
 	}
-	protected JCheckBox getChckbxCupolino() {
+	protected static JCheckBox getChckbxCupolino() {
 		return chckbxCupolino;
 	}
-	protected JCheckBox getChckbxHandicap() {
+	protected static JCheckBox getChckbxHandicap() {
 		return chckbxHandicap;
 	}
-	protected JCheckBox getChckbxServosterzo() {
+	protected static JCheckBox getChckbxServosterzo() {
 		return chckbxServosterzo;
 	}
-	protected JCheckBox getChckbxSediliSportivi() {
+	protected static JCheckBox getChckbxSediliSportivi() {
 		return chckbxSediliSportivi;
 	}
-	protected JCheckBox getChckbxParkDistControl() {
+	protected static JCheckBox getChckbxParkDistControl() {
 		return chckbxParkDistControl;
 	}
-	protected JCheckBox getChckbxFreniADisco() {
+	protected static JCheckBox getChckbxFreniADisco() {
 		return chckbxFreniADisco;
 	}
-	protected JCheckBox getChckbxRadiolettoreCd() {
+	protected static JCheckBox getChckbxRadiolettoreCd() {
 		return chckbxRadiolettoreCd;
 	}
-	protected JCheckBox getChckbxAntifurto() {
+	protected static JCheckBox getChckbxAntifurto() {
 		return chckbxAntifurto;
 	}
-	protected JCheckBox getChckbxAbs() {
+	protected static JCheckBox getChckbxAbs() {
 		return chckbxAbs;
 	}
-	protected JCheckBox getChckbxGancioTraino() {
+	protected static JCheckBox getChckbxGancioTraino() {
 		return chckbxGancioTraino;
 	}
-	protected JCheckBox getChckbxVolanteMultifunzione() {
+	protected static JCheckBox getChckbxVolanteMultifunzione() {
 		return chckbxVolanteMultifunzione;
 	}
-	protected JCheckBox getChckbxImmobilizer() {
+	protected static JCheckBox getChckbxImmobilizer() {
 		return chckbxImmobilizer;
 	}
-	protected JCheckBox getChckbxPortapacchi() {
+	protected static JCheckBox getChckbxPortapacchi() {
 		return chckbxPortapacchi;
 	}
-	protected JCheckBox getChckbxAirbag() {
+	protected static JCheckBox getChckbxAirbag() {
 		return chckbxAirbag;
 	}
-	protected JCheckBox getChckbxEsp() {
+	protected static JCheckBox getChckbxEsp() {
 		return chckbxEsp;
 	}
-	protected JCheckBox getChckbxAlzacristalliElettrici() {
+	protected static JCheckBox getChckbxAlzacristalliElettrici() {
 		return chckbxAlzacristalliElettrici;
 	}
-	protected JCheckBox getChckbxNavigatoreSatellitare() {
+	protected static JCheckBox getChckbxNavigatoreSatellitare() {
 		return chckbxNavigatoreSatellitare;
 	}
-	protected JCheckBox getChckbxCerchiInLega() {
+	protected static JCheckBox getChckbxCerchiInLega() {
 		return chckbxCerchiInLega;
 	}
-	protected JCheckBox getChckbxContrAutomTrazione() {
+	protected static JCheckBox getChckbxContrAutomTrazione() {
 		return chckbxContrAutomTrazione;
 	}
-	protected JCheckBox getChckbxChiusuraCentralizzata() {
+	protected static JCheckBox getChckbxChiusuraCentralizzata() {
 		return chckbxChiusuraCentralizzata;
 	}
-	protected JCheckBox getChckbxSediliRiscaldati() {
+	protected static JCheckBox getChckbxSediliRiscaldati() {
 		return chckbxSediliRiscaldati;
 	}
-	protected JCheckBox getChckbxClima() {
+	protected static JCheckBox getChckbxClima() {
 		return chckbxClima;
 	}
-	protected JCheckBox getChckbxAvviamentoElettrico() {
+	protected static JCheckBox getChckbxAvviamentoElettrico() {
 		return chckbxAvviamentoElettrico;
 	}
-	protected JCheckBox getChckbxAvviamentoAPedale() {
+	protected static JCheckBox getChckbxAvviamentoAPedale() {
 		return chckbxAvviamentoAPedale;
 	}
-	protected JCheckBox getChckbxBauletto() {
+	protected static JCheckBox getChckbxBauletto() {
 		return chckbxBauletto;
 	}
-	protected JComboBox getComboBox_Motore() {
+	protected static JComboBox getComboBox_Motore() {
 		return comboBox_Motore;
 	}
-	protected JComboBox getComboBox_Modello() {
+	protected static JComboBox getComboBox_Modello() {
 		return comboBox_Modello;
 	}
 	
-	protected JRadioButton getRdbtnAutoveicolo() {
+	protected static JRadioButton getRdbtnAutoveicolo() {
 		return rdbtnAutoveicolo;
 	}
-	protected JRadioButton getRdbtnMotoScooter() {
+	protected static JRadioButton getRdbtnMotoScooter() {
 		return rdbtnMotoScooter;
 	}
-	protected JComboBox getComboBox_Carburante() {
+	protected static JComboBox getComboBox_Carburante() {
 		return comboBox_Carburante;
 	}
-	protected JLabel getLabel_Immagine1() {
+	protected static JLabel getLabel_Immagine1() {
 		return label_Immagine1;
 	}
-	protected JLabel getLabel_Immagine5() {
+	protected static JLabel getLabel_Immagine5() {
 		return label_Immagine5;
 	}
-	protected JLabel getLabel_Immagine10() {
+	protected static JLabel getLabel_Immagine10() {
 		return label_Immagine10;
 	}
-	protected JLabel getLabel_Immagine6() {
+	protected static JLabel getLabel_Immagine6() {
 		return label_Immagine6;
 	}
-	protected JLabel getLabel_Immagine2() {
+	protected static JLabel getLabel_Immagine2() {
 		return label_Immagine2;
 	}
-	protected JLabel getLabel_Immagine8() {
+	protected static JLabel getLabel_Immagine8() {
 		return label_Immagine8;
 	}
-	protected JLabel getLabel_Immagine3() {
+	protected static JLabel getLabel_Immagine3() {
 		return label_Immagine3;
 	}
-	protected JLabel getLabel_Immagine4() {
+	protected static JLabel getLabel_Immagine4() {
 		return label_Immagine4;
 	}
-	protected JLabel getLabel_Immagine7() {
+	protected static JLabel getLabel_Immagine7() {
 		return label_Immagine7;
 	}
-	protected JLabel getLabel_Immagine9() {
+	protected static JLabel getLabel_Immagine9() {
 		return label_Immagine9;
 	}
-	protected JComboBox getComboBox_Versione() {
+	protected static JComboBox getComboBox_Versione() {
 		return comboBox_Versione;
 	}
-	protected JComboBox getComboBox_MeseImmatricolazione() {
+	protected static JComboBox getComboBox_MeseImmatricolazione() {
 		return comboBox_MeseImmatricolazione;
 	}
-	protected JComboBox getComboBox_AnnoImmatricolazione() {
+	protected static JComboBox getComboBox_AnnoImmatricolazione() {
 		return comboBox_AnnoImmatricolazione;
 	}
-	protected JTextField getTextField_Kw() {
+	protected static JTextField getTextField_Kw() {
 		return txtFieldKw;
 	}
-	protected JTextField getTextField_Cv() {
+	protected static JTextField getTextField_Cv() {
 		return txtFieldCv;
 	}
-	protected JComboBox getComboBox_ColoreEsterno() {
+	protected static JComboBox getComboBox_ColoreEsterno() {
 		return comboBox_ColoreEsterno;
 	}
-	protected JCheckBox getChckbxMetallizzato() {
+	protected static JCheckBox getChckbxMetallizzato() {
 		return chckbxMetallizzato;
 	}
-	protected JComboBox getComboBox_PrecedentiProprietari() {
+	protected static JComboBox getComboBox_PrecedentiProprietari() {
 		return comboBox_PrecedentiProprietari;
 	}
-	protected JTextField getTextField_Chilometraggio() {
+	protected static JTextField getTextField_Chilometraggio() {
 		return textField_Chilometraggio;
 	}
-	protected JTextField getTextField_Prezzo() {
+	protected static JTextField getTextField_Prezzo() {
 		return textField_Prezzo;
 	}
-	protected JCheckBox getChckbxTrattabile() {
+	protected static JCheckBox getChckbxTrattabile() {
 		return chckbxTrattabile;
 	}
-	protected JCheckBox getChckbxIvaDeducibile() {
+	protected static JCheckBox getChckbxIvaDeducibile() {
 		return chckbxIvaDeducibile;
 	}
-	protected JComboBox getComboBox_Cambio() {
+	protected static JComboBox getComboBox_Cambio() {
 		return comboBox_Cambio;
 	}
-	protected JComboBox getComboBox_NumeroRapporti() {
+	protected static JComboBox getComboBox_NumeroRapporti() {
 		return comboBox_NumeroRapporti;
 	}
-	protected JTextField getTextField_ConsumoMedio() {
+	protected static JTextField getTextField_ConsumoMedio() {
 		return comboBox_ConsumoMedio;
 	}
-	protected JComboBox getComboBox_ClasseEmissioni() {
+	protected static JComboBox getComboBox_ClasseEmissioni() {
 		return comboBox_ClasseEmissioni;
 	}
-	protected JTextField getTextField_Cilindrata() {
+	protected static JTextField getTextField_Cilindrata() {
 		return comboBox_Cilindrata;
 	}
-	protected JTextField getTextField_YouTubeUrl() {
+	protected static JTextField getTextField_YouTubeUrl() {
 		return txtField_YouTubeUrl;
 	}
-	protected JTextPane getTextPane_Descrizione() {
+	protected static JTextPane getTextPane_Descrizione() {
 		return textPane_Descrizione;
+	}
+	protected static File getFileImmagine1() {
+		return imgFile1;
+	}
+	protected static File getFileImmagine2() {
+		return imgFile2;
+	}
+	protected static File getFileImmagine3() {
+		return imgFile3;
+	}
+	protected static File getFileImmagine4() {
+		return imgFile4;
+	}
+	protected static File getFileImmagine5() {
+		return imgFile5;
+	}
+	protected static File getFileImmagine6() {
+		return imgFile6;
+	}
+	protected static File getFileImmagine7() {
+		return imgFile7;
+	}
+	protected static File getFileImmagine8() {
+		return imgFile8;
+	}
+	protected static File getFileImmagine9() {
+		return imgFile9;
+	}
+	protected static File getFileImmagine10() {
+		return imgFile10;
 	}
 }
