@@ -102,7 +102,7 @@ public class j2web implements parametriGenerali {
 	    	if(file.exists()) {
 	    		System.out.print("File .dat schede trovato. Salvataggio dati...");
 	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-				outputFile.writeObject(j2web_GUI.listSchedeImmobile);
+				outputFile.writeObject(J2Web_UI.listSchedeVeicolo);
 				outputFile.close();
 				System.out.print(" fatto." + "\n");
 	    	}
@@ -110,7 +110,7 @@ public class j2web implements parametriGenerali {
 				FileOutputStream newFile = new FileOutputStream(pathFileDatSchede);
 				System.out.print("File .dat non schede trovato. Creazione del file..." + newFile.toString());
 				ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-				outputFile.writeObject(j2web_GUI.listSchedeImmobile);
+				outputFile.writeObject(J2Web_UI.listSchedeVeicolo);
 				outputFile.close();
 				System.out.print(" fatto." + "\n");
 	    	}
