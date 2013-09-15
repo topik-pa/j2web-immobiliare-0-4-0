@@ -36,6 +36,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	//Attributi della scheda immobile	
 	long idScheda = new Date().getTime();	//id univoco riferito alla scheda
 	
+	String marcaVeicolo;
 	
 	//File
 	File immagine1;	File immagine2;	File immagine3;	File immagine4;	File immagine5;	File immagine6;	File immagine7;	File immagine8;	File immagine9;	File immagine0; 	
@@ -57,7 +58,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		
 		String tipologiaVeicolo = (String) J2Web_UI.getComboBox_Tipologia().getSelectedItem();
 		int tipologiaVeicoloIndex =J2Web_UI.getComboBox_Tipologia().getSelectedIndex();
-		String marcaVeicolo = (String) J2Web_UI.getComboBox_Marca().getSelectedItem();
+		marcaVeicolo = (String) J2Web_UI.getComboBox_Marca().getSelectedItem();
 		int marcaVeicoloIndex =J2Web_UI.getComboBox_Marca().getSelectedIndex();
 		String carrozzeriaVeicolo = (String) J2Web_UI.getComboBox_Carrozzeria().getSelectedItem();
 		int carrozzeriaVeicoloIndex =J2Web_UI.getComboBox_Carrozzeria().getSelectedIndex();

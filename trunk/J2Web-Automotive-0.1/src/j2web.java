@@ -77,8 +77,8 @@ public class j2web implements parametriGenerali {
     			try {
     				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
     				@SuppressWarnings("unchecked")
-					LinkedList<SchedaImmobile> readObject = (LinkedList<SchedaImmobile>)inputFile.readObject();
-					j2web_GUI.listSchedeImmobile = readObject;
+					LinkedList<SchedaVeicolo> readObject = (LinkedList<SchedaVeicolo>)inputFile.readObject();
+					J2Web_UI.listSchedeVeicolo = readObject;
     				inputFile.close();
     			} catch (FileNotFoundException e) {
     				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
