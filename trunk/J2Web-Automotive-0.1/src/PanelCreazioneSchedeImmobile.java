@@ -556,7 +556,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 					disabilitaCampiForm();
 					
 					//Istanzio l'oggetto schda e lo salvo nel file
-             	   	SchedaImmobile schedaImmobile = new SchedaImmobile();
+             	   	SchedaVeicolo schedaImmobile = new SchedaVeicolo();
              	   	aggiungiScheda(schedaImmobile);
              	 
              	   	//Il pannello centrale viene ridisegnato
@@ -1281,7 +1281,7 @@ public class PanelCreazioneSchedeImmobile extends JPanel implements parametriGen
 	}
 
 	//Il nuovo oggetto scheda immobile viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
-	static void aggiungiScheda(SchedaImmobile scheda) {
+	static void aggiungiScheda(SchedaVeicolo scheda) {
 	
 		//Aggiorno la lista delle schede immobile
 		j2web_GUI.listSchedeImmobile.add(scheda);

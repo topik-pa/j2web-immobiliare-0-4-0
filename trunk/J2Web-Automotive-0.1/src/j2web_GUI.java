@@ -23,7 +23,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	//Inizializzo le principali strutture dati
 	
 	//La struttura dati che contiene le schede immobile create
-  	public static LinkedList<SchedaImmobile> listSchedeImmobile = new LinkedList<SchedaImmobile>();
+  	public static LinkedList<SchedaVeicolo> listSchedeImmobile = new LinkedList<SchedaVeicolo>();
   	
   	//La struttura dati che contiene i portali attivati
   	public static LinkedList<PortaleImmobiliare> listPortaliImmobiliari = new LinkedList<PortaleImmobiliare>();
@@ -72,7 +72,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				mntmNewMenuItem.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						System.out.println("Ordino schede per data di inserimento...");
-						Collections.sort(j2web_GUI.listSchedeImmobile, new IdComparator());
+						//Collections.sort(j2web_GUI.listSchedeImmobile, new IdComparator());
 						j2web_GUI.panelListaSchedeImmobile.updatePanello();
 					}
 				});
@@ -82,7 +82,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				mntmNewMenuItem_1.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						System.out.println("Ordino schede per codice...");
-						Collections.sort(j2web_GUI.listSchedeImmobile, new CodeComparator());
+						//Collections.sort(j2web_GUI.listSchedeImmobile, new CodeComparator());
 						j2web_GUI.panelListaSchedeImmobile.updatePanello();
 					}
 				});
@@ -92,7 +92,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				mntmNewMenuItem_2.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						System.out.println("Ordino schede per Comune...");
-						Collections.sort(j2web_GUI.listSchedeImmobile, new CityComparator());
+						//Collections.sort(j2web_GUI.listSchedeImmobile, new CityComparator());
 						j2web_GUI.panelListaSchedeImmobile.updatePanello();
 					}
 				});
@@ -102,7 +102,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				mntmNewMenuItem_3.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						System.out.println("Ordino schede per Provincia...");
-						Collections.sort(j2web_GUI.listSchedeImmobile, new ProvinceComparator());
+						//Collections.sort(j2web_GUI.listSchedeImmobile, new ProvinceComparator());
 						j2web_GUI.panelListaSchedeImmobile.updatePanello();
 					}
 				});
@@ -112,7 +112,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 				mntmNewMenuItem_4.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						System.out.println("Ordino schede per Regione...");
-						Collections.sort(j2web_GUI.listSchedeImmobile, new RegionComparator());
+						//Collections.sort(j2web_GUI.listSchedeImmobile, new RegionComparator());
 						j2web_GUI.panelListaSchedeImmobile.updatePanello();
 					}
 				});
