@@ -62,7 +62,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
     }   //Fine costruttore PannelloInserimento
           
     //Update del pannello, eseguito alla selezione di una scheda sul pannello centrale
-    public void updatePanello(final SchedaImmobile scheda, final boolean selectAllSelected) {
+    public void updatePanello(final SchedaVeicolo scheda, final boolean selectAllSelected) {
     	
     	//Rimuovo tutti i portali dalle liste sequenziali
     	j2web_GUI.listPortaliInserimentoSequenziale.clear();
@@ -110,7 +110,7 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
     }
 
     //Pannello abilitato (scheda selzionata)
-    public void panelInserimentoInActiveMode(final SchedaImmobile scheda, final boolean selectAllSelected) {
+    public void panelInserimentoInActiveMode(final SchedaVeicolo scheda, final boolean selectAllSelected) {
     	
     	add(Box.createVerticalStrut(5));
     	      	
@@ -258,7 +258,7 @@ class PanelInserimentoSequenziale extends JPanel {
 	
 	//Costruttore 2
 	//Pannello inserimento sequenziali nel caso di portale selezionato
-	public PanelInserimentoSequenziale(final SchedaImmobile scheda, boolean selectAllSelected) {
+	public PanelInserimentoSequenziale(final SchedaVeicolo scheda, boolean selectAllSelected) {
 		
 		btnInserisciTuttiIPortali = new JButton(labelBtnInserisciTutti);
     	btnCancellaTuttiIPortali = new JButton(labelBtnCancellaTutti);
@@ -280,7 +280,7 @@ class PanelInserimentoSequenziale extends JPanel {
                 	while(iterator.hasNext()) {
                 		PortaleImmobiliare portaleCorrente = iterator.next();          		
                 		try {
-         					System.out.println("Inserimento della scheda " + scheda.codiceInserzione + " in " + portaleCorrente.idPortale);
+         					System.out.println("Inserimento della scheda " + scheda.codiceScheda + " in " + portaleCorrente.idPortale);
          					boolean schedaInserita = portaleCorrente.inserisciScheda(scheda, true);
          					if(schedaInserita) {
          						System.out.println("Scheda " + scheda.idScheda + " inserita in: " + portaleCorrente.idPortale);
@@ -317,7 +317,7 @@ class PanelInserimentoSequenziale extends JPanel {
 	            	while(iterator.hasNext()) {
 	            		PortaleImmobiliare portaleCorrente = iterator.next();         		
 	            		try {
-	            			System.out.println("Cancellazione della scheda " + scheda.codiceInserzione + " da " + portaleCorrente.idPortale);
+	            			System.out.println("Cancellazione della scheda " + scheda.codiceScheda + " da " + portaleCorrente.idPortale);
 	     					portaleCorrente.cancellaScheda(scheda, true);
 	     				}
 	     				catch (HttpCommunicationException e1 ) {
@@ -422,7 +422,7 @@ class InserimentoPortale extends JPanel {
 	
     //Costruttore 2
 	//Pannello inserimento portale nel caso di portale selezionato
-	public InserimentoPortale(final PortaleImmobiliare portale, final SchedaImmobile scheda,  boolean selectAllSelected) {
+	public InserimentoPortale(final PortaleImmobiliare portale, final SchedaVeicolo scheda,  boolean selectAllSelected) {
 		
 		final boolean isOnThisPortal = scheda.isOnThisPortal(portale.idPortale);
 		setLayout(new GridLayout(2,3,5,5));
@@ -445,12 +445,12 @@ class InserimentoPortale extends JPanel {
  			btnInserisci.setEnabled(true);
  			btnInserisci.addActionListener(new ActionListener() {
      			public void actionPerformed(ActionEvent e) {
-     				System.out.println("Inserisci: " + scheda.codiceInserzione + " in " + portale.idPortale);	     				
+     				System.out.println("Inserisci: " + scheda.codiceScheda + " in " + portale.idPortale);	     				
      				//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
      				//Chiamo il metodo afferente all'oggetto PortaleImmobiliare per inserire una scheda immobile, il metoso chiamata sarà quella della sottoclasse effettiva  				
      				try {
-     					System.out.println("Inserisci: " + scheda.codiceInserzione + " in " + portale.idPortale);
+     					System.out.println("Inserisci: " + scheda.codiceScheda + " in " + portale.idPortale);
      					portale.inserisciScheda(scheda, false);
      				}
      				catch (HttpCommunicationException e1) {
@@ -477,7 +477,7 @@ class InserimentoPortale extends JPanel {
      			public void actionPerformed(ActionEvent e) {
      				//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
- 					System.out.println("Visualizza: " + scheda.codiceInserzione + " in " + portale.idPortale);
+ 					System.out.println("Visualizza: " + scheda.codiceScheda + " in " + portale.idPortale);
  					try {
 						portale.visualizzaScheda(scheda);
 					} catch (HttpCommunicationException e1) {
@@ -521,7 +521,7 @@ class InserimentoPortale extends JPanel {
      				//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
      				try {
-     					System.out.println("Cancella: " + scheda.codiceInserzione + " da " + portale.idPortale);
+     					System.out.println("Cancella: " + scheda.codiceScheda + " da " + portale.idPortale);
      					portale.cancellaScheda(scheda, false);
      				}
      				catch (HttpCommunicationException e1 ) {

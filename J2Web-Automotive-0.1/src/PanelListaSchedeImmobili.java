@@ -75,9 +75,9 @@ public class PanelListaSchedeImmobili extends JPanel {
     	//Pannello con schede
     	else {
     		System.out.println("La lista delle schede immobili contiene delle schede.");
-    		ListIterator<SchedaImmobile> iterator = j2web_GUI.listSchedeImmobile.listIterator();
+    		ListIterator<SchedaVeicolo> iterator = J2Web_UI.listSchedeVeicolo.listIterator();
         	while(iterator.hasNext()) {
-        		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
+        		SchedaVeicolo schedaCorrente = (SchedaVeicolo)iterator.next();
         		//I sottopannelli sono istanze di una classe comune definita più sotto
         		JPanel pannelloSchedaImmobile = new PannelloSchedaImmobile(schedaCorrente, j2web_GUI.listSchedeImmobile, radioGrpSchede);            
         		add(pannelloSchedaImmobile);
@@ -95,7 +95,7 @@ class PannelloSchedaImmobile extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	SchedaImmobile scheda;
+	SchedaVeicolo scheda;
 	Long idScheda;
 	String codiceScheda;
 	JButton btnCancellaScheda;
@@ -103,10 +103,10 @@ class PannelloSchedaImmobile extends JPanel {
 	
 	String labelSpaziatore = "   "; 
 	
-	 public PannelloSchedaImmobile(final SchedaImmobile scheda, final LinkedList<SchedaImmobile> listaSchedeImmobile, final ButtonGroup radioGrpSchede) {
+	 public PannelloSchedaImmobile(final SchedaVeicolo scheda, final LinkedList<SchedaVeicolo> listaSchedeImmobile, final ButtonGroup radioGrpSchede) {
 		 this.scheda = scheda;
 		 idScheda = scheda.idScheda;
-		 codiceScheda = scheda.codiceInserzione;
+		 codiceScheda = scheda.codiceScheda;
 		 
 		 setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		 setBorder(new LineBorder(new Color(184,208,229)));
@@ -118,22 +118,22 @@ class PannelloSchedaImmobile extends JPanel {
 		 //Clicco su una radio button di una scheda
 		 schedaRadio.addActionListener(new ActionListener() {			 
              public void actionPerformed(ActionEvent e) {
-                 System.out.println("Scheda selezionata: " + scheda.codiceInserzione); 
+                 System.out.println("Scheda selezionata: " + scheda.codiceScheda); 
                  
                  //Devo caricare la relativa hashtable contenente i portali in cui è inserita e gli associati codici di inserimento
-                 scheda.caricaTabellaHash();
+                 //scheda.caricaTabellaHash();
                  
                  //Il pannello di destra (inserimento) deve essere aggiornato
                  j2web_GUI.panelInserimentoImmobiliInPortali.updatePanello(scheda, false);
                  
                  //Il pannello Form deve mostrari i dati relativi a tale scheda
-                 j2web_GUI.panelCreazioneSchedeImmobile.mostraSchedaSalvata(scheda);
+                 //j2web_GUI.panelCreazioneSchedeImmobile.mostraSchedaSalvata(scheda);
              }
 		 });
 		 add(schedaRadio);
 		 
 		 //La label delle schede
-		 String labelScheda = scheda.codiceInserzione + "-" + scheda.titoloAnnuncio + "-" + scheda.provincia + "-" + scheda.comune + "-" + scheda.regione + "-" + scheda.testoAnnuncio;
+		 String labelScheda = scheda.codiceScheda + "-" + scheda.codiceScheda + "-" + "-";
 		 if(labelScheda.length()>31) {	//è molto probabile che lo sia... :)
 			 labelScheda = labelScheda.substring(0, 30); 
 		 }		 
@@ -149,12 +149,12 @@ class PannelloSchedaImmobile extends JPanel {
 		 btnCancellaScheda = new JButton("Cancella");
 		 btnCancellaScheda.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Cancella scheda: " + scheda.codiceInserzione);
+                System.out.println("Cancella scheda: " + scheda.codiceScheda);
                 
                 //Rimozione di una scheda immobile dalla LinkedList
-                ListIterator<SchedaImmobile> iterator = listaSchedeImmobile.listIterator();
+                ListIterator<SchedaVeicolo> iterator = listaSchedeImmobile.listIterator();
             	while(iterator.hasNext()) {
-            		SchedaImmobile schedaCorrente = (SchedaImmobile)iterator.next();
+            		SchedaVeicolo schedaCorrente = (SchedaVeicolo)iterator.next();
             		//La rimozione avviene confrontando l'id univoco della scheda immobile
             		if(schedaCorrente.idScheda==idScheda) {
             			iterator.remove();

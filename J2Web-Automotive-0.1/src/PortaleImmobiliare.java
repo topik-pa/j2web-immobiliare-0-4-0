@@ -76,13 +76,13 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	//Metodi
 	
 	//Inserimento scheda (sovrascritto nelle sottoclassi)
-	public abstract boolean inserisciScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException, UnsupportedEncodingException;
+	public abstract boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException, UnsupportedEncodingException;
 	
 	//Visualizzazione scheda (sovrascritto nelle sottoclassi)
-	public abstract boolean visualizzaScheda(SchedaImmobile scheda) throws HttpCommunicationException;
+	public abstract boolean visualizzaScheda(SchedaVeicolo scheda) throws HttpCommunicationException;
 
 	//Eliminazione scheda (sovrascritto nelle sottoclassi)
-	public abstract boolean cancellaScheda(SchedaImmobile scheda, boolean isSequential) throws HttpCommunicationException;
+	public abstract boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException;
 	 
     //Invio mail di conferma inserzione
   	static void sendConfirmationMail(SchedaImmobile scheda, String nomePortale, String codInserzione)   {

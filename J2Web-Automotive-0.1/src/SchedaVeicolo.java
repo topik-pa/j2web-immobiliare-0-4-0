@@ -35,6 +35,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	
 	//Attributi della scheda immobile	
 	long idScheda = new Date().getTime();	//id univoco riferito alla scheda
+	String codiceScheda= "_veicolo_";
 	
 	String marcaVeicolo;
 	
