@@ -298,10 +298,10 @@ public class j2web implements parametriGenerali {
 	public static void inizializzaPortaliAttivi() {	
 		
     	System.out.println("ciao");
-    	PortaleImmobiliare _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt.jpg", "2 - immobiliare.it", "002", true);
+    	PortaleImmobiliare _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt4.jpg", "2 - immobiliare.it", "002", true);
     	J2Web_UI.listPortaliImmobiliari.add(_immobiliareIt);
     	
-    	PortaleImmobiliare _immobiliareIt2 = new _immobiliareIt("./images/_immobiliareIt.jpg", "2 - immobiliare.it", "003", true);
+    	PortaleImmobiliare _immobiliareIt2 = new _immobiliareIt("./images/_immobiliareIt4.jpg", "2 - immobiliare.it", "003", true);
     	J2Web_UI.listPortaliImmobiliari.add(_immobiliareIt2);
     	
 

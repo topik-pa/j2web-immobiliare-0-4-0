@@ -360,12 +360,12 @@ class InserimentoPortale extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	String labelCheckboxSelezionaPortale = "Seleziona portale";
+	String labelCheckboxSelezionaPortale = "Selez";
     String labelBtnInserisci = "Inserisci";
     String labelBtnVisualizza = "Visualizza";
     String labelBtnCancella = "Cancella";
     
-    String labelSpaziatore = "   "; 
+    String labelSpaziatore = " "; 
 	
 	JButton btnInserisci;
 	JButton btnVisualizza;
@@ -384,7 +384,7 @@ class InserimentoPortale extends JPanel {
 	public InserimentoPortale(PortaleImmobiliare portale) {
 		
 		setLayout(new GridLayout(2,3,5,5));
-		setMaximumSize(new Dimension(500, 100));
+		setMaximumSize(new Dimension(400, 90));
 
 		loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
         title = BorderFactory.createTitledBorder(loweredetched, portale.valoreLabel);
