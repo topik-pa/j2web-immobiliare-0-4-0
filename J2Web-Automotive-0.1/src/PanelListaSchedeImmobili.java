@@ -163,7 +163,7 @@ class PannelloSchedaImmobile extends JPanel {
             	}
             	
             	//Aggiorno il file dat delle schede
-            	j2web.salvaListaSchedeImmobiliCreate();
+            	j2web.salvaListaSchedeCreate();
             	          	
             	//Eliminazione del file dat con la hashtable
             	File removeFile = new File("./schede/" + codiceScheda + "-" + idScheda + ".dat");

@@ -269,6 +269,30 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	}
 	
 	
+	public void salvaTabellaHash(String schedaDatPath, Map<String,String> mappaPortaliOspitanti) {
+		try {
+ 		   File file = new File(schedaDatPath);
+	    	if(file.exists()) {
+	    		System.out.print("File hash scheda trovato. Salvataggio dati su " + schedaDatPath);
+	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+				outputFile.writeObject(mappaPortaliOspitanti);
+				outputFile.close();
+				System.out.print(" fatto." + "\n");
+	    	}
+	    	else {
+	    		//La tabella hash è creata in ogni caso al momento della prima lettura della stessa
+	    		System.out.println("File hash scheda non trovato.");
+	    	}
+		} catch (FileNotFoundException e0) {		
+	        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+	        e0.printStackTrace();
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash_IOException"), "IOException", JOptionPane.ERROR_MESSAGE);
+			e1.printStackTrace();
+		}	
+	}
+	
+	
 	//Verifico la presenza della scheda immobile in un dato portale
 	public boolean isOnThisPortal(String idPortale) {
 		if(mappaPortaliOspitanti.containsKey(idPortale)) {
@@ -298,32 +322,8 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		salvaTabellaHash(singolaSchedaDatPath, mappaPortaliOspitanti);
 		    
 	}
-	
-	
-	public void salvaTabellaHash(String schedaDatPath, Map<String,String> mappaPortaliOspitanti) {
-		try {
- 		   File file = new File(schedaDatPath);
-	    	if(file.exists()) {
-	    		System.out.print("File hash scheda trovato. Salvataggio dati su " + schedaDatPath);
-	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
-				outputFile.writeObject(mappaPortaliOspitanti);
-				outputFile.close();
-				System.out.print(" fatto." + "\n");
-	    	}
-	    	else {
-	    		//La tabella hash è creata in ogni caso al momento della prima lettura della stessa
-	    		System.out.println("File hash scheda non trovato.");
-	    	}
-		} catch (FileNotFoundException e0) {		
-	        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
-	        e0.printStackTrace();
-		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash_IOException"), "IOException", JOptionPane.ERROR_MESSAGE);
-			e1.printStackTrace();
-		}	
-	}
-	
-	
+
+		
 	//Ottenere il codice di inserimento di una scheda tramite l'id del portale (cancellazione)	
 	public String getCodiceInserimento(String idPortale) {		
 		String codiceInserimento = "";
