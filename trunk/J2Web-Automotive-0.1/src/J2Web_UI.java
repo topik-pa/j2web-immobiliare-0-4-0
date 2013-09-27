@@ -72,7 +72,7 @@ import java.awt.Dimension;
 
 public class J2Web_UI implements parametriGenerali{
 
-	private static JFrame frmJwebAutomotive;
+	private static JFrame imagination_05;
 	
 	private static JTextField txtFieldKw;
 	private static JTextField txtFieldCv;
@@ -162,12 +162,15 @@ public class J2Web_UI implements parametriGenerali{
   	public static LinkedList<SchedaVeicolo> listSchedeVeicolo = new LinkedList<SchedaVeicolo>();
   	
   	//La struttura dati che contiene i portali attivati
-  	public static LinkedList<PortaleImmobiliare> listPortaliImmobiliari = new LinkedList<PortaleImmobiliare>();
+  	public static LinkedList<PortaleWeb> listPortaliImmobiliari = new LinkedList<PortaleWeb>();
   	
   	//Serve per raggruppare i radio button in una struttura coerente
   	public static ButtonGroup radioGrpSchede = new ButtonGroup();	
 	
+  	//Inizializzo la lista buffer che contiene le possibili versioni del veicolo attuale
 	LinkedList<String> listVersioniVeicoli = new LinkedList<String>();
+	
+	//I pannelli lista veicoli inseriti e lista portali di inserimento
 	private static JPanel panel_9;
 	private static JPanel panel_10;
 
@@ -183,8 +186,8 @@ public class J2Web_UI implements parametriGenerali{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					J2Web_UI imagination = new J2Web_UI();
-					imagination.frmJwebAutomotive.setVisible(true);
+					new J2Web_UI();
+					J2Web_UI.imagination_05.setVisible(true);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -197,13 +200,15 @@ public class J2Web_UI implements parametriGenerali{
 	 * Create the application.
 	 */
 	public J2Web_UI() {
-		initialize();
-		selezioneAutoVeicolo();
-		popolaListaCampiForm();
-		j2web.caricaListaSchedeImmobiliCreate();
-		j2web.inizializzaPortaliAttivi();
-		aggiornaPannelloListaSchedeVeicolo();
-		aggiornaPannelloListaPortaliSincronizzazione();
+		
+		//Procedure di inizializzazione
+		initialize(); //GUI e ascoltatori
+		selezioneAutoVeicolo(); //la selezione degli autoveicoli è forzata all'avvio
+		popolaListaCampiForm();	//i campi della form sono inseriti in una lista concatenata
+		j2web.caricaListaSchedeCreate(); //carica le schede create nelle sessioni precedenti
+		j2web.inizializzaPortaliAttivi(); //inizializza i portali web attivi
+		aggiornaPannelloListaSchedeVeicolo(); //aggiorna il pannello centrale (lista veicoli)
+		aggiornaPannelloListaPortaliSincronizzazione(); //aggiorna il pannello di destra (lista portali attivi)
 		
 	}
 
@@ -211,20 +216,22 @@ public class J2Web_UI implements parametriGenerali{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmJwebAutomotive = new JFrame();
-		frmJwebAutomotive.addMouseListener(new MouseAdapter() {
+		
+		/*Il JFrame principale*/
+		imagination_05 = new JFrame();
+		imagination_05.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 			}
 		});
-		frmJwebAutomotive.setTitle("J2Web - Automotive 0.5");
-		frmJwebAutomotive.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\icon_web.png"));
-		frmJwebAutomotive.setBounds(100, 100, 1024, 600);
-		frmJwebAutomotive.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmJwebAutomotive.getContentPane().setLayout(new BorderLayout(0, 0));
+		imagination_05.setTitle(nomeGUI);
+		imagination_05.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\icon_web.png"));
+		imagination_05.setBounds(GUI_bounds[0], GUI_bounds[1], GUI_bounds[2], GUI_bounds[3]);
+		imagination_05.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		imagination_05.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		frmJwebAutomotive.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		imagination_05.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Anagrafica veicolo", new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\icon_car2.png"), panel, null);
@@ -278,10 +285,7 @@ public class J2Web_UI implements parametriGenerali{
 		gbl_panel_16.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_panel_16.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel_16.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panel_16.setLayout(gbl_panel_16);
-		
-		
-		
+		panel_16.setLayout(gbl_panel_16);	
 		
 		JPanel panel_20 = new JPanel();
 		panel_20.setBorder(new TitledBorder(null, "Caratteristiche principali", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -342,6 +346,7 @@ public class J2Web_UI implements parametriGenerali{
 		rdbtnAutoveicolo.setSelected(true);
 		rdbtnAutoveicolo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
+				//Al click sulla radio Veicolo la form si attiva in modalità veicolo
 				selezioneAutoVeicolo();
 			}
 		});
@@ -351,6 +356,7 @@ public class J2Web_UI implements parametriGenerali{
 		rdbtnMotoScooter = new JRadioButton("Moto/Scooter");
 		rdbtnMotoScooter.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
+				//Al click sulla radio Moto/Scooter la form si attiva in modalità moto/scooter
 				selezioneMotoScooter();
 			}
 		});
@@ -370,8 +376,8 @@ public class J2Web_UI implements parametriGenerali{
 		comboBox_Marca = new JComboBox<String>();
 		comboBox_Marca.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-				System.out.println("marca");
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+					//Selezionando un marca veicolo popolo la combobox Modello veicolo
 					String marcaVeicolo = (String) comboBox_Marca.getSelectedItem();
 					
 					if(!marcaVeicolo.equals("Seleziona") && rdbtnAutoveicolo.isSelected()) {
@@ -381,8 +387,7 @@ public class J2Web_UI implements parametriGenerali{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-					}
-					
+					}	
 					
 				}
 				
@@ -394,7 +399,7 @@ public class J2Web_UI implements parametriGenerali{
 		comboBox_Modello = new JComboBox<String>();
 		comboBox_Modello.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				System.out.println("modello");
+				//Selezionando un modello veicolo popolo la combobox Versione veicolo
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					
 					String marcaVeicolo = (String) comboBox_Marca.getSelectedItem();
@@ -407,8 +412,7 @@ public class J2Web_UI implements parametriGenerali{
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-					}
-					
+					}					
 					
 				}
 			}
@@ -419,9 +423,7 @@ public class J2Web_UI implements parametriGenerali{
 		comboBox_Versione = new JComboBox<String>();
 		comboBox_Versione.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-				
-				System.out.println("versione");
-				
+				//Selezionando una versione veicolo popolo vari campi della form veicolo				
 				String versioneVeicolo = (String) comboBox_Versione.getSelectedItem();
 				if(versioneVeicolo!=null && !versioneVeicolo.equals("Seleziona") && rdbtnAutoveicolo.isSelected()) {
 					
@@ -435,7 +437,6 @@ public class J2Web_UI implements parametriGenerali{
 					}
 				}
 				
-				
 			}
 		});
 		comboBox_Versione.setEditable(true);
@@ -448,12 +449,12 @@ public class J2Web_UI implements parametriGenerali{
 		JLabel lblCarburante = new JLabel("Carburante");
 		panel_20.add(lblCarburante, "10, 8");
 		
-		comboBox_MeseImmatricolazione = new JComboBox();
-		comboBox_MeseImmatricolazione.setModel(new DefaultComboBoxModel(new String[] {"Mese", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"}));
+		comboBox_MeseImmatricolazione = new JComboBox<String>();
+		comboBox_MeseImmatricolazione.setModel(new DefaultComboBoxModel<String>(comboboxModelMesi));
 		panel_20.add(comboBox_MeseImmatricolazione, "2, 10, fill, default");
 		
-		comboBox_AnnoImmatricolazione = new JComboBox();
-		comboBox_AnnoImmatricolazione.setModel(new DefaultComboBoxModel(new String[] {"Anno", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000", "1999", "1998", "1997", "1996", "1995", "1994", "1993", "1992", "1991", "1990", "1989", "1988", "1987", "1986", "1985", "1984", "1983", "1982", "1981", "1980", "1979", "1978", "1977", "1976", "1975", "1974", "1973", "1972", "1971", "1970", "1969", "1968", "1967", "1966", "1965", "1964", "1963", "1962", "1961", "1960", "1959", "1958", "1957", "1956", "1955", "1954", "1953", "1952", "1951", "1950", "1949", "1948", "1947", "1946", "1945", "1944", "1943", "1942", "1941", "1940", "1939", "1938", "1937", "1936", "1935", "1934", "1933", "1932", "1931", "1930", "1929", "1928", "1927", "1926", "1925", "1924", "1923", "1922", "1921", "1920", "1919", "1918", "1917", "1916", "1915", "1914", "1913", "1912", "1911", "1910", "1909", "1908", "1907", "1906", "1905", "1904", "1903", "1902", "1901", "1900"}));
+		comboBox_AnnoImmatricolazione = new JComboBox<String>();
+		comboBox_AnnoImmatricolazione.setModel(new DefaultComboBoxModel<String>(comboboxModelAnni));
 		panel_20.add(comboBox_AnnoImmatricolazione, "6, 10, fill, default");
 		
 		comboBox_Carburante = new JComboBox<String>();
@@ -473,12 +474,12 @@ public class J2Web_UI implements parametriGenerali{
 		comboBox_Tipologia.setModel(new DefaultComboBoxModel<String>(tipologiaAutoveicoli));
 		panel_20.add(comboBox_Tipologia, "2, 14, fill, default");
 		
-		comboBox_Carrozzeria = new JComboBox();
-		comboBox_Carrozzeria.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "City car", "Cabrio", "Coupé", "SUV/Fuoristrada", "Station wagon", "Berlina", "Altro", "Monovolume", "Furgoni/Van"}));
+		comboBox_Carrozzeria = new JComboBox<String>();
+		comboBox_Carrozzeria.setModel(new DefaultComboBoxModel<String>(comboboxModelCarrozzeria));
 		panel_20.add(comboBox_Carrozzeria, "6, 14, fill, default");
 		
-		comboBox_PostiASedere = new JComboBox();
-		comboBox_PostiASedere.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
+		comboBox_PostiASedere = new JComboBox<String>();
+		comboBox_PostiASedere.setModel(new DefaultComboBoxModel<String>(comboboxModelPostiASedere));
 		panel_20.add(comboBox_PostiASedere, "10, 14, fill, default");
 		
 		JLabel lblPotenzaKw = new JLabel("Potenza (KW/CV)");
@@ -519,8 +520,8 @@ public class J2Web_UI implements parametriGenerali{
 		JLabel lblColoreEsterno = new JLabel("Colore esterno");
 		panel_20.add(lblColoreEsterno, "2, 20");
 		
-		comboBox_ColoreEsterno = new JComboBox();
-		comboBox_ColoreEsterno.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Arancione", "Argento", "Beige", "Bianco", "Blu/Azzurro", "Bronzo", "Giallo", "Grigio", "Lilla", "Marrone", "Nero", "Oro", "Rosso", "Verde"}));
+		comboBox_ColoreEsterno = new JComboBox<String>();
+		comboBox_ColoreEsterno.setModel(new DefaultComboBoxModel<String>(comboboxModelColoreEsterno));
 		panel_20.add(comboBox_ColoreEsterno, "2, 22, fill, default");
 		
 		chckbxMetallizzato = new JCheckBox("Metallizzato");
@@ -532,8 +533,8 @@ public class J2Web_UI implements parametriGenerali{
 		JLabel lblChilometraggio = new JLabel("Chilometraggio");
 		panel_20.add(lblChilometraggio, "6, 24");
 		
-		comboBox_PrecedentiProprietari = new JComboBox();
-		comboBox_PrecedentiProprietari.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
+		comboBox_PrecedentiProprietari = new JComboBox<String>();
+		comboBox_PrecedentiProprietari.setModel(new DefaultComboBoxModel<String>(comboboxModelPrecedentiProprietari));
 		panel_20.add(comboBox_PrecedentiProprietari, "2, 26, fill, default");
 		
 		textField_Chilometraggio = new JTextField();
@@ -579,12 +580,12 @@ public class J2Web_UI implements parametriGenerali{
 		JLabel lblColoreInterni = new JLabel("Colore interni");
 		panel_20.add(lblColoreInterni, "6, 32");
 		
-		comboBox_FinitureInterni = new JComboBox();
-		comboBox_FinitureInterni.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Alcantara", "Pelle parziale", "Pelle scamosciata", "Pelle totale", "Stoffa", "Altro"}));
+		comboBox_FinitureInterni = new JComboBox<String>();
+		comboBox_FinitureInterni.setModel(new DefaultComboBoxModel<String>(comboboxModelFinitureInterni));
 		panel_20.add(comboBox_FinitureInterni, "2, 34, fill, default");
 		
-		comboBox_ColoreInterni = new JComboBox();
-		comboBox_ColoreInterni.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Beige", "Grigio", "Marrone", "Nero", "Altro"}));
+		comboBox_ColoreInterni = new JComboBox<String>();
+		comboBox_ColoreInterni.setModel(new DefaultComboBoxModel<String>(comboboxModelColoreInterni));
 		panel_20.add(comboBox_ColoreInterni, "6, 34, fill, default");
 		
 		JPanel panel_21 = new JPanel();
@@ -749,16 +750,16 @@ public class J2Web_UI implements parametriGenerali{
 		JLabel lblNewLabel_2 = new JLabel("Numero rapporti");
 		panel_22.add(lblNewLabel_2, "10, 2");
 		
-		comboBox_Motore = new JComboBox();
-		comboBox_Motore.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "4x4", "6wd", "Anteriore", "Posteriore"}));
+		comboBox_Motore = new JComboBox<String>();
+		comboBox_Motore.setModel(new DefaultComboBoxModel<String>(comboboxModelMotore));
 		panel_22.add(comboBox_Motore, "2, 4, fill, default");
 		
-		comboBox_Cambio = new JComboBox();
-		comboBox_Cambio.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Automatico", "Manuale", "Semiautomatico", "Nessuno"}));
+		comboBox_Cambio = new JComboBox<String>();
+		comboBox_Cambio.setModel(new DefaultComboBoxModel<String>(comboboxModelCambio));
 		panel_22.add(comboBox_Cambio, "6, 4, fill, default");
 		
-		comboBox_NumeroRapporti = new JComboBox();
-		comboBox_NumeroRapporti.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "3", "4", "5", "6", "7"}));
+		comboBox_NumeroRapporti = new JComboBox<String>();
+		comboBox_NumeroRapporti.setModel(new DefaultComboBoxModel<String>(comboboxModelNumeroRapporti));
 		panel_22.add(comboBox_NumeroRapporti, "10, 4, fill, default");
 		
 		JLabel lblCilindrata = new JLabel("Cilindrata");
@@ -783,8 +784,8 @@ public class J2Web_UI implements parametriGenerali{
 		});
 		panel_22.add(comboBox_Cilindrata, "2, 8, fill, default");
 		
-		comboBox_ClasseEmissioni = new JComboBox();
-		comboBox_ClasseEmissioni.setModel(new DefaultComboBoxModel(new String[] {"Seleziona", "Euro 1", "Euro 2", "Euro 3", "Euro 4", "Euro 5", "Euro 6"}));
+		comboBox_ClasseEmissioni = new JComboBox<String>();
+		comboBox_ClasseEmissioni.setModel(new DefaultComboBoxModel<String>(comboboxModelClasseEmissioni));
 		panel_22.add(comboBox_ClasseEmissioni, "6, 8, fill, default");
 		
 		comboBox_ConsumoMedio = new JTextField();
@@ -981,9 +982,7 @@ public class J2Web_UI implements parametriGenerali{
 				RowSpec.decode("200px:grow"),}));
 		
 		JLabel lblDescrizionemax = new JLabel("Descrizione (max 400 caratteri)");
-		panel_24.add(lblDescrizionemax, "2, 2");
-		
-		
+		panel_24.add(lblDescrizionemax, "2, 2");		
 		
 		textPane_Descrizione = new JTextPane();
 		textPane_Descrizione.setContentType("text/plain\r\ntext/xml\r\ntext/html");
@@ -1004,6 +1003,7 @@ public class J2Web_UI implements parametriGenerali{
 		JButton btnResetta = new JButton("Cancella campi");
 		btnResetta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Resetta la form
 				resettaForm();
 			}
 		});
@@ -1015,9 +1015,7 @@ public class J2Web_UI implements parametriGenerali{
 		
 		final JButton btnInserisci = new JButton("Crea scheda");
 		btnInserisci.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//JOptionPane.showMessageDialog(null, "Funzionaliità non ancora gestita", "Errore", JOptionPane.WARNING_MESSAGE);
-				
+			public void actionPerformed(ActionEvent arg0) {				
 				System.out.print("Creazione della scheda veicolo...");				
 				if(isFormValid()) { 
 					System.out.println(" ...form valido... ");
@@ -1029,12 +1027,7 @@ public class J2Web_UI implements parametriGenerali{
              	   	SchedaVeicolo schedaVeicolo = new SchedaVeicolo();
              	   	aggiungiScheda(schedaVeicolo);
              	 
-             	   	//Il pannello centrale viene ridisegnato
-             	    //j2web_GUI.panelListaSchedeImmobile.updatePanello();
-             	    //JPanel panel = getPanel_9();
-             	   	
-             	   	//panel.add(btnInserisci);
-             	   	
+             	   	//Il pannello centrale viene ridisegnato             	   	
              	   	aggiornaPannelloListaSchedeVeicolo();
              	   
              	    //Il pannello di destra viene ridisegnato
@@ -1059,12 +1052,14 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_scrollPane_1.gridy = 0;
 		panel_3.add(scrollPane_1, gbc_scrollPane_1);
 		
+		
+		//Il panel_9 è il pannello che contiene la lista delle schede create
 		panel_9 = new JPanel();
 		panel_9.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel_9.addContainerListener(new ContainerAdapter() {
 			@Override
 			public void componentAdded(ContainerEvent arg0) {
-				System.out.println("agguinto");
+				//Ascolto l'inserimento di un component nel pannello e lo aggiorno di conseguenza
 				panel_9.updateUI();	
 			}
 		});
@@ -1080,8 +1075,9 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_scrollPane_2.gridy = 0;
 		panel_3.add(scrollPane_2, gbc_scrollPane_2);
 		
+		//Il panel_10 ospita i portali web di sincronizzazione
 		panel_10 = new JPanel();
-		panel_10.setBorder(new TitledBorder(null, "Inserimento nei portali Web", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_10.setBorder(new TitledBorder(null, "Sincronizzazione nei portali Web", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_2.setViewportView(panel_10);
 		panel_10.setLayout(new BoxLayout(panel_10, BoxLayout.Y_AXIS));
 		
@@ -1216,53 +1212,54 @@ public class J2Web_UI implements parametriGenerali{
 		panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnAutoveicolo, rdbtnMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox_MeseImmatricolazione, comboBox_AnnoImmatricolazione, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtFieldKw, txtFieldCv, lblColoreEsterno, comboBox_ColoreEsterno, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_PrecedentiProprietari, textField_Chilometraggio, lblPrezzo, textField_Prezzo, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane_Descrizione, panel_23, btnImmagine1, label_Immagine1, btnImmagine_2, label_Immagine2, btnImmagine_3, label_Immagine3, btnImmagine_4, label_Immagine4, btnImmagine_5, label_Immagine5, btnImmagine_6, label_Immagine6, btnImmagine_7, label_Immagine7, btnImmagine_8, label_Immagine8, btnImmagine_9, label_Immagine9, btnImmagine_10, label_Immagine10, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_Cambio, comboBox_NumeroRapporti, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_Cilindrata, comboBox_ClasseEmissioni, comboBox_ConsumoMedio, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
 		
 		JMenuBar menuBar = new JMenuBar();
-		frmJwebAutomotive.getContentPane().add(menuBar, BorderLayout.NORTH);
+		imagination_05.getContentPane().add(menuBar, BorderLayout.NORTH);
 		
-		JMenu mnTest = new JMenu("test");
+		JMenu mnTest = new JMenu("Menu");
 		menuBar.add(mnTest);
 		
-		JMenuItem mntmTesting = new JMenuItem("testing1");
+		JMenuItem mntmTesting = new JMenuItem("MenuItem1");
 		mnTest.add(mntmTesting);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("New menu item");
+		JMenuItem mntmNewMenuItem = new JMenuItem("MenuItem2");
 		mnTest.add(mntmNewMenuItem);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("New menu item");
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("MenuItem3");
 		mnTest.add(mntmNewMenuItem_1);
 		
-		JMenu mnNewMenu = new JMenu("New menu");
+		JMenu mnNewMenu = new JMenu("Menu2");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("New menu item");
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("MenuItem1");
 		mnNewMenu.add(mntmNewMenuItem_2);
 		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("New menu item");
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("MenuItem2");
 		mnNewMenu.add(mntmNewMenuItem_3);
 		
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("New menu item");
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("MenuItem3");
 		mnNewMenu.add(mntmNewMenuItem_4);
-		frmJwebAutomotive.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmJwebAutomotive.getContentPane(), panel, panel_1, panel_2}));
+		imagination_05.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{imagination_05.getContentPane(), panel, panel_1, panel_2}));
 	}
 	
 	
+	//Metodo per aggiornare la UI del pannello schede 
 	protected static void aggiornaPannelloListaSchedeVeicolo() {
-		// TODO Auto-generated method stub
 		
 		JPanel pannelloListaSchedeVeicolo = getPanel_9();
 		
 		pannelloListaSchedeVeicolo.removeAll();
 		
-		//pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(7));
+		//pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(7));	
 		
 		if(listSchedeVeicolo.isEmpty()) {
+			//Pannello senza schede
     		System.out.println("La lista delle schede veicolo è vuota.");
     		JPanel panelNessunaScheda = new JPanel();
             JLabel lblNessunaScheda = new JLabel("La lista delle schede veicolo è vuota.");                
             panelNessunaScheda.add(lblNessunaScheda);
             pannelloListaSchedeVeicolo.add(panelNessunaScheda);
-    	}
-    	//Pannello con schede
+    	}    	
     	else {
+    		//Pannello con schede
     		System.out.println("La lista delle schede veicolo contiene delle schede.");
     		ListIterator<SchedaVeicolo> iterator = listSchedeVeicolo.listIterator();
         	while(iterator.hasNext()) {
@@ -1276,11 +1273,13 @@ public class J2Web_UI implements parametriGenerali{
 		
 	}
 
+	//Metodo per disabilitare i campi della form di creazione scheda
 	protected void disabilitaCampiForm() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	//Metodo per impostare la form di creazione scheda nella modalità autoveicolo
 	private void selezioneAutoVeicolo() {
 				
 		//Modifico le opzioni della combobox Marca con le opzioni per i autoveicoli
@@ -1293,15 +1292,15 @@ public class J2Web_UI implements parametriGenerali{
 		comboBoxModello.removeAllItems();
 		
 		//Attivo le combobox che servono nel caso di autoveicolo
-		JComboBox comboBoxCarrozzeria = getComboBox_Carrozzeria();
+		JComboBox<String> comboBoxCarrozzeria = getComboBox_Carrozzeria();
 		comboBoxCarrozzeria.setEnabled(true);		
-		JComboBox comboBoxPostiASedere = getComboBox_PostiASedere();
+		JComboBox<String> comboBoxPostiASedere = getComboBox_PostiASedere();
 		comboBoxPostiASedere.setEnabled(true);
-		JComboBox comboBoxFinitureInterni = getComboBox_FinitureInterni();
+		JComboBox<String> comboBoxFinitureInterni = getComboBox_FinitureInterni();
 		comboBoxFinitureInterni.setEnabled(true);
-		JComboBox comboBoxColoreInterni = getComboBox_ColoreInterni();
+		JComboBox<String> comboBoxColoreInterni = getComboBox_ColoreInterni();
 		comboBoxColoreInterni.setEnabled(true);
-		JComboBox comboBoxMotore = getComboBox_Motore();
+		JComboBox<String> comboBoxMotore = getComboBox_Motore();
 		comboBoxMotore.setEnabled(true);
 		
 		//Disattivo le checkbox che non servono nel caso di autoveicolo
@@ -1380,15 +1379,15 @@ public class J2Web_UI implements parametriGenerali{
 		comboBoxModello.addItem("Inserire nome modello");
 			
 		//Disattivo le combobox che non servono nel caso di motoveicolo
-		JComboBox comboBoxCarrozzeria = getComboBox_Carrozzeria();
+		JComboBox<String> comboBoxCarrozzeria = getComboBox_Carrozzeria();
 		comboBoxCarrozzeria.setEnabled(false);		
-		JComboBox comboBoxPostiASedere = getComboBox_PostiASedere();
+		JComboBox<String> comboBoxPostiASedere = getComboBox_PostiASedere();
 		comboBoxPostiASedere.setEnabled(false);
-		JComboBox comboBoxFinitureInterni = getComboBox_FinitureInterni();
+		JComboBox<String> comboBoxFinitureInterni = getComboBox_FinitureInterni();
 		comboBoxFinitureInterni.setEnabled(false);
-		JComboBox comboBoxColoreInterni = getComboBox_ColoreInterni();
+		JComboBox<String> comboBoxColoreInterni = getComboBox_ColoreInterni();
 		comboBoxColoreInterni.setEnabled(false);
-		JComboBox comboBoxMotore = getComboBox_Motore();
+		JComboBox<String> comboBoxMotore = getComboBox_Motore();
 		comboBoxMotore.setEnabled(false);
 		
 		//Disattivo le checkbox che non servono nel caso di motoveicolo
@@ -1551,11 +1550,11 @@ public class J2Web_UI implements parametriGenerali{
 		JSONArray jsonResults = null;
 		
 		JComboBox<String> comboboxCarburante = getComboBox_Carburante();
-		JComboBox comboboxPostiASedere = getComboBox_PostiASedere();
+		JComboBox<String> comboboxPostiASedere = getComboBox_PostiASedere();
 		JTextField txtFieldCV = getTextField_Cv();
 		JTextField txtFieldKW = getTextField_Kw();
-		JComboBox comboboxMotore = getComboBox_Motore();
-		JComboBox comboboxCambio = getComboBox_Cambio();
+		JComboBox<String> comboboxMotore = getComboBox_Motore();
+		JComboBox<String> comboboxCambio = getComboBox_Cambio();
 		JTextField txtFieldCilindrata = getTextField_Cilindrata();
 		JTextField txtFieldConsumoMedio = getTextField_ConsumoMedio();
 		
@@ -1820,7 +1819,7 @@ public class J2Web_UI implements parametriGenerali{
 		listSchedeVeicolo.add(scheda);
 			
 		//Aggiorno il file dat delle schede
-		j2web.salvaListaSchedeImmobiliCreate();
+		j2web.salvaListaSchedeCreate();
 		
 	}
 	
@@ -1831,16 +1830,16 @@ public class J2Web_UI implements parametriGenerali{
 	protected static JComboBox<String> getComboBox_Marca() {
 		return comboBox_Marca;
 	}
-	protected static JComboBox getComboBox_Carrozzeria() {
+	protected static JComboBox<String> getComboBox_Carrozzeria() {
 		return comboBox_Carrozzeria;
 	}
-	protected static JComboBox getComboBox_PostiASedere() {
+	protected static JComboBox<String> getComboBox_PostiASedere() {
 		return comboBox_PostiASedere;
 	}
-	protected static JComboBox getComboBox_FinitureInterni() {
+	protected static JComboBox<String> getComboBox_FinitureInterni() {
 		return comboBox_FinitureInterni;
 	}
-	protected static JComboBox getComboBox_ColoreInterni() {
+	protected static JComboBox<String> getComboBox_ColoreInterni() {
 		return comboBox_ColoreInterni;
 	}
 	protected static JCheckBox getChckbxCupolino() {
@@ -1918,7 +1917,7 @@ public class J2Web_UI implements parametriGenerali{
 	protected static JCheckBox getChckbxBauletto() {
 		return chckbxBauletto;
 	}
-	protected static JComboBox getComboBox_Motore() {
+	protected static JComboBox<String> getComboBox_Motore() {
 		return comboBox_Motore;
 	}
 	protected static JComboBox<String> getComboBox_Modello() {
@@ -2075,9 +2074,9 @@ public class J2Web_UI implements parametriGenerali{
 		//pannelloListaPortali.add(panelInserimentoSequenziale); 
 		
 		//Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizzi: non hanno alcuna funzionalità )
-        ListIterator<PortaleImmobiliare> iterator = listPortaliImmobiliari.listIterator();
+        ListIterator<PortaleWeb> iterator = listPortaliImmobiliari.listIterator();
         while(iterator.hasNext()) {
-        	final PortaleImmobiliare portaleCorrente = iterator.next();
+        	final PortaleWeb portaleCorrente = iterator.next();
         	InserimentoPortale inserimentoPortale = new InserimentoPortale(portaleCorrente);
         	pannelloListaPortali.add(inserimentoPortale);
         } 
@@ -2095,10 +2094,10 @@ public class J2Web_UI implements parametriGenerali{
         
 		pannelloListaPortali.add(Box.createVerticalStrut(10));
 
-    	//Ciclo ogni oggetto PortaleImmobiliare presente nella lista concatenata e per ognuno aggiorno il sottopannello
-        ListIterator<PortaleImmobiliare> iterator = J2Web_UI.listPortaliImmobiliari.listIterator();
+    	//Ciclo ogni oggetto PortaleWeb presente nella lista concatenata e per ognuno aggiorno il sottopannello
+        ListIterator<PortaleWeb> iterator = J2Web_UI.listPortaliImmobiliari.listIterator();
      	while(iterator.hasNext()) {	     		
-     		final PortaleImmobiliare portaleCorrente = iterator.next();
+     		final PortaleWeb portaleCorrente = iterator.next();
      		InserimentoPortale inserimentoPortale = new InserimentoPortale(portaleCorrente, scheda, selectAllSelected);
      		pannelloListaPortali.add(inserimentoPortale);
      	}
@@ -2216,7 +2215,7 @@ class PanelSchedaVeicolo extends JPanel {
           	}
           	
           	//Aggiorno il file dat delle schede
-          	j2web.salvaListaSchedeImmobiliCreate();
+          	j2web.salvaListaSchedeCreate();
           	          	
           	//Eliminazione del file dat con la hashtable
           	File removeFile = new File("./schede/" + idScheda + "-" + idScheda + ".dat");
@@ -2322,13 +2321,13 @@ class PanelInserimentoSequenzialeSchede extends JPanel {
 		btnInserisciTuttiIPortali.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {  
           	if(!j2web_GUI.listPortaliInserimentoSequenziale.isEmpty()) {
-          		ListIterator<PortaleImmobiliare> iterator = (ListIterator<PortaleImmobiliare>) j2web_GUI.listPortaliInserimentoSequenziale.iterator();
+          		ListIterator<PortaleWeb> iterator = (ListIterator<PortaleWeb>) j2web_GUI.listPortaliInserimentoSequenziale.iterator();
               	String rapportoInserimentiOK = "";
               	String rapportoInserimentiKO = "";
               	//Il cursone viene messo in modalità attesa
    				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
               	while(iterator.hasNext()) {
-              		PortaleImmobiliare portaleCorrente = iterator.next();          		
+              		PortaleWeb portaleCorrente = iterator.next();          		
               		try {
        					System.out.println("Inserimento della scheda " + scheda.codiceScheda + " in " + portaleCorrente.idPortale);
        					boolean schedaInserita = portaleCorrente.inserisciScheda(scheda, true);
@@ -2360,12 +2359,12 @@ class PanelInserimentoSequenzialeSchede extends JPanel {
       btnCancellaTuttiIPortali.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) { 
           	if(!j2web_GUI.listPortaliCancellazioneSequenziale.isEmpty()) {
-	            	ListIterator<PortaleImmobiliare> iterator = (ListIterator<PortaleImmobiliare>) j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
+	            	ListIterator<PortaleWeb> iterator = (ListIterator<PortaleWeb>) j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
 	            	
 	            	//Il cursone viene messo in modalità attesa
 	 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	            	while(iterator.hasNext()) {
-	            		PortaleImmobiliare portaleCorrente = iterator.next();         		
+	            		PortaleWeb portaleCorrente = iterator.next();         		
 	            		try {
 	            			System.out.println("Cancellazione della scheda " + scheda.codiceScheda
 	            					+ " da " + portaleCorrente.idPortale);

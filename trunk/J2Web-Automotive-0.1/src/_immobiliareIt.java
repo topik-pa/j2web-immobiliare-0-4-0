@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
  */
 
 //La classe principale
-public class _immobiliareIt extends PortaleImmobiliare {     
+public class _immobiliareIt extends PortaleWeb {     
 
     //Variabili generali
 	private final String NOMEPORTALE = "immobiliare.it";

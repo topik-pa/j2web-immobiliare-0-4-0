@@ -34,7 +34,7 @@ import java.util.Iterator;
 
 
 /*
- * Questa classe definische i metodi e gli attributi dell'oggetto portale immobiliare, qui definiti in termini generici, vengono riscritti nelle classi più specifiche
+ * Questa classe definische i metodi e gli attributi dell'oggetto portale web, qui definiti in termini generici, vengono riscritti nelle classi più specifiche
  *
  */
 
@@ -44,7 +44,7 @@ import java.util.Iterator;
  * @author marco - marcopavan.mp@gmail.com 
  */
 
-public abstract class PortaleImmobiliare implements parametriGenerali {
+public abstract class PortaleWeb implements parametriGenerali {
 
 	//Attributi
 	String urlIcona;
@@ -61,7 +61,7 @@ public abstract class PortaleImmobiliare implements parametriGenerali {
 	//La label che identifica i parametri da non inviare
 	protected static String dontSendThisParam = "***DONOTSEND***";
 
-	public PortaleImmobiliare (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {
+	public PortaleWeb (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {
 	
 		this.urlIcona = urlIcona;
 		this.valoreLabel = valoreLabel;

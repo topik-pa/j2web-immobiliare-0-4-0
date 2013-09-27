@@ -99,9 +99,9 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         add(Box.createVerticalStrut(10));
  	            
         //Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizzi: non hanno alcuna funzionalità )
-        ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
+        ListIterator<PortaleWeb> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
         while(iterator.hasNext()) {
-        	final PortaleImmobiliare portaleCorrente = iterator.next();
+        	final PortaleWeb portaleCorrente = iterator.next();
         	InserimentoPortale inserimentoPortale = new InserimentoPortale(portaleCorrente);
         	add(inserimentoPortale);
         } 
@@ -120,10 +120,10 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
         
         add(Box.createVerticalStrut(10));
 
-    	//Ciclo ogni oggetto PortaleImmobiliare presente nella lista concatenata e per ognuno aggiorno il sottopannello
-        ListIterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
+    	//Ciclo ogni oggetto PortaleWeb presente nella lista concatenata e per ognuno aggiorno il sottopannello
+        ListIterator<PortaleWeb> iterator = j2web_GUI.listPortaliImmobiliari.listIterator();
      	while(iterator.hasNext()) {	     		
-     		final PortaleImmobiliare portaleCorrente = iterator.next();
+     		final PortaleWeb portaleCorrente = iterator.next();
      		InserimentoPortale inserimentoPortale = new InserimentoPortale(portaleCorrente, scheda, selectAllSelected);
      		add(inserimentoPortale);
      	}
@@ -272,13 +272,13 @@ class PanelInserimentoSequenziale extends JPanel {
 		btnInserisciTuttiIPortali.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {  
             	if(!j2web_GUI.listPortaliInserimentoSequenziale.isEmpty()) {
-            		ListIterator<PortaleImmobiliare> iterator = (ListIterator<PortaleImmobiliare>) j2web_GUI.listPortaliInserimentoSequenziale.iterator();
+            		ListIterator<PortaleWeb> iterator = (ListIterator<PortaleWeb>) j2web_GUI.listPortaliInserimentoSequenziale.iterator();
                 	String rapportoInserimentiOK = "";
                 	String rapportoInserimentiKO = "";
                 	//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                 	while(iterator.hasNext()) {
-                		PortaleImmobiliare portaleCorrente = iterator.next();          		
+                		PortaleWeb portaleCorrente = iterator.next();          		
                 		try {
          					System.out.println("Inserimento della scheda " + scheda.codiceScheda + " in " + portaleCorrente.idPortale);
          					boolean schedaInserita = portaleCorrente.inserisciScheda(scheda, true);
@@ -310,12 +310,12 @@ class PanelInserimentoSequenziale extends JPanel {
         btnCancellaTuttiIPortali.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { 
             	if(!j2web_GUI.listPortaliCancellazioneSequenziale.isEmpty()) {
-	            	ListIterator<PortaleImmobiliare> iterator = (ListIterator<PortaleImmobiliare>) j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
+	            	ListIterator<PortaleWeb> iterator = (ListIterator<PortaleWeb>) j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
 	            	
 	            	//Il cursone viene messo in modalità attesa
 	 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	            	while(iterator.hasNext()) {
-	            		PortaleImmobiliare portaleCorrente = iterator.next();         		
+	            		PortaleWeb portaleCorrente = iterator.next();         		
 	            		try {
 	            			System.out.println("Cancellazione della scheda " + scheda.codiceScheda + " da " + portaleCorrente.idPortale);
 	     					portaleCorrente.cancellaScheda(scheda, true);
@@ -381,7 +381,7 @@ class InserimentoPortale extends JPanel {
 	    
     //Costruttore 1
     //Pannello inserimento portale nel caso di nessun portale selezionato
-	public InserimentoPortale(PortaleImmobiliare portale) {
+	public InserimentoPortale(PortaleWeb portale) {
 		
 		setLayout(new GridLayout(2,3,5,5));
 		setMaximumSize(new Dimension(400, 90));
@@ -422,7 +422,7 @@ class InserimentoPortale extends JPanel {
 	
     //Costruttore 2
 	//Pannello inserimento portale nel caso di portale selezionato
-	public InserimentoPortale(final PortaleImmobiliare portale, final SchedaVeicolo scheda,  boolean selectAllSelected) {
+	public InserimentoPortale(final PortaleWeb portale, final SchedaVeicolo scheda,  boolean selectAllSelected) {
 		
 		final boolean isOnThisPortal = scheda.isOnThisPortal(portale.idPortale);
 		setLayout(new GridLayout(2,3,5,5));
@@ -448,7 +448,7 @@ class InserimentoPortale extends JPanel {
      				System.out.println("Inserisci: " + scheda.codiceScheda + " in " + portale.idPortale);	     				
      				//Il cursone viene messo in modalità attesa
      				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-     				//Chiamo il metodo afferente all'oggetto PortaleImmobiliare per inserire una scheda immobile, il metoso chiamata sarà quella della sottoclasse effettiva  				
+     				//Chiamo il metodo afferente all'oggetto PortaleWeb per inserire una scheda immobile, il metoso chiamata sarà quella della sottoclasse effettiva  				
      				try {
      					System.out.println("Inserisci: " + scheda.codiceScheda + " in " + portale.idPortale);
      					portale.inserisciScheda(scheda, false);
@@ -556,9 +556,9 @@ class InserimentoPortale extends JPanel {
                 		j2web_GUI.listPortaliCancellazioneSequenziale.add(portale);
                 		
                 		System.out.println("listPortaliCancellazioneSequenziale"); 
-                		Iterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
+                		Iterator<PortaleWeb> iterator = j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
                 		while(iterator.hasNext()) {
-                			PortaleImmobiliare portaleCorrente = iterator.next();
+                			PortaleWeb portaleCorrente = iterator.next();
                 			System.out.println("Elemento: " + portaleCorrente.idPortale);
                 		}
                 		System.out.println("/listPortaliCancellazioneSequenziale");
@@ -568,9 +568,9 @@ class InserimentoPortale extends JPanel {
                 		j2web_GUI.listPortaliInserimentoSequenziale.add(portale);
                 		
                 		System.out.println("listPortaliInserimentoSequenziale"); 
-                		Iterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliInserimentoSequenziale.iterator();
+                		Iterator<PortaleWeb> iterator = j2web_GUI.listPortaliInserimentoSequenziale.iterator();
                 		while(iterator.hasNext()) {
-                			PortaleImmobiliare portaleCorrente = iterator.next();
+                			PortaleWeb portaleCorrente = iterator.next();
                 			System.out.println("Elemento: " + portaleCorrente.idPortale);
                 		}
                 		System.out.println("/listPortaliInserimentoSequenziale"); 
@@ -583,9 +583,9 @@ class InserimentoPortale extends JPanel {
                 		j2web_GUI.listPortaliInserimentoSequenziale.remove(portale);
                 		
                 		System.out.println("listPortaliInserimentoSequenziale"); 
-                		Iterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliInserimentoSequenziale.iterator();
+                		Iterator<PortaleWeb> iterator = j2web_GUI.listPortaliInserimentoSequenziale.iterator();
                 		while(iterator.hasNext()) {
-                			PortaleImmobiliare portaleCorrente = iterator.next();
+                			PortaleWeb portaleCorrente = iterator.next();
                 			System.out.println("Elemento: " + portaleCorrente.idPortale);
                 		}
                 		System.out.println("/listPortaliInserimentoSequenziale");
@@ -595,9 +595,9 @@ class InserimentoPortale extends JPanel {
                 		j2web_GUI.listPortaliCancellazioneSequenziale.remove(portale);
                 		
                 		System.out.println("listPortaliCancellazioneSequenziale"); 
-                		Iterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
+                		Iterator<PortaleWeb> iterator = j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
                 		while(iterator.hasNext()) {
-                			PortaleImmobiliare portaleCorrente = iterator.next();
+                			PortaleWeb portaleCorrente = iterator.next();
                 			System.out.println("Elemento: " + portaleCorrente.idPortale);
                 		}
                 		System.out.println("/listPortaliCancellazioneSequenziale");
@@ -614,9 +614,9 @@ class InserimentoPortale extends JPanel {
         		j2web_GUI.listPortaliCancellazioneSequenziale.add(portale);
         		
         		System.out.println("listPortaliCancellazioneSequenziale"); 
-        		Iterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
+        		Iterator<PortaleWeb> iterator = j2web_GUI.listPortaliCancellazioneSequenziale.iterator();
         		while(iterator.hasNext()) {
-        			PortaleImmobiliare portaleCorrente = iterator.next();
+        			PortaleWeb portaleCorrente = iterator.next();
         			System.out.println("Elemento: " + portaleCorrente.idPortale);
         		}
         		System.out.println("/listPortaliCancellazioneSequenziale");
@@ -626,9 +626,9 @@ class InserimentoPortale extends JPanel {
         		j2web_GUI.listPortaliInserimentoSequenziale.add(portale);
         		
         		System.out.println("listPortaliInserimentoSequenziale"); 
-        		Iterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliInserimentoSequenziale.iterator();
+        		Iterator<PortaleWeb> iterator = j2web_GUI.listPortaliInserimentoSequenziale.iterator();
         		while(iterator.hasNext()) {
-        			PortaleImmobiliare portaleCorrente = iterator.next();
+        			PortaleWeb portaleCorrente = iterator.next();
         			System.out.println("Elemento: " + portaleCorrente.idPortale);
         		}
         		System.out.println("/listPortaliInserimentoSequenziale");
@@ -641,9 +641,9 @@ class InserimentoPortale extends JPanel {
         		j2web_GUI.listPortaliInserimentoSequenziale.remove(portale);
         		
         		System.out.println("listPortaliInserimentoSequenziale"); 
-        		Iterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliInserimentoSequenziale.iterator();
+        		Iterator<PortaleWeb> iterator = j2web_GUI.listPortaliInserimentoSequenziale.iterator();
         		while(iterator.hasNext()) {
-        			PortaleImmobiliare portaleCorrente = iterator.next();
+        			PortaleWeb portaleCorrente = iterator.next();
         			System.out.println("Elemento: " + portaleCorrente.idPortale);
         		}
         		System.out.println("/listPortaliInserimentoSequenziale");
@@ -653,9 +653,9 @@ class InserimentoPortale extends JPanel {
         		j2web_GUI.listPortaliCancellazioneSequenziale.remove(portale);
         		
         		System.out.println("listPortaliInserimentoSequenziale"); 
-        		Iterator<PortaleImmobiliare> iterator = j2web_GUI.listPortaliInserimentoSequenziale.iterator();
+        		Iterator<PortaleWeb> iterator = j2web_GUI.listPortaliInserimentoSequenziale.iterator();
         		while(iterator.hasNext()) {
-        			PortaleImmobiliare portaleCorrente = iterator.next();
+        			PortaleWeb portaleCorrente = iterator.next();
         			System.out.println("Elemento: " + portaleCorrente.idPortale);
         		}
         		System.out.println("/listPortaliInserimentoSequenziale");

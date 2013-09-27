@@ -16,7 +16,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 	private static final long serialVersionUID = 1L;
 
 	//I tre pannelli principali
-	static PanelCreazioneSchedeImmobile panelCreazioneSchedeImmobile;	//SX
+	//static PanelCreazioneSchedeImmobile panelCreazioneSchedeImmobile;	//SX
 	static PanelListaSchedeImmobili panelListaSchedeImmobile;	//MID
 	static PanelInserimentoImmobiliInPortali panelInserimentoImmobiliInPortali;	//DX
 	
@@ -26,13 +26,13 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
   	public static LinkedList<SchedaVeicolo> listSchedeImmobile = new LinkedList<SchedaVeicolo>();
   	
   	//La struttura dati che contiene i portali attivati
-  	public static LinkedList<PortaleImmobiliare> listPortaliImmobiliari = new LinkedList<PortaleImmobiliare>();
+  	public static LinkedList<PortaleWeb> listPortaliImmobiliari = new LinkedList<PortaleWeb>();
   	
   	//La struttura dati che contiene i portali selezionati per l'inserimento sequenziale
-  	public static LinkedList<PortaleImmobiliare> listPortaliInserimentoSequenziale = new LinkedList<PortaleImmobiliare>();
+  	public static LinkedList<PortaleWeb> listPortaliInserimentoSequenziale = new LinkedList<PortaleWeb>();
   	
     //La struttura dati che contiene i portali selezionati per l'eliminazione sequenziale
-  	public static LinkedList<PortaleImmobiliare> listPortaliCancellazioneSequenziale = new LinkedList<PortaleImmobiliare>();
+  	public static LinkedList<PortaleWeb> listPortaliCancellazioneSequenziale = new LinkedList<PortaleWeb>();
 	
   	
 	/**
@@ -127,7 +127,7 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 					    } else if (response == JOptionPane.YES_OPTION) {
 					    	//Elimino tutte le schede e salvo su dat
 					    	j2web_GUI.listSchedeImmobile.clear();
-					    	j2web.salvaListaSchedeImmobiliCreate();
+					    	j2web.salvaListaSchedeCreate();
 							j2web_GUI.panelListaSchedeImmobile.updatePanello();						
 					    } else if (response == JOptionPane.CLOSED_OPTION) {				    	
 					    }
@@ -166,8 +166,8 @@ public class j2web_GUI extends JFrame implements parametriGenerali {
 		/*Menu*/	
 		
 		//Pannello SX - "Creazione scheda immobile"
-		panelCreazioneSchedeImmobile = new PanelCreazioneSchedeImmobile();
-		getContentPane().add(new JScrollPane(panelCreazioneSchedeImmobile));
+		//panelCreazioneSchedeImmobile = new PanelCreazioneSchedeImmobile();
+		//getContentPane().add(new JScrollPane(panelCreazioneSchedeImmobile));
 		
 		//Pannello MID - "Lista schede create"
 		panelListaSchedeImmobile = new PanelListaSchedeImmobili();
