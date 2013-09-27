@@ -1,4 +1,3 @@
-import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 
 public class j2web implements parametriGenerali {
@@ -124,8 +122,7 @@ public class j2web implements parametriGenerali {
 			e.printStackTrace();
 		}
 	}
-	
-	
+		
 	//Inizializza la mappa delle regioni e provincie
 	public static void inizializzaMappaLimiteCaratteri() {	
 		/*
