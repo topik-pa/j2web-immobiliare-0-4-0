@@ -69,7 +69,7 @@ public class j2web implements parametriGenerali {
 	//Caricamento da dat
 	//@SuppressWarnings("unchecked")
 	public static void caricaListaSchedeCreate() {
-		File file = new File(pathFileDatSchede);
+		File file = new File(pathFileDatSchedeVeicolo);
     	if(file.exists() && file.length()!=0) {
     			System.out.print(" File .dat schede trovato. Caricamento dati...");
     			try {
@@ -93,20 +93,47 @@ public class j2web implements parametriGenerali {
     	}
 	}
 	
+	//Caricamento da dat
+	//@SuppressWarnings("unchecked")
+	public static void caricaListaSchedeClienteCreate() {
+		File file = new File(pathFileDatSchedeCliente);
+    	if(file.exists() && file.length()!=0) {
+    			System.out.print(" File .dat schede cliente trovato. Caricamento dati...");
+    			try {
+    				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
+    				@SuppressWarnings("unchecked")
+					LinkedList<SchedaCliente> readObject = (LinkedList<SchedaCliente>)inputFile.readObject();
+					J2Web_UI.listSchedeCliente = readObject;
+    				inputFile.close();
+    			} catch (FileNotFoundException e) {
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+    				e.printStackTrace();
+    			} catch (IOException e) {
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_IOException"), "IOException", JOptionPane.ERROR_MESSAGE);
+    				e.printStackTrace();
+    			} catch (ClassNotFoundException e) {
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_ClassNotFoundException"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
+    			}
+    		}   				
+    	else {
+    		System.out.println(" File .dat schede cliente non trovato o file .dat vuoto.");
+    	}
+	}
+	
 	//Salvataggio su dat
-	public static void salvaListaSchedeCreate() {
+	public static void salvaListaSchedeVeicoloCreate() {
 		try {
-		   File file = new File(pathFileDatSchede);
+		   File file = new File(pathFileDatSchedeVeicolo);
 	    	if(file.exists()) {
-	    		System.out.print("File .dat schede trovato. Salvataggio dati...");
+	    		System.out.print("File .dat schede trovato. Salvataggio dati scheda veicolo...");
 	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
 				outputFile.writeObject(J2Web_UI.listSchedeVeicolo);
 				outputFile.close();
 				System.out.print(" fatto." + "\n");
 	    	}
 	    	else {	    		
-				FileOutputStream newFile = new FileOutputStream(pathFileDatSchede);
-				System.out.print("File .dat non schede trovato. Creazione del file..." + newFile.toString());
+				FileOutputStream newFile = new FileOutputStream(pathFileDatSchedeVeicolo);
+				System.out.print("File .dat non schede trovato. Creazione del file scheda veicolo..." + newFile.toString());
 				ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
 				outputFile.writeObject(J2Web_UI.listSchedeVeicolo);
 				outputFile.close();
@@ -122,6 +149,36 @@ public class j2web implements parametriGenerali {
 			e.printStackTrace();
 		}
 	}
+	
+	//Salvataggio su dat
+		public static void salvaListaSchedeClienteCreate() {
+			try {
+			   File file = new File(pathFileDatSchedeCliente);
+		    	if(file.exists()) {
+		    		System.out.print("File .dat schede cliente trovato. Salvataggio dati...");
+		    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+					outputFile.writeObject(J2Web_UI.listSchedeCliente);
+					outputFile.close();
+					System.out.print(" fatto." + "\n");
+		    	}
+		    	else {	    		
+					FileOutputStream newFile = new FileOutputStream(pathFileDatSchedeCliente);
+					System.out.print("File .dat schede cliente non trovato. Creazione del file..." + newFile.toString());
+					ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+					outputFile.writeObject(J2Web_UI.listSchedeCliente);
+					outputFile.close();
+					System.out.print(" fatto." + "\n");
+		    	}
+			}
+			catch (FileNotFoundException e) {		
+		        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeCreate_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+		        e.printStackTrace();
+			}
+			catch (IOException e) {
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeCreate_FileNotFoundException"), "IOException", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+		}
 		
 	//Inizializza la mappa delle regioni e provincie
 	public static void inizializzaMappaLimiteCaratteri() {	
