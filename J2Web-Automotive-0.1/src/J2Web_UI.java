@@ -167,6 +167,12 @@ public class J2Web_UI implements parametriGenerali{
   	//La struttura dati che contiene le schede cliente create
   	public static LinkedList<SchedaCliente> listSchedeCliente = new LinkedList<SchedaCliente>();
   	
+  	//La struttura dati che contiene le schede cliente che fanno match con la scheda veicolo eventualmente selezionata
+  	public static LinkedList<SchedaCliente> listSchedeClientiMatch = new LinkedList<SchedaCliente>();
+  	
+  	//La struttura dati che contiene le schede veicolo che fanno match con la scheda cliente eventualmente selezionata
+  	public static LinkedList<SchedaVeicolo> listSchedeVeicoliMatch = new LinkedList<SchedaVeicolo>();
+  	
   	//La struttura dati che contiene i portali attivati
   	public static LinkedList<PortaleWeb> listPortaliImmobiliari = new LinkedList<PortaleWeb>();
   	
@@ -198,6 +204,8 @@ public class J2Web_UI implements parametriGenerali{
 	private final ButtonGroup buttonGroup_1 = new ButtonGroup();
 	private static JPanel panel_13;
 	private JTable table;
+	private static JPanel panel_4;
+	private static JPanel panel_6;
 
 	/**
 	 * Launch the application.
@@ -1122,12 +1130,25 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_scrollPane_3.gridy = 1;
 		panel.add(scrollPane_3, gbc_scrollPane_3);
 		
-		JPanel panel_4 = new JPanel();
+		panel_4 = new JPanel();
+		panel_4.addContainerListener(new ContainerAdapter() {
+			@Override
+			public void componentAdded(ContainerEvent arg0) {
+				//Ascolto l'inserimento di un component nel pannello e lo aggiorno di conseguenza
+				panel_4.updateUI();	
+			}
+		});
 		panel_4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Clienti potenzialmente interessati al veicolo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_3.setViewportView(panel_4);
 		panel_4.setBackground(new Color(255, 255, 224));
 		
-		table = new JTable();
+		
+		JPanel panelNessunaScedaSelezionata = new JPanel();
+        JLabel lblNessunaScedaSelezionata = new JLabel("Non è stata selezionata alcuna scheda.");                
+        panelNessunaScedaSelezionata.add(lblNessunaScedaSelezionata);
+        panel_4.add(panelNessunaScedaSelezionata);
+		
+		/*table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 				{"11", "222", "333", "444", "55", "6666"},
@@ -1137,7 +1158,7 @@ public class J2Web_UI implements parametriGenerali{
 				"Nome", "Cognome", "Cognome", "New column", "New column", "New column"
 			}
 		));
-		panel_4.add(table);
+		panel_4.add(table);*/
 		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Anagrafica cliente", new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\icon_pilot.png"), panel_1, null);
@@ -1506,11 +1527,23 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_scrollPane_6.gridy = 1;
 		panel_1.add(scrollPane_6, gbc_scrollPane_6);
 		
-		JPanel panel_6 = new JPanel();
+		panel_6 = new JPanel();
 		panel_6.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Veicoli potenzialmente interessanti per il cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_6.setViewportView(panel_6);
+		panel_6.addContainerListener(new ContainerAdapter() {
+			@Override
+			public void componentAdded(ContainerEvent arg0) {
+				//Ascolto l'inserimento di un component nel pannello e lo aggiorno di conseguenza
+				panel_6.updateUI();	
+			}
+		});
 		panel_6.setBackground(new Color(255, 255, 224));
-		panel_6.setLayout(new GridLayout(0, 1, 0, 0));
+		panel_6.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JPanel panelNessunaScedaSelezionata2 = new JPanel();
+        JLabel lblNessunaScedaSelezionata2 = new JLabel("Non è stata selezionata alcuna scheda.");                
+        panelNessunaScedaSelezionata2.add(lblNessunaScedaSelezionata2);
+        panel_6.add(panelNessunaScedaSelezionata2);
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Incrocio anagrafiche", new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\icon_db.png"), panel_2, null);
@@ -2567,6 +2600,12 @@ public class J2Web_UI implements parametriGenerali{
 	protected static JPanel getPanel_13() {
 		return panel_13;
 	}
+	protected static JPanel getPanel_4() {
+		return panel_4;
+	}
+	protected static JPanel getPanel_6() {
+		return panel_6;
+	}
 }
 
 
@@ -2618,6 +2657,8 @@ class PanelSchedaVeicolo extends JPanel {
                }
                
                setBorder(new LineBorder(Color.ORANGE));
+               
+               matchVeicoloCliente(scheda);
            }
 		 });
 		 add(schedaRadio, BorderLayout.NORTH);
@@ -2720,6 +2761,71 @@ class PanelSchedaVeicolo extends JPanel {
 	 panel_26.add(btnEsportaScheda);*/
 	 }
 	
+	 private void  matchVeicoloCliente(SchedaVeicolo schedaVeicolo) {
+		 
+		 JPanel pannelloMatchVeicoloCliente = J2Web_UI.getPanel_4();
+		 
+		 J2Web_UI.listSchedeClientiMatch.clear();
+			
+		 pannelloMatchVeicoloCliente.removeAll();
+		 
+		 //pannelloMatchVeicoloCliente.updateUI();
+			
+			//pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(7));
+		 
+		 boolean matchPositivo = false;
+		 
+		 
+			ListIterator<SchedaCliente> iterator = J2Web_UI.listSchedeCliente.listIterator();
+	     	while(iterator.hasNext()) {
+	     		SchedaCliente schedaCorrente = iterator.next();
+	     		System.out.println("test: " + schedaVeicolo.modelloVeicolo + schedaCorrente.modelloVeicoloCliente);
+	     		if(schedaVeicolo.modelloVeicolo.equalsIgnoreCase(schedaCorrente.modelloVeicoloCliente)) {
+	     			J2Web_UI.listSchedeClientiMatch.add(schedaCorrente);
+	     		}
+	     		
+	     	}
+	     	if(!J2Web_UI.listSchedeClientiMatch.isEmpty()){	
+	     		matchPositivo = true;
+	     	}
+			
+			
+			if(!matchPositivo) {
+				//Match negativo
+				System.out.println("Non è stato trovato alcun cliente interessato al veicolo.");
+	    		JPanel panelNessunMatch = new JPanel();
+	            JLabel lblNessunMatch = new JLabel("Non è stato trovato alcun cliente interessato al veicolo.");                
+	            panelNessunMatch.add(lblNessunMatch);
+	            pannelloMatchVeicoloCliente.add(panelNessunMatch);
+	    	}    	
+	    	else {
+	    		//Match positivo
+	    		System.out.println("Trovati potenziali clienti  interessati al veicolo");
+	    		
+	    		String[][] matrix = new String[J2Web_UI.listSchedeClientiMatch.size()][5];
+	    		
+	    		for (int row = 0; row < matrix.length; row++) {
+	    	       // for (int column = 0; column < matrix[row].length; column++)
+	    	            matrix[row][0] = J2Web_UI.listSchedeClientiMatch.get(row).nomeCliente;
+	    	            matrix[row][1] = J2Web_UI.listSchedeClientiMatch.get(row).cognomeCliente;
+	    	            matrix[row][2] = J2Web_UI.listSchedeClientiMatch.get(row).emailCliente;
+	    	            matrix[row][3] = J2Web_UI.listSchedeClientiMatch.get(row).telefono1Cliente;
+	    	            matrix[row][4] = J2Web_UI.listSchedeClientiMatch.get(row).telefono2Cliente;
+	    	    }
+	    		
+	    		JTable table = new JTable();
+	    		table.setModel(new DefaultTableModel(
+	    				matrix,
+	    			new String[] {
+	    				"Nome", "Cognome", "Email", "Telefono 1", "Telefono 2"
+	    			}
+	    		));
+	    		pannelloMatchVeicoloCliente.add(table);
+	    		
+	    		
+	    		
+	    	}
+	 }
 }
 
 //Questa classe definisce tutti i sottopannelli schede cliente
@@ -2763,6 +2869,8 @@ class PanelSchedaCliente extends JPanel {
                }
                
                setBorder(new LineBorder(Color.ORANGE));
+               
+               matchClienteVeicolo(scheda);
            }
 		 });
 		 add(schedaRadio, BorderLayout.NORTH);
@@ -2823,7 +2931,73 @@ class PanelSchedaCliente extends JPanel {
        
        
 	 }
-	
+
+	 
+	 private void  matchClienteVeicolo(SchedaCliente schedaCliente) {
+		 
+		 JPanel pannelloMatchClienteVeicolo = J2Web_UI.getPanel_6();
+		 
+		 J2Web_UI.listSchedeVeicoliMatch.clear();
+			
+		 pannelloMatchClienteVeicolo.removeAll();
+		 
+		 //pannelloMatchVeicoloCliente.updateUI();
+			
+			//pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(7));
+		 
+		 boolean matchPositivo = false;
+		 
+		 
+			ListIterator<SchedaVeicolo> iterator = J2Web_UI.listSchedeVeicolo.listIterator();
+	     	while(iterator.hasNext()) {
+	     		SchedaVeicolo schedaCorrente = iterator.next();
+	     		System.out.println("test: " + schedaCliente.modelloVeicoloCliente + schedaCorrente.modelloVeicolo);
+	     		if(schedaCliente.modelloVeicoloCliente.equalsIgnoreCase(schedaCorrente.modelloVeicolo)) {
+	     			J2Web_UI.listSchedeVeicoliMatch.add(schedaCorrente);
+	     		}
+	     		
+	     	}
+	     	if(!J2Web_UI.listSchedeVeicoliMatch.isEmpty()){	
+	     		matchPositivo = true;
+	     	}
+			
+			
+			if(!matchPositivo) {
+				//Match negativo
+				System.out.println("Non è stato trovato alcun veicolo intteressante per il cliente.");
+	    		JPanel panelNessunMatch = new JPanel();
+	            JLabel lblNessunMatch = new JLabel("Non è stato trovato alcun veicolo intteressante per il cliente.");                
+	            panelNessunMatch.add(lblNessunMatch);
+	            pannelloMatchClienteVeicolo.add(panelNessunMatch);
+	    	}    	
+	    	else {
+	    		//Match positivo
+	    		System.out.println("Trovati potenziali veicoli interessanti per il cliente");
+	    		
+	    		String[][] matrix = new String[J2Web_UI.listSchedeVeicoliMatch.size()][5];
+	    		
+	    		for (int row = 0; row < matrix.length; row++) {
+	    	       // for (int column = 0; column < matrix[row].length; column++)
+	    	            matrix[row][0] = J2Web_UI.listSchedeVeicoliMatch.get(row).marcaVeicolo;
+	    	            matrix[row][1] = J2Web_UI.listSchedeVeicoliMatch.get(row).modelloVeicolo;
+	    	            matrix[row][2] = J2Web_UI.listSchedeVeicoliMatch.get(row).versioneVeicolo;
+	    	            matrix[row][3] = J2Web_UI.listSchedeVeicoliMatch.get(row).coloreEsternoVeicolo;
+	    	            matrix[row][4] = J2Web_UI.listSchedeVeicoliMatch.get(row).prezzoVeicolo;
+	    	    }
+	    		
+	    		JTable table = new JTable();
+	    		table.setModel(new DefaultTableModel(
+	    				matrix,
+	    			new String[] {
+	    				"Marca", "Modello", "Versione", "Colore", "Prezzo"
+	    			}
+	    		));
+	    		pannelloMatchClienteVeicolo.add(table);
+	    		
+	    		
+	    		
+	    	}
+	 }
 }
 
 
