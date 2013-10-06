@@ -66,13 +66,18 @@ public interface parametriGenerali {
     Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>(); 
   	
   	//Percorso file dat per le schede
-  	String pathFileDatSchede = ".\\schede\\schede.dat";
+  	String pathFileDatSchedeVeicolo = ".\\schede\\schedeVeicolo.dat";
+  	String pathFileDatSchedeCliente = ".\\schede\\schedeClienti.dat";
+  	
   	  
     //Mappa che contiene tutti i campi della form soggetti a lettura/scrittura o modifiche varie a runtime
     Map<String,JComponent> mapCampiForm =  new Hashtable<String,JComponent>();
     
     //Lista concatenata che contiene tutti i campi della form soggetti a lettura/scrittura o modifiche varie a runtime
     LinkedList<JComponent> listCampiForm = new LinkedList<JComponent>();
+    
+    //Lista concatenata che contiene tutti i campi della form cliente soggetti a lettura/scrittura o modifiche varie a runtime
+    LinkedList<JComponent> listCampiFormCliente = new LinkedList<JComponent>();
     
     //Lista concatenata che contiene tutti i campi della form che sono obbligatori
     LinkedList<JComponent> listCampiFormObbligatori = new LinkedList<JComponent>();

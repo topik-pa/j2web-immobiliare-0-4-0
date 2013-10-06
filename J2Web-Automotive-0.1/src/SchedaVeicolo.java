@@ -42,6 +42,10 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	int tipologiaVeicoloIndex;
 	String marcaVeicolo;
 	int marcaVeicoloIndex;
+	String modelloVeicolo;
+	int modelloVeicoloIndex;
+	String versioneVeicolo;
+	int versioneVeicoloIndex;
 	String carrozzeriaVeicolo;
 	int carrozzeriaVeicoloIndex;
 	String postiASedereVeicolo;
@@ -50,8 +54,6 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	int finitureInterneVeicoloIndex;
 	String coloreInterniVeicolo;
 	int coloreInterniVeicoloIndex;
-	String versioneVeicolo;
-	int versioneVeicoloIndex;
 	String meseImmatricolazioneVeicolo;
 	int meseImmatricolazioneVeicoloIndex;
 	String annoImmatricolazioneVeicolo;
@@ -105,7 +107,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	String descrizioneVeicolo;
 	
 	//File
-	File imgFile1;	File imgFile2;	File imgFile3;	File imgFile4;	File imgFile5;	File imgFile6;	File imgFile7;	File imgFile8;	File imgFile9;	File imgFile0; 	
+	File imgFile1;	File imgFile2;	File imgFile3;	File imgFile4;	File imgFile5;	File imgFile6;	File imgFile7;	File imgFile8;	File imgFile9;	File imgFile10; 	
 	File[] arrayImages = new File[10]; //Attenzione: lascierò volutamente libera la prima posizione [0]
 	
 	//Una scheda immobile può essere ospitata in diversi portali, la seguente tabella hash contiene i codici dei portali(key) e il codice di inserimento(value) in cui la scheda è attualmente inserita
@@ -121,6 +123,10 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		tipologiaVeicoloIndex =J2Web_UI.getComboBox_Tipologia().getSelectedIndex();
 		marcaVeicolo = (String) J2Web_UI.getComboBox_Marca().getSelectedItem();
 		marcaVeicoloIndex =J2Web_UI.getComboBox_Marca().getSelectedIndex();
+		modelloVeicolo = (String) J2Web_UI.getComboBox_Modello().getSelectedItem();
+		modelloVeicoloIndex =J2Web_UI.getComboBox_Modello().getSelectedIndex();
+		versioneVeicolo = (String) J2Web_UI.getComboBox_Versione().getSelectedItem();
+		versioneVeicoloIndex =J2Web_UI.getComboBox_Versione().getSelectedIndex();
 		carrozzeriaVeicolo = (String) J2Web_UI.getComboBox_Carrozzeria().getSelectedItem();
 		carrozzeriaVeicoloIndex =J2Web_UI.getComboBox_Carrozzeria().getSelectedIndex();
 		postiASedereVeicolo = (String) J2Web_UI.getComboBox_PostiASedere().getSelectedItem();
@@ -184,43 +190,43 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		
 		descrizioneVeicolo = J2Web_UI.getTextPane_Descrizione().getText().trim();
 		
-		File imgFile1 = J2Web_UI.getFileImmagine1();
+		imgFile1 = J2Web_UI.getFileImmagine1();
 		if(imgFile1!=null && imgFile1.exists()) {
 			arrayImages[1] = imgFile1;
 		}
-		File imgFile2 = J2Web_UI.getFileImmagine2();
+		imgFile2 = J2Web_UI.getFileImmagine2();
 		if(imgFile2!=null && imgFile2.exists()) {
 			arrayImages[2] = imgFile2;
 		}
-		File imgFile3 = J2Web_UI.getFileImmagine3();
+		imgFile3 = J2Web_UI.getFileImmagine3();
 		if(imgFile3!=null && imgFile3.exists()) {
 			arrayImages[3] = imgFile3;
 		}
-		File imgFile4 = J2Web_UI.getFileImmagine4();
+		imgFile4 = J2Web_UI.getFileImmagine4();
 		if(imgFile4!=null && imgFile4.exists()) {
 			arrayImages[4] = imgFile4;
 		}
-		File imgFile5 = J2Web_UI.getFileImmagine5();
+		imgFile5 = J2Web_UI.getFileImmagine5();
 		if(imgFile5!=null && imgFile5.exists()) {
 			arrayImages[5] = imgFile5;
 		}
-		File imgFile6 = J2Web_UI.getFileImmagine6();
+		imgFile6 = J2Web_UI.getFileImmagine6();
 		if(imgFile6!=null && imgFile6.exists()) {
 			arrayImages[6] = imgFile6;
 		}
-		File imgFile7 = J2Web_UI.getFileImmagine7();
+		imgFile7 = J2Web_UI.getFileImmagine7();
 		if(imgFile7!=null && imgFile7.exists()) {
 			arrayImages[7] = imgFile7;
 		}
-		File imgFile8 = J2Web_UI.getFileImmagine8();
+		imgFile8 = J2Web_UI.getFileImmagine8();
 		if(imgFile8!=null && imgFile8.exists()) {
 			arrayImages[8] = imgFile8;
 		}
-		File imgFile9 = J2Web_UI.getFileImmagine9();
+		imgFile9 = J2Web_UI.getFileImmagine9();
 		if(imgFile9!=null && imgFile9.exists()) {
 			arrayImages[9] = imgFile9;
 		}
-		File imgFile10 = J2Web_UI.getFileImmagine10();
+		imgFile10 = J2Web_UI.getFileImmagine10();
 		if(imgFile10!=null && imgFile10.exists()) {
 			arrayImages[10] = imgFile10;
 		}	
