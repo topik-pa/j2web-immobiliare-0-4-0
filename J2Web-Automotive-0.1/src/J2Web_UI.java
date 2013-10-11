@@ -206,6 +206,7 @@ public class J2Web_UI implements parametriGenerali{
 	private JTable table;
 	private static JPanel panel_4;
 	private static JPanel panel_6;
+	private JPanel panel_14;
 
 	/**
 	 * Launch the application.
@@ -1546,7 +1547,7 @@ public class J2Web_UI implements parametriGenerali{
         panel_6.add(panelNessunaScedaSelezionata2);
 		
 		JPanel panel_2 = new JPanel();
-		tabbedPane.addTab("Incrocio anagrafiche", new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\icon_db.png"), panel_2, null);
+		tabbedPane.addTab("Incrocio MLS", new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\icon_db.png"), panel_2, null);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[] {437, 0};
 		gbl_panel_2.rowHeights = new int[] {300, 70, 0};
@@ -1576,14 +1577,10 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_scrollPane_7.gridy = 0;
 		panel_7.add(scrollPane_7, gbc_scrollPane_7);
 		
-		JPanel panel_14 = new JPanel();
+		panel_14 = new JPanel();
+		panel_14.setBorder(new TitledBorder(null, "Lista schede cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_7.setViewportView(panel_14);
-		GridBagLayout gbl_panel_14 = new GridBagLayout();
-		gbl_panel_14.columnWidths = new int[]{0, 0};
-		gbl_panel_14.rowHeights = new int[]{100, 30, 0};
-		gbl_panel_14.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_14.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-		panel_14.setLayout(gbl_panel_14);
+		panel_14.setLayout(new BoxLayout(panel_14, BoxLayout.X_AXIS));
 		
 		JScrollPane scrollPane_8 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_8 = new GridBagConstraints();
@@ -2605,6 +2602,9 @@ public class J2Web_UI implements parametriGenerali{
 	}
 	protected static JPanel getPanel_6() {
 		return panel_6;
+	}
+	protected JPanel getPanel_14() {
+		return panel_14;
 	}
 }
 
