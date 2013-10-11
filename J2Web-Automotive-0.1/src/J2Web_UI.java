@@ -52,11 +52,19 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.ButtonGroup;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
@@ -206,7 +214,8 @@ public class J2Web_UI implements parametriGenerali{
 	private JTable table;
 	private static JPanel panel_4;
 	private static JPanel panel_6;
-	private JPanel panel_14;
+	private static JPanel panel_31;
+	private static JPanel panel_15;
 
 	/**
 	 * Launch the application.
@@ -1565,22 +1574,52 @@ public class J2Web_UI implements parametriGenerali{
 		GridBagLayout gbl_panel_7 = new GridBagLayout();
 		gbl_panel_7.columnWidths = new int[] {100, 100, 0};
 		gbl_panel_7.rowHeights = new int[]{170, 0};
-		gbl_panel_7.columnWeights = new double[]{2.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_7.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gbl_panel_7.rowWeights = new double[]{4.0, Double.MIN_VALUE};
 		panel_7.setLayout(gbl_panel_7);
+		
+		JPanel panel_14 = new JPanel();
+		GridBagConstraints gbc_panel_14 = new GridBagConstraints();
+		gbc_panel_14.insets = new Insets(0, 0, 0, 5);
+		gbc_panel_14.fill = GridBagConstraints.BOTH;
+		gbc_panel_14.gridx = 0;
+		gbc_panel_14.gridy = 0;
+		panel_7.add(panel_14, gbc_panel_14);
+		GridBagLayout gbl_panel_14 = new GridBagLayout();
+		gbl_panel_14.columnWidths = new int[]{500, 0};
+		gbl_panel_14.rowHeights = new int[] {237, 30, 0};
+		gbl_panel_14.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panel_14.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		panel_14.setLayout(gbl_panel_14);
 		
 		JScrollPane scrollPane_7 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_7 = new GridBagConstraints();
 		gbc_scrollPane_7.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_7.insets = new Insets(0, 0, 0, 5);
+		gbc_scrollPane_7.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane_7.gridx = 0;
 		gbc_scrollPane_7.gridy = 0;
-		panel_7.add(scrollPane_7, gbc_scrollPane_7);
+		panel_14.add(scrollPane_7, gbc_scrollPane_7);
 		
-		panel_14 = new JPanel();
-		panel_14.setBorder(new TitledBorder(null, "Lista schede cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		scrollPane_7.setViewportView(panel_14);
-		panel_14.setLayout(new BoxLayout(panel_14, BoxLayout.X_AXIS));
+		panel_31 = new JPanel();
+		scrollPane_7.setViewportView(panel_31);
+		panel_31.addContainerListener(new ContainerAdapter() {
+			@Override
+			public void componentAdded(ContainerEvent arg0) {
+				//Ascolto l'inserimento di un component nel pannello e lo aggiorno di conseguenza
+				panel_31.updateUI();	
+			}
+		});
+		panel_31.setLayout(new BoxLayout(panel_31, BoxLayout.Y_AXIS));
+		
+		JPanel panel_32 = new JPanel();
+		GridBagConstraints gbc_panel_32 = new GridBagConstraints();
+		gbc_panel_32.fill = GridBagConstraints.BOTH;
+		gbc_panel_32.gridx = 0;
+		gbc_panel_32.gridy = 1;
+		panel_14.add(panel_32, gbc_panel_32);
+		
+		JButton btnAggiornaRisultati = new JButton("Aggiorna risultati");
+		panel_32.add(btnAggiornaRisultati);
 		
 		JScrollPane scrollPane_8 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_8 = new GridBagConstraints();
@@ -1589,8 +1628,16 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_scrollPane_8.gridy = 0;
 		panel_7.add(scrollPane_8, gbc_scrollPane_8);
 		
-		JPanel panel_15 = new JPanel();
+		panel_15 = new JPanel();
 		scrollPane_8.setViewportView(panel_15);
+		panel_15.addContainerListener(new ContainerAdapter() {
+			@Override
+			public void componentAdded(ContainerEvent arg0) {
+				//Ascolto l'inserimento di un component nel pannello e lo aggiorno di conseguenza
+				panel_15.updateUI();	
+			}
+		});
+		panel_15.setLayout(new BoxLayout(panel_15, BoxLayout.Y_AXIS));
 		
 		JScrollPane scrollPane_9 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_9 = new GridBagConstraints();
@@ -1671,18 +1718,28 @@ public class J2Web_UI implements parametriGenerali{
 	protected static void aggiornaPannelloListaSchedeCliente() {
 		
 		JPanel pannelloListaSchedeCliente = getPanel_13();
+		JPanel pannelloListaSchedeClienteMLS = getPanel_31();
+		
 		
 		pannelloListaSchedeCliente.removeAll();
+		pannelloListaSchedeClienteMLS.removeAll();
 		
 		//pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(7));	
 		
 		if(listSchedeCliente.isEmpty()) {
 			//Pannello senza schede
     		System.out.println("La lista delle schede cliente è vuota.");
+    		
     		JPanel panelNessunaScheda = new JPanel();
             JLabel lblNessunaScheda = new JLabel("La lista delle schede cliente è vuota.");                
             panelNessunaScheda.add(lblNessunaScheda);
+            
+            JPanel panelNessunaSchedaMLS = new JPanel();
+            JLabel lblNessunaSchedaMLS = new JLabel("La lista delle schede cliente è vuota.");                
+            panelNessunaSchedaMLS.add(lblNessunaSchedaMLS);
+            
             pannelloListaSchedeCliente.add(panelNessunaScheda);
+            pannelloListaSchedeClienteMLS.add(panelNessunaSchedaMLS);
     	}    	
     	else {
     		//Pannello con schede
@@ -1690,10 +1747,16 @@ public class J2Web_UI implements parametriGenerali{
     		ListIterator<SchedaCliente> iterator = listSchedeCliente.listIterator();
         	while(iterator.hasNext()) {
         		SchedaCliente schedaCorrente = iterator.next();
+        		
         		//I sottopannelli sono istanze di una classe comune definita più sotto
-        		JPanel pannelloSchedaCliente = new PanelSchedaCliente(schedaCorrente, listSchedeCliente, radioGrpSchede);            
+        		JPanel pannelloSchedaCliente = new PanelSchedaCliente(schedaCorrente, listSchedeCliente, radioGrpSchede);    
+        		JPanel pannelloSchedaClienteMLS = new PanelSchedaClienteMLS(schedaCorrente, listSchedeCliente, radioGrpSchede);  
+        		        		
         		pannelloListaSchedeCliente.add(pannelloSchedaCliente);
         		pannelloListaSchedeCliente.add(Box.createVerticalStrut(5));
+        		
+        		pannelloListaSchedeClienteMLS.add(pannelloSchedaClienteMLS);
+        		pannelloListaSchedeClienteMLS.add(Box.createVerticalStrut(5));
         	}
     	}
 		
@@ -2603,13 +2666,17 @@ public class J2Web_UI implements parametriGenerali{
 	protected static JPanel getPanel_6() {
 		return panel_6;
 	}
-	protected JPanel getPanel_14() {
-		return panel_14;
+	
+	protected static JPanel getPanel_31() {
+		return panel_31;
+	}
+	protected static JPanel getPanel_15() {
+		return panel_15;
 	}
 }
 
 
-//Questa classe definisce tutti i sottopannelli schede immobile
+//Questa classe definisce tutti i sottopannelli schede veicolo
 class PanelSchedaVeicolo extends JPanel {   
 	
 	JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
@@ -2828,6 +2895,162 @@ class PanelSchedaVeicolo extends JPanel {
 	 }
 }
 
+
+
+//Questa classe definisce tutti i sottopannelli schede veicolo
+class PanelSchedaVeicoloMLS extends JPanel {   
+	
+	JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
+	
+	private static final long serialVersionUID = 1L;
+	
+	SchedaVeicolo scheda;
+	Long idScheda;
+	String codiceScheda;
+	JButton btnCancellaScheda;
+	JButton btnEsportaScheda;
+	JRadioButton schedaRadio;
+	
+	String labelSpaziatore = "   "; 
+	
+	 public PanelSchedaVeicoloMLS(final SchedaVeicolo scheda) {
+		 this.scheda = scheda;
+		 idScheda = scheda.idScheda;
+		 codiceScheda = scheda.codiceScheda;
+		 
+		 setLayout(new BorderLayout(0, 0));
+		 setBorder(new LineBorder(Color.LIGHT_GRAY));
+		 setMaximumSize(new Dimension(400, 130));
+		 	
+		 //Radio button dei sottopannelli
+		 schedaRadio = new JRadioButton("Seleziona scheda");
+		 //Le radio button devono appartenere allo stesso gruppo per funzionare correttamente
+		 //radioGrpSchede.add(schedaRadio); 
+		 //Clicco su una radio button di una scheda
+		 schedaRadio.addActionListener(new ActionListener() {			 
+         public void actionPerformed(ActionEvent e) {
+             System.out.println("Scheda selezionata: " + scheda.marcaVeicolo); 
+             
+             
+             Component[] wrapperScheda = getParent().getComponents();
+             for(int i=0; i<wrapperScheda.length; i++) {
+          	   if(wrapperScheda[i].getClass().toString().contains("PanelSchedaVeicolo"))  {
+          		   ((JComponent) wrapperScheda[i]).setBorder(new LineBorder(Color.LIGHT_GRAY));
+          	   }
+             }
+             
+             setBorder(new LineBorder(Color.ORANGE));
+             
+             //matchVeicoloCliente(scheda);
+         }
+		 });
+		 add(schedaRadio, BorderLayout.NORTH);
+		 
+		 //La label delle schede
+		 String labelScheda = scheda.marcaVeicolo + "-" + scheda.modelloVeicolo + "-" + scheda.versioneVeicolo + "-" + scheda.carrozzeriaVeicolo + "-" + scheda.coloreEsternoVeicolo + "-" + scheda.descrizioneVeicolo;
+		 if(labelScheda.length()>31) {	//è molto probabile che lo sia... :)
+			 labelScheda = labelScheda.substring(0, 30); 
+		 }		 
+		 labelScheda+="...";
+		 JLabel label = new JLabel(labelScheda);
+		 Font font = new Font("Monospaced", Font.PLAIN, 11);
+		 label.setFont(font);
+		 label.setHorizontalTextPosition(SwingConstants.LEFT);
+		 
+		 BufferedImage imgtest = null;
+		 if(scheda.arrayImages[1]!=null) {
+			 try {
+					imgtest = ImageIO.read(scheda.arrayImages[1]);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			 
+			 Image resizedimg = imgtest.getScaledInstance(70, 50, Image.SCALE_FAST);          
+	         Icon icoImmagine = new ImageIcon(resizedimg);
+	         
+			 label.setIcon(new ImageIcon(resizedimg));
+		 }
+		
+		 
+		 
+		 add(label, BorderLayout.CENTER);
+		 		 
+		 //add(new JLabel(labelSpaziatore));
+		 
+		 
+	 }
+	
+	 private void  matchVeicoloCliente(SchedaVeicolo schedaVeicolo) {
+		 
+		 JPanel pannelloMatchVeicoloCliente = J2Web_UI.getPanel_4();
+		 
+		 J2Web_UI.listSchedeClientiMatch.clear();
+			
+		 pannelloMatchVeicoloCliente.removeAll();
+		 
+		 //pannelloMatchVeicoloCliente.updateUI();
+			
+			//pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(7));
+		 
+		 boolean matchPositivo = false;
+		 
+		 
+			ListIterator<SchedaCliente> iterator = J2Web_UI.listSchedeCliente.listIterator();
+	     	while(iterator.hasNext()) {
+	     		SchedaCliente schedaCorrente = iterator.next();
+	     		System.out.println("test: " + schedaVeicolo.modelloVeicolo + schedaCorrente.modelloVeicoloCliente);
+	     		if(schedaVeicolo.modelloVeicolo.equalsIgnoreCase(schedaCorrente.modelloVeicoloCliente)) {
+	     			J2Web_UI.listSchedeClientiMatch.add(schedaCorrente);
+	     		}
+	     		
+	     	}
+	     	if(!J2Web_UI.listSchedeClientiMatch.isEmpty()){	
+	     		matchPositivo = true;
+	     	}
+			
+			
+			if(!matchPositivo) {
+				//Match negativo
+				System.out.println("Non è stato trovato alcun cliente interessato al veicolo.");
+	    		JPanel panelNessunMatch = new JPanel();
+	            JLabel lblNessunMatch = new JLabel("Non è stato trovato alcun cliente interessato al veicolo.");                
+	            panelNessunMatch.add(lblNessunMatch);
+	            pannelloMatchVeicoloCliente.add(panelNessunMatch);
+	    	}    	
+	    	else {
+	    		//Match positivo
+	    		System.out.println("Trovati potenziali clienti  interessati al veicolo");
+	    		
+	    		String[][] matrix = new String[J2Web_UI.listSchedeClientiMatch.size()][5];
+	    		
+	    		for (int row = 0; row < matrix.length; row++) {
+	    	       // for (int column = 0; column < matrix[row].length; column++)
+	    	            matrix[row][0] = J2Web_UI.listSchedeClientiMatch.get(row).nomeCliente;
+	    	            matrix[row][1] = J2Web_UI.listSchedeClientiMatch.get(row).cognomeCliente;
+	    	            matrix[row][2] = J2Web_UI.listSchedeClientiMatch.get(row).emailCliente;
+	    	            matrix[row][3] = J2Web_UI.listSchedeClientiMatch.get(row).telefono1Cliente;
+	    	            matrix[row][4] = J2Web_UI.listSchedeClientiMatch.get(row).telefono2Cliente;
+	    	    }
+	    		
+	    		JTable table = new JTable();
+	    		table.setModel(new DefaultTableModel(
+	    				matrix,
+	    			new String[] {
+	    				"Nome", "Cognome", "Email", "Telefono 1", "Telefono 2"
+	    			}
+	    		));
+	    		pannelloMatchVeicoloCliente.add(table);
+	    		
+	    		
+	    		
+	    	}
+	 }
+}
+
+
+
+
 //Questa classe definisce tutti i sottopannelli schede cliente
 class PanelSchedaCliente extends JPanel {   
 	//JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
@@ -2999,6 +3222,155 @@ class PanelSchedaCliente extends JPanel {
 	    	}
 	 }
 }
+
+
+
+
+
+class PanelSchedaClienteMLS extends JPanel {   
+	//JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
+	
+	private static final long serialVersionUID = 1L;
+	
+	SchedaCliente scheda;
+	Long idScheda;
+	String codiceScheda;
+	JButton btnCancellaScheda;
+	JButton btnEsportaScheda;
+	JRadioButton schedaRadio;
+	
+	String labelSpaziatore = "   "; 
+	
+	 public PanelSchedaClienteMLS(final SchedaCliente scheda, final LinkedList<SchedaCliente> listaSchedeCliente, final ButtonGroup radioGrpSchede) {
+		 this.scheda = scheda;
+		 idScheda = scheda.idSchedaCliente;
+		 codiceScheda = scheda.codiceSchedaCliente;
+		 
+		 setLayout(new BorderLayout(0, 0));
+		 setBorder(new LineBorder(Color.LIGHT_GRAY));
+		 setMaximumSize(new Dimension(600, 130));
+		 	
+		 //Radio button dei sottopannelli
+		 schedaRadio = new JRadioButton("Seleziona scheda");
+		 //Le radio button devono appartenere allo stesso gruppo per funzionare correttamente
+		 radioGrpSchede.add(schedaRadio); 
+		 //Clicco su una radio button di una scheda
+		 schedaRadio.addActionListener(new ActionListener() {			 
+           public void actionPerformed(ActionEvent e) {
+               System.out.println("Scheda selezionata: " + scheda.marcaVeicoloCliente + " per MLS..."); 
+               
+               Component[] test = getParent().getComponents();
+               for(int i=0; i<test.length; i++) {
+            	   if(test[i].getClass().toString().contains("PanelSchedaCliente"))  {
+            		   ((JComponent) test[i]).setBorder(new LineBorder(Color.LIGHT_GRAY));
+            	   }
+               }
+               
+               setBorder(new LineBorder(Color.ORANGE));
+               
+               matchClienteVeicoloMLS(scheda);
+               
+           }
+		 });
+		 add(schedaRadio, BorderLayout.NORTH);
+		 
+		 //La label delle schede
+		 String labelScheda = scheda.nomeCliente + "-" + scheda.cognomeCliente + "-" + scheda.telefono1Cliente /*+ "-" + scheda.comune + "-" + scheda.regione + "-" + scheda.testoAnnuncio*/;
+		 if(labelScheda.length()>16) {	//è molto probabile che lo sia... :)
+			 labelScheda = labelScheda.substring(0, 15); 
+		 }		 
+		 labelScheda+="...";
+		 JLabel label = new JLabel(labelScheda);
+		 Font font = new Font("Monospaced", Font.PLAIN, 11);
+		 label.setFont(font);
+		 label.setHorizontalTextPosition(SwingConstants.LEFT);
+		 label.setIcon(new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\imaginationLogo.png"));
+		 add(label, BorderLayout.CENTER);
+		 		 
+		 //add(new JLabel(labelSpaziatore));
+		 
+		 JPanel panel_26 = new JPanel();
+		 panel_26.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		 add(panel_26, BorderLayout.SOUTH);
+		 panel_26.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		 
+       
+       //add(new JLabel(labelSpaziatore));
+		Component horizontalGlue = Box.createHorizontalGlue();
+		panel_26.add(horizontalGlue);
+       
+       
+	 }
+	 
+	 private void  matchClienteVeicoloMLS(SchedaCliente schedaCliente) {
+		 
+		 JPanel pannelloMatchClienteVeicoloMLS = J2Web_UI.getPanel_15();
+		 
+		 pannelloMatchClienteVeicoloMLS.removeAll();
+		 
+		  Connection con = null;
+	        PreparedStatement pst = null;
+	        ResultSet rs = null;
+
+	        String url = "jdbc:mysql://localhost:3306/veicoli";
+	        String user = "testuser";
+	        String password = "test623";
+	        
+	        
+	        try {
+	            
+	            con = DriverManager.getConnection(url, user, password);
+	            pst = con.prepareStatement("SELECT * FROM Autoveicoli WHERE Marca = " + "'" + scheda.marcaVeicoloCliente + "'");
+	            rs = pst.executeQuery();
+
+	            while (rs.next()) {
+	                System.out.print(rs.getInt(1));
+	                System.out.print(": ");
+	                System.out.println(rs.getString(2));
+	                System.out.print(rs.getString(3));
+	                System.out.print(": ");
+	                System.out.println(rs.getString(4));
+	                
+	                
+	                SchedaVeicolo schedaVeicoloMLS = new SchedaVeicolo(rs);
+	                
+	                PanelSchedaVeicoloMLS panelSchedaVeicoloMLS = new PanelSchedaVeicoloMLS(schedaVeicoloMLS);
+	                
+	                pannelloMatchClienteVeicoloMLS.add(panelSchedaVeicoloMLS);
+	                
+	            }
+
+	        } catch (SQLException ex) {
+	                Logger lgr = Logger.getLogger(PanelSchedaClienteMLS.class.getName());
+	                lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+	        } finally {
+
+	            try {
+	                if (rs != null) {
+	                    rs.close();
+	                }
+	                if (pst != null) {
+	                    pst.close();
+	                }
+	                if (con != null) {
+	                    con.close();
+	                }
+
+	            } catch (SQLException ex) {
+	                Logger lgr = Logger.getLogger(PanelSchedaClienteMLS.class.getName());
+	                lgr.log(Level.WARNING, ex.getMessage(), ex);
+	            }
+	        }
+	        
+	        pannelloMatchClienteVeicoloMLS.updateUI();
+		 
+		 
+	 }
+
+}
+
+
 
 
 //La classe che definisce il pannello per l'inserimento sequenziale
