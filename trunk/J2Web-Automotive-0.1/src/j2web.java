@@ -221,11 +221,11 @@ public class j2web implements parametriGenerali {
 	//Inizializza la lista dei portali attivi
 	public static void inizializzaPortaliAttivi() {	
 		
+    	PortaleWeb _portaleMLS = new _portaleMLS("./images/_immobiliareIt4.jpg", "1 - Portale MLS", "001", true);
+    	J2Web_UI.listPortaliImmobiliari.add(_portaleMLS);
+    	
     	PortaleWeb _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt4.jpg", "2 - immobiliare.it", "002", true);
     	J2Web_UI.listPortaliImmobiliari.add(_immobiliareIt);
-    	
-    	PortaleWeb _immobiliareIt2 = new _immobiliareIt("./images/_immobiliareIt4.jpg", "2 - immobiliare.it", "003", true);
-    	J2Web_UI.listPortaliImmobiliari.add(_immobiliareIt2);
     	
 
     }
