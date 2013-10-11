@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
@@ -233,6 +235,104 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	
 		
 	}
+	
+	
+	//Costruttore2
+		public SchedaVeicolo (ResultSet rs) {	 	
+		
+			//Al momento dell'istanziazione, una scheda veicolo inizializza i propri campi prendendone il valore dall query result
+			try {
+			veicolo = "auto";
+			
+			tipologiaVeicolo = rs.getString(9);
+			
+			marcaVeicolo = rs.getString(3);
+			modelloVeicolo = rs.getString(4);
+			versioneVeicolo = rs.getString(5);
+			carrozzeriaVeicolo = rs.getString(10);
+			postiASedereVeicolo = Integer.toString(rs.getInt(11));
+			finitureInterneVeicolo = rs.getString(21);
+			coloreInterniVeicolo = rs.getString(22);
+			meseImmatricolazioneVeicolo = Integer.toString(rs.getInt(6));
+			annoImmatricolazioneVeicolo = Integer.toString(rs.getInt(7));
+			coloreEsternoVeicolo = rs.getString(14);
+			numeroPrecedentiProprietariVeicolo = Integer.toString(rs.getInt(16));
+			tipologiaCambioVeicolo = rs.getString(45);
+			numeroRapportiVeicolo = Integer.toString(rs.getInt(46));
+			classeEmissioniVeicolo = rs.getString(48);
+			
+			disponibilitaAllestimentoHandicap = (rs.getInt(39)==0)?false:true;
+			disponibilitaServoSterzo = (rs.getInt(37)==0)?false:true;
+			disponibilitaSediliSportivi = (rs.getInt(43)==0)?false:true;
+			disponibilitaParkDistControl = (rs.getInt(35)==0)?false:true;
+			disponibilitaFreniADisco = (rs.getInt(30)==0)?false:true;
+			disponibilitaRadioOLettoreCD = (rs.getInt(34)==0)?false:true;
+			disponibilitaAntifurto = (rs.getInt(25)==0)?false:true;
+			disponibilitaABS = (rs.getInt(23)==0)?false:true;
+			disponibilitaGancioTraino = (rs.getInt(41)==0)?false:true;
+			disponibilitaVolanteMultifunzione = (rs.getInt(38)==0)?false:true;
+			disponibilitaImmobilizer = (rs.getInt(29)==0)?false:true;
+			disponibilitaPortaPacchi = (rs.getInt(42)==0)?false:true;
+			disponibilitaAirBag = (rs.getInt(24)==0)?false:true;
+			disponibilitaESP = (rs.getInt(28)==0)?false:true;
+			disponibilitaAlzacristalliElettrici = (rs.getInt(31)==0)?false:true;
+			disponibilitaNavigatoreSattelitare = (rs.getInt(33)==0)?false:true;
+			disponibilitaCerchiInLega = (rs.getInt(40)==0)?false:true;
+			disponibilitaContrlAutomTrazione = (rs.getInt(27)==0)?false:true;
+			disponibilitaChiusuraCentralizzata = (rs.getInt(26)==0)?false:true;
+			disponibilitaSediliRiscaldati = (rs.getInt(36)==0)?false:true;
+			disponibilitaClima = (rs.getInt(32)==0)?false:true;
+			coloreMetalizzato = (rs.getInt(15)==0)?false:true;
+			ivaDeducibile = (rs.getInt(20)==0)?false:true;
+					
+			KWVeicolo = Integer.toString(rs.getInt(12));
+			CVVeicolo = Integer.toString(rs.getInt(13));
+			chilometraggioVeicolo = Integer.toString(rs.getInt(17));
+			prezzoVeicolo = Integer.toString(rs.getInt(18));
+			comsumeMedioVeicolo = Float.toString(rs.getFloat(49));
+			cilindrataVeicolo = Integer.toString(rs.getInt(47));
+			urlVideoYouTube = rs.getString(60);
+			
+			descrizioneVeicolo = rs.getString(61);
+			
+			/*if(rs.getBlob(50)!=null) {
+				arrayImages[1] = (File) rs.getBlob(50);
+			}
+			if(rs.getBlob(51)!=null) {
+				arrayImages[2] = (File) rs.getBlob(51);
+			}
+			if(rs.getBlob(52)!=null) {
+				arrayImages[3] = (File) rs.getBlob(52);
+			}
+			if(rs.getBlob(53)!=null) {
+				arrayImages[4] = (File) rs.getBlob(53);
+			}
+			if(rs.getBlob(54)!=null) {
+				arrayImages[5] = (File) rs.getBlob(54);
+			}
+			if(rs.getBlob(55)!=null) {
+				arrayImages[6] = (File) rs.getBlob(55);
+			}
+			if(rs.getBlob(56)!=null) {
+				arrayImages[7] = (File) rs.getBlob(56);
+			}
+			if(rs.getBlob(57)!=null) {
+				arrayImages[8] = (File) rs.getBlob(57);
+			}
+			if(rs.getBlob(58)!=null) {
+				arrayImages[9] = (File) rs.getBlob(58);
+			}
+			if(rs.getBlob(59)!=null) {
+				arrayImages[10] = (File) rs.getBlob(59);
+			}	*/
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+			
+		}
 
 	
 	//Metodi
