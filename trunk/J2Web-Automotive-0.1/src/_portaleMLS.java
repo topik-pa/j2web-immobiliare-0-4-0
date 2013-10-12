@@ -55,7 +55,7 @@ public class _portaleMLS extends PortaleWeb {
     List<NameValuePair> requestHeaders; 
 
     //La scheda immobile su cui si lavora
-    SchedaImmobile scheda;
+    //SchedaImmobile scheda;
     
     //Lista di alcuni (non necessariamente tutti) parametri inviati
    
