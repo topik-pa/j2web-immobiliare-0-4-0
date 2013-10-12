@@ -15,8 +15,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -295,10 +297,40 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			
 			descrizioneVeicolo = rs.getString(61);
 			
-			/*if(rs.getBlob(50)!=null) {
-				arrayImages[1] = (File) rs.getBlob(50);
+			if(rs.getBlob(50)!=null) {
+				InputStream in = rs.getBinaryStream(50);
+				 OutputStream f;
+				try {
+					f = new FileOutputStream(new File("temp\\image1.jpg"));
+					int c = 0;
+					
+					while ((c = in.read()) > -1) {
+						 f.write(c);
+						 }
+					
+					//arrayImages[1] = in;
+					
+					
+					f.close();
+					in.close();
+				}
+				catch (Exception ex){
+					System.out.println(ex.getMessage());
+				}
+				
+				File newFile = new File("temp\\image1.jpg");
+				arrayImages[1] = newFile;
+				
+				newFile.deleteOnExit();
+				
 			}
-			if(rs.getBlob(51)!=null) {
+					
+				
+				//arrayImages[1] = (File) rs.getBlob(50);
+				
+				
+			
+			/*if(rs.getBlob(51)!=null) {
 				arrayImages[2] = (File) rs.getBlob(51);
 			}
 			if(rs.getBlob(52)!=null) {
@@ -324,7 +356,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			}
 			if(rs.getBlob(59)!=null) {
 				arrayImages[10] = (File) rs.getBlob(59);
-			}	*/
+			}*/
 			
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

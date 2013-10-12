@@ -79,6 +79,8 @@ import java.awt.Dimension;
 import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 public class J2Web_UI implements parametriGenerali{
@@ -216,6 +218,7 @@ public class J2Web_UI implements parametriGenerali{
 	private static JPanel panel_6;
 	private static JPanel panel_31;
 	private static JPanel panel_15;
+	private static JPanel panel_8;
 
 	/**
 	 * Launch the application.
@@ -265,6 +268,28 @@ public class J2Web_UI implements parametriGenerali{
 		
 		/*Il JFrame principale*/
 		imagination_05 = new JFrame();
+		imagination_05.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.out.println("Ciao ciao...");
+				
+				//FileUtils.deleteDirectory(<File object of directory>);
+				
+				/*File folder = new File("temp");
+				
+				File[] files = folder.listFiles();
+			    if(files!=null) { //some JVMs return null for empty dirs
+			        for(File f: files) {
+			            if(f.isDirectory()) {
+			                f.de  deleteFolder(f);
+			            } else {
+			                f.delete();
+			            }
+			        }
+			    }*/
+			}
+		});
+
 		imagination_05.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -1646,9 +1671,22 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_scrollPane_9.gridy = 1;
 		panel_2.add(scrollPane_9, gbc_scrollPane_9);
 		
-		JPanel panel_8 = new JPanel();
+		panel_8 = new JPanel();
+		panel_8.setBorder(new TitledBorder(null, "Dettagli veicolo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_8.addContainerListener(new ContainerAdapter() {
+			@Override
+			public void componentAdded(ContainerEvent arg0) {
+				//Ascolto l'inserimento di un component nel pannello e lo aggiorno di conseguenza
+				panel_8.updateUI();	
+			}
+		});
 		scrollPane_9.setViewportView(panel_8);
 		panel_8.setBackground(new Color(255, 255, 224));
+		
+		JPanel panelNessunaScedaSelezionata3 = new JPanel();
+        JLabel lblNessunaScedaSelezionata3 = new JLabel("Non è stata selezionata alcuna scheda.");                
+        panelNessunaScedaSelezionata3.add(lblNessunaScedaSelezionata3);
+        panel_8.add(panelNessunaScedaSelezionata3);
 		
 		panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnAutoveicolo, rdbtnMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox_MeseImmatricolazione, comboBox_AnnoImmatricolazione, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtFieldKw, txtFieldCv, lblColoreEsterno, comboBox_ColoreEsterno, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_PrecedentiProprietari, textField_Chilometraggio, lblPrezzo, textField_Prezzo, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane_Descrizione, panel_23, btnImmagine1, label_Immagine1, btnImmagine_2, label_Immagine2, btnImmagine_3, label_Immagine3, btnImmagine_4, label_Immagine4, btnImmagine_5, label_Immagine5, btnImmagine_6, label_Immagine6, btnImmagine_7, label_Immagine7, btnImmagine_8, label_Immagine8, btnImmagine_9, label_Immagine9, btnImmagine_10, label_Immagine10, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_Cambio, comboBox_NumeroRapporti, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_Cilindrata, comboBox_ClasseEmissioni, comboBox_ConsumoMedio, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
 		
@@ -2673,6 +2711,9 @@ public class J2Web_UI implements parametriGenerali{
 	protected static JPanel getPanel_15() {
 		return panel_15;
 	}
+	protected static JPanel getPanel_8() {
+		return panel_8;
+	}
 }
 
 
@@ -2941,7 +2982,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
              
              setBorder(new LineBorder(Color.ORANGE));
              
-             //matchVeicoloCliente(scheda);
+             mostraDettagliVeicoloMLS(scheda);
          }
 		 });
 		 add(schedaRadio, BorderLayout.NORTH);
@@ -2981,70 +3022,47 @@ class PanelSchedaVeicoloMLS extends JPanel {
 		 
 	 }
 	
-	 private void  matchVeicoloCliente(SchedaVeicolo schedaVeicolo) {
+	 private void  mostraDettagliVeicoloMLS(SchedaVeicolo schedaVeicolo) {
 		 
-		 JPanel pannelloMatchVeicoloCliente = J2Web_UI.getPanel_4();
+		 JPanel pannelloInfoVeicoloMLS = J2Web_UI.getPanel_8();
 		 
-		 J2Web_UI.listSchedeClientiMatch.clear();
+		 //J2Web_UI.listSchedeClientiMatch.clear();
 			
-		 pannelloMatchVeicoloCliente.removeAll();
+		 pannelloInfoVeicoloMLS.removeAll();
 		 
 		 //pannelloMatchVeicoloCliente.updateUI();
 			
 			//pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(7));
 		 
-		 boolean matchPositivo = false;
 		 
-		 
-			ListIterator<SchedaCliente> iterator = J2Web_UI.listSchedeCliente.listIterator();
-	     	while(iterator.hasNext()) {
-	     		SchedaCliente schedaCorrente = iterator.next();
-	     		System.out.println("test: " + schedaVeicolo.modelloVeicolo + schedaCorrente.modelloVeicoloCliente);
-	     		if(schedaVeicolo.modelloVeicolo.equalsIgnoreCase(schedaCorrente.modelloVeicoloCliente)) {
-	     			J2Web_UI.listSchedeClientiMatch.add(schedaCorrente);
-	     		}
-	     		
-	     	}
-	     	if(!J2Web_UI.listSchedeClientiMatch.isEmpty()){	
-	     		matchPositivo = true;
-	     	}
 			
-			
-			if(!matchPositivo) {
-				//Match negativo
-				System.out.println("Non è stato trovato alcun cliente interessato al veicolo.");
-	    		JPanel panelNessunMatch = new JPanel();
-	            JLabel lblNessunMatch = new JLabel("Non è stato trovato alcun cliente interessato al veicolo.");                
-	            panelNessunMatch.add(lblNessunMatch);
-	            pannelloMatchVeicoloCliente.add(panelNessunMatch);
-	    	}    	
-	    	else {
-	    		//Match positivo
-	    		System.out.println("Trovati potenziali clienti  interessati al veicolo");
+	
 	    		
-	    		String[][] matrix = new String[J2Web_UI.listSchedeClientiMatch.size()][5];
+	    		System.out.println("Info veicolo selezionato...");
+	    		
+	    		String[][] matrix = new String[1][3];
 	    		
 	    		for (int row = 0; row < matrix.length; row++) {
 	    	       // for (int column = 0; column < matrix[row].length; column++)
-	    	            matrix[row][0] = J2Web_UI.listSchedeClientiMatch.get(row).nomeCliente;
-	    	            matrix[row][1] = J2Web_UI.listSchedeClientiMatch.get(row).cognomeCliente;
-	    	            matrix[row][2] = J2Web_UI.listSchedeClientiMatch.get(row).emailCliente;
-	    	            matrix[row][3] = J2Web_UI.listSchedeClientiMatch.get(row).telefono1Cliente;
-	    	            matrix[row][4] = J2Web_UI.listSchedeClientiMatch.get(row).telefono2Cliente;
+	    	            matrix[row][0] = schedaVeicolo.marcaVeicolo;
+	    	            matrix[row][1] = schedaVeicolo.modelloVeicolo;
+	    	            matrix[row][2] = schedaVeicolo.versioneVeicolo;
+	    	            //matrix[row][3] = J2Web_UI.listSchedeClientiMatch.get(row).telefono1Cliente;
+	    	            //matrix[row][4] = J2Web_UI.listSchedeClientiMatch.get(row).telefono2Cliente;
 	    	    }
 	    		
 	    		JTable table = new JTable();
 	    		table.setModel(new DefaultTableModel(
 	    				matrix,
 	    			new String[] {
-	    				"Nome", "Cognome", "Email", "Telefono 1", "Telefono 2"
+	    				"Marca", "Modello", "Versione"
 	    			}
 	    		));
-	    		pannelloMatchVeicoloCliente.add(table);
+	    		pannelloInfoVeicoloMLS.add(table);
 	    		
 	    		
 	    		
-	    	}
+	    	
 	 }
 }
 
@@ -3258,6 +3276,10 @@ class PanelSchedaClienteMLS extends JPanel {
 		 schedaRadio.addActionListener(new ActionListener() {			 
            public void actionPerformed(ActionEvent e) {
                System.out.println("Scheda selezionata: " + scheda.marcaVeicoloCliente + " per MLS..."); 
+               
+               JPanel pannelloInfoVeicoloMLS = J2Web_UI.getPanel_8();
+               pannelloInfoVeicoloMLS.removeAll();
+               pannelloInfoVeicoloMLS.updateUI();
                
                Component[] test = getParent().getComponents();
                for(int i=0; i<test.length; i++) {
