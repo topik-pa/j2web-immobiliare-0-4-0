@@ -11,64 +11,9 @@ import javax.swing.JOptionPane;
 
 public class j2web implements parametriGenerali {
 
-	/**
-	 * @param args
-	 */
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		
-		//Popolo le mappe degli indirizzi
-		/*System.out.print("Popolo le mappe degli indirizzi...");
-		inizializzaMappaRegioneProvincia();
-		inizializzaMappaProvinciaComuni();
-		System.out.print(" fatto." + "\n");*/
-		
-		//Popolo la mappa dei dialoghi modali
-		System.out.print("Popolo la mappa dei dialoghi modali...");
-		inizializzaMappaDialoghiModali();
-		System.out.print(" fatto." + "\n");
-		
-		//Popolo la mappa dei limiti di caratteri per i campi testuali
-		System.out.print("Popolo la mappa dei limiti di caratteri per i campi testuali...");
-		inizializzaMappaLimiteCaratteri();
-		System.out.print(" fatto." + "\n");
-		
-		//Popolo la lista delle schede caricando i dati dal file dat
-		System.out.print("Carico la lista delle schede precedentemente salvate...");
-		caricaListaSchedeCreate();
-		System.out.print(" fatto." + "\n");
-		
-		//Inizializzo la lista concatenata che contiene le informazioni sui portali immobiliari
-    	inizializzaPortaliAttivi();
-			
-		/*System.out.print("Lancio la GUI...");
-		try {
-			//Definisce il Look and Feel della GUI
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		//Lancia la GUI
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					j2web_GUI imagination = new j2web_GUI();
-					imagination.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		System.out.print(" fatto." + "\n");*/
-	}
-	
-	
 	//Caricamento da dat
 	//@SuppressWarnings("unchecked")
-	public static void caricaListaSchedeCreate() {
+	public static void caricaListaSchedeVeicoloCreate() {
 		File file = new File(pathFileDatSchedeVeicolo);
     	if(file.exists() && file.length()!=0) {
     			System.out.print(" File .dat schede trovato. Caricamento dati...");
@@ -151,7 +96,7 @@ public class j2web implements parametriGenerali {
 	}
 	
 	//Salvataggio su dat
-		public static void salvaListaSchedeClienteCreate() {
+	public static void salvaListaSchedeClienteCreate() {
 			try {
 			   File file = new File(pathFileDatSchedeCliente);
 		    	if(file.exists()) {
@@ -216,6 +161,8 @@ public class j2web implements parametriGenerali {
 		MapModalWindowsDialogs.put("caricaTabellaHash_ClassNotFoundException", "Errore durante l'accesso al file hash scheda: non è stato possibile caricare le impostazioni della scheda. ");
 		MapModalWindowsDialogs.put("salvaTabellaHash_FileNotFoundException", "File hash scheda non trovato: non è stato possibile salvare le impostazioni della scheda. ");
 		MapModalWindowsDialogs.put("salvaTabellaHash_IOException", "Impossibile accedere al file hash scheda: non è stato possibile salvare le impostazioni della scheda. ");
+		
+		MapModalWindowsDialogs.put("sendConfirmationMail", "Non è stato possibile inviare inviare la mail di conferma inserimento.");
 	}
 
 	//Inizializza la lista dei portali attivi

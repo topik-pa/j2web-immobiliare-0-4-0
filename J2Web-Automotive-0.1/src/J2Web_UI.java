@@ -248,13 +248,36 @@ public class J2Web_UI implements parametriGenerali{
 	public J2Web_UI() {
 		
 		//Procedure di inizializzazione
+		System.out.print("Inizializzo la GUI e gli ascoltatori...");
 		initialize(); //GUI e ascoltatori
-		selezioneAutoVeicolo(); //la selezione degli autoveicoli è forzata all'avvio
-		popolaListaCampiForm();	//i campi della form sono inseriti in una lista concatenata
+		System.out.print(" fatto." + "\n");
+		
+		//Popolo la mappa dei dialoghi modali
+		System.out.print("Popolo la mappa dei dialoghi modali...");
+		j2web.inizializzaMappaDialoghiModali();
+		System.out.print(" fatto." + "\n");
+		
+		//Popolo la mappa dei limiti di caratteri per i campi testuali
+		System.out.print("Popolo la mappa dei limiti di caratteri per i campi testuali...");
+		j2web.inizializzaMappaLimiteCaratteri();
+		System.out.print(" fatto." + "\n");
+		
+		//Popolo la lista delle schede caricando i dati dal file dat
+		System.out.print("Carico la lista delle schede veicolo precedentemente salvate...");
+		j2web.caricaListaSchedeVeicoloCreate();
+		System.out.print(" fatto." + "\n");
+		
+		//Inizializzo la lista concatenata che contiene le informazioni sui portali web in sincronizzazione
+		System.out.print("Inizializzo la lista concatenata che contiene le informazioni sui portali web in sincronizzazione...");
+		j2web.inizializzaPortaliAttivi();
+		System.out.print(" fatto." + "\n");
+		
+		selezioneAutoVeicolo(); //la selezione della categoria autoveicoli, nella form veicoli, è forzata all'avvio
+		popolaListaCampiFormVeicolo();	//i campi della form sono inseriti in una lista concatenata
 		popolaListaCampiFormCliente();	//i campi della form cliente sono inseriti in una lista concatenata
-		j2web.caricaListaSchedeCreate(); //carica le schede create nelle sessioni precedenti
+		//j2web.caricaListaSchedeCreate(); //carica le schede create nelle sessioni precedenti
 		j2web.caricaListaSchedeClienteCreate(); //carica le schede create nelle sessioni precedenti
-		j2web.inizializzaPortaliAttivi(); //inizializza i portali web attivi
+		//j2web.inizializzaPortaliAttivi(); //inizializza i portali web attivi
 		aggiornaPannelloListaSchedeVeicolo(); //aggiorna il pannello centrale (lista veicoli)
 		aggiornaPannelloListaSchedeCliente(); //aggiorna il pannello centrale (lista veicoli)
 		aggiornaPannelloListaPortaliSincronizzazione(); //aggiorna il pannello di destra (lista portali attivi)
@@ -1079,7 +1102,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnResetta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Resetta la form
-				resettaForm(listCampiForm);
+				resettaForm(listCampiFormVeicolo);
 				selezioneAutoVeicolo();
 				getRdbtnAutoveicolo().setSelected(true);
 			}
@@ -2252,74 +2275,74 @@ public class J2Web_UI implements parametriGenerali{
 	}	
 	
 	//Popola la lista con i campi della form
-	private void popolaListaCampiForm() {
-		listCampiForm.add(getComboBox_Marca());
-		listCampiForm.add(getComboBox_Modello());
-		listCampiForm.add(getComboBox_MeseImmatricolazione());
-		listCampiForm.add(getComboBox_AnnoImmatricolazione());
-		listCampiForm.add(getComboBox_Carburante());
-		listCampiForm.add(getComboBox_Tipologia());
-		listCampiForm.add(getComboBox_Carrozzeria());
-		listCampiForm.add(getComboBox_PostiASedere());
-		listCampiForm.add(getComboBox_ColoreEsterno());
-		listCampiForm.add(getComboBox_PrecedentiProprietari());
-		listCampiForm.add(getComboBox_FinitureInterni());
-		listCampiForm.add(getComboBox_ColoreInterni());
-		listCampiForm.add(getComboBox_Motore());
-		listCampiForm.add(getComboBox_Cambio());
-		listCampiForm.add(getComboBox_NumeroRapporti());
-		listCampiForm.add(getComboBox_ClasseEmissioni());	
-		listCampiForm.add(getComboBox_Versione());
+	private void popolaListaCampiFormVeicolo() {
+		listCampiFormVeicolo.add(getComboBox_Marca());
+		listCampiFormVeicolo.add(getComboBox_Modello());
+		listCampiFormVeicolo.add(getComboBox_MeseImmatricolazione());
+		listCampiFormVeicolo.add(getComboBox_AnnoImmatricolazione());
+		listCampiFormVeicolo.add(getComboBox_Carburante());
+		listCampiFormVeicolo.add(getComboBox_Tipologia());
+		listCampiFormVeicolo.add(getComboBox_Carrozzeria());
+		listCampiFormVeicolo.add(getComboBox_PostiASedere());
+		listCampiFormVeicolo.add(getComboBox_ColoreEsterno());
+		listCampiFormVeicolo.add(getComboBox_PrecedentiProprietari());
+		listCampiFormVeicolo.add(getComboBox_FinitureInterni());
+		listCampiFormVeicolo.add(getComboBox_ColoreInterni());
+		listCampiFormVeicolo.add(getComboBox_Motore());
+		listCampiFormVeicolo.add(getComboBox_Cambio());
+		listCampiFormVeicolo.add(getComboBox_NumeroRapporti());
+		listCampiFormVeicolo.add(getComboBox_ClasseEmissioni());	
+		listCampiFormVeicolo.add(getComboBox_Versione());
 		
-		listCampiForm.add(getTextField_Kw());
-		listCampiForm.add(getTextField_Cv());
-		listCampiForm.add(getTextField_Chilometraggio());
-		listCampiForm.add(getTextField_Prezzo());
-		listCampiForm.add(getTextField_Cilindrata());
-		listCampiForm.add(getTextField_ConsumoMedio());
-		listCampiForm.add(getTextField_YouTubeUrl());
+		listCampiFormVeicolo.add(getTextField_Kw());
+		listCampiFormVeicolo.add(getTextField_Cv());
+		listCampiFormVeicolo.add(getTextField_Chilometraggio());
+		listCampiFormVeicolo.add(getTextField_Prezzo());
+		listCampiFormVeicolo.add(getTextField_Cilindrata());
+		listCampiFormVeicolo.add(getTextField_ConsumoMedio());
+		listCampiFormVeicolo.add(getTextField_YouTubeUrl());
 		
-		listCampiForm.add(getChckbxMetallizzato());
-		listCampiForm.add(getChckbxTrattabile());
-		listCampiForm.add(getChckbxIvaDeducibile());
-		listCampiForm.add(getChckbxAbs());
-		listCampiForm.add(getChckbxAirbag());
-		listCampiForm.add(getChckbxAntifurto());
-		listCampiForm.add(getChckbxChiusuraCentralizzata());
-		listCampiForm.add(getChckbxContrAutomTrazione());
-		listCampiForm.add(getChckbxEsp());
-		listCampiForm.add(getChckbxImmobilizer());
-		listCampiForm.add(getChckbxFreniADisco());
-		listCampiForm.add(getChckbxCupolino());
-		listCampiForm.add(getChckbxAlzacristalliElettrici());
-		listCampiForm.add(getChckbxClima());
-		listCampiForm.add(getChckbxNavigatoreSatellitare());
-		listCampiForm.add(getChckbxRadiolettoreCd());
-		listCampiForm.add(getChckbxParkDistControl());
-		listCampiForm.add(getChckbxSediliRiscaldati());
-		listCampiForm.add(getChckbxServosterzo());
-		listCampiForm.add(getChckbxVolanteMultifunzione());
-		listCampiForm.add(getChckbxHandicap());
-		listCampiForm.add(getChckbxCerchiInLega());
-		listCampiForm.add(getChckbxGancioTraino());
-		listCampiForm.add(getChckbxPortapacchi());
-		listCampiForm.add(getChckbxSediliSportivi());
-		listCampiForm.add(getChckbxBauletto());
-		listCampiForm.add(getChckbxAvviamentoAPedale());
-		listCampiForm.add(getChckbxAvviamentoElettrico());
+		listCampiFormVeicolo.add(getChckbxMetallizzato());
+		listCampiFormVeicolo.add(getChckbxTrattabile());
+		listCampiFormVeicolo.add(getChckbxIvaDeducibile());
+		listCampiFormVeicolo.add(getChckbxAbs());
+		listCampiFormVeicolo.add(getChckbxAirbag());
+		listCampiFormVeicolo.add(getChckbxAntifurto());
+		listCampiFormVeicolo.add(getChckbxChiusuraCentralizzata());
+		listCampiFormVeicolo.add(getChckbxContrAutomTrazione());
+		listCampiFormVeicolo.add(getChckbxEsp());
+		listCampiFormVeicolo.add(getChckbxImmobilizer());
+		listCampiFormVeicolo.add(getChckbxFreniADisco());
+		listCampiFormVeicolo.add(getChckbxCupolino());
+		listCampiFormVeicolo.add(getChckbxAlzacristalliElettrici());
+		listCampiFormVeicolo.add(getChckbxClima());
+		listCampiFormVeicolo.add(getChckbxNavigatoreSatellitare());
+		listCampiFormVeicolo.add(getChckbxRadiolettoreCd());
+		listCampiFormVeicolo.add(getChckbxParkDistControl());
+		listCampiFormVeicolo.add(getChckbxSediliRiscaldati());
+		listCampiFormVeicolo.add(getChckbxServosterzo());
+		listCampiFormVeicolo.add(getChckbxVolanteMultifunzione());
+		listCampiFormVeicolo.add(getChckbxHandicap());
+		listCampiFormVeicolo.add(getChckbxCerchiInLega());
+		listCampiFormVeicolo.add(getChckbxGancioTraino());
+		listCampiFormVeicolo.add(getChckbxPortapacchi());
+		listCampiFormVeicolo.add(getChckbxSediliSportivi());
+		listCampiFormVeicolo.add(getChckbxBauletto());
+		listCampiFormVeicolo.add(getChckbxAvviamentoAPedale());
+		listCampiFormVeicolo.add(getChckbxAvviamentoElettrico());
 		
-		listCampiForm.add(getTextPane_Descrizione());
+		listCampiFormVeicolo.add(getTextPane_Descrizione());
 		
-		listCampiForm.add(getLabel_Immagine1());
-		listCampiForm.add(getLabel_Immagine2());
-		listCampiForm.add(getLabel_Immagine3());
-		listCampiForm.add(getLabel_Immagine4());
-		listCampiForm.add(getLabel_Immagine5());
-		listCampiForm.add(getLabel_Immagine6());
-		listCampiForm.add(getLabel_Immagine7());
-		listCampiForm.add(getLabel_Immagine8());
-		listCampiForm.add(getLabel_Immagine9());
-		listCampiForm.add(getLabel_Immagine10());
+		listCampiFormVeicolo.add(getLabel_Immagine1());
+		listCampiFormVeicolo.add(getLabel_Immagine2());
+		listCampiFormVeicolo.add(getLabel_Immagine3());
+		listCampiFormVeicolo.add(getLabel_Immagine4());
+		listCampiFormVeicolo.add(getLabel_Immagine5());
+		listCampiFormVeicolo.add(getLabel_Immagine6());
+		listCampiFormVeicolo.add(getLabel_Immagine7());
+		listCampiFormVeicolo.add(getLabel_Immagine8());
+		listCampiFormVeicolo.add(getLabel_Immagine9());
+		listCampiFormVeicolo.add(getLabel_Immagine10());
 	}
 	
 	//Popola la lista con i campi della form

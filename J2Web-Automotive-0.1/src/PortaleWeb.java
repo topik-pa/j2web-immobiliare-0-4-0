@@ -85,12 +85,12 @@ public abstract class PortaleWeb implements parametriGenerali {
 	public abstract boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException;
 	 
     //Invio mail di conferma inserzione
-  	static void sendConfirmationMail(SchedaImmobile scheda, String nomePortale, String codInserzione)   {
+  	static void sendConfirmationMail(SchedaVeicolo scheda, String nomePortale, String codInserzione)   {
   				
   		final String USERNAME = BACKEND_EMAIL;
   		final String PASSWORD = BACKEND_EMAIL_PSW;
   		final String RECIPENTS = BACKEND_EMAIL + "," + EMAIL_UTENTE;
-  		final String SUBJECT = "Scheda immobile inserita: " + scheda.codiceInserzione + " " + scheda.titoloAnnuncio;
+  		final String SUBJECT = "Scheda inserita: " + scheda.codiceScheda + " " + scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo ;
   		
   	    final String SMTP_HOST = BACKEND_EMAIL_SMTP_HOST;
   	    final int SMTP_PORT = BACKEND_EMAIL_SMTP_PORT;
@@ -98,57 +98,9 @@ public abstract class PortaleWeb implements parametriGenerali {
   	    final Message msg = new MimeMessage(session);
   	    final String senderEmail = USERNAME.contains("@") ? USERNAME : (USERNAME + BACKEND_EMAIL_DOMAIN);
   	    
-  	    String textBody = "";
-  	    textBody += "\nProvincia: " + scheda.provincia + "\n";
-  	    textBody += "Comune: " + scheda.comune + "\n";
-  	    textBody += "CAP: " + scheda.cap + "\n";
-	  	textBody += "Via/Piazza/Località: " + scheda.indirizzoLocalita + "\n";
-	  	textBody += "Descrizione: " + scheda.testoAnnuncio + "\n";
-	  	textBody += "Categoria: " + scheda.categoriaImmobile + "\n";
-	  	textBody += "Tipologia: " + scheda.tipologiaImmobile + "\n";
-	  	textBody += "Contratto: " + scheda.tipologiaContratto + "\n";
-	  	textBody += "Nr. locali: " + scheda.numeroLocali + "\n";
-	  	textBody += "Nr. bagni: " + scheda.numeroBagni + "\n";
-	  	textBody += "Nr. camere: " + scheda.numeroCamere + "\n";
-	  	textBody += "Superficie abitazione: " + scheda.superficieImmobile + "\n";
-	  	textBody += "Riscaldamento: " + scheda.tipologiaRiscaldamento + "\n";
-	  	textBody += "Clima: " + scheda.clima + "\n";
-	  	textBody += "Certificazione: " + scheda.certificazioniEnergetiche + "\n";
-	  	textBody += "Giardino: " + scheda.giardino + "\n";
-	  	textBody += "Parcheggio: " + scheda.parcheggio + "\n";
-	  	if(scheda.immagine1!=null) {
-	  		textBody += "Immagine : " + scheda.immagine1.getName() + "\n";
-	  	}
-	  	if(scheda.immagine2!=null) {
-	  		textBody += "Immagine : " + scheda.immagine2.getName() + "\n";
-	  	}
-	  	if(scheda.immagine3!=null) {
-	  		textBody += "Immagine : " + scheda.immagine3.getName() + "\n";
-	  	}
-	  	if(scheda.immagine4!=null) {
-	  		textBody += "Immagine : " + scheda.immagine4.getName() + "\n";
-	  	}
-	  	if(scheda.immagine5!=null) {
-	  		textBody += "Immagine : " + scheda.immagine5.getName() + "\n";
-	  	}
-	  	if(scheda.immagine6!=null) {
-	  		textBody += "Immagine : " + scheda.immagine6.getName() + "\n";
-	  	}
-	  	if(scheda.immagine7!=null) {
-	  		textBody += "Immagine : " + scheda.immagine7.getName() + "\n";
-	  	}
-	  	if(scheda.immagine8!=null) {
-	  		textBody += "Immagine : " + scheda.immagine8.getName() + "\n";
-	  	}
-	  	if(scheda.immagine9!=null) {
-	  		textBody += "Immagine : " + scheda.immagine9.getName() + "\n";
-	  	}
-	  	if(scheda.immagine0!=null) {
-	  		textBody += "Immagine : " + scheda.immagine0.getName() + "\n";
-	  	}
-	  	textBody += "Prezzo: " + scheda.prezzoImmobile + "\n";
-	  	
-	  	textBody += "Scheda inserita in: " + nomePortale + " " + "con codice " + codInserzione;
+  	    String textBody = "";	  	
+  	    textBody += "E' stata inserita una scheda nel portale: " + nomePortale + ".";
+	  	textBody += "Il codice della scheda è: " + scheda.codiceScheda + ". " + "Il codice di inserimento è: " + codInserzione;
   	    
   	    
   	    try {
@@ -167,10 +119,10 @@ public abstract class PortaleWeb implements parametriGenerali {
   		    transport.close();
   			
   		} catch (AddressException e) {
-  			JOptionPane.showMessageDialog(null, "Errore durante l'invio del rapporto.", "AddressException", JOptionPane.ERROR_MESSAGE);
+  			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("sendConfirmationMail"), "AddressException", JOptionPane.ERROR_MESSAGE);
   			e.printStackTrace();
   		} catch (MessagingException e) {
-  			JOptionPane.showMessageDialog(null, "Errore durante l'invio del rapporto.", "MessagingException", JOptionPane.ERROR_MESSAGE);
+  			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("sendConfirmationMail"), "MessagingException", JOptionPane.ERROR_MESSAGE);
   			e.printStackTrace();
   		}
   	}
