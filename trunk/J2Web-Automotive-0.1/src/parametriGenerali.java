@@ -33,15 +33,21 @@ public interface parametriGenerali {
 	//Icona della finestra principale
     final Image frameIcon = new ImageIcon("./images/j2webFrameIcon.png").getImage();
     
+    //Icone dei pulsanti
+    final ImageIcon icoProcedi = new ImageIcon("./images/foreward.png");
+    final ImageIcon icoResetta = new ImageIcon("./images/refresh.png");
+    final ImageIcon icoAggiorna = new ImageIcon("./images/update.png");
+    
+    //Icone delle tab
+    final ImageIcon icoAnagrVeicolo = new ImageIcon("./images/icon_car.png");
+    final ImageIcon icoAnagrCliente = new ImageIcon("./images/icon_pilot.png");
+    final ImageIcon icoMLS = new ImageIcon("./images/icon_db.png");
+    
     //User agent utilizzato per le connessioni
     final String USER_AGENT_VALUE = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0";
     
     //Messaggi delle finestre modali: inizializzo la mappa che conterrà la ntipologia di evento e il relativo messaggio. L'inizializzazione è nel file: j2web.java
     final Map<String,String> MapModalWindowsDialogs = new Hashtable<String,String>();
-    
-    //icone dei pulsanti
-    final ImageIcon icoProcedi = new ImageIcon("./images/foreward.png");
-    final ImageIcon icoResetta = new ImageIcon("./images/refresh.png");
     
     //Dimensioni massime delle immagini
     final int maxFileSize = 1048576;
@@ -66,6 +72,24 @@ public interface parametriGenerali {
     
     //Lista concatenata che contiene tutti i campi della form clienet che sono obbligatori
     LinkedList<JComponent> listCampiFormClienteObbligatori = new LinkedList<JComponent>();
+    
+    //La struttura dati che contiene i portali selezionati per l'inserimento sequenziale
+  	public static LinkedList<PortaleWeb> listPortaliInserimentoSequenziale = new LinkedList<PortaleWeb>();
+  	
+  	//La struttura dati che contiene i portali selezionati per l'eliminazione sequenziale
+  	public static LinkedList<PortaleWeb> listPortaliCancellazioneSequenziale = new LinkedList<PortaleWeb>();
+  	
+  	//La struttura dati che contiene le schede cliente che fanno match con la scheda veicolo eventualmente selezionata
+  	public static LinkedList<SchedaCliente> listSchedeClientiMatch = new LinkedList<SchedaCliente>();
+  	
+  	//La struttura dati che contiene le schede veicolo che fanno match con la scheda cliente eventualmente selezionata
+  	public static LinkedList<SchedaVeicolo> listSchedeVeicoliMatch = new LinkedList<SchedaVeicolo>();
+  	
+  	//La struttura dati che contiene i portali attivati
+  	public static LinkedList<PortaleWeb> listPortaliSincronizzazione = new LinkedList<PortaleWeb>();	
+	
+  	//Inizializzo la lista buffer che contiene le possibili versioni del veicolo attuale
+	LinkedList<String> listVersioniVeicoli = new LinkedList<String>();
     
 	//Tutti gli array<String> che definiscono le combo box
     final String[] marcheAutoveicoli = {"Seleziona", "Abarth", "AC", "Acura", "Alfa Romeo", "Allard", "Alpina", "Alpine", "Alvis", "AMC", "Ariel", "Armstrong Siddeley", "Ascari", "Aston Martin", "Audi", "Austin", "Austin-Healey", "Autobianchi", "Auverland", "Avanti", "Beijing", "Bentley", "Berkeley", "Bitter", "Bizzarrini", "BMW", "Brilliance", "Bristol", "Bugatti", "Buick", "Cadillac", "Caterham", "Checker", "Chevrolet", "Chrysler", "Citroen", "Dacia", "Daewoo", "DAF", "Daihatsu", "Daimler", "Datsun", "De Tomaso", "DKW", "Dodge", "Donkervoort", "Eagle", "Fairthorpe", "Ferrari", "Fiat", "Fisker", "Ford", "GAZ", "Geely", "Ginetta", "GMC", "Holden", "Honda", "Hudson", "Humber", "Hummer", "Hyundai", "Infiniti", "Innocenti", "Isuzu", "Italdesign", "Jaguar", "Jeep", "Jensen", "Kia", "Koenigsegg", "Lada", "Lamborghini", "Lancia", "Land Rover", "Lexus", "Lincoln", "Lotec", "Lotus", "Luxgen", "Mahindra", "Marcos", "Maserati", "Matra-Simca", "Maybach", "Mazda", "MCC", "McLaren", "Mercedes-Benz", "Mercury", "MG", "Mini", "Mitsubishi", "Monteverdi", "Moretti", "Morgan", "Morris", "Nissan", "Noble", "NSU", "Oldsmobile", "Opel", "Packard", "Pagani", "Panoz", "Peugeot", "Pininfarina", "Plymouth", "Pontiac", "Porsche", "Proton", "Reliant", "Renault", "Riley", "Rolls-Royce", "Rover", "Saab", "Saleen", "Samsung", "Saturn", "Scion", "Seat", "Simca", "Singer", "Skoda", "Smart", "Spyker", "SsangYong", "SSC", "Steyr", "Studebaker", "Subaru", "Sunbeam", "Suzuki", "Talbot", "Tata", "Tatra", "Tesla", "Toyota", "Trabant", "Triumph", "TVR", "Vauxhall", "Vector", "Venturi", "Volkswagen", "Volvo", "Wartburg", "Westfield", "Willys-Overland", "Xedos", "Zagato", "Zastava", "ZAZ", "Zenvo", "ZIL", "Altro"};

@@ -11,12 +11,12 @@ import javax.swing.JOptionPane;
 
 public class j2web implements parametriGenerali {
 
-	//Caricamento da dat
+	//Caricamento delle schede veicolo create nelle precedenti sessioni
 	//@SuppressWarnings("unchecked")
 	public static void caricaListaSchedeVeicoloCreate() {
 		File file = new File(pathFileDatSchedeVeicolo);
     	if(file.exists() && file.length()!=0) {
-    			System.out.print(" File .dat schede trovato. Caricamento dati...");
+    			System.out.print(" File .dat schede veicolo trovato. Caricamento dati...");
     			try {
     				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
     				@SuppressWarnings("unchecked")
@@ -24,13 +24,13 @@ public class j2web implements parametriGenerali {
 					J2Web_UI.listSchedeVeicolo = readObject;
     				inputFile.close();
     			} catch (FileNotFoundException e) {
-    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeVeicoloCreate"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
     				e.printStackTrace();
     			} catch (IOException e) {
-    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_IOException"), "IOException", JOptionPane.ERROR_MESSAGE);
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeVeicoloCreate"), "IOException", JOptionPane.ERROR_MESSAGE);
     				e.printStackTrace();
     			} catch (ClassNotFoundException e) {
-    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_ClassNotFoundException"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeVeicoloCreate"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
     			}
     		}   				
     	else {
@@ -38,7 +38,7 @@ public class j2web implements parametriGenerali {
     	}
 	}
 	
-	//Caricamento da dat
+	//Caricamento delle schede cliente create nelle precedenti sessioni
 	//@SuppressWarnings("unchecked")
 	public static void caricaListaSchedeClienteCreate() {
 		File file = new File(pathFileDatSchedeCliente);
@@ -51,13 +51,13 @@ public class j2web implements parametriGenerali {
 					J2Web_UI.listSchedeCliente = readObject;
     				inputFile.close();
     			} catch (FileNotFoundException e) {
-    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeClienteCreate"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
     				e.printStackTrace();
     			} catch (IOException e) {
-    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_IOException"), "IOException", JOptionPane.ERROR_MESSAGE);
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeClienteCreate"), "IOException", JOptionPane.ERROR_MESSAGE);
     				e.printStackTrace();
     			} catch (ClassNotFoundException e) {
-    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeImmobiliCreate_ClassNotFoundException"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
+    				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaListaSchedeClienteCreate"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
     			}
     		}   				
     	else {
@@ -65,7 +65,7 @@ public class j2web implements parametriGenerali {
     	}
 	}
 	
-	//Salvataggio su dat
+	//Salvataggio delle schede veicolo create nelle precedenti sessioni
 	public static void salvaListaSchedeVeicoloCreate() {
 		try {
 		   File file = new File(pathFileDatSchedeVeicolo);
@@ -86,16 +86,16 @@ public class j2web implements parametriGenerali {
 	    	}
 		}
 		catch (FileNotFoundException e) {		
-	        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeCreate_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+	        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeVeicoloCreate"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 	        e.printStackTrace();
 		}
 		catch (IOException e) {
-			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeCreate_FileNotFoundException"), "IOException", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeVeicoloCreate"), "IOException", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 	}
 	
-	//Salvataggio su dat
+	//Salvataggio delle schede cliente create nelle precedenti sessioni
 	public static void salvaListaSchedeClienteCreate() {
 			try {
 			   File file = new File(pathFileDatSchedeCliente);
@@ -116,16 +116,16 @@ public class j2web implements parametriGenerali {
 		    	}
 			}
 			catch (FileNotFoundException e) {		
-		        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeCreate_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+		        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeClienteCreate"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 		        e.printStackTrace();
 			}
 			catch (IOException e) {
-				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeCreate_FileNotFoundException"), "IOException", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaListaSchedeClienteCreate"), "IOException", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 		}
 		
-	//Inizializza la mappa delle regioni e provincie
+	//Inizializza la mappa contenente i campi testuali e i corrispondenti limiti di caratteri
 	public static void inizializzaMappaLimiteCaratteri() {	
 		/*
 		maxCaratteri.put("txtCodiceInserzione", 10);
@@ -142,39 +142,40 @@ public class j2web implements parametriGenerali {
 
 	//Inizializza la mappa dei dialoghi modali
 	public static void inizializzaMappaDialoghiModali() {
-		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_FileNotFoundException", "File schede immobili non trovato: non è stato possibile caricare le schede immobili precedentemente salvate. ");
-		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_IOException", "Impossibile accedere al file delle schede immobili: non è stato possibile caricare le schede immobili precedentemente salvate. ");
-		MapModalWindowsDialogs.put("caricaListaSchedeImmobiliCreate_ClassNotFoundException", "Errore durante l'accesso al file delle schede immobili: non è stato possibile caricare le schede immobili precedentemente salvate. ");
-		MapModalWindowsDialogs.put("salvaListaSchedeImmobiliCreate_FileNotFoundException", "File schede immobili non trovato: non è stato possibile salvare le schede immobili. ");
-		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchede", "Eliminazione di tutte le schede salvate. Continuare? ");
-		MapModalWindowsDialogs.put("creazioneDellaSchedaImmobile_FormNonValido", "Attenzione: alcuni campi obbigatori non sono stati compilati. ");		
-		MapModalWindowsDialogs.put("selezioneFileImmagne_SelezioneNonValida", "Attenzione: formato di file non valido. Le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega. ");		
+			
+		/*MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchede", "Eliminazione di tutte le schede salvate. Continuare? ");
+				
+				
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_IOException", "Errore durante il collegamento al server remoto. ");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_Generic", "Errore in fase di inserimento scheda immobile. ");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseStatusCodeException", "Errore durante il collegamento al server remoto: il server ha risposto con uno status code inatteso. ");		
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseHeaderException", "Errore durante il collegamento al server remoto: il server ha risposto con un response header inatteso. ");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseBodyException", "Errore durante il collegamento al server remoto: il server ha risposto con un response body inatteso. ");
 		MapModalWindowsDialogs.put("sendErrorMail_AddressException", "Impossibile inviare la mail: indirizzo non valido. ");
-		MapModalWindowsDialogs.put("sendErrorMail_MessagingException", "Impossibile inviare la mail: errore durante l'invio. ");
-		MapModalWindowsDialogs.put("caricaTabellaHash_FileNotFoundException", "File hash scheda non trovato: non è stato possibile caricare le impostazioni della scheda. ");
-		MapModalWindowsDialogs.put("caricaTabellaHash_IOException", "Impossibile accedere al file hash scheda: non è stato possibile caricare le impostazioni della scheda. ");
-		MapModalWindowsDialogs.put("caricaTabellaHash_ClassNotFoundException", "Errore durante l'accesso al file hash scheda: non è stato possibile caricare le impostazioni della scheda. ");
-		MapModalWindowsDialogs.put("salvaTabellaHash_FileNotFoundException", "File hash scheda non trovato: non è stato possibile salvare le impostazioni della scheda. ");
-		MapModalWindowsDialogs.put("salvaTabellaHash_IOException", "Impossibile accedere al file hash scheda: non è stato possibile salvare le impostazioni della scheda. ");
+		MapModalWindowsDialogs.put("sendErrorMail_MessagingException", "Impossibile inviare la mail: errore durante l'invio. ");*/	
 		
 		MapModalWindowsDialogs.put("sendConfirmationMail", "Non è stato possibile inviare inviare la mail di conferma inserimento.");
+		MapModalWindowsDialogs.put("caricaListaSchedeClienteCreate", "Impossibile accedere al file delle schede cliente: non è stato possibile caricare le schede precedentemente salvate.");
+		MapModalWindowsDialogs.put("caricaListaSchedeVeicoloCreate", "Impossibile accedere al file delle schede veicolo: non è stato possibile caricare le schede precedentemente salvate.");
+		MapModalWindowsDialogs.put("salvaListaSchedeVeicoloCreate", "Impossibile accedere al file delle schede veicolo: non è stato possibile salvare la scheda.");
+		MapModalWindowsDialogs.put("salvaListaSchedeClienteCreate", "Impossibile accedere al file delle schede cliente: non è stato possibile salvare la scheda.");
+		MapModalWindowsDialogs.put("selezionaImmagine", "Attenzione: formato di file non valido. Le immagini devono essere in formato \"jpg\" e di dimensione massima 1 Mega.");
+		MapModalWindowsDialogs.put("caricaTabellaHash", "Impossibile accedere al file hash scheda: non è stato possibile caricare le impostazioni della scheda. ");
+		MapModalWindowsDialogs.put("salvaTabellaHash", "Impossibile accedere al file hash scheda: non è stato possibile salvare le impostazioni della scheda. ");
+		MapModalWindowsDialogs.put("creazioneDellaSchedaVeicolo", "Attenzione: alcuni campi obbligatori non sono stati compilati. ");
+		MapModalWindowsDialogs.put("creazioneDellaSchedaCliente", "Attenzione: alcuni campi obbligatori non sono stati compilati. ");
+		
 	}
 
 	//Inizializza la lista dei portali attivi
 	public static void inizializzaPortaliAttivi() {	
 		
-    	PortaleWeb _portaleMLS = new _portaleMLS("./images/_immobiliareIt4.jpg", "1 - Portale MLS", "001", true);
-    	J2Web_UI.listPortaliImmobiliari.add(_portaleMLS);
+    	PortaleWeb _portaleMLS = new _portaleMLS("./images/_nektasoft.png", "1 - Portale Multi Level Sharing", "001", true);
+    	J2Web_UI.listPortaliSincronizzazione.add(_portaleMLS);
     	
-    	PortaleWeb _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt4.jpg", "2 - immobiliare.it", "002", true);
-    	J2Web_UI.listPortaliImmobiliari.add(_immobiliareIt);
+    	/*PortaleWeb _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt.png", "2 - immobiliare.it", "002", true);
+    	J2Web_UI.listPortaliImmobiliari.add(_immobiliareIt);*/
     	
-
     }
 	
 }

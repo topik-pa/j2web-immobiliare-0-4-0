@@ -36,7 +36,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	
 	//Attributi della scheda veicolo	
 	long idScheda = new Date().getTime();	//id univoco riferito alla scheda
-	String codiceScheda= "j2w05_V" + UUID.randomUUID().toString(); //codice scheda univoco
+	String codiceScheda= "j2w05_V_" + UUID.randomUUID().toString(); //codice scheda univoco
 	
 	//Inizializzo il path per il file hash di questa scheda
 	String singolaSchedaDatPath = ".\\schede\\" + codiceScheda + ".dat";
@@ -112,16 +112,16 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	
 	//File
 	File imgFile1;	File imgFile2;	File imgFile3;	File imgFile4;	File imgFile5;	File imgFile6;	File imgFile7;	File imgFile8;	File imgFile9;	File imgFile10; 	
-	File[] arrayImages = new File[10]; //Attenzione: lascierò volutamente libera la prima posizione [0]
+	File[] arrayImages = new File[11]; //Attenzione: lascierò volutamente libera la prima posizione [0]
 	
-	//Una scheda immobile può essere ospitata in diversi portali, la seguente tabella hash contiene i codici dei portali(key) e il codice di inserimento(value) in cui la scheda è attualmente inserita
+	//Una scheda veicolo può essere ospitata in diversi portali, la seguente tabella hash contiene i codici dei portali(key) e il codice di inserimento(value) in cui la scheda è attualmente inserita
 	Map<String,String> mappaPortaliOspitanti = new Hashtable<String,String>();
 	
 	
 	//Costruttore
 	public SchedaVeicolo () {	 	
 	
-		//Al momento dell'istanziazione, una scheda immobile inizializza i propri campi prendendone il valore da quelli inseriti nel pannello Form
+		//Al momento dell'istanziazione, una scheda veicolo inizializza i propri campi prendendone il valore da quelli inseriti nel pannello form di creazione scheda veicolo
 		veicolo = J2Web_UI.getRdbtnAutoveicolo().isSelected()?"auto":"moto";
 		tipologiaVeicolo = (String) J2Web_UI.getComboBox_Tipologia().getSelectedItem();
 		tipologiaVeicoloIndex =J2Web_UI.getComboBox_Tipologia().getSelectedIndex();
@@ -240,10 +240,10 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	
 	
 	//Costruttore2
-		public SchedaVeicolo (ResultSet rs) {	 	
-		
-			//Al momento dell'istanziazione, una scheda veicolo inizializza i propri campi prendendone il valore dall query result
-			try {
+	public SchedaVeicolo (ResultSet rs) {	 	
+	
+		//Al momento dell'istanziazione, una scheda veicolo inizializza i propri campi prendendone il valore dalla query result
+		try {
 			veicolo = "auto";
 			
 			tipologiaVeicolo = rs.getString(9);
@@ -296,10 +296,10 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			urlVideoYouTube = rs.getString(60);
 			
 			descrizioneVeicolo = rs.getString(61);
-			
+		
 			if(rs.getBlob(50)!=null) {
 				InputStream in = rs.getBinaryStream(50);
-				 OutputStream f;
+				OutputStream f;
 				try {
 					f = new FileOutputStream(new File("temp\\image1.jpg"));
 					int c = 0;
@@ -307,9 +307,6 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					while ((c = in.read()) > -1) {
 						 f.write(c);
 						 }
-					
-					//arrayImages[1] = in;
-					
 					
 					f.close();
 					in.close();
@@ -321,50 +318,220 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				File newFile = new File("temp\\image1.jpg");
 				arrayImages[1] = newFile;
 				
-				newFile.deleteOnExit();
-				
+				newFile.deleteOnExit();	
 			}
+
+		
+			if(rs.getBlob(51)!=null) {
+				InputStream in = rs.getBinaryStream(51);
+				OutputStream f;
+				try {
+					f = new FileOutputStream(new File("temp\\image2.jpg"));
+					int c = 0;
 					
+					while ((c = in.read()) > -1) {
+						 f.write(c);
+						 }
+					
+					f.close();
+					in.close();
+				}
+				catch (Exception ex){
+					System.out.println(ex.getMessage());
+				}
 				
-				//arrayImages[1] = (File) rs.getBlob(50);
+				File newFile = new File("temp\\image2.jpg");
+				arrayImages[2] = newFile;
 				
-				
-			
-			/*if(rs.getBlob(51)!=null) {
-				arrayImages[2] = (File) rs.getBlob(51);
+				newFile.deleteOnExit();	
 			}
 			if(rs.getBlob(52)!=null) {
-				arrayImages[3] = (File) rs.getBlob(52);
+				InputStream in = rs.getBinaryStream(52);
+				OutputStream f;
+				try {
+					f = new FileOutputStream(new File("temp\\image3.jpg"));
+					int c = 0;
+					
+					while ((c = in.read()) > -1) {
+						 f.write(c);
+						 }
+					
+					f.close();
+					in.close();
+				}
+				catch (Exception ex){
+					System.out.println(ex.getMessage());
+				}
+				
+				File newFile = new File("temp\\image3.jpg");
+				arrayImages[3] = newFile;
+				
+				newFile.deleteOnExit();	
 			}
 			if(rs.getBlob(53)!=null) {
-				arrayImages[4] = (File) rs.getBlob(53);
+				InputStream in = rs.getBinaryStream(53);
+				OutputStream f;
+				try {
+					f = new FileOutputStream(new File("temp\\image4.jpg"));
+					int c = 0;
+					
+					while ((c = in.read()) > -1) {
+						 f.write(c);
+						 }
+					
+					f.close();
+					in.close();
+				}
+				catch (Exception ex){
+					System.out.println(ex.getMessage());
+				}
+				
+				File newFile = new File("temp\\image4.jpg");
+				arrayImages[4] = newFile;
+				
+				newFile.deleteOnExit();	
 			}
 			if(rs.getBlob(54)!=null) {
-				arrayImages[5] = (File) rs.getBlob(54);
+				InputStream in = rs.getBinaryStream(54);
+				OutputStream f;
+				try {
+					f = new FileOutputStream(new File("temp\\image5.jpg"));
+					int c = 0;
+					
+					while ((c = in.read()) > -1) {
+						 f.write(c);
+						 }
+					
+					f.close();
+					in.close();
+				}
+				catch (Exception ex){
+					System.out.println(ex.getMessage());
+				}
+				
+				File newFile = new File("temp\\image5.jpg");
+				arrayImages[5] = newFile;
+				
+				newFile.deleteOnExit();	
 			}
 			if(rs.getBlob(55)!=null) {
-				arrayImages[6] = (File) rs.getBlob(55);
+				InputStream in = rs.getBinaryStream(55);
+				OutputStream f;
+				try {
+					f = new FileOutputStream(new File("temp\\image6.jpg"));
+					int c = 0;
+					
+					while ((c = in.read()) > -1) {
+						 f.write(c);
+						 }
+					
+					f.close();
+					in.close();
+				}
+				catch (Exception ex){
+					System.out.println(ex.getMessage());
+				}
+				
+				File newFile = new File("temp\\image6.jpg");
+				arrayImages[6] = newFile;
+				
+				newFile.deleteOnExit();	
 			}
 			if(rs.getBlob(56)!=null) {
-				arrayImages[7] = (File) rs.getBlob(56);
-			}
+				InputStream in = rs.getBinaryStream(56);
+				OutputStream f;
+				try {
+					f = new FileOutputStream(new File("temp\\image7.jpg"));
+					int c = 0;
+					
+					while ((c = in.read()) > -1) {
+						 f.write(c);
+						 }
+					
+					f.close();
+					in.close();
+				}
+				catch (Exception ex){
+					System.out.println(ex.getMessage());
+				}
+				
+				File newFile = new File("temp\\image7.jpg");
+				arrayImages[7] = newFile;
+				
+				newFile.deleteOnExit();				}
 			if(rs.getBlob(57)!=null) {
-				arrayImages[8] = (File) rs.getBlob(57);
-			}
+				InputStream in = rs.getBinaryStream(57);
+				OutputStream f;
+				try {
+					f = new FileOutputStream(new File("temp\\image8.jpg"));
+					int c = 0;
+					
+					while ((c = in.read()) > -1) {
+						 f.write(c);
+						 }
+					
+					f.close();
+					in.close();
+				}
+				catch (Exception ex){
+					System.out.println(ex.getMessage());
+				}
+				
+				File newFile = new File("temp\\image8.jpg");
+				arrayImages[8] = newFile;
+				
+				newFile.deleteOnExit();				}
 			if(rs.getBlob(58)!=null) {
-				arrayImages[9] = (File) rs.getBlob(58);
-			}
+				InputStream in = rs.getBinaryStream(58);
+				OutputStream f;
+				try {
+					f = new FileOutputStream(new File("temp\\image9.jpg"));
+					int c = 0;
+					
+					while ((c = in.read()) > -1) {
+						 f.write(c);
+						 }
+					
+					f.close();
+					in.close();
+				}
+				catch (Exception ex){
+					System.out.println(ex.getMessage());
+				}
+				
+				File newFile = new File("temp\\image9.jpg");
+				arrayImages[9] = newFile;
+				
+				newFile.deleteOnExit();				}
 			if(rs.getBlob(59)!=null) {
-				arrayImages[10] = (File) rs.getBlob(59);
-			}*/
-			
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				InputStream in = rs.getBinaryStream(59);
+				OutputStream f;
+				try {
+					f = new FileOutputStream(new File("temp\\image10.jpg"));
+					int c = 0;
+					
+					while ((c = in.read()) > -1) {
+						 f.write(c);
+						 }
+					
+					f.close();
+					in.close();
+				}
+				catch (Exception ex){
+					System.out.println(ex.getMessage());
+				}
+				
+				File newFile = new File("temp\\image10.jpg");
+				arrayImages[10] = newFile;
+				
+				newFile.deleteOnExit();				}
 		
-			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+	}
 
 	
 	//Metodi
@@ -385,13 +552,13 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
     			}
     			System.out.print(" fatto." + "\n");
 			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash_IOException"), "IOException", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash"), "IOException", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash_ClassNotFoundException"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
 			} 		
     	}
     	else {
@@ -400,7 +567,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				System.out.print("File hash non trovato. Creazione di un nuovo file hash per questa scheda..." + newFile.toString());
 				System.out.print(" fatto." + "\n");
 			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
     	}
@@ -422,10 +589,10 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	    		System.out.println("File hash scheda non trovato.");
 	    	}
 		} catch (FileNotFoundException e0) {		
-	        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash_FileNotFoundException"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+	        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 	        e0.printStackTrace();
 		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash_IOException"), "IOException", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash"), "IOException", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}	
 	}
@@ -470,7 +637,8 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		}
 		return codiceInserimento;
 	}
-			
+		
+	
 }
 
 
@@ -481,6 +649,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 //Classi Comparator per l'ordinamento delle schede secondo specifici criteri
 class IdComparator implements Comparator<SchedaVeicolo> {
 
+	//Per ID della scheda
     public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {
         if (s1.idScheda > s2.idScheda)
             return 1;
@@ -490,60 +659,3 @@ class IdComparator implements Comparator<SchedaVeicolo> {
             return 0;
     }
 }
-
-
-/*class CodeComparator implements Comparator<SchedaVeicolo>  {
-	
-    public int compare(SchedaVeicolo s1, SchedaVeicolo s2) { 	
-    	int i = s1.codiceInserzione.compareTo(s2.codiceInserzione); 
-    	System.out.println("i:" + i);
-        if (i > 0)
-            return 1;
-        else if (i < 0)
-            return -1;
-        else
-            return 0;
-    }
-}*/
-
-
-/*class CityComparator implements Comparator<SchedaImmobile>	{
-	
-    public int compare(SchedaImmobile s1, SchedaImmobile s2) {    	
-    	int i = s1.comune.compareTo(s2.comune); 
-        if (i > 0)
-            return 1;
-        else if (i < 0)
-            return -1;
-        else
-            return 0;
-    }
-}*/
-
-
-/*class ProvinceComparator implements Comparator<SchedaImmobile>	{
-	
-    public int compare(SchedaImmobile s1, SchedaImmobile s2) {    	
-    	int i = s1.provincia.compareTo(s2.provincia); 
-        if (i > 0)
-            return 1;
-        else if (i < 0)
-            return -1;
-        else
-            return 0;
-    }
-}*/
-
-
-/*class RegionComparator implements Comparator<SchedaImmobile>	{
-	
-    public int compare(SchedaImmobile s1, SchedaImmobile s2) {    	
-    	int i = s1.regione.compareTo(s2.regione); 
-        if (i > 0)
-            return 1;
-        else if (i < 0)
-            return -1;
-        else
-            return 0;
-    }
-}*/

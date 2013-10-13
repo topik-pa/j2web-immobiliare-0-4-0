@@ -67,8 +67,6 @@ public abstract class PortaleWeb implements parametriGenerali {
 		this.valoreLabel = valoreLabel;
 		this.idPortale = idPortale;
 		this.isActive = isActive;
-		
-		
 
 	}
 	
@@ -269,6 +267,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return inputValue; 
   	}
   	
+  	//Metodo per evitare l'invio di parametri
   	public List<NameValuePair> removeNotUsedParams(List<NameValuePair> paramList) {	
   		
   		List<NameValuePair> cleanedList = paramList;
