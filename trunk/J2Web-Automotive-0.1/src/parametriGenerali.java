@@ -28,7 +28,7 @@ public interface parametriGenerali {
 	final String nomeGUI = "J2Web - Automotive" + " " + j2web_version;
 	
 	//Dimensioni di default della GUI 
-	final int[] GUI_bounds = {20, 20, 1024, 600};
+	final int[] GUI_bounds = {20, 20, 1152, 640};
 	
 	//Icona della finestra principale
     final Image frameIcon = new ImageIcon("./images/j2webFrameIcon.png").getImage();
