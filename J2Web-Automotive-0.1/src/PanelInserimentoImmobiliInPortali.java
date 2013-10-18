@@ -47,8 +47,8 @@ import javax.swing.border.TitledBorder;
 public class PanelInserimentoImmobiliInPortali extends JPanel implements parametriGenerali {
 	private static final long serialVersionUID = 1L;
 
-	PanelInserimentoSequenziale panelInserimentoSequenziale;
-	JPanel panelInserimentoPortale;     
+	//PanelInserimentoSequenziale panelInserimentoSequenziale;
+	//JPanel panelInserimentoPortale;     
         
     //Costruttore - definisce la prima visualizzazione del pannello
     public PanelInserimentoImmobiliInPortali() {
@@ -93,10 +93,10 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
     	add(Box.createVerticalStrut(5));
     	        	
     	//Pannello controllo portali (primo in alto)
-    	panelInserimentoSequenziale = new PanelInserimentoSequenziale();     		        
-        add(panelInserimentoSequenziale);  
+    	//panelInserimentoSequenziale = new PanelInserimentoSequenziale();     		        
+        //add(panelInserimentoSequenziale);  
         
-        add(Box.createVerticalStrut(10));
+        //add(Box.createVerticalStrut(10));
  	            
         //Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizzi: non hanno alcuna funzionalità )
         ListIterator<PortaleWeb> iterator = J2Web_UI.listPortaliSincronizzazione.listIterator();
@@ -115,10 +115,10 @@ public class PanelInserimentoImmobiliInPortali extends JPanel implements paramet
     	add(Box.createVerticalStrut(5));
     	      	
     	//Pannello controllo portali (primo in alto)
-    	panelInserimentoSequenziale = new PanelInserimentoSequenziale(scheda, selectAllSelected);     		        
-        add(panelInserimentoSequenziale); 
+    	//panelInserimentoSequenziale = new PanelInserimentoSequenziale(scheda, selectAllSelected);     		        
+        //add(panelInserimentoSequenziale); 
         
-        add(Box.createVerticalStrut(10));
+        //add(Box.createVerticalStrut(10));
 
     	//Ciclo ogni oggetto PortaleWeb presente nella lista concatenata e per ognuno aggiorno il sottopannello
         ListIterator<PortaleWeb> iterator = J2Web_UI.listPortaliSincronizzazione.listIterator();
@@ -427,7 +427,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 		
 		final boolean isOnThisPortal = scheda.isOnThisPortal(portale.idPortale);
 		setLayout(new GridLayout(2,3,5,5));
-		setMaximumSize(new Dimension(500, 100));
+		setMaximumSize(new Dimension(400, 90));
 		
 		loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
         title = BorderFactory.createTitledBorder(loweredetched, portale.valoreLabel);

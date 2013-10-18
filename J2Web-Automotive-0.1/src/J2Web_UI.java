@@ -190,6 +190,12 @@ public class J2Web_UI implements parametriGenerali{
   	
   	//La struttura dati che contiene le schede cliente create (deve essere inserita qui in quanto non può essere 'final')
   	public static LinkedList<SchedaCliente> listSchedeCliente = new LinkedList<SchedaCliente>();
+  	private static JTextField textFieldRagioneSociale;
+  	private static JTextField textFieldIndirizzo;
+  	private static JTextField textFieldTelefonoGenerico;
+  	private static JTextField textFieldReferente;
+  	private static JTextField textFieldTelefonoReferente;
+  	private static JTextField textFieldEmailReferente;
 
 	/**
 	 * Launch the application.
@@ -303,9 +309,9 @@ public class J2Web_UI implements parametriGenerali{
 		tabbedPane.addTab("Anagrafica veicolo", icoAnagrVeicolo, panel, null);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{437, 0};
-		gbl_panel.rowHeights = new int[] {300, 70, 0};
+		gbl_panel.rowHeights = new int[] {170, 100, 0};
 		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{3.0, 1.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{4.0, 1.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		JPanel panel_3 = new JPanel();
@@ -316,7 +322,7 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_panel_3.gridy = 0;
 		panel.add(panel_3, gbc_panel_3);
 		GridBagLayout gbl_panel_3 = new GridBagLayout();
-		gbl_panel_3.columnWidths = new int[]{400, 200, 200, 0};
+		gbl_panel_3.columnWidths = new int[]{450, 330, 330, 0};
 		gbl_panel_3.rowHeights = new int[]{174, 0};
 		gbl_panel_3.columnWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_panel_3.rowWeights = new double[]{1.0, Double.MIN_VALUE};
@@ -348,13 +354,13 @@ public class J2Web_UI implements parametriGenerali{
 		scrollPane.setViewportView(panel_16);
 		GridBagLayout gbl_panel_16 = new GridBagLayout();
 		gbl_panel_16.columnWidths = new int[]{130, 0};
-		gbl_panel_16.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_panel_16.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_16.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_16.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_16.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_16.setLayout(gbl_panel_16);	
 		
 		JPanel panel_20 = new JPanel();
-		panel_20.setBorder(new TitledBorder(null, "Caratteristiche principali", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_20.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Caratteristiche principali veicolo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_20 = new GridBagConstraints();
 		gbc_panel_20.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_20.fill = GridBagConstraints.BOTH;
@@ -1030,6 +1036,7 @@ public class J2Web_UI implements parametriGenerali{
 		JPanel panel_24 = new JPanel();
 		panel_24.setBorder(new TitledBorder(null, "Descrizione", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_24 = new GridBagConstraints();
+		gbc_panel_24.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_24.fill = GridBagConstraints.BOTH;
 		gbc_panel_24.gridx = 0;
 		gbc_panel_24.gridy = 4;
@@ -1050,6 +1057,74 @@ public class J2Web_UI implements parametriGenerali{
 		textPane_Descrizione.setContentType("text/plain\r\ntext/xml\r\ntext/html");
 		panel_24.add(textPane_Descrizione, "2, 4, fill, fill");
 		
+		panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnAutoveicolo, rdbtnMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox_MeseImmatricolazione, comboBox_AnnoImmatricolazione, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtFieldKw, txtFieldCv, lblColoreEsterno, comboBox_ColoreEsterno, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_PrecedentiProprietari, textField_Chilometraggio, lblPrezzo, textField_Prezzo, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane_Descrizione, panel_23, btnImmagine1, label_Immagine1, btnImmagine_2, label_Immagine2, btnImmagine_3, label_Immagine3, btnImmagine_4, label_Immagine4, btnImmagine_5, label_Immagine5, btnImmagine_6, label_Immagine6, btnImmagine_7, label_Immagine7, btnImmagine_8, label_Immagine8, btnImmagine_9, label_Immagine9, btnImmagine_10, label_Immagine10, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_Cambio, comboBox_NumeroRapporti, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_Cilindrata, comboBox_ClasseEmissioni, comboBox_ConsumoMedio, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
+		
+		JPanel panel_33 = new JPanel();
+		panel_33.setBorder(new TitledBorder(null, "Informazioni di contatto", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_panel_33 = new GridBagConstraints();
+		gbc_panel_33.fill = GridBagConstraints.BOTH;
+		gbc_panel_33.gridx = 0;
+		gbc_panel_33.gridy = 5;
+		panel_16.add(panel_33, gbc_panel_33);
+		panel_33.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
+		
+		JLabel lbRagioneSociale = new JLabel("Ragione sociale");
+		panel_33.add(lbRagioneSociale, "2, 2");
+		
+		JLabel lblIndirizzo = new JLabel("Indirizzo");
+		panel_33.add(lblIndirizzo, "4, 2");
+		
+		JLabel lblTelefonoGenerico = new JLabel("Telefono");
+		panel_33.add(lblTelefonoGenerico, "6, 2");
+		
+		textFieldRagioneSociale = new JTextField();
+		panel_33.add(textFieldRagioneSociale, "2, 4, fill, default");
+		textFieldRagioneSociale.setColumns(10);
+		
+		textFieldIndirizzo = new JTextField();
+		panel_33.add(textFieldIndirizzo, "4, 4, fill, default");
+		textFieldIndirizzo.setColumns(10);
+		
+		textFieldTelefonoGenerico = new JTextField();
+		panel_33.add(textFieldTelefonoGenerico, "6, 4, fill, default");
+		textFieldTelefonoGenerico.setColumns(10);
+		
+		JLabel lblReferente = new JLabel("Referente");
+		panel_33.add(lblReferente, "2, 6");
+		
+		JLabel lblTelefonoReferente = new JLabel("Telefono");
+		panel_33.add(lblTelefonoReferente, "4, 6");
+		
+		JLabel lblEmailReferente = new JLabel("E-mail");
+		panel_33.add(lblEmailReferente, "6, 6");
+		
+		textFieldReferente = new JTextField();
+		panel_33.add(textFieldReferente, "2, 8, fill, default");
+		textFieldReferente.setColumns(10);
+		
+		textFieldTelefonoReferente = new JTextField();
+		panel_33.add(textFieldTelefonoReferente, "4, 8, fill, default");
+		textFieldTelefonoReferente.setColumns(10);
+		
+		textFieldEmailReferente = new JTextField();
+		panel_33.add(textFieldEmailReferente, "6, 8, fill, default");
+		textFieldEmailReferente.setColumns(10);
+		
 		JPanel panel_17 = new JPanel();
 		panel_17.setBorder(null);
 		GridBagConstraints gbc_panel_17 = new GridBagConstraints();
@@ -1062,7 +1137,7 @@ public class J2Web_UI implements parametriGenerali{
 		JPanel panel_18 = new JPanel();
 		panel_17.add(panel_18);
 		
-		JButton btnResetta = new JButton("Reset");
+		JButton btnResetta = new JButton("Reset form");
 		btnResetta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Resetta la form
@@ -1126,7 +1201,7 @@ public class J2Web_UI implements parametriGenerali{
 				panel_9.updateUI();	
 			}
 		});
-		panel_9.setBorder(new TitledBorder(null, "Lista veicoli inseriti", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_9.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Lista schede veicolo inserite", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_1.setViewportView(panel_9);
 		panel_9.setLayout(new BoxLayout(panel_9, BoxLayout.Y_AXIS));
 		
@@ -1140,7 +1215,7 @@ public class J2Web_UI implements parametriGenerali{
 		
 		//Il panel_10 ospita i portali web di sincronizzazione
 		panel_10 = new JPanel();
-		panel_10.setBorder(new TitledBorder(null, "Sincronizzazione nei portali Web", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_10.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Sincronizzazione veicoli nei portali Web", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_2.setViewportView(panel_10);
 		panel_10.setLayout(new BoxLayout(panel_10, BoxLayout.Y_AXIS));
 		
@@ -1159,13 +1234,13 @@ public class J2Web_UI implements parametriGenerali{
 				panel_4.updateUI();	
 			}
 		});
-		panel_4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Clienti potenzialmente interessati al veicolo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Clienti potenzialmente interessati al veicolo selezionato", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_3.setViewportView(panel_4);
 		panel_4.setBackground(new Color(255, 255, 224));
 		
 		
 		JPanel panelNessunaScedaSelezionata = new JPanel();
-        JLabel lblNessunaScedaSelezionata = new JLabel("Non è stata selezionata alcuna scheda.");                
+        JLabel lblNessunaScedaSelezionata = new JLabel("Non è stata selezionata alcuna scheda veicolo");                
         panelNessunaScedaSelezionata.add(lblNessunaScedaSelezionata);
         panel_4.add(panelNessunaScedaSelezionata);
 
@@ -1174,9 +1249,9 @@ public class J2Web_UI implements parametriGenerali{
 		tabbedPane.addTab("Anagrafica cliente", new ImageIcon(".\\images\\icon_pilot.png"), panel_1, null);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[] {437, 0};
-		gbl_panel_1.rowHeights = new int[] {300, 70, 0};
+		gbl_panel_1.rowHeights = new int[] {170, 100, 0};
 		gbl_panel_1.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{3.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{4.0, 1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		JPanel panel_5 = new JPanel();
@@ -1187,7 +1262,7 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_panel_5.gridy = 0;
 		panel_1.add(panel_5, gbc_panel_5);
 		GridBagLayout gbl_panel_5 = new GridBagLayout();
-		gbl_panel_5.columnWidths = new int[] {100, 100};
+		gbl_panel_5.columnWidths = new int[] {740, 370};
 		gbl_panel_5.rowHeights = new int[]{1, 0};
 		gbl_panel_5.columnWeights = new double[]{1.0, 1.0};
 		gbl_panel_5.rowWeights = new double[]{1.0, Double.MIN_VALUE};
@@ -1461,7 +1536,7 @@ public class J2Web_UI implements parametriGenerali{
 		JPanel panel_27 = new JPanel();
 		panel_26.add(panel_27);
 		
-		JButton btnResetFormCliente = new JButton("Reset");
+		JButton btnResetFormCliente = new JButton("Reset form");
 		btnResetFormCliente.setIcon(new ImageIcon(".\\images\\refresh.png"));
 		btnResetFormCliente.setSelectedIcon(null);
 		btnResetFormCliente.addActionListener(new ActionListener() {
@@ -1511,7 +1586,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_5.add(scrollPane_5, gbc_scrollPane_5);
 		
 		panel_13 = new JPanel();
-		panel_13.setBorder(new TitledBorder(null, "Lista schede cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_13.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Lista schede cliente inserite", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_13.addContainerListener(new ContainerAdapter() {
 			@Override
 			public void componentAdded(ContainerEvent arg0) {
@@ -1530,7 +1605,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_1.add(scrollPane_6, gbc_scrollPane_6);
 		
 		panel_6 = new JPanel();
-		panel_6.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Veicoli potenzialmente interessanti per il cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_6.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Veicoli potenzialmente interessanti per il cliente selezionato", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_6.setViewportView(panel_6);
 		panel_6.addContainerListener(new ContainerAdapter() {
 			@Override
@@ -1543,7 +1618,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_6.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JPanel panelNessunaScedaSelezionata2 = new JPanel();
-        JLabel lblNessunaScedaSelezionata2 = new JLabel("Non è stata selezionata alcuna scheda.");                
+        JLabel lblNessunaScedaSelezionata2 = new JLabel("Non è stata selezionata alcuna scheda cliente");                
         panelNessunaScedaSelezionata2.add(lblNessunaScedaSelezionata2);
         panel_6.add(panelNessunaScedaSelezionata2);
 		
@@ -1551,9 +1626,9 @@ public class J2Web_UI implements parametriGenerali{
 		tabbedPane.addTab("Incrocio MLS", new ImageIcon(".\\images\\icon_db.png"), panel_2, null);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[] {437, 0};
-		gbl_panel_2.rowHeights = new int[] {300, 70, 0};
+		gbl_panel_2.rowHeights = new int[] {170, 100, 0};
 		gbl_panel_2.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{3.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_2.rowWeights = new double[]{4.0, 1.0, Double.MIN_VALUE};
 		panel_2.setLayout(gbl_panel_2);
 		
 		JPanel panel_7 = new JPanel();
@@ -1564,7 +1639,7 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_panel_7.gridy = 0;
 		panel_2.add(panel_7, gbc_panel_7);
 		GridBagLayout gbl_panel_7 = new GridBagLayout();
-		gbl_panel_7.columnWidths = new int[] {100, 100, 0};
+		gbl_panel_7.columnWidths = new int[] {555, 555, 0};
 		gbl_panel_7.rowHeights = new int[]{170, 0};
 		gbl_panel_7.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gbl_panel_7.rowWeights = new double[]{4.0, Double.MIN_VALUE};
@@ -1593,6 +1668,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_14.add(scrollPane_7, gbc_scrollPane_7);
 		
 		panel_31 = new JPanel();
+		panel_31.setBorder(new TitledBorder(null, "Lista schede cliente inserite", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_7.setViewportView(panel_31);
 		panel_31.addContainerListener(new ContainerAdapter() {
 			@Override
@@ -1610,7 +1686,7 @@ public class J2Web_UI implements parametriGenerali{
 		gbc_panel_32.gridy = 1;
 		panel_14.add(panel_32, gbc_panel_32);
 		
-		JButton btnAggiornaRisultati = new JButton("Aggiorna risultati");
+		JButton btnAggiornaRisultati = new JButton("Sincronizza risultati");
 		btnAggiornaRisultati.setIcon(new ImageIcon(".\\images\\update.png"));
 		panel_32.add(btnAggiornaRisultati);
 		
@@ -1622,6 +1698,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_7.add(scrollPane_8, gbc_scrollPane_8);
 		
 		panel_15 = new JPanel();
+		panel_15.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Estrazione Multi Level Sharing per il cliente selezionato", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_8.setViewportView(panel_15);
 		panel_15.addContainerListener(new ContainerAdapter() {
 			@Override
@@ -1640,7 +1717,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_2.add(scrollPane_9, gbc_scrollPane_9);
 		
 		panel_8 = new JPanel();
-		panel_8.setBorder(new TitledBorder(null, "Dettagli veicolo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_8.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Dettagli scheda veicolo selezionata", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_8.addContainerListener(new ContainerAdapter() {
 			@Override
 			public void componentAdded(ContainerEvent arg0) {
@@ -1652,11 +1729,9 @@ public class J2Web_UI implements parametriGenerali{
 		panel_8.setBackground(new Color(255, 255, 224));
 		
 		JPanel panelNessunaScedaSelezionata3 = new JPanel();
-        JLabel lblNessunaScedaSelezionata3 = new JLabel("Non è stata selezionata alcuna scheda.");                
+        JLabel lblNessunaScedaSelezionata3 = new JLabel("Non è stata selezionata alcuna scheda veicolo");                
         panelNessunaScedaSelezionata3.add(lblNessunaScedaSelezionata3);
         panel_8.add(panelNessunaScedaSelezionata3);
-		
-		panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnAutoveicolo, rdbtnMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox_MeseImmatricolazione, comboBox_AnnoImmatricolazione, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtFieldKw, txtFieldCv, lblColoreEsterno, comboBox_ColoreEsterno, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_PrecedentiProprietari, textField_Chilometraggio, lblPrezzo, textField_Prezzo, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane_Descrizione, panel_23, btnImmagine1, label_Immagine1, btnImmagine_2, label_Immagine2, btnImmagine_3, label_Immagine3, btnImmagine_4, label_Immagine4, btnImmagine_5, label_Immagine5, btnImmagine_6, label_Immagine6, btnImmagine_7, label_Immagine7, btnImmagine_8, label_Immagine8, btnImmagine_9, label_Immagine9, btnImmagine_10, label_Immagine10, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_Cambio, comboBox_NumeroRapporti, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_Cilindrata, comboBox_ClasseEmissioni, comboBox_ConsumoMedio, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
 		
 		JMenuBar menuBar = new JMenuBar();
 		imagination_05.getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -1693,8 +1768,10 @@ public class J2Web_UI implements parametriGenerali{
 	protected static void aggiornaPannelloListaSchedeVeicolo() {
 		
 		JPanel pannelloListaSchedeVeicolo = getPanel_9();
-		
+
 		pannelloListaSchedeVeicolo.removeAll();
+		
+		pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(6));
 				
 		if(listSchedeVeicolo.isEmpty()) {
 			//Pannello senza schede
@@ -1723,12 +1800,17 @@ public class J2Web_UI implements parametriGenerali{
 	protected static void aggiornaPannelloListaSchedeCliente() {
 		
 		JPanel pannelloListaSchedeCliente = getPanel_13();
-		JPanel pannelloListaSchedeClienteMLS = getPanel_31();		
+		JPanel pannelloListaSchedeClienteMLS = getPanel_31();
+		JPanel pannelloListaSchedeVeicoloMLS = getPanel_15();
 		
 		pannelloListaSchedeCliente.removeAll();
 		pannelloListaSchedeClienteMLS.removeAll();
 		
-		//pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(7));	
+		//pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(7));
+		
+		pannelloListaSchedeCliente.add(Box.createVerticalStrut(6));
+		pannelloListaSchedeClienteMLS.add(Box.createVerticalStrut(6));
+		//pannelloListaSchedeVeicoloMLS.add(Box.createVerticalStrut(6));
 		
 		if(listSchedeCliente.isEmpty()) {
 			//Pannello senza schede
@@ -1738,12 +1820,17 @@ public class J2Web_UI implements parametriGenerali{
             JLabel lblNessunaScheda = new JLabel("La lista delle schede cliente è vuota.");                
             panelNessunaScheda.add(lblNessunaScheda);
             
-            JPanel panelNessunaSchedaMLS = new JPanel();
-            JLabel lblNessunaSchedaMLS = new JLabel("La lista delle schede cliente è vuota.");                
-            panelNessunaSchedaMLS.add(lblNessunaSchedaMLS);
+            JPanel panelNessunaSchedaClienteMLS = new JPanel();
+            JLabel lblNessunaSchedaClienteMLS = new JLabel("La lista delle schede cliente è vuota.");                
+            panelNessunaSchedaClienteMLS.add(lblNessunaSchedaClienteMLS);
+            
+            JPanel panelNessunaSchedaVeicoloMLS = new JPanel();
+            JLabel lblNessunaSchedaVeicoloMLS = new JLabel("Non ci sono veicoli che soddisfano le richieste del cliente selezionato.");                
+            panelNessunaSchedaVeicoloMLS.add(lblNessunaSchedaVeicoloMLS);
             
             pannelloListaSchedeCliente.add(panelNessunaScheda);
-            pannelloListaSchedeClienteMLS.add(panelNessunaSchedaMLS);
+            pannelloListaSchedeClienteMLS.add(panelNessunaSchedaClienteMLS);
+            pannelloListaSchedeVeicoloMLS.add(panelNessunaSchedaVeicoloMLS);
     	}    	
     	else {
     		//Pannello con schede
@@ -2592,7 +2679,7 @@ public class J2Web_UI implements parametriGenerali{
 		
 		pannelloListaPortali.removeAll();
       	
-		pannelloListaPortali.add(Box.createVerticalStrut(10));
+		//pannelloListaPortali.add(Box.createVerticalStrut(10));
 
     	//Ciclo ogni oggetto PortaleWeb presente nella lista concatenata e per ognuno aggiorno il sottopannello
         ListIterator<PortaleWeb> iterator = J2Web_UI.listPortaliSincronizzazione.listIterator();
@@ -2676,4 +2763,22 @@ public class J2Web_UI implements parametriGenerali{
 	}
 
 
+	protected static JTextField getTextFieldRagioneSociale() {
+		return textFieldRagioneSociale;
+	}
+	protected static  JTextField getTextFieldIndirizzo() {
+		return textFieldIndirizzo;
+	}
+	protected static  JTextField getTextFieldTelefonoGenerico() {
+		return textFieldTelefonoGenerico;
+	}
+	protected static  JTextField getTextFieldReferente() {
+		return textFieldReferente;
+	}
+	protected static  JTextField getTextFieldTelefonoReferente() {
+		return textFieldTelefonoReferente;
+	}
+	protected static  JTextField getTextFieldEmailReferente() {
+		return textFieldEmailReferente;
+	}
 }

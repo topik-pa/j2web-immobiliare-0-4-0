@@ -54,7 +54,7 @@ class PanelSchedaVeicolo extends JPanel {
 		 setMaximumSize(new Dimension(400, 130));
 		 	
 		 //Radio button dei sottopannelli
-		 schedaRadio = new JRadioButton("Seleziona scheda");
+		 schedaRadio = new JRadioButton("Seleziona scheda veicolo");
 		 //Le radio button devono appartenere allo stesso gruppo per funzionare correttamente
 		 radioGrpSchede.add(schedaRadio); 
 		 //Clicco su una radio button di una scheda
@@ -68,13 +68,13 @@ class PanelSchedaVeicolo extends JPanel {
                //Il pannello di destra (inserimento) deve essere aggiornato
                J2Web_UI.panelInserimentoInActiveMode(pannelloListaPortali, scheda, true);
                
+               //Coloro il bordo della scheda
                Component[] wrapperScheda = getParent().getComponents();
                for(int i=0; i<wrapperScheda.length; i++) {
             	   if(wrapperScheda[i].getClass().toString().contains("PanelSchedaVeicolo"))  {
             		   ((JComponent) wrapperScheda[i]).setBorder(new LineBorder(Color.LIGHT_GRAY));
             	   }
                }
-               
                setBorder(new LineBorder(Color.ORANGE));
                
                matchVeicoloCliente(scheda);

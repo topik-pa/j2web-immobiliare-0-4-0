@@ -44,7 +44,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
 		 
 		 setLayout(new BorderLayout(0, 0));
 		 setBorder(new LineBorder(Color.LIGHT_GRAY));
-		 setMaximumSize(new Dimension(400, 130));
+		 setMaximumSize(new Dimension(600, 130));
 		 	
 		 //Radio button dei sottopannelli
 		 schedaRadio = new JRadioButton("Seleziona scheda");

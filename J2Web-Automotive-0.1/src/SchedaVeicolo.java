@@ -109,6 +109,12 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	String cilindrataVeicolo;
 	String urlVideoYouTube;
 	String descrizioneVeicolo;
+	String ragioneSociale;
+	String Indirizzo;
+	String Telefono;
+	String nomeReferente;
+	String TelefonoReferente;
+	String emailReferente;
 	
 	//File
 	File imgFile1;	File imgFile2;	File imgFile3;	File imgFile4;	File imgFile5;	File imgFile6;	File imgFile7;	File imgFile8;	File imgFile9;	File imgFile10; 	
@@ -193,6 +199,13 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		urlVideoYouTube = J2Web_UI.getTextField_YouTubeUrl().getText().trim();
 		
 		descrizioneVeicolo = J2Web_UI.getTextPane_Descrizione().getText().trim();
+		
+		ragioneSociale = J2Web_UI.getTextFieldRagioneSociale().getText().trim();
+		Indirizzo = J2Web_UI.getTextFieldIndirizzo().getText().trim();
+		Telefono = J2Web_UI.getTextFieldTelefonoGenerico().getText().trim();
+		nomeReferente = J2Web_UI.getTextFieldReferente().getText().trim();
+		TelefonoReferente = J2Web_UI.getTextFieldTelefonoReferente().getText().trim();
+		emailReferente = J2Web_UI.getTextFieldEmailReferente().getText().trim();
 		
 		imgFile1 = J2Web_UI.getFileImmagine1();
 		if(imgFile1!=null && imgFile1.exists()) {
