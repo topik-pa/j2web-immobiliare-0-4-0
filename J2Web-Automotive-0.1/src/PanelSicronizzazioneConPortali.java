@@ -10,8 +10,10 @@
  * @author marco - marcopavan.mp@gmail.com 
  */
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,14 +46,14 @@ import javax.swing.border.TitledBorder;
 
 
 //Pannello per l'inserimento schede nei portali immobiliari
-public class PanelInserimentoImmobiliInPortali extends JPanel implements parametriGenerali {
+public class PanelSicronizzazioneConPortali extends JPanel implements parametriGenerali {
 	private static final long serialVersionUID = 1L;
 
 	//PanelInserimentoSequenziale panelInserimentoSequenziale;
 	//JPanel panelInserimentoPortale;     
         
     //Costruttore - definisce la prima visualizzazione del pannello
-    public PanelInserimentoImmobiliInPortali() {
+    public PanelSicronizzazioneConPortali() {
 
     	setBorder(new TitledBorder(null, "Inserimento schede immobile", TitledBorder.LEADING, TitledBorder.TOP, null, null));
     	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));    	
@@ -292,7 +294,7 @@ class PanelInserimentoSequenziale extends JPanel implements parametriGenerali {
          					} 					
          				}
          				catch (HttpCommunicationException | UnsupportedEncodingException e1 ) { 
-         					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
+         					PanelSicronizzazioneConPortali.manageErrorsOnPortalSubmission(e1);
          				}
                 	}
                 	//Mostro il rapporto di inserimento
@@ -321,7 +323,7 @@ class PanelInserimentoSequenziale extends JPanel implements parametriGenerali {
 	     					portaleCorrente.cancellaScheda(scheda, true);
 	     				}
 	     				catch (HttpCommunicationException e1 ) {
-	     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
+	     					PanelSicronizzazioneConPortali.manageErrorsOnPortalSubmission(e1);
 	     				}
 	            		System.out.println("Scheda " + scheda.idScheda + " cancellata da: " + portaleCorrente.idPortale);         		            		
 	            	}
@@ -360,7 +362,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 	
 	private static final long serialVersionUID = 1L;
 	
-	String labelCheckboxSelezionaPortale = "Selez";
+	String labelCheckboxSelezionaPortale = "Seleziona";
     String labelBtnInserisci = "Inserisci";
     String labelBtnVisualizza = "Visualizza";
     String labelBtnCancella = "Cancella";
@@ -389,6 +391,8 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 		loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
         title = BorderFactory.createTitledBorder(loweredetched, portale.valoreLabel);
         title.setTitleJustification(TitledBorder.RIGHT);
+        title.setTitleColor(new Color(0, 0, 0));
+        title.setTitleFont(new Font(Font.SANS_SERIF, Font.ITALIC, 11));
         setBorder(title);
 		
 		btnInserisci = new JButton(labelBtnInserisci);
@@ -397,7 +401,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
     	checkboxSelezionaPortale = new JCheckBox(labelCheckboxSelezionaPortale);
     	
     	iconPortale = new ImageIcon(portale.urlIcona);
-        labelPortale = new JLabel(iconPortale, JLabel.CENTER);   
+        labelPortale = new JLabel(iconPortale, JLabel.LEFT);   
         	
 		//Pulsante Inserisci
 		btnInserisci.setEnabled(false);
@@ -432,6 +436,8 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 		loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
         title = BorderFactory.createTitledBorder(loweredetched, portale.valoreLabel);
         title.setTitleJustification(TitledBorder.RIGHT);
+        title.setTitleColor(new Color(0, 0, 0));
+        title.setTitleFont(new Font(Font.SANS_SERIF, Font.ITALIC, 11));
         setBorder(title);
 		
 		//Pulsante Inserisci
@@ -455,7 +461,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
      					portale.inserisciScheda(scheda, false);
      				}
      				catch (HttpCommunicationException e1) {
-     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
+     					PanelSicronizzazioneConPortali.manageErrorsOnPortalSubmission(e1);
      				} catch (UnsupportedEncodingException e3) {
 						// TODO Auto-generated catch block
 						e3.printStackTrace();
@@ -482,7 +488,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
  					try {
 						portale.visualizzaScheda(scheda);
 					} catch (HttpCommunicationException e1) {
-						PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
+						PanelSicronizzazioneConPortali.manageErrorsOnPortalSubmission(e1);
 					}
  					//Il cursone viene messo in modalità standard
      				setCursor(Cursor.getDefaultCursor());
@@ -526,7 +532,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
      					portale.cancellaScheda(scheda, false);
      				}
      				catch (HttpCommunicationException e1 ) {
-     					PanelInserimentoImmobiliInPortali.manageErrorsOnPortalSubmission(e1);
+     					PanelSicronizzazioneConPortali.manageErrorsOnPortalSubmission(e1);
      				}
      				finally  {
      					//Il cursone viene messo in modalità standard
@@ -540,7 +546,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
  		}
  				
 		iconPortale = new ImageIcon(portale.urlIcona);
-        labelPortale = new JLabel(iconPortale, JLabel.CENTER);
+        labelPortale = new JLabel(iconPortale, JLabel.LEFT);
     
         add(labelPortale);
         

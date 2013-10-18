@@ -173,8 +173,8 @@ public class j2web implements parametriGenerali {
     	PortaleWeb _portaleMLS = new _portaleMLS("./images/_nektasoft.png", "1 - Portale Multi Level Sharing", "001", true);
     	J2Web_UI.listPortaliSincronizzazione.add(_portaleMLS);
     	
-    	/*PortaleWeb _immobiliareIt = new _immobiliareIt("./images/_immobiliareIt.png", "2 - immobiliare.it", "002", true);
-    	J2Web_UI.listPortaliImmobiliari.add(_immobiliareIt);*/
+    	PortaleWeb _autoscout24It = new _autoscout24It("./images/_autoscout24It.png", "2 - autoscout24.it", "002", true);
+    	J2Web_UI.listPortaliSincronizzazione.add(_autoscout24It);
     	
     }
 	
