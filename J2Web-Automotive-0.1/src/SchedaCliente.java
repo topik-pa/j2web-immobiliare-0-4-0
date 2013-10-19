@@ -20,7 +20,7 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 	
 	//Attributi della scheda veicolo	
 	long idSchedaCliente = new Date().getTime();	//id univoco riferito alla scheda
-	String codiceSchedaCliente= "j2w05_C_" + UUID.randomUUID().toString(); //codice scheda univoco
+	String codiceSchedaCliente= intestazioneCodiceSchedaCliente + UUID.randomUUID().toString(); //codice scheda univoco
 	
 	String titoloCliente;
 	String marcaVeicoloCliente;
@@ -34,7 +34,6 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 	String coloreEsternoVeicoloCliente;
 	int coloreEsternoVeicoloClienteIndex;
 	
-	
 	String nomeCliente;
 	String cognomeCliente;
 	String emailCliente;
@@ -43,9 +42,7 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 	String viaCliente;
 	String numeroCivicoCliente;
 	String CAPCliente;
-	String cittaCliente;
-	
-	
+	String cittaCliente;	
 	
 	//Costruttore
 	public SchedaCliente () {	 	

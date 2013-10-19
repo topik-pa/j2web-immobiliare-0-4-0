@@ -954,7 +954,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnImmagine1.setToolTipText("Inserimento immagine 1");
 		btnImmagine1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				selezionaImmagine(label_Immagine1, imgFile1);
+				selezionaImmagine(label_Immagine1, 1);
 			}
 		});
 		panel_23.add(btnImmagine1, "2, 2");
@@ -967,7 +967,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnImmagine_2.setToolTipText("Inserimento immagine 2");
 		btnImmagine_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine2, imgFile2);
+				selezionaImmagine(label_Immagine2, 2);
 			}
 		});
 		panel_23.add(btnImmagine_2, "8, 2");
@@ -980,7 +980,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnImmagine_3.setToolTipText("Inserimento immagine 3");
 		btnImmagine_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine3, imgFile3);
+				selezionaImmagine(label_Immagine3, 3);
 			}
 		});
 		panel_23.add(btnImmagine_3, "2, 4");
@@ -993,7 +993,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnImmagine_4.setToolTipText("Inserimento immagine 4");
 		btnImmagine_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine4, imgFile4);
+				selezionaImmagine(label_Immagine4, 4);
 			}
 		});
 		panel_23.add(btnImmagine_4, "8, 4");
@@ -1006,7 +1006,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnImmagine_5.setToolTipText("Inserimento immagine 5");
 		btnImmagine_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine5, imgFile5);
+				selezionaImmagine(label_Immagine5, 5);
 			}
 		});
 		panel_23.add(btnImmagine_5, "2, 6");
@@ -1019,7 +1019,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnImmagine_6.setToolTipText("Inserimento immagine 6");
 		btnImmagine_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				selezionaImmagine(label_Immagine6, imgFile6);
+				selezionaImmagine(label_Immagine6, 6);
 			}
 		});
 		panel_23.add(btnImmagine_6, "8, 6");
@@ -1032,7 +1032,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnImmagine_7.setToolTipText("Inserimento immagine 7");
 		btnImmagine_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine7, imgFile7);
+				selezionaImmagine(label_Immagine7, 7);
 			}
 		});
 		panel_23.add(btnImmagine_7, "2, 8");
@@ -1045,7 +1045,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnImmagine_8.setToolTipText("Inserimento immagine 8");
 		btnImmagine_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				selezionaImmagine(label_Immagine8, imgFile8);
+				selezionaImmagine(label_Immagine8, 8);
 			}
 		});
 		panel_23.add(btnImmagine_8, "8, 8");
@@ -1058,7 +1058,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnImmagine_9.setToolTipText("Inserimento immagine 9");
 		btnImmagine_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selezionaImmagine(label_Immagine9, imgFile9);
+				selezionaImmagine(label_Immagine9, 9);
 			}
 		});
 		panel_23.add(btnImmagine_9, "2, 10");
@@ -1071,7 +1071,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnImmagine_10.setToolTipText("Inserimento immagine 10");
 		btnImmagine_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				selezionaImmagine(label_Immagine10, imgFile10);
+				selezionaImmagine(label_Immagine10, 10);
 			}
 		});
 		panel_23.add(btnImmagine_10, "8, 10");
@@ -1407,11 +1407,13 @@ public class J2Web_UI implements parametriGenerali{
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		formCliente_rdbtnSignore = new JRadioButton("Sig.");
+		formCliente_rdbtnSignore.setToolTipText("Selezione titolo cliente");
 		formCliente_rdbtnSignore.setSelected(true);
 		buttonGroup_1.add(formCliente_rdbtnSignore);
 		panel_29.add(formCliente_rdbtnSignore, "2, 2");
 		
 		formCliente_rdbtnSignora = new JRadioButton("Sig.ra");
+		formCliente_rdbtnSignora.setToolTipText("Selezione titolo cliente");
 		buttonGroup_1.add(formCliente_rdbtnSignora);
 		panel_29.add(formCliente_rdbtnSignora, "4, 2");
 		
@@ -1422,10 +1424,12 @@ public class J2Web_UI implements parametriGenerali{
 		panel_29.add(lblCognome, "4, 4");
 		
 		formCliente_textFieldNome = new JTextField();
+		formCliente_textFieldNome.setToolTipText("Inserire il nome del cliente");
 		panel_29.add(formCliente_textFieldNome, "2, 6, fill, default");
 		formCliente_textFieldNome.setColumns(10);
 		
 		formCliente_textFieldCognome = new JTextField();
+		formCliente_textFieldCognome.setToolTipText("Inserire il cognome del cliente");
 		panel_29.add(formCliente_textFieldCognome, "4, 6, fill, default");
 		formCliente_textFieldCognome.setColumns(10);
 		
@@ -1439,14 +1443,17 @@ public class J2Web_UI implements parametriGenerali{
 		panel_29.add(lblTelefono_1, "6, 8");
 		
 		formCliente_textFieldEmail = new JTextField();
+		formCliente_textFieldEmail.setToolTipText("Inserire un recapito e-mail del cliente");
 		panel_29.add(formCliente_textFieldEmail, "2, 10, fill, default");
 		formCliente_textFieldEmail.setColumns(10);
 		
 		formCliente_textFieldTelefono1 = new JTextField();
+		formCliente_textFieldTelefono1.setToolTipText("Inserire un recapito telefonico del cliente");
 		panel_29.add(formCliente_textFieldTelefono1, "4, 10, fill, default");
 		formCliente_textFieldTelefono1.setColumns(10);
 		
 		formCliente_textFieldTelefono2 = new JTextField();
+		formCliente_textFieldTelefono2.setToolTipText("Inserire un recapito telefonico del cliente");
 		panel_29.add(formCliente_textFieldTelefono2, "6, 10, fill, default");
 		formCliente_textFieldTelefono2.setColumns(10);
 		
@@ -1457,10 +1464,12 @@ public class J2Web_UI implements parametriGenerali{
 		panel_29.add(lblNumero, "4, 12");
 		
 		formCliente_textFieldVia = new JTextField();
+		formCliente_textFieldVia.setToolTipText("Inserire la via del cliente");
 		panel_29.add(formCliente_textFieldVia, "2, 14, fill, default");
 		formCliente_textFieldVia.setColumns(10);
 		
 		formCliente_textFieldNumeroCivico = new JTextField();
+		formCliente_textFieldNumeroCivico.setToolTipText("Inserire il numero civico del cliente");
 		panel_29.add(formCliente_textFieldNumeroCivico, "4, 14, fill, default");
 		formCliente_textFieldNumeroCivico.setColumns(10);
 		
@@ -1471,10 +1480,12 @@ public class J2Web_UI implements parametriGenerali{
 		panel_29.add(lblCitt, "4, 16");
 		
 		formCliente_textFieldCAP = new JTextField();
+		formCliente_textFieldCAP.setToolTipText("Inserire il CAP del cliente");
 		panel_29.add(formCliente_textFieldCAP, "2, 18, fill, default");
 		formCliente_textFieldCAP.setColumns(10);
 		
 		formCliente_textFieldCitta = new JTextField();
+		formCliente_textFieldCitta.setToolTipText("Inserire la città del cliente");
 		panel_29.add(formCliente_textFieldCitta, "4, 18, fill, default");
 		formCliente_textFieldCitta.setColumns(10);
 		
@@ -1516,6 +1527,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_30.add(lblVersione_1, "6, 2");
 		
 		comboBox_Marca_Cliente = new JComboBox<String>();
+		comboBox_Marca_Cliente.setToolTipText("Selezionare la marca dell'automobile ricercata");
 		comboBox_Marca_Cliente.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				System.out.println("Marca veicolo cliente");
@@ -1540,6 +1552,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_30.add(comboBox_Marca_Cliente, "2, 4, fill, default");
 		
 		comboBox_Modello_Cliente = new JComboBox<String>();
+		comboBox_Modello_Cliente.setToolTipText("Selezionare il modello dell'automobile ricercata");
 		comboBox_Modello_Cliente.setEditable(true);
 		comboBox_Modello_Cliente.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
@@ -1560,6 +1573,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_30.add(comboBox_Modello_Cliente, "4, 4, fill, default");
 		
 		comboBox_Versione_Cliente = new JComboBox<String>();
+		comboBox_Versione_Cliente.setToolTipText("Selezionare la versione dell'automobile ricercata");
 		comboBox_Versione_Cliente.setEditable(true);
 		comboBox_Versione_Cliente.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
@@ -1568,6 +1582,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_30.add(comboBox_Versione_Cliente, "6, 4, fill, default");
 		
 		comboBox_TipologiaCliente_Cliente = new JComboBox<String>();
+		comboBox_TipologiaCliente_Cliente.setToolTipText("Selezionare la tipologia di carburante dell'automobile ricercata");
 		comboBox_TipologiaCliente_Cliente.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 			}
@@ -1582,6 +1597,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_30.add(comboBox_TipologiaCliente_Cliente, "2, 8, fill, default");
 		
 		comboBox_Colore_Cliente = new JComboBox<String>();
+		comboBox_Colore_Cliente.setToolTipText("Selezionare il colore dell'automobile ricercata");
 		comboBox_Colore_Cliente.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 			}
@@ -1601,6 +1617,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_26.add(panel_27);
 		
 		JButton btnResetFormCliente = new JButton("Reset form");
+		btnResetFormCliente.setToolTipText("Resetta la form di creazione scheda cliente");
 		btnResetFormCliente.setIcon(new ImageIcon(".\\images\\refresh.png"));
 		btnResetFormCliente.setSelectedIcon(null);
 		btnResetFormCliente.addActionListener(new ActionListener() {
@@ -1615,6 +1632,7 @@ public class J2Web_UI implements parametriGenerali{
 		panel_26.add(panel_28);
 		
 		JButton btnCreaSchedaCliente = new JButton("Crea scheda");
+		btnCreaSchedaCliente.setToolTipText("Crea una nuova scheda cliente");
 		btnCreaSchedaCliente.setIcon(new ImageIcon(".\\images\\forward.png"));
 		btnCreaSchedaCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1627,7 +1645,7 @@ public class J2Web_UI implements parametriGenerali{
 					
 					//Istanzio l'oggetto scheda e lo salvo nel file
              	   	SchedaCliente schedaCliente = new SchedaCliente();
-             	   aggiungiSchedaCliente(schedaCliente);
+             	    aggiungiSchedaCliente(schedaCliente);
              	 
              	   	//Il pannello di destra viene ridisegnato             	   	
              	   	aggiornaPannelloListaSchedeCliente();      	
@@ -2391,7 +2409,7 @@ public class J2Web_UI implements parametriGenerali{
 	}
 
 	//Metodo per selezionare una immmagine
-	private void selezionaImmagine(JLabel labelImmagine, File immagine) {
+	private void selezionaImmagine(JLabel labelImmagine, int imageIndex) {
 		JFileChooser dlgFile;
         
 		//Selezione del file immagine
@@ -2406,6 +2424,40 @@ public class J2Web_UI implements parametriGenerali{
             if(selectedFile.isFile() && selectedFileName.endsWith(format) && fileSize<=maxFileSize) {   	
 				try {
 					img = ImageIO.read(selectedFile);
+					
+					switch (imageIndex)
+					{
+					    case 1: 
+					    	imgFile1 = selectedFile;
+					        break;
+					    case 2: 
+					    	imgFile2 = selectedFile;
+					        break;
+					    case 3: 
+					    	imgFile3 = selectedFile;
+					        break;
+					    case 4: 
+					    	imgFile4 = selectedFile;
+					        break;
+					    case 5: 
+					    	imgFile5 = selectedFile;
+					        break;
+					    case 6: 
+					    	imgFile6 = selectedFile;
+					        break;
+					    case 7: 
+					    	imgFile7 = selectedFile;
+					        break;
+					    case 8: 
+					    	imgFile8 = selectedFile;
+					        break;
+					    case 9: 
+					    	imgFile9 = selectedFile;
+					        break;
+					    default:
+					    	imgFile10 = selectedFile;
+					}		
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
