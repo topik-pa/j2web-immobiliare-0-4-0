@@ -13,6 +13,8 @@ public interface parametriGenerali {
 	
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
+	final String EMAIL_UTENTE ="marco--pavan@libero.it";
+	final String RAGIONESOCIALE_UTENTE ="Case&Case srl";
 	
 	//Mail del back end
 	final String BACKEND_EMAIL ="marcopavan.mp@gmail.com";
@@ -20,9 +22,6 @@ public interface parametriGenerali {
 	final String BACKEND_EMAIL_PSW ="IsMPsd80";
 	final String BACKEND_EMAIL_SMTP_HOST ="smtp.gmail.com";
 	final int BACKEND_EMAIL_SMTP_PORT =465;
-	
-	//Mail dell'utente
-	final String EMAIL_UTENTE ="marco--pavan@libero.it";
 	
 	//Nome della GUI
 	final String nomeGUI = "J2Web - Automotive" + " " + j2web_version;
