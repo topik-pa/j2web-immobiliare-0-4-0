@@ -36,10 +36,10 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	
 	//Attributi della scheda veicolo	
 	long idScheda = new Date().getTime();	//id univoco riferito alla scheda
-	String codiceScheda= "j2w05_V_" + UUID.randomUUID().toString(); //codice scheda univoco
+	String codiceScheda= intestazioneCodiceSchedaVeicolo + UUID.randomUUID().toString(); //codice scheda univoco
 	
 	//Inizializzo il path per il file hash di questa scheda
-	String singolaSchedaDatPath = ".\\schede\\" + codiceScheda + ".dat";
+	String singolaSchedaDatPath = pathSchede + codiceScheda + ".dat";
 	
 	String veicolo;
 	String tipologiaVeicolo;
@@ -72,6 +72,8 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	int numeroRapportiVeicoloIndex;
 	String classeEmissioniVeicolo;
 	int classeEmissioniVeicoloIndex;
+	String carburanteVeicolo;
+	int carburanteVeicoloIndex;
 	
 	boolean disponibilitaCupolino;
 	boolean disponibilitaAllestimentoHandicap;
@@ -161,6 +163,8 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		numeroRapportiVeicoloIndex = J2Web_UI.getComboBox_NumeroRapporti().getSelectedIndex();
 		classeEmissioniVeicolo = (String) J2Web_UI.getComboBox_ClasseEmissioni().getSelectedItem();
 		classeEmissioniVeicoloIndex = J2Web_UI.getComboBox_ClasseEmissioni().getSelectedIndex();
+		carburanteVeicolo = (String) J2Web_UI.getComboBox_Carburante().getSelectedItem();
+		carburanteVeicoloIndex = J2Web_UI.getComboBox_Carburante().getSelectedIndex();
 		
 		disponibilitaCupolino = J2Web_UI.getChckbxCupolino().isSelected()?true:false;
 		disponibilitaAllestimentoHandicap = J2Web_UI.getChckbxHandicap().isSelected()?true:false;
@@ -252,7 +256,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	}
 	
 	
-	//Costruttore2
+	//Costruttore 2
 	public SchedaVeicolo (ResultSet rs) {	 	
 	
 		//Al momento dell'istanziazione, una scheda veicolo inizializza i propri campi prendendone il valore dalla query result
@@ -275,6 +279,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			tipologiaCambioVeicolo = rs.getString(45);
 			numeroRapportiVeicolo = Integer.toString(rs.getInt(46));
 			classeEmissioniVeicolo = rs.getString(48);
+			carburanteVeicolo = rs.getString(8);
 			
 			disponibilitaAllestimentoHandicap = (rs.getInt(39)==0)?false:true;
 			disponibilitaServoSterzo = (rs.getInt(37)==0)?false:true;
@@ -309,12 +314,19 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			urlVideoYouTube = rs.getString(60);
 			
 			descrizioneVeicolo = rs.getString(61);
-		
+			
+			ragioneSociale = rs.getString(62);
+			Indirizzo = rs.getString(63);
+			Telefono = rs.getString(64);
+			nomeReferente = rs.getString(65);
+			TelefonoReferente = rs.getString(66);
+			emailReferente = rs.getString(67);
+					
 			if(rs.getBlob(50)!=null) {
 				InputStream in = rs.getBinaryStream(50);
 				OutputStream f;
 				try {
-					f = new FileOutputStream(new File("temp\\image1.jpg"));
+					f = new FileOutputStream(new File(pathTemp + "image1.jpg"));
 					int c = 0;
 					
 					while ((c = in.read()) > -1) {
@@ -328,7 +340,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					System.out.println(ex.getMessage());
 				}
 				
-				File newFile = new File("temp\\image1.jpg");
+				File newFile = new File(pathTemp + "image1.jpg");
 				arrayImages[1] = newFile;
 				
 				newFile.deleteOnExit();	
@@ -339,7 +351,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				InputStream in = rs.getBinaryStream(51);
 				OutputStream f;
 				try {
-					f = new FileOutputStream(new File("temp\\image2.jpg"));
+					f = new FileOutputStream(new File(pathTemp + "image2.jpg"));
 					int c = 0;
 					
 					while ((c = in.read()) > -1) {
@@ -353,7 +365,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					System.out.println(ex.getMessage());
 				}
 				
-				File newFile = new File("temp\\image2.jpg");
+				File newFile = new File(pathTemp + "image2.jpg");
 				arrayImages[2] = newFile;
 				
 				newFile.deleteOnExit();	
@@ -362,7 +374,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				InputStream in = rs.getBinaryStream(52);
 				OutputStream f;
 				try {
-					f = new FileOutputStream(new File("temp\\image3.jpg"));
+					f = new FileOutputStream(new File(pathTemp + "image3.jpg"));
 					int c = 0;
 					
 					while ((c = in.read()) > -1) {
@@ -376,7 +388,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					System.out.println(ex.getMessage());
 				}
 				
-				File newFile = new File("temp\\image3.jpg");
+				File newFile = new File(pathTemp + "image3.jpg");
 				arrayImages[3] = newFile;
 				
 				newFile.deleteOnExit();	
@@ -385,7 +397,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				InputStream in = rs.getBinaryStream(53);
 				OutputStream f;
 				try {
-					f = new FileOutputStream(new File("temp\\image4.jpg"));
+					f = new FileOutputStream(new File(pathTemp + "image4.jpg"));
 					int c = 0;
 					
 					while ((c = in.read()) > -1) {
@@ -399,7 +411,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					System.out.println(ex.getMessage());
 				}
 				
-				File newFile = new File("temp\\image4.jpg");
+				File newFile = new File(pathTemp + "image4.jpg");
 				arrayImages[4] = newFile;
 				
 				newFile.deleteOnExit();	
@@ -408,7 +420,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				InputStream in = rs.getBinaryStream(54);
 				OutputStream f;
 				try {
-					f = new FileOutputStream(new File("temp\\image5.jpg"));
+					f = new FileOutputStream(new File(pathTemp + "image5.jpg"));
 					int c = 0;
 					
 					while ((c = in.read()) > -1) {
@@ -422,7 +434,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					System.out.println(ex.getMessage());
 				}
 				
-				File newFile = new File("temp\\image5.jpg");
+				File newFile = new File(pathTemp + "image5.jpg");
 				arrayImages[5] = newFile;
 				
 				newFile.deleteOnExit();	
@@ -431,7 +443,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				InputStream in = rs.getBinaryStream(55);
 				OutputStream f;
 				try {
-					f = new FileOutputStream(new File("temp\\image6.jpg"));
+					f = new FileOutputStream(new File(pathTemp + "image6.jpg"));
 					int c = 0;
 					
 					while ((c = in.read()) > -1) {
@@ -445,7 +457,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					System.out.println(ex.getMessage());
 				}
 				
-				File newFile = new File("temp\\image6.jpg");
+				File newFile = new File(pathTemp + "image6.jpg");
 				arrayImages[6] = newFile;
 				
 				newFile.deleteOnExit();	
@@ -454,7 +466,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				InputStream in = rs.getBinaryStream(56);
 				OutputStream f;
 				try {
-					f = new FileOutputStream(new File("temp\\image7.jpg"));
+					f = new FileOutputStream(new File(pathTemp + "image7.jpg"));
 					int c = 0;
 					
 					while ((c = in.read()) > -1) {
@@ -468,7 +480,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					System.out.println(ex.getMessage());
 				}
 				
-				File newFile = new File("temp\\image7.jpg");
+				File newFile = new File(pathTemp + "image7.jpg");
 				arrayImages[7] = newFile;
 				
 				newFile.deleteOnExit();				}
@@ -476,7 +488,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				InputStream in = rs.getBinaryStream(57);
 				OutputStream f;
 				try {
-					f = new FileOutputStream(new File("temp\\image8.jpg"));
+					f = new FileOutputStream(new File(pathTemp + "image8.jpg"));
 					int c = 0;
 					
 					while ((c = in.read()) > -1) {
@@ -490,7 +502,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					System.out.println(ex.getMessage());
 				}
 				
-				File newFile = new File("temp\\image8.jpg");
+				File newFile = new File(pathTemp + "image8.jpg");
 				arrayImages[8] = newFile;
 				
 				newFile.deleteOnExit();				}
@@ -498,7 +510,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				InputStream in = rs.getBinaryStream(58);
 				OutputStream f;
 				try {
-					f = new FileOutputStream(new File("temp\\image9.jpg"));
+					f = new FileOutputStream(new File(pathTemp + "image9.jpg"));
 					int c = 0;
 					
 					while ((c = in.read()) > -1) {
@@ -512,7 +524,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					System.out.println(ex.getMessage());
 				}
 				
-				File newFile = new File("temp\\image9.jpg");
+				File newFile = new File(pathTemp + "image9.jpg");
 				arrayImages[9] = newFile;
 				
 				newFile.deleteOnExit();				}
@@ -520,7 +532,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				InputStream in = rs.getBinaryStream(59);
 				OutputStream f;
 				try {
-					f = new FileOutputStream(new File("temp\\image10.jpg"));
+					f = new FileOutputStream(new File(pathTemp + "image10.jpg"));
 					int c = 0;
 					
 					while ((c = in.read()) > -1) {
@@ -534,7 +546,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					System.out.println(ex.getMessage());
 				}
 				
-				File newFile = new File("temp\\image10.jpg");
+				File newFile = new File(pathTemp + "image10.jpg");
 				arrayImages[10] = newFile;
 				
 				newFile.deleteOnExit();				}

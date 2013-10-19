@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,7 +24,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JComponent;
 
 class PanelSchedaCliente extends JPanel {   
-	//JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -54,7 +52,7 @@ class PanelSchedaCliente extends JPanel {
 		 //Clicco su una radio button di una scheda
 		 schedaRadio.addActionListener(new ActionListener() {			 
            public void actionPerformed(ActionEvent e) {
-               System.out.println("Scheda selezionata: " + scheda.marcaVeicoloCliente); 
+               System.out.println("Scheda cliente selezionata: " + scheda.marcaVeicoloCliente); 
                
                Component[] test = getParent().getComponents();
                for(int i=0; i<test.length; i++) {
@@ -71,19 +69,17 @@ class PanelSchedaCliente extends JPanel {
 		 add(schedaRadio, BorderLayout.NORTH);
 		 
 		 //La label delle schede
-		 String labelScheda = scheda.nomeCliente + "-" + scheda.cognomeCliente + "-" + scheda.telefono1Cliente /*+ "-" + scheda.comune + "-" + scheda.regione + "-" + scheda.testoAnnuncio*/;
-		 if(labelScheda.length()>16) {	//è molto probabile che lo sia... :)
-			 labelScheda = labelScheda.substring(0, 15); 
+		 String labelScheda = scheda.nomeCliente + "-" + scheda.cognomeCliente + "-" + scheda.telefono1Cliente + "-" + scheda.emailCliente;
+		 if(labelScheda.length()>52) {	//è molto probabile che lo sia... :)
+			 labelScheda = labelScheda.substring(0, 51); 
 		 }		 
 		 labelScheda+="...";
 		 JLabel label = new JLabel(labelScheda);
 		 Font font = new Font("Monospaced", Font.PLAIN, 11);
 		 label.setFont(font);
 		 label.setHorizontalTextPosition(SwingConstants.LEFT);
-		 label.setIcon(new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\imaginationLogo.png"));
+		 //label.setIcon(new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\imaginationLogo.png"));
 		 add(label, BorderLayout.CENTER);
-		 		 
-		 //add(new JLabel(labelSpaziatore));
 		 
 		 JPanel panel_26 = new JPanel();
 		 panel_26.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -109,9 +105,7 @@ class PanelSchedaCliente extends JPanel {
           	
 	          	//Aggiorno il file dat delle schede
 	          	j2web.salvaListaSchedeClienteCreate();
-          	          	
-	          	
-          	            	
+          	          	  	            	
 	          	//Aggiornamento del pannello centrale, la scheda corrente è stata cancellata
 	          	//j2web_GUI.panelListaSchedeImmobile.updatePanello();
 	          	J2Web_UI.aggiornaPannelloListaSchedeCliente();
@@ -120,14 +114,13 @@ class PanelSchedaCliente extends JPanel {
 		 });
 		 panel_26.add(btnCancellaScheda);
        
-       //add(new JLabel(labelSpaziatore));
+        //add(new JLabel(labelSpaziatore));
 		Component horizontalGlue = Box.createHorizontalGlue();
-		panel_26.add(horizontalGlue);
-       
+		panel_26.add(horizontalGlue);     
        
 	 }
 
-	 
+	 //Funzione di matching tra clienti e veicoli salvati in locale
 	 private void  matchClienteVeicolo(SchedaCliente schedaCliente) {
 		 
 		 JPanel pannelloMatchClienteVeicolo = J2Web_UI.getPanel_6();
@@ -136,12 +129,7 @@ class PanelSchedaCliente extends JPanel {
 			
 		 pannelloMatchClienteVeicolo.removeAll();
 		 
-		 //pannelloMatchVeicoloCliente.updateUI();
-			
-			//pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(7));
-		 
-		 boolean matchPositivo = false;
-		 
+		 boolean matchPositivo = false; 
 		 
 			ListIterator<SchedaVeicolo> iterator = J2Web_UI.listSchedeVeicolo.listIterator();
 	     	while(iterator.hasNext()) {
@@ -172,7 +160,6 @@ class PanelSchedaCliente extends JPanel {
 	    		String[][] matrix = new String[J2Web_UI.listSchedeVeicoliMatch.size()][5];
 	    		
 	    		for (int row = 0; row < matrix.length; row++) {
-	    	       // for (int column = 0; column < matrix[row].length; column++)
 	    	            matrix[row][0] = J2Web_UI.listSchedeVeicoliMatch.get(row).marcaVeicolo;
 	    	            matrix[row][1] = J2Web_UI.listSchedeVeicoliMatch.get(row).modelloVeicolo;
 	    	            matrix[row][2] = J2Web_UI.listSchedeVeicoliMatch.get(row).versioneVeicolo;
@@ -189,8 +176,7 @@ class PanelSchedaCliente extends JPanel {
 	    		));
 	    		pannelloMatchClienteVeicolo.add(table);
 	    		
-	    		
-	    		
 	    	}
 	 }
+	 
 }

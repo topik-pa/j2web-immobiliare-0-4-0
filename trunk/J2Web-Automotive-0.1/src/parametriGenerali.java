@@ -10,6 +10,8 @@ public interface parametriGenerali {
 
 	//Versione di J2Web
 	final String  j2web_version = "0.5";
+	final String  intestazioneCodiceSchedaVeicolo = "j2w05_V_";
+	final String  intestazioneCodiceSchedaCliente = "j2w05_C_";
 	
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
@@ -56,9 +58,13 @@ public interface parametriGenerali {
   	//Mappa che contiene il limite di caratteri immessi per certi campi testuali. L'inizializzazione è nel file: j2web.java
     Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>(); 
   	
-  	//Percorso file dat per le schede
-  	String pathFileDatSchedeVeicolo = ".\\schede\\schedeVeicolo.dat";
-  	String pathFileDatSchedeCliente = ".\\schede\\schedeClienti.dat";
+  	//Percorso directory per le schede
+  	String pathSchede = ".\\schede\\";
+  	String pathFileDatSchedeVeicolo = pathSchede + "schedeVeicolo.dat";
+  	String pathFileDatSchedeCliente = pathSchede + "schedeClienti.dat";
+  	
+  	//Percorso directory temp
+  	String pathTemp = ".\\temp\\";
     
     //Lista concatenata che contiene tutti i campi della form veicolo soggetti a lettura/scrittura o modifiche varie a runtime
     LinkedList<JComponent> listCampiFormVeicolo = new LinkedList<JComponent>();
