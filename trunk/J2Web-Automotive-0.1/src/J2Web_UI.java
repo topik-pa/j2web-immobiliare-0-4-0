@@ -174,6 +174,7 @@ public class J2Web_UI implements parametriGenerali{
 	private static JRadioButton formCliente_rdbtnSignora;
 	private static JComboBox<String> comboBox_TipologiaCliente_Cliente;
 	private static JComboBox<String> comboBox_Colore_Cliente;
+	private static JComboBox<String> comboBoxTipologia_Cliente;
 	
 	private static JPanel panel_9;
 	private static JPanel panel_10;
@@ -195,6 +196,7 @@ public class J2Web_UI implements parametriGenerali{
   	private static JTextField textFieldReferente;
   	private static JTextField textFieldTelefonoReferente;
   	private static JTextField textFieldEmailReferente;
+  	
 
 	/**
 	 * Launch the application.
@@ -311,7 +313,7 @@ public class J2Web_UI implements parametriGenerali{
 		tabbedPane.addTab("Anagrafica veicolo", icoAnagrVeicolo, panel, null);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{437, 0};
-		gbl_panel.rowHeights = new int[] {170, 100, 0};
+		gbl_panel.rowHeights = new int[] {170, 70, 0};
 		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{4.0, 1.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
@@ -1320,7 +1322,7 @@ public class J2Web_UI implements parametriGenerali{
 		tabbedPane.addTab("Anagrafica cliente", new ImageIcon(".\\images\\icon_pilot.png"), panel_1, null);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[] {437, 0};
-		gbl_panel_1.rowHeights = new int[] {170, 100, 0};
+		gbl_panel_1.rowHeights = new int[] {170, 70, 0};
 		gbl_panel_1.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{4.0, 1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
@@ -1593,6 +1595,9 @@ public class J2Web_UI implements parametriGenerali{
 		
 		JLabel lblColore = new JLabel("Colore");
 		panel_30.add(lblColore, "4, 6");
+		
+		JLabel lblTipologia_1 = new JLabel("Tipologia");
+		panel_30.add(lblTipologia_1, "6, 6");
 		comboBox_TipologiaCliente_Cliente.setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
 		panel_30.add(comboBox_TipologiaCliente_Cliente, "2, 8, fill, default");
 		
@@ -1604,6 +1609,11 @@ public class J2Web_UI implements parametriGenerali{
 		});
 		comboBox_Colore_Cliente.setModel(new DefaultComboBoxModel<String>(comboboxModelColoreEsterno));
 		panel_30.add(comboBox_Colore_Cliente, "4, 8, fill, default");
+		
+		comboBoxTipologia_Cliente = new JComboBox<String>();
+		comboBoxTipologia_Cliente.setToolTipText("Selezionare la tipologia dell'automobile ricercata");
+		comboBoxTipologia_Cliente.setModel(new DefaultComboBoxModel<String>(tipologiaAutoveicoli));
+		panel_30.add(comboBoxTipologia_Cliente, "6, 8, fill, default");
 		
 		JPanel panel_26 = new JPanel();
 		GridBagConstraints gbc_panel_26 = new GridBagConstraints();
@@ -1709,7 +1719,7 @@ public class J2Web_UI implements parametriGenerali{
 		tabbedPane.addTab("Incrocio MLS", new ImageIcon(".\\images\\icon_db.png"), panel_2, null);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[] {437, 0};
-		gbl_panel_2.rowHeights = new int[] {170, 100, 0};
+		gbl_panel_2.rowHeights = new int[] {170, 70, 0};
 		gbl_panel_2.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel_2.rowWeights = new double[]{4.0, 1.0, Double.MIN_VALUE};
 		panel_2.setLayout(gbl_panel_2);
@@ -2957,6 +2967,9 @@ public class J2Web_UI implements parametriGenerali{
 	protected static JComboBox<String> formCliente_getColoreVeicolo() {
 		return comboBox_Colore_Cliente;
 	}
+	protected static JComboBox<String> formCliente_getTipologiaCliente() {
+		return comboBoxTipologia_Cliente;
+	}
 
 	protected static JPanel getPanel_13() {
 		return panel_13;
@@ -2997,4 +3010,5 @@ public class J2Web_UI implements parametriGenerali{
 	protected static  JTextField getTextFieldEmailReferente() {
 		return textFieldEmailReferente;
 	}
+	
 }

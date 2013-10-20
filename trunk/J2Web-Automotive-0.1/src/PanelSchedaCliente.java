@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,7 +24,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JComponent;
 
-class PanelSchedaCliente extends JPanel {   
+class PanelSchedaCliente extends JPanel implements parametriGenerali{   
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -70,16 +71,30 @@ class PanelSchedaCliente extends JPanel {
 		 
 		 //La label delle schede
 		 String labelScheda = scheda.nomeCliente + "-" + scheda.cognomeCliente + "-" + scheda.telefono1Cliente + "-" + scheda.emailCliente;
-		 if(labelScheda.length()>52) {	//è molto probabile che lo sia... :)
-			 labelScheda = labelScheda.substring(0, 51); 
+		 labelScheda+="                                        "; //Aggiungo 40 caratteri spazio
+		 if(labelScheda.length()>38) {	//è molto probabile che lo sia... :)
+			 labelScheda = labelScheda.substring(0, 38); 
 		 }		 
 		 labelScheda+="...";
+		 
 		 JLabel label = new JLabel(labelScheda);
 		 Font font = new Font("Monospaced", Font.PLAIN, 11);
 		 label.setFont(font);
 		 label.setHorizontalTextPosition(SwingConstants.LEFT);
-		 //label.setIcon(new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\imaginationLogo.png"));
+		 
+		 if(scheda.titoloCliente.equals("signora")) {
+			 label.setIcon(new ImageIcon(pathImmagini + "icon_woman.png"));
+		 }
+		 else {
+			 label.setIcon(new ImageIcon(pathImmagini + "icon_man.png"));
+		 }
+		 
+		 
 		 add(label, BorderLayout.CENTER);
+		 
+		 //Aggiungo una tooltip
+		 String tooltipScheda = scheda.nomeCliente + "-" + scheda.cognomeCliente + "-" + scheda.telefono1Cliente + "-" + scheda.emailCliente;
+		 setToolTipText(tooltipScheda);
 		 
 		 JPanel panel_26 = new JPanel();
 		 panel_26.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -134,8 +149,15 @@ class PanelSchedaCliente extends JPanel {
 			ListIterator<SchedaVeicolo> iterator = J2Web_UI.listSchedeVeicolo.listIterator();
 	     	while(iterator.hasNext()) {
 	     		SchedaVeicolo schedaCorrente = iterator.next();
-	     		System.out.println("test: " + schedaCliente.modelloVeicoloCliente + schedaCorrente.modelloVeicolo);
-	     		if(schedaCliente.modelloVeicoloCliente.equalsIgnoreCase(schedaCorrente.modelloVeicolo)) {
+	     		
+	     		if(
+	     				(schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && schedaCliente.modelloVeicoloCliente.equalsIgnoreCase(schedaCorrente.modelloVeicolo)) ||
+	     				(schedaCliente.versioneVeicoloCliente.equalsIgnoreCase(schedaCorrente.versioneVeicolo)) ||
+	     				(schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && schedaCliente.tipologiaCarburanteVeicoloCliente.equalsIgnoreCase(schedaCorrente.carburanteVeicolo)) ||
+	     				(schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && schedaCliente.coloreEsternoVeicoloCliente.equalsIgnoreCase(schedaCorrente.coloreEsternoVeicolo)) ||
+	     				(schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && schedaCliente.tipologiaVeicoloCliente.equalsIgnoreCase(schedaCorrente.tipologiaVeicolo))
+	     				
+	     			) {
 	     			J2Web_UI.listSchedeVeicoliMatch.add(schedaCorrente);
 	     		}
 	     		

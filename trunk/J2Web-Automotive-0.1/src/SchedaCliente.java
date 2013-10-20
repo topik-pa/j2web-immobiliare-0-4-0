@@ -33,6 +33,8 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 	int tipologiaCarburanteVeicoloClienteIndex;
 	String coloreEsternoVeicoloCliente;
 	int coloreEsternoVeicoloClienteIndex;
+	String tipologiaVeicoloCliente;
+	int tipologiaVeicoloClienteIndex;
 	
 	String nomeCliente;
 	String cognomeCliente;
@@ -50,15 +52,17 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 		//Al momento dell'istanziazione, una scheda immobile inizializza i propri campi prendendone il valore da quelli inseriti nel pannello Form
 		titoloCliente = J2Web_UI.formCliente_getRdbtnSignora().isSelected()?"signora":"signor";
 		marcaVeicoloCliente = (String) J2Web_UI.formCliente_getMarcaVeicolo().getSelectedItem();
-		marcaVeicoloClienteIndex =J2Web_UI.formCliente_getMarcaVeicolo().getSelectedIndex();	
+		marcaVeicoloClienteIndex = J2Web_UI.formCliente_getMarcaVeicolo().getSelectedIndex();	
 		modelloVeicoloCliente = (String) J2Web_UI.formCliente_getModelloVeicolo().getSelectedItem();
-		modelloVeicoloClienteIndex =J2Web_UI.formCliente_getModelloVeicolo().getSelectedIndex();
+		modelloVeicoloClienteIndex = J2Web_UI.formCliente_getModelloVeicolo().getSelectedIndex();
 		versioneVeicoloCliente = (String) J2Web_UI.formCliente_getVersioneVeicolo().getSelectedItem();
-		versioneVeicoloClienteIndex =J2Web_UI.formCliente_getVersioneVeicolo().getSelectedIndex();
+		versioneVeicoloClienteIndex = J2Web_UI.formCliente_getVersioneVeicolo().getSelectedIndex();
 		tipologiaCarburanteVeicoloCliente = (String) J2Web_UI.formCliente_getTipologiaCarburanteVeicolo().getSelectedItem();
-		tipologiaCarburanteVeicoloClienteIndex =J2Web_UI.formCliente_getTipologiaCarburanteVeicolo().getSelectedIndex();
+		tipologiaCarburanteVeicoloClienteIndex = J2Web_UI.formCliente_getTipologiaCarburanteVeicolo().getSelectedIndex();
 		coloreEsternoVeicoloCliente = (String) J2Web_UI.formCliente_getColoreVeicolo().getSelectedItem();
-		coloreEsternoVeicoloClienteIndex =J2Web_UI.formCliente_getColoreVeicolo().getSelectedIndex();	
+		coloreEsternoVeicoloClienteIndex = J2Web_UI.formCliente_getColoreVeicolo().getSelectedIndex();
+		tipologiaVeicoloCliente = (String) J2Web_UI.formCliente_getTipologiaCliente().getSelectedItem();
+		tipologiaVeicoloClienteIndex = J2Web_UI.formCliente_getTipologiaCliente().getSelectedIndex();
 				
 		nomeCliente = J2Web_UI.formCliente_getNome().getText().trim();
 		cognomeCliente = J2Web_UI.formCliente_getCognome().getText().trim();
