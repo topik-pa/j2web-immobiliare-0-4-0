@@ -62,6 +62,7 @@ public interface parametriGenerali {
   	String pathSchede = ".\\schede\\";
   	String pathFileDatSchedeVeicolo = pathSchede + "schedeVeicolo.dat";
   	String pathFileDatSchedeCliente = pathSchede + "schedeClienti.dat";
+  	String pathImmagini = ".\\images\\";
   	
   	//Percorso directory temp
   	String pathTemp = ".\\temp\\";

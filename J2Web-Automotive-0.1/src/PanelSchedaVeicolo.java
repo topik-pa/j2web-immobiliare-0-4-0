@@ -84,10 +84,12 @@ class PanelSchedaVeicolo extends JPanel {
 		 
 		 //La label delle schede
 		 String labelScheda = scheda.marcaVeicolo + "-" + scheda.modelloVeicolo + "-" + scheda.versioneVeicolo + "-" + scheda.carrozzeriaVeicolo + "-" + scheda.coloreEsternoVeicolo + "-" + scheda.descrizioneVeicolo;
-		 if(labelScheda.length()>31) {	//è molto probabile che lo sia... :)
-			 labelScheda = labelScheda.substring(0, 30); 
+		 labelScheda+="                              "; //Aggiungo 30 caratteri spazio
+		 if(labelScheda.length()>28) {	//è molto probabile che lo sia... :)
+			 labelScheda = labelScheda.substring(0, 28); 
 		 }		 
 		 labelScheda+="...";
+		 
 		 JLabel label = new JLabel(labelScheda);
 		 Font font = new Font("Monospaced", Font.PLAIN, 11);
 		 label.setFont(font);
@@ -97,16 +99,20 @@ class PanelSchedaVeicolo extends JPanel {
 		 BufferedImage imgPreview = null;
 		 if(scheda.arrayImages[1]!=null) {
 			 try {
-				 imgPreview = ImageIO.read(scheda.arrayImages[1]);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				imgPreview = ImageIO.read(scheda.arrayImages[1]);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			 Image resizedimg = imgPreview.getScaledInstance(70, 50, Image.SCALE_FAST);
 			 label.setIcon(new ImageIcon(resizedimg));
 		 }
 
 		 add(label, BorderLayout.CENTER);
+		 
+		 //Aggiungo una tooltip
+		 String tooltipScheda = scheda.marcaVeicolo + "-" + scheda.modelloVeicolo + "-" + scheda.versioneVeicolo + "-" + scheda.carrozzeriaVeicolo + "-" + scheda.coloreEsternoVeicolo;
+		 setToolTipText(tooltipScheda);
 		 		 		 
 		 JPanel panel_26 = new JPanel();
 		 panel_26.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -177,7 +183,8 @@ class PanelSchedaVeicolo extends JPanel {
      				(schedaVeicolo.marcaVeicolo.equalsIgnoreCase(schedaCorrente.marcaVeicoloCliente) && schedaVeicolo.modelloVeicolo.equalsIgnoreCase(schedaCorrente.modelloVeicoloCliente)) ||
      				(schedaVeicolo.versioneVeicolo.equalsIgnoreCase(schedaCorrente.versioneVeicoloCliente)) ||
      				(schedaVeicolo.marcaVeicolo.equalsIgnoreCase(schedaCorrente.marcaVeicoloCliente) && schedaVeicolo.carburanteVeicolo.equalsIgnoreCase(schedaCorrente.tipologiaCarburanteVeicoloCliente)) ||
-     				(schedaVeicolo.marcaVeicolo.equalsIgnoreCase(schedaCorrente.marcaVeicoloCliente) && schedaVeicolo.coloreEsternoVeicolo.equalsIgnoreCase(schedaCorrente.coloreEsternoVeicoloCliente))
+     				(schedaVeicolo.marcaVeicolo.equalsIgnoreCase(schedaCorrente.marcaVeicoloCliente) && schedaVeicolo.coloreEsternoVeicolo.equalsIgnoreCase(schedaCorrente.coloreEsternoVeicoloCliente)) ||
+     				(schedaVeicolo.marcaVeicolo.equalsIgnoreCase(schedaCorrente.marcaVeicoloCliente) && schedaVeicolo.tipologiaVeicolo.equalsIgnoreCase(schedaCorrente.tipologiaVeicoloCliente))
      				
      			) {
      			J2Web_UI.listSchedeClientiMatch.add(schedaCorrente);
