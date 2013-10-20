@@ -66,6 +66,8 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	int coloreEsternoVeicoloIndex;
 	String numeroPrecedentiProprietariVeicolo;
 	int numeroPrecedentiProprietariVeicoloIndex;
+	String tipologiaMotoreVeicolo;
+	int tipologiaMotoreVeicoloIndex;
 	String tipologiaCambioVeicolo;
 	int tipologiaCambioVeicoloIndex;
 	String numeroRapportiVeicolo;
@@ -102,6 +104,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	boolean disponibilitaBauletto;
 	boolean coloreMetalizzato;
 	boolean ivaDeducibile;
+	boolean prezzoTrattabile;
 	
 	String KWVeicolo;
 	String CVVeicolo;
@@ -157,6 +160,8 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		coloreEsternoVeicoloIndex =J2Web_UI.getComboBox_ColoreEsterno().getSelectedIndex();
 		numeroPrecedentiProprietariVeicolo = (String) J2Web_UI.getComboBox_PrecedentiProprietari().getSelectedItem();
 		numeroPrecedentiProprietariVeicoloIndex =J2Web_UI.getComboBox_PrecedentiProprietari().getSelectedIndex();
+		tipologiaMotoreVeicolo = (String) J2Web_UI.getComboBox_Motore().getSelectedItem();
+		tipologiaMotoreVeicoloIndex = J2Web_UI.getComboBox_Motore().getSelectedIndex();
 		tipologiaCambioVeicolo = (String) J2Web_UI.getComboBox_Cambio().getSelectedItem();
 		tipologiaCambioVeicoloIndex = J2Web_UI.getComboBox_Cambio().getSelectedIndex();
 		numeroRapportiVeicolo = (String) J2Web_UI.getComboBox_NumeroRapporti().getSelectedItem();
@@ -193,6 +198,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		disponibilitaBauletto = J2Web_UI.getChckbxBauletto().isSelected()?true:false;
 		coloreMetalizzato = J2Web_UI.getChckbxMetallizzato().isSelected()?true:false;
 		ivaDeducibile = J2Web_UI.getChckbxIvaDeducibile().isSelected()?true:false;
+		prezzoTrattabile = J2Web_UI.getChckbxTrattabile().isSelected()?true:false;
 				
 		KWVeicolo = J2Web_UI.getTextField_Kw().getText().trim();
 		CVVeicolo = J2Web_UI.getTextField_Cv().getText().trim();
@@ -276,6 +282,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			annoImmatricolazioneVeicolo = Integer.toString(rs.getInt(7));
 			coloreEsternoVeicolo = rs.getString(14);
 			numeroPrecedentiProprietariVeicolo = Integer.toString(rs.getInt(16));
+			tipologiaMotoreVeicolo = rs.getString(44);
 			tipologiaCambioVeicolo = rs.getString(45);
 			numeroRapportiVeicolo = Integer.toString(rs.getInt(46));
 			classeEmissioniVeicolo = rs.getString(48);
@@ -304,6 +311,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			disponibilitaClima = (rs.getInt(32)==0)?false:true;
 			coloreMetalizzato = (rs.getInt(15)==0)?false:true;
 			ivaDeducibile = (rs.getInt(20)==0)?false:true;
+			prezzoTrattabile = (rs.getInt(21)==0)?false:true;
 					
 			KWVeicolo = Integer.toString(rs.getInt(12));
 			CVVeicolo = Integer.toString(rs.getInt(13));
