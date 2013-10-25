@@ -22,12 +22,19 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import javax.swing.JOptionPane;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class SchedaVeicolo implements Serializable, parametriGenerali  {
@@ -35,11 +42,11 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	private static final long serialVersionUID = 1L;
 	
 	//Attributi della scheda veicolo	
-	long idScheda = new Date().getTime();	//id univoco riferito alla scheda
-	String codiceScheda= intestazioneCodiceSchedaVeicolo + UUID.randomUUID().toString(); //codice scheda univoco
+	long idScheda;	//id univoco riferito alla scheda
+	String codiceScheda; //codice scheda univoco
 	
 	//Inizializzo il path per il file hash di questa scheda
-	String singolaSchedaDatPath = pathSchede + codiceScheda + ".dat";
+	String singolaSchedaDatPath;
 	
 	String veicolo;
 	String tipologiaVeicolo;
@@ -130,7 +137,14 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	
 	
 	//Costruttore
-	public SchedaVeicolo () {	 	
+	public SchedaVeicolo () {
+		
+		//Attributi della scheda veicolo	
+		idScheda = new Date().getTime();	//id univoco riferito alla scheda
+		codiceScheda= intestazioneCodiceSchedaVeicolo + UUID.randomUUID().toString(); //codice scheda univoco
+		
+		//Inizializzo il path per il file hash di questa scheda
+		singolaSchedaDatPath = pathSchede + codiceScheda + ".dat";
 	
 		//Al momento dell'istanziazione, una scheda veicolo inizializza i propri campi prendendone il valore da quelli inseriti nel pannello form di creazione scheda veicolo
 		veicolo = J2Web_UI.getRdbtnAutoveicolo().isSelected()?"auto":"moto";
@@ -150,8 +164,6 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		finitureInterneVeicoloIndex =J2Web_UI.getComboBox_FinitureInterni().getSelectedIndex();
 		coloreInterniVeicolo = (String) J2Web_UI.getComboBox_ColoreInterni().getSelectedItem();
 		coloreInterniVeicoloIndex =J2Web_UI.getComboBox_ColoreInterni().getSelectedIndex();
-		versioneVeicolo = (String) J2Web_UI.getComboBox_Versione().getSelectedItem();
-		versioneVeicoloIndex =J2Web_UI.getComboBox_Versione().getSelectedIndex();
 		meseImmatricolazioneVeicolo = (String) J2Web_UI.getComboBox_MeseImmatricolazione().getSelectedItem();
 		meseImmatricolazioneVeicoloIndex =J2Web_UI.getComboBox_MeseImmatricolazione().getSelectedIndex();
 		annoImmatricolazioneVeicolo = (String) J2Web_UI.getComboBox_AnnoImmatricolazione().getSelectedItem();
@@ -200,22 +212,22 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		ivaDeducibile = J2Web_UI.getChckbxIvaDeducibile().isSelected()?true:false;
 		prezzoTrattabile = J2Web_UI.getChckbxTrattabile().isSelected()?true:false;
 				
-		KWVeicolo = J2Web_UI.getTextField_Kw().getText().trim();
-		CVVeicolo = J2Web_UI.getTextField_Cv().getText().trim();
-		chilometraggioVeicolo = J2Web_UI.getTextField_Chilometraggio().getText().trim();
-		prezzoVeicolo = J2Web_UI.getTextField_Prezzo().getText().trim();
-		comsumeMedioVeicolo = J2Web_UI.getTextField_ConsumoMedio().getText().trim();
-		cilindrataVeicolo = J2Web_UI.getTextField_Cilindrata().getText().trim();
-		urlVideoYouTube = J2Web_UI.getTextField_YouTubeUrl().getText().trim();
+		KWVeicolo = J2Web_UI.getTextField_Kw().getText().trim().substring(0, 2);
+		CVVeicolo = J2Web_UI.getTextField_Cv().getText().trim().substring(0, 2);
+		chilometraggioVeicolo = J2Web_UI.getTextField_Chilometraggio().getText().trim().substring(0, 5);
+		prezzoVeicolo = J2Web_UI.getTextField_Prezzo().getText().trim().substring(0, 5);
+		comsumeMedioVeicolo = J2Web_UI.getTextField_ConsumoMedio().getText().trim().substring(0, 4);
+		cilindrataVeicolo = J2Web_UI.getTextField_Cilindrata().getText().trim().substring(0, 5);
+		urlVideoYouTube = J2Web_UI.getTextField_YouTubeUrl().getText().trim().substring(0, 39);
 		
-		descrizioneVeicolo = J2Web_UI.getTextPane_Descrizione().getText().trim();
+		descrizioneVeicolo = J2Web_UI.getTextPane_Descrizione().getText().trim().substring(0, 399);
 		
 		ragioneSociale = J2Web_UI.getTextFieldRagioneSociale().getText().trim();
-		Indirizzo = J2Web_UI.getTextFieldIndirizzo().getText().trim();
-		Telefono = J2Web_UI.getTextFieldTelefonoGenerico().getText().trim();
+		Indirizzo = J2Web_UI.getTextFieldIndirizzo().getText().trim().substring(0, 29);
+		Telefono = J2Web_UI.getTextFieldTelefonoGenerico().getText().trim().substring(0, 9);
 		nomeReferente = J2Web_UI.getTextFieldReferente().getText().trim();
-		TelefonoReferente = J2Web_UI.getTextFieldTelefonoReferente().getText().trim();
-		emailReferente = J2Web_UI.getTextFieldEmailReferente().getText().trim();
+		TelefonoReferente = J2Web_UI.getTextFieldTelefonoReferente().getText().trim().substring(0, 9);
+		emailReferente = J2Web_UI.getTextFieldEmailReferente().getText().trim().substring(0, 29);
 		
 		imgFile1 = J2Web_UI.getFileImmagine1();
 		if(imgFile1!=null && imgFile1.exists()) {
@@ -263,305 +275,37 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	
 	
 	//Costruttore 2
-	public SchedaVeicolo (ResultSet rs) {	 	
+	public SchedaVeicolo (JSONArray jsonArray) {	 	
 	
-		//Al momento dell'istanziazione, una scheda veicolo inizializza i propri campi prendendone il valore dalla query result
-		try {
-			veicolo = "auto";
-			
-			tipologiaVeicolo = rs.getString(9);
-			
-			marcaVeicolo = rs.getString(3);
-			modelloVeicolo = rs.getString(4);
-			versioneVeicolo = rs.getString(5);
-			carrozzeriaVeicolo = rs.getString(10);
-			postiASedereVeicolo = Integer.toString(rs.getInt(11));
-			finitureInterneVeicolo = rs.getString(21);
-			coloreInterniVeicolo = rs.getString(22);
-			meseImmatricolazioneVeicolo = Integer.toString(rs.getInt(6));
-			annoImmatricolazioneVeicolo = Integer.toString(rs.getInt(7));
-			coloreEsternoVeicolo = rs.getString(14);
-			numeroPrecedentiProprietariVeicolo = Integer.toString(rs.getInt(16));
-			tipologiaMotoreVeicolo = rs.getString(44);
-			tipologiaCambioVeicolo = rs.getString(45);
-			numeroRapportiVeicolo = Integer.toString(rs.getInt(46));
-			classeEmissioniVeicolo = rs.getString(48);
-			carburanteVeicolo = rs.getString(8);
-			
-			disponibilitaAllestimentoHandicap = (rs.getInt(39)==0)?false:true;
-			disponibilitaServoSterzo = (rs.getInt(37)==0)?false:true;
-			disponibilitaSediliSportivi = (rs.getInt(43)==0)?false:true;
-			disponibilitaParkDistControl = (rs.getInt(35)==0)?false:true;
-			disponibilitaFreniADisco = (rs.getInt(30)==0)?false:true;
-			disponibilitaRadioOLettoreCD = (rs.getInt(34)==0)?false:true;
-			disponibilitaAntifurto = (rs.getInt(25)==0)?false:true;
-			disponibilitaABS = (rs.getInt(23)==0)?false:true;
-			disponibilitaGancioTraino = (rs.getInt(41)==0)?false:true;
-			disponibilitaVolanteMultifunzione = (rs.getInt(38)==0)?false:true;
-			disponibilitaImmobilizer = (rs.getInt(29)==0)?false:true;
-			disponibilitaPortaPacchi = (rs.getInt(42)==0)?false:true;
-			disponibilitaAirBag = (rs.getInt(24)==0)?false:true;
-			disponibilitaESP = (rs.getInt(28)==0)?false:true;
-			disponibilitaAlzacristalliElettrici = (rs.getInt(31)==0)?false:true;
-			disponibilitaNavigatoreSattelitare = (rs.getInt(33)==0)?false:true;
-			disponibilitaCerchiInLega = (rs.getInt(40)==0)?false:true;
-			disponibilitaContrlAutomTrazione = (rs.getInt(27)==0)?false:true;
-			disponibilitaChiusuraCentralizzata = (rs.getInt(26)==0)?false:true;
-			disponibilitaSediliRiscaldati = (rs.getInt(36)==0)?false:true;
-			disponibilitaClima = (rs.getInt(32)==0)?false:true;
-			coloreMetalizzato = (rs.getInt(15)==0)?false:true;
-			ivaDeducibile = (rs.getInt(20)==0)?false:true;
-			prezzoTrattabile = (rs.getInt(21)==0)?false:true;
-					
-			KWVeicolo = Integer.toString(rs.getInt(12));
-			CVVeicolo = Integer.toString(rs.getInt(13));
-			chilometraggioVeicolo = Integer.toString(rs.getInt(17));
-			prezzoVeicolo = Integer.toString(rs.getInt(18));
-			comsumeMedioVeicolo = Float.toString(rs.getFloat(49));
-			cilindrataVeicolo = Integer.toString(rs.getInt(47));
-			urlVideoYouTube = rs.getString(60);
-			
-			descrizioneVeicolo = rs.getString(61);
-			
-			ragioneSociale = rs.getString(62);
-			Indirizzo = rs.getString(63);
-			Telefono = rs.getString(64);
-			nomeReferente = rs.getString(65);
-			TelefonoReferente = rs.getString(66);
-			emailReferente = rs.getString(67);
-					
-			if(rs.getBlob(50)!=null) {
-				InputStream in = rs.getBinaryStream(50);
-				OutputStream f;
-				try {
-					f = new FileOutputStream(new File(pathTemp + "image1.jpg"));
-					int c = 0;
-					
-					while ((c = in.read()) > -1) {
-						 f.write(c);
-						 }
-					
-					f.close();
-					in.close();
-				}
-				catch (Exception ex){
-					System.out.println(ex.getMessage());
-				}
-				
-				File newFile = new File(pathTemp + "image1.jpg");
-				arrayImages[1] = newFile;
-				
-				newFile.deleteOnExit();	
-			}
-
+		veicolo = "auto";
 		
-			if(rs.getBlob(51)!=null) {
-				InputStream in = rs.getBinaryStream(51);
-				OutputStream f;
-				try {
-					f = new FileOutputStream(new File(pathTemp + "image2.jpg"));
-					int c = 0;
-					
-					while ((c = in.read()) > -1) {
-						 f.write(c);
-						 }
-					
-					f.close();
-					in.close();
-				}
-				catch (Exception ex){
-					System.out.println(ex.getMessage());
-				}
-				
-				File newFile = new File(pathTemp + "image2.jpg");
-				arrayImages[2] = newFile;
-				
-				newFile.deleteOnExit();	
-			}
-			if(rs.getBlob(52)!=null) {
-				InputStream in = rs.getBinaryStream(52);
-				OutputStream f;
-				try {
-					f = new FileOutputStream(new File(pathTemp + "image3.jpg"));
-					int c = 0;
-					
-					while ((c = in.read()) > -1) {
-						 f.write(c);
-						 }
-					
-					f.close();
-					in.close();
-				}
-				catch (Exception ex){
-					System.out.println(ex.getMessage());
-				}
-				
-				File newFile = new File(pathTemp + "image3.jpg");
-				arrayImages[3] = newFile;
-				
-				newFile.deleteOnExit();	
-			}
-			if(rs.getBlob(53)!=null) {
-				InputStream in = rs.getBinaryStream(53);
-				OutputStream f;
-				try {
-					f = new FileOutputStream(new File(pathTemp + "image4.jpg"));
-					int c = 0;
-					
-					while ((c = in.read()) > -1) {
-						 f.write(c);
-						 }
-					
-					f.close();
-					in.close();
-				}
-				catch (Exception ex){
-					System.out.println(ex.getMessage());
-				}
-				
-				File newFile = new File(pathTemp + "image4.jpg");
-				arrayImages[4] = newFile;
-				
-				newFile.deleteOnExit();	
-			}
-			if(rs.getBlob(54)!=null) {
-				InputStream in = rs.getBinaryStream(54);
-				OutputStream f;
-				try {
-					f = new FileOutputStream(new File(pathTemp + "image5.jpg"));
-					int c = 0;
-					
-					while ((c = in.read()) > -1) {
-						 f.write(c);
-						 }
-					
-					f.close();
-					in.close();
-				}
-				catch (Exception ex){
-					System.out.println(ex.getMessage());
-				}
-				
-				File newFile = new File(pathTemp + "image5.jpg");
-				arrayImages[5] = newFile;
-				
-				newFile.deleteOnExit();	
-			}
-			if(rs.getBlob(55)!=null) {
-				InputStream in = rs.getBinaryStream(55);
-				OutputStream f;
-				try {
-					f = new FileOutputStream(new File(pathTemp + "image6.jpg"));
-					int c = 0;
-					
-					while ((c = in.read()) > -1) {
-						 f.write(c);
-						 }
-					
-					f.close();
-					in.close();
-				}
-				catch (Exception ex){
-					System.out.println(ex.getMessage());
-				}
-				
-				File newFile = new File(pathTemp + "image6.jpg");
-				arrayImages[6] = newFile;
-				
-				newFile.deleteOnExit();	
-			}
-			if(rs.getBlob(56)!=null) {
-				InputStream in = rs.getBinaryStream(56);
-				OutputStream f;
-				try {
-					f = new FileOutputStream(new File(pathTemp + "image7.jpg"));
-					int c = 0;
-					
-					while ((c = in.read()) > -1) {
-						 f.write(c);
-						 }
-					
-					f.close();
-					in.close();
-				}
-				catch (Exception ex){
-					System.out.println(ex.getMessage());
-				}
-				
-				File newFile = new File(pathTemp + "image7.jpg");
-				arrayImages[7] = newFile;
-				
-				newFile.deleteOnExit();				}
-			if(rs.getBlob(57)!=null) {
-				InputStream in = rs.getBinaryStream(57);
-				OutputStream f;
-				try {
-					f = new FileOutputStream(new File(pathTemp + "image8.jpg"));
-					int c = 0;
-					
-					while ((c = in.read()) > -1) {
-						 f.write(c);
-						 }
-					
-					f.close();
-					in.close();
-				}
-				catch (Exception ex){
-					System.out.println(ex.getMessage());
-				}
-				
-				File newFile = new File(pathTemp + "image8.jpg");
-				arrayImages[8] = newFile;
-				
-				newFile.deleteOnExit();				}
-			if(rs.getBlob(58)!=null) {
-				InputStream in = rs.getBinaryStream(58);
-				OutputStream f;
-				try {
-					f = new FileOutputStream(new File(pathTemp + "image9.jpg"));
-					int c = 0;
-					
-					while ((c = in.read()) > -1) {
-						 f.write(c);
-						 }
-					
-					f.close();
-					in.close();
-				}
-				catch (Exception ex){
-					System.out.println(ex.getMessage());
-				}
-				
-				File newFile = new File(pathTemp + "image9.jpg");
-				arrayImages[9] = newFile;
-				
-				newFile.deleteOnExit();				}
-			if(rs.getBlob(59)!=null) {
-				InputStream in = rs.getBinaryStream(59);
-				OutputStream f;
-				try {
-					f = new FileOutputStream(new File(pathTemp + "image10.jpg"));
-					int c = 0;
-					
-					while ((c = in.read()) > -1) {
-						 f.write(c);
-						 }
-					
-					f.close();
-					in.close();
-				}
-				catch (Exception ex){
-					System.out.println(ex.getMessage());
-				}
-				
-				File newFile = new File(pathTemp + "image10.jpg");
-				arrayImages[10] = newFile;
-				
-				newFile.deleteOnExit();				}
+		System.out.println("test1:" + jsonArray);
 		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for (int h=1; h<jsonArray.length(); h++) {
+			JSONObject json2 = null;
+			try {
+				json2 = new JSONObject(jsonArray.getString(h));
+				System.out.println("test2:" + json2);
+			} catch (NoSuchElementException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(json2.has(Integer.toString(2))) {codiceScheda = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(2))));}
+			if(json2.has(Integer.toString(3))) {marcaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(3))));} 
+			if(json2.has(Integer.toString(4))) {modelloVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(4))));} 
+			if(json2.has(Integer.toString(5))) {versioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(5))));} 
+			if(json2.has(Integer.toString(6))) {meseImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(6))));} 
+			if(json2.has(Integer.toString(7))) {annoImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(7))));} 
+			if(json2.has(Integer.toString(8))) {carburanteVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(8))));} 
+			if(json2.has(Integer.toString(9))) {tipologiaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(9))));} 
+			if(json2.has(Integer.toString(10))) {carrozzeriaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(10))));} 
+			if(json2.has(Integer.toString(11))) {postiASedereVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(11))));} 
+			if(json2.has(Integer.toString(12))) {KWVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(12))));}
+			if(json2.has(Integer.toString(13))) {CVVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(13))));} 
+			//System.out.println("test3:"+codiceScheda);
 		}
 		
 	}
