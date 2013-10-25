@@ -566,13 +566,13 @@ public class J2Web_UI implements parametriGenerali{
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || txtFieldKw.getText().length()>=maxCaratteri.get("txtFieldKw")) {
                 	e.getComponent().getToolkit().beep();
                     e.consume();
                 }
 			}
 		});
-		txtFieldKw.setText("KW");
+		txtFieldKw.setText("");
 		panel_20.add(txtFieldKw, "2, 18, fill, default");
 		txtFieldKw.setColumns(10);
 		
@@ -582,13 +582,13 @@ public class J2Web_UI implements parametriGenerali{
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || txtFieldCv.getText().length()>=maxCaratteri.get("txtFieldCv")) {
                 	e.getComponent().getToolkit().beep();
                     e.consume();
                 }
 			}
 		});
-		txtFieldCv.setText("CV");
+		txtFieldCv.setText("");
 		panel_20.add(txtFieldCv, "6, 18, fill, default");
 		txtFieldCv.setColumns(10);
 		
@@ -621,7 +621,7 @@ public class J2Web_UI implements parametriGenerali{
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || textField_Chilometraggio.getText().length()>=maxCaratteri.get("textField_Chilometraggio")) {
                 	e.getComponent().getToolkit().beep();
                     e.consume();
                 }
@@ -639,7 +639,7 @@ public class J2Web_UI implements parametriGenerali{
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || textField_Prezzo.getText().length()>=maxCaratteri.get("textField_Prezzo")) {
                 	e.getComponent().getToolkit().beep();
                     e.consume();
                 }
@@ -889,7 +889,7 @@ public class J2Web_UI implements parametriGenerali{
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || comboBox_Cilindrata.getText().length()>=maxCaratteri.get("comboBox_Cilindrata")) {
                 	e.getComponent().getToolkit().beep();
                     e.consume();
                 }
@@ -903,12 +903,12 @@ public class J2Web_UI implements parametriGenerali{
 		panel_22.add(comboBox_ClasseEmissioni, "6, 8, fill, default");
 		
 		comboBox_ConsumoMedio = new JTextField();
-		comboBox_ConsumoMedio.setToolTipText("Inserimento consume medio veicolo");
+		comboBox_ConsumoMedio.setToolTipText("Inserimento consumo medio veicolo");
 		comboBox_ConsumoMedio.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-                if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD)) || comboBox_ConsumoMedio.getText().length()>=maxCaratteri.get("comboBox_ConsumoMedio")) {
                 	e.getComponent().getToolkit().beep();
                     e.consume();
                 }
@@ -1088,6 +1088,16 @@ public class J2Web_UI implements parametriGenerali{
 		txtField_YouTubeUrl = new JTextField();
 		txtField_YouTubeUrl.setToolTipText("Inserimento di una url per l'inclusione di un video da YouTube");
 		panel_23.add(txtField_YouTubeUrl, "2, 14, fill, fill");
+		txtField_YouTubeUrl.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (txtField_YouTubeUrl.getText().length()>=maxCaratteri.get("txtField_YouTubeUrl")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		txtField_YouTubeUrl.setColumns(10);
 		
 		
@@ -1114,6 +1124,16 @@ public class J2Web_UI implements parametriGenerali{
 		textPane_Descrizione = new JTextPane();
 		textPane_Descrizione.setToolTipText("Inserimento di una descrizione testuale");
 		textPane_Descrizione.setContentType("text/plain\r\ntext/xml\r\ntext/html");
+		textPane_Descrizione.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (textPane_Descrizione.getText().length()>=maxCaratteri.get("textPane_Descrizione")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		panel_24.add(textPane_Descrizione, "2, 4, fill, fill");
 		
 		//panel_16.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panel_24, rdbtnAutoveicolo, rdbtnMotoScooter, lblMarca, panel_20, lblModello, lblVersione, comboBox_Marca, comboBox_Modello, lblDataPrimaImmatricolazione, lblCarburante, comboBox_MeseImmatricolazione, comboBox_AnnoImmatricolazione, lblTipologia, lblCarrozzeria, lblPostiASedere, comboBox_Tipologia, comboBox_Carrozzeria, comboBox_PostiASedere, lblPotenzaKw, txtFieldKw, txtFieldCv, lblColoreEsterno, comboBox_ColoreEsterno, chckbxMetallizzato, lblPrecedentiProprietari, lblChilometraggio, comboBox_PrecedentiProprietari, textField_Chilometraggio, lblPrezzo, textField_Prezzo, chckbxTrattabile, chckbxIvaDeducibile, lblFinitureInterne, lblColoreInterni, comboBox_FinitureInterni, comboBox_ColoreInterni, lblDescrizionemax, textPane_Descrizione, panel_23, btnImmagine1, label_Immagine1, btnImmagine_2, label_Immagine2, btnImmagine_3, label_Immagine3, btnImmagine_4, label_Immagine4, btnImmagine_5, label_Immagine5, btnImmagine_6, label_Immagine6, btnImmagine_7, label_Immagine7, btnImmagine_8, label_Immagine8, btnImmagine_9, label_Immagine9, btnImmagine_10, label_Immagine10, panel_22, lblNewLabel, lblNewLabel_1, lblNewLabel_2, comboBox_Motore, comboBox_Cambio, comboBox_NumeroRapporti, lblCilindrata, lblClasseDiEmissione, lblConsumoMedio, comboBox_Cilindrata, comboBox_ClasseEmissioni, comboBox_ConsumoMedio, panel_21, lblSicurezza, lblComodit, lblExtra, chckbxAbs, chckbxAlzacristalliElettrici, chckbxHandicap, chckbxAirbag, chckbxClima, chckbxCerchiInLega, chckbxAntifurto, chckbxNavigatoreSatellitare, chckbxGancioTraino, chckbxChiusuraCentralizzata, chckbxRadiolettoreCd, chckbxPortapacchi, chckbxContrAutomTrazione, chckbxParkDistControl, chckbxSediliSportivi, chckbxBauletto, chckbxAvviamentoAPedale, chckbxAvviamentoElettrico, chckbxEsp, chckbxSediliRiscaldati, chckbxImmobilizer, chckbxServosterzo, chckbxFreniADisco, chckbxVolanteMultifunzione, chckbxCupolino}));
@@ -1161,11 +1181,31 @@ public class J2Web_UI implements parametriGenerali{
 		textFieldIndirizzo = new JTextField();
 		textFieldIndirizzo.setToolTipText("Inserimento dell'indirizzo di riferimento dell'inserzionista ");
 		panel_33.add(textFieldIndirizzo, "4, 4, fill, default");
+		textFieldIndirizzo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (textFieldIndirizzo.getText().length()>=maxCaratteri.get("textFieldIndirizzo")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		textFieldIndirizzo.setColumns(10);
 		
 		textFieldTelefonoGenerico = new JTextField();
 		textFieldTelefonoGenerico.setToolTipText("Inserimento di un recapito telefonico dell'inserzionista");
 		panel_33.add(textFieldTelefonoGenerico, "6, 4, fill, default");
+		textFieldTelefonoGenerico.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (textFieldTelefonoGenerico.getText().length()>=maxCaratteri.get("textFieldTelefonoGenerico")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		textFieldTelefonoGenerico.setColumns(10);
 		
 		JLabel lblReferente = new JLabel("Referente");
@@ -1187,11 +1227,31 @@ public class J2Web_UI implements parametriGenerali{
 		textFieldTelefonoReferente = new JTextField();
 		textFieldTelefonoReferente.setToolTipText("Inserimento del numero di telefono del referente");
 		panel_33.add(textFieldTelefonoReferente, "4, 8, fill, default");
+		textFieldTelefonoReferente.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD)) || textFieldTelefonoReferente.getText().length()>=maxCaratteri.get("textFieldTelefonoReferente")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		textFieldTelefonoReferente.setColumns(10);
 		
 		textFieldEmailReferente = new JTextField();
-		textFieldEmailReferente.setToolTipText("Inserimento della mailo del referente");
+		textFieldEmailReferente.setToolTipText("Inserimento della mail del referente");
 		panel_33.add(textFieldEmailReferente, "6, 8, fill, default");
+		textFieldEmailReferente.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (textFieldEmailReferente.getText().length()>=maxCaratteri.get("textFieldEmailReferente")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		textFieldEmailReferente.setColumns(10);
 		
 		JPanel panel_17 = new JPanel();
@@ -1428,11 +1488,31 @@ public class J2Web_UI implements parametriGenerali{
 		formCliente_textFieldNome = new JTextField();
 		formCliente_textFieldNome.setToolTipText("Inserire il nome del cliente");
 		panel_29.add(formCliente_textFieldNome, "2, 6, fill, default");
+		formCliente_textFieldNome.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (formCliente_textFieldNome.getText().length()>=maxCaratteri.get("formCliente_textFieldNome")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		formCliente_textFieldNome.setColumns(10);
 		
 		formCliente_textFieldCognome = new JTextField();
 		formCliente_textFieldCognome.setToolTipText("Inserire il cognome del cliente");
 		panel_29.add(formCliente_textFieldCognome, "4, 6, fill, default");
+		formCliente_textFieldCognome.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (formCliente_textFieldCognome.getText().length()>=maxCaratteri.get("formCliente_textFieldCognome")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		formCliente_textFieldCognome.setColumns(10);
 		
 		JLabel lblEmail = new JLabel("Email");
@@ -1447,16 +1527,46 @@ public class J2Web_UI implements parametriGenerali{
 		formCliente_textFieldEmail = new JTextField();
 		formCliente_textFieldEmail.setToolTipText("Inserire un recapito e-mail del cliente");
 		panel_29.add(formCliente_textFieldEmail, "2, 10, fill, default");
+		formCliente_textFieldEmail.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (formCliente_textFieldEmail.getText().length()>=maxCaratteri.get("formCliente_textFieldEmail")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		formCliente_textFieldEmail.setColumns(10);
 		
 		formCliente_textFieldTelefono1 = new JTextField();
 		formCliente_textFieldTelefono1.setToolTipText("Inserire un recapito telefonico del cliente");
 		panel_29.add(formCliente_textFieldTelefono1, "4, 10, fill, default");
+		formCliente_textFieldTelefono1.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (formCliente_textFieldTelefono1.getText().length()>=maxCaratteri.get("formCliente_textFieldTelefono1")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		formCliente_textFieldTelefono1.setColumns(10);
 		
 		formCliente_textFieldTelefono2 = new JTextField();
 		formCliente_textFieldTelefono2.setToolTipText("Inserire un recapito telefonico del cliente");
 		panel_29.add(formCliente_textFieldTelefono2, "6, 10, fill, default");
+		formCliente_textFieldTelefono2.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (formCliente_textFieldTelefono2.getText().length()>=maxCaratteri.get("formCliente_textFieldTelefono2")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		formCliente_textFieldTelefono2.setColumns(10);
 		
 		JLabel lblVia = new JLabel("Via");
@@ -1468,11 +1578,31 @@ public class J2Web_UI implements parametriGenerali{
 		formCliente_textFieldVia = new JTextField();
 		formCliente_textFieldVia.setToolTipText("Inserire la via del cliente");
 		panel_29.add(formCliente_textFieldVia, "2, 14, fill, default");
+		formCliente_textFieldVia.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (formCliente_textFieldVia.getText().length()>=maxCaratteri.get("formCliente_textFieldVia")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		formCliente_textFieldVia.setColumns(10);
 		
 		formCliente_textFieldNumeroCivico = new JTextField();
 		formCliente_textFieldNumeroCivico.setToolTipText("Inserire il numero civico del cliente");
 		panel_29.add(formCliente_textFieldNumeroCivico, "4, 14, fill, default");
+		formCliente_textFieldNumeroCivico.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (formCliente_textFieldNumeroCivico.getText().length()>=maxCaratteri.get("formCliente_textFieldNumeroCivico")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		formCliente_textFieldNumeroCivico.setColumns(10);
 		
 		JLabel lblCap = new JLabel("CAP");
@@ -1484,11 +1614,31 @@ public class J2Web_UI implements parametriGenerali{
 		formCliente_textFieldCAP = new JTextField();
 		formCliente_textFieldCAP.setToolTipText("Inserire il CAP del cliente");
 		panel_29.add(formCliente_textFieldCAP, "2, 18, fill, default");
+		formCliente_textFieldCAP.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || formCliente_textFieldCAP.getText().length()>=maxCaratteri.get("formCliente_textFieldCAP")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		formCliente_textFieldCAP.setColumns(10);
 		
 		formCliente_textFieldCitta = new JTextField();
 		formCliente_textFieldCitta.setToolTipText("Inserire la città del cliente");
 		panel_29.add(formCliente_textFieldCitta, "4, 18, fill, default");
+		formCliente_textFieldCitta.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (formCliente_textFieldCitta.getText().length()>=maxCaratteri.get("formCliente_textFieldCitta")) {
+                	e.getComponent().getToolkit().beep();
+                    e.consume();
+                }
+			}
+		});
 		formCliente_textFieldCitta.setColumns(10);
 		
 		JPanel panel_30 = new JPanel();

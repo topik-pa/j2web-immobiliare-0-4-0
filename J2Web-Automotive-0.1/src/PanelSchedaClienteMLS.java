@@ -4,14 +4,20 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -26,7 +32,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.JComponent;
 
-class PanelSchedaClienteMLS extends JPanel {   
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {   
 	//JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
 	
 	private static final long serialVersionUID = 1L;
@@ -78,29 +87,31 @@ class PanelSchedaClienteMLS extends JPanel {
 		 add(schedaRadio, BorderLayout.NORTH);
 		 
 		 //La label delle schede
-		 String labelScheda = scheda.nomeCliente + "-" + scheda.cognomeCliente + "-" + scheda.telefono1Cliente /*+ "-" + scheda.comune + "-" + scheda.regione + "-" + scheda.testoAnnuncio*/;
-		 if(labelScheda.length()>16) {	//è molto probabile che lo sia... :)
-			 labelScheda = labelScheda.substring(0, 15); 
+		 String labelScheda = scheda.nomeCliente + "-" + scheda.cognomeCliente + "-" + scheda.telefono1Cliente + "-" + scheda.telefono2Cliente + "-" + scheda.emailCliente;
+		 if(labelScheda.length()>60) {	//è molto probabile che lo sia... :)
+			 labelScheda = labelScheda.substring(0, 60); 
 		 }		 
 		 labelScheda+="...";
 		 JLabel label = new JLabel(labelScheda);
 		 Font font = new Font("Monospaced", Font.PLAIN, 11);
 		 label.setFont(font);
-		 label.setHorizontalTextPosition(SwingConstants.LEFT);
-		 label.setIcon(new ImageIcon("C:\\Documents and Settings\\user\\workspace\\j2web-automotive-0.1\\images\\imaginationLogo.png"));
+		 label.setHorizontalTextPosition(SwingConstants.RIGHT);		 
+		 
+		 if(scheda.titoloCliente.equals("signora")) {
+			 label.setIcon(new ImageIcon(pathImmagini + "icon_woman.png"));
+		 }
+		 else {
+			 label.setIcon(new ImageIcon(pathImmagini + "icon_man.png"));
+		 }
+		 
 		 add(label, BorderLayout.CENTER);
+		 
+		 //Aggiungo una tooltip
+		 String tooltipScheda = scheda.nomeCliente + "-" + scheda.cognomeCliente + "-" + scheda.telefono1Cliente + "-" + scheda.emailCliente;
+		 setToolTipText(tooltipScheda);
 		 		 
 		 //add(new JLabel(labelSpaziatore));
 		 
-		 JPanel panel_26 = new JPanel();
-		 panel_26.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		 add(panel_26, BorderLayout.SOUTH);
-		 panel_26.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		 
-       
-       //add(new JLabel(labelSpaziatore));
-		Component horizontalGlue = Box.createHorizontalGlue();
-		panel_26.add(horizontalGlue);
        
        
 	 }
@@ -111,62 +122,116 @@ class PanelSchedaClienteMLS extends JPanel {
 		 
 		 pannelloMatchClienteVeicoloMLS.removeAll();
 		 
-		  Connection con = null;
-	        PreparedStatement pst = null;
-	        ResultSet rs = null;
-
-	        String url = "jdbc:mysql://localhost:3306/veicoli";
-	        String user = "testuser";
-	        String password = "test623";
+		 pannelloMatchClienteVeicoloMLS.add(Box.createVerticalStrut(6));
+		 
+		 String urlHTTPTunnel = "http://www.j2webstudio.it/mysqltunnel.php";
+		String host = "sql.j2webstudio.it";
+		String port = "3306";
+		String charset = "latin1";
+		String dbname = "j2webstu85037";
+		String username = "j2webstu85037";
+		String password = "j2we20858";
+		String query;
+		
+		
+		//Costruisco la query sql
+        String querySQL_1 = "SELECT * FROM autoveicoli WHERE ";
+        String querySQL_2 = "Marca = ";
+        String querySQL_3 =  "'" + scheda.marcaVeicoloCliente + "'";
+        
+        //String querySQL_2_normalized = querySQL_2.replace(" ", "");
+        //String querySQL_3_normalized = querySQL_4.replace("'", "\'");
+        String querySQL = querySQL_1 + querySQL_2 + querySQL_3;
+        String encodedQuerySQL = "";
+        
+        System.out.println("query: " + querySQL);
+        
+        try {
+        	encodedQuerySQL = URLEncoder.encode(querySQL, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+        //Invio la richiesta al server remoto
+		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
+		try {
+			Object[] response = getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, true);
+			String responseBody = (String)response[1];
+        	JSONObject json = null;
+        	JSONObject json2 = null;
+			try {
+				json = new JSONObject(responseBody);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+        	//System.out.println("test1:" + json.getString("affectedrows"));
+        	
+        	JSONArray jsonResults = json.getJSONArray("rows"); 
+        	
+        	//System.out.println("test1:" + jsonResults + "-" + jsonResults.length());
+        	
+        	for(int i=0; i<jsonResults.length(); i++) {
+        		JSONArray currentJsonArray = jsonResults.getJSONArray(i); //rappresenta una riga della tabella
+        		//System.out.println("test2:" + currentJsonArray);
+        		
+        		SchedaVeicolo schedaVeicoloMLS = new SchedaVeicolo(currentJsonArray);
+        		
+        		PanelSchedaVeicoloMLS panelSchedaVeicoloMLS = new PanelSchedaVeicoloMLS(schedaVeicoloMLS);
+                
+                pannelloMatchClienteVeicoloMLS.add(panelSchedaVeicoloMLS);
+        	}
+        	
+        	
+        	//for(int i=1; i<=jsonResults.length(); i++) {
+        		//JSONArray currentJsonArray = jsonResults.getJSONArray(i);
+        		
+        		//System.out.println("test2:" + currentJsonArray.getString(i));
+        		
+        		//System.out.println("test1:" + currentJsonArray);
+        		//if(i==0){
+    				/*try {
+						json2 = new JSONObject(currentJsonArray);
+						//System.out.println("test1:" + json2);
+						//System.out.println("test2:" + json2.getString(Integer.toString(i)));
+						//System.out.println("test5:" + json2.getString(2));
+						//System.out.println("test6:" + json2.getString("3"));
+						
+					} catch (NoSuchElementException | ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}*/
+    				//System.out.println("test3:" + json2.getString("2"));
+    			//}
+        		
+        		/*for (int h=1; h<=currentJsonArray.length(); h++) {
+        			if(h==1){
+        				JSONObject currentJson = currentJsonArray.getJSONObject(1);
+        				System.out.println("test3:" + currentJson.getInt("1"));
+        			}
+        		
+        		}*/
+        		
+        		
+        	//}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		//SchedaVeicolo schedaVeicoloMLS = new SchedaVeicolo(rs);
+        
+        //PanelSchedaVeicoloMLS panelSchedaVeicoloMLS = new PanelSchedaVeicoloMLS(schedaVeicoloMLS);
+        
+        //pannelloMatchClienteVeicoloMLS.add(panelSchedaVeicoloMLS);
 	        
 	        
-	        try {
-	            
-	            con = DriverManager.getConnection(url, user, password);
-	            pst = con.prepareStatement("SELECT * FROM Autoveicoli WHERE Marca = " + "'" + scheda.marcaVeicoloCliente + "'");
-	            rs = pst.executeQuery();
-
-	            while (rs.next()) {
-	                System.out.print(rs.getInt(1));
-	                System.out.print(": ");
-	                System.out.println(rs.getString(2));
-	                System.out.print(rs.getString(3));
-	                System.out.print(": ");
-	                System.out.println(rs.getString(4));
-	                
-	                
-	                SchedaVeicolo schedaVeicoloMLS = new SchedaVeicolo(rs);
-	                
-	                PanelSchedaVeicoloMLS panelSchedaVeicoloMLS = new PanelSchedaVeicoloMLS(schedaVeicoloMLS);
-	                
-	                pannelloMatchClienteVeicoloMLS.add(panelSchedaVeicoloMLS);
-	                
-	            }
-
-	        } catch (SQLException ex) {
-	                Logger lgr = Logger.getLogger(PanelSchedaClienteMLS.class.getName());
-	                lgr.log(Level.SEVERE, ex.getMessage(), ex);
-
-	        } finally {
-
-	            try {
-	                if (rs != null) {
-	                    rs.close();
-	                }
-	                if (pst != null) {
-	                    pst.close();
-	                }
-	                if (con != null) {
-	                    con.close();
-	                }
-
-	            } catch (SQLException ex) {
-	                Logger lgr = Logger.getLogger(PanelSchedaClienteMLS.class.getName());
-	                lgr.log(Level.WARNING, ex.getMessage(), ex);
-	            }
-	        }
-	        
-	        pannelloMatchClienteVeicoloMLS.updateUI();
+	    pannelloMatchClienteVeicoloMLS.updateUI();
+	    
+	   
 		 
 		 
 	 }

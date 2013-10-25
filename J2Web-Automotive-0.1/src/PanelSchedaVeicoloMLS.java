@@ -99,6 +99,10 @@ class PanelSchedaVeicoloMLS extends JPanel {
 		 
 		 
 		 add(label, BorderLayout.CENTER);
+		 
+		 //Aggiungo una tooltip
+		 String tooltipScheda = scheda.marcaVeicolo + "-" + scheda.modelloVeicolo + "-" + scheda.versioneVeicolo + "-" + scheda.carrozzeriaVeicolo + "-" + scheda.coloreEsternoVeicolo;
+		 setToolTipText(tooltipScheda);
 		 		 
 		 //add(new JLabel(labelSpaziatore));
 		 

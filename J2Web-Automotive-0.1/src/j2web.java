@@ -127,17 +127,30 @@ public class j2web implements parametriGenerali {
 		
 	//Inizializza la mappa contenente i campi testuali e i corrispondenti limiti di caratteri
 	public static void inizializzaMappaLimiteCaratteri() {	
-		/*
-		maxCaratteri.put("txtCodiceInserzione", 10);
-		maxCaratteri.put("textTitoloAnnuncio", 150);
-		maxCaratteri.put("textFieldCap", 7);
-		maxCaratteri.put("textFieldIndirizzoLocalita", 70);
-		maxCaratteri.put("textAreaTestoAnnuncio", 2000);
-		maxCaratteri.put("textSuperficieImmobile", 10);
-		maxCaratteri.put("textFieldPrezzoImmobile", 15);
-		maxCaratteri.put("textFieldAnnoCostruzione", 4);
-		maxCaratteri.put("textFieldNumeroTotalePiani", 2);
-		*/
+		
+		maxCaratteri.put("txtFieldKw", 3);
+		maxCaratteri.put("txtFieldCv", 3);
+		maxCaratteri.put("textField_Chilometraggio", 6);
+		maxCaratteri.put("textField_Prezzo", 6);
+		maxCaratteri.put("comboBox_Cilindrata", 6);
+		maxCaratteri.put("comboBox_ConsumoMedio", 5);
+		maxCaratteri.put("textPane_Descrizione", 400);
+		maxCaratteri.put("textFieldTelefonoGenerico", 10);
+		maxCaratteri.put("textFieldTelefonoReferente", 10);
+		maxCaratteri.put("textFieldEmailReferente", 30);
+		maxCaratteri.put("textFieldIndirizzo", 30);	
+		maxCaratteri.put("txtField_YouTubeUrl", 40);
+		
+		maxCaratteri.put("formCliente_textFieldNome", 30);
+		maxCaratteri.put("formCliente_textFieldCognome", 30);
+		maxCaratteri.put("formCliente_textFieldEmail", 30);
+		maxCaratteri.put("formCliente_textFieldTelefono1", 10);
+		maxCaratteri.put("formCliente_textFieldTelefono2", 10);
+		maxCaratteri.put("formCliente_textFieldVia", 30);
+		maxCaratteri.put("formCliente_textFieldNumeroCivico", 7);
+		maxCaratteri.put("formCliente_textFieldCAP", 5);
+		maxCaratteri.put("formCliente_textFieldCitta", 30);
+		
 	}
 
 	//Inizializza la mappa dei dialoghi modali
