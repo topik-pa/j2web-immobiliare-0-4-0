@@ -54,6 +54,7 @@ public interface parametriGenerali {
     final int maxFileSize = 1048576;
     //Formato immagini consentito
     final String format=".jpg";
+    final String format2=".jpeg";
   	
   	//Mappa che contiene il limite di caratteri immessi per certi campi testuali. L'inizializzazione è nel file: j2web.java
     Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>(); 
