@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -29,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JComponent;
 
 
-class PanelSchedaVeicolo extends JPanel {   
+class PanelSchedaVeicolo extends JPanel implements parametriGenerali{   
 	
 	JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
 	
@@ -78,6 +79,8 @@ class PanelSchedaVeicolo extends JPanel {
                setBorder(new LineBorder(Color.ORANGE));
                
                matchVeicoloCliente(scheda);
+               
+               mostraDatiScheda(scheda);
            }
 		 });
 		 add(schedaRadio, BorderLayout.NORTH);
@@ -232,5 +235,55 @@ class PanelSchedaVeicolo extends JPanel {
     		    		 		
     	}
 	 }
+	 
+	 private void  mostraDatiScheda(SchedaVeicolo schedaVeicolo) {
+		 J2Web_UI.disabilitaCampiForm(listCampiFormVeicolo);
+		 
+		 J2Web_UI.nonUserSelection = true;
+		 
+		 J2Web_UI.getComboBox_Marca().setSelectedIndex(schedaVeicolo.marcaVeicoloIndex);
+		 //J2Web_UI.getComboBox_Modello().setSelectedIndex(schedaVeicolo.modelloVeicoloIndex);
+		 J2Web_UI.getComboBox_Modello().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.modelloVeicolo}));
+		/* J2Web_UI.getComboBox_Versione().setSelectedIndex(schedaVeicolo.versioneVeicoloIndex);
+		 J2Web_UI.getComboBox_MeseImmatricolazione().setSelectedIndex(schedaVeicolo.meseImmatricolazioneVeicoloIndex);
+		 J2Web_UI.getComboBox_AnnoImmatricolazione().setSelectedIndex(schedaVeicolo.annoImmatricolazioneVeicoloIndex);
+		 J2Web_UI.getComboBox_Carburante().setSelectedIndex(schedaVeicolo.marcaVeicoloIndex);
+		 J2Web_UI.getComboBox_Tipologia().setSelectedIndex(schedaVeicolo.tipologiaVeicoloIndex);
+		 J2Web_UI.getComboBox_Carrozzeria().setSelectedIndex(schedaVeicolo.carrozzeriaVeicoloIndex);
+		 J2Web_UI.getComboBox_PostiASedere().setSelectedIndex(schedaVeicolo.postiASedereVeicoloIndex);
+		 J2Web_UI.getComboBox_ColoreEsterno().setSelectedIndex(schedaVeicolo.coloreEsternoVeicoloIndex);
+		 J2Web_UI.getComboBox_Marca().setSelectedIndex(schedaVeicolo.marcaVeicoloIndex);
+		 J2Web_UI.getComboBox_Marca().setSelectedIndex(schedaVeicolo.marcaVeicoloIndex);
+		 J2Web_UI.getComboBox_Marca().setSelectedIndex(schedaVeicolo.marcaVeicoloIndex);
+		 J2Web_UI.getComboBox_Marca().setSelectedIndex(schedaVeicolo.marcaVeicoloIndex);
+		 J2Web_UI.getComboBox_Marca().setSelectedIndex(schedaVeicolo.marcaVeicoloIndex);*/
+		 
+		 
+		 J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
+		 J2Web_UI.getTextField_Cv().setText(schedaVeicolo.CVVeicolo);
+		 J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
+		 J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
+		 J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
+		 J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
+		 J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
+		 J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
+		 J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
+		 J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
+		 J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
+
+		 
+		 if(schedaVeicolo.coloreMetalizzato) {
+			 J2Web_UI.getChckbxMetallizzato().setSelected(true);
+		 }
+		 else {
+			 J2Web_UI.getChckbxMetallizzato().setSelected(false);
+		 }
+		 
+		 
+		 
+		 J2Web_UI.nonUserSelection = false;
+		 
+	 }
+	 
 	 
 }
