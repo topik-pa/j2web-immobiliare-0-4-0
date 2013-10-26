@@ -64,15 +64,15 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 		tipologiaVeicoloCliente = (String) J2Web_UI.formCliente_getTipologiaCliente().getSelectedItem();
 		tipologiaVeicoloClienteIndex = J2Web_UI.formCliente_getTipologiaCliente().getSelectedIndex();
 				
-		nomeCliente = J2Web_UI.formCliente_getNome().getText().trim().substring(0, 29);
-		cognomeCliente = J2Web_UI.formCliente_getCognome().getText().trim().substring(0, 29);
-		emailCliente = J2Web_UI.formCliente_getEmail().getText().trim().substring(0, 29);
-		telefono1Cliente = J2Web_UI.formCliente_getTelefono1().getText().trim().substring(0, 9);
-		telefono2Cliente = J2Web_UI.formCliente_getTelefono1().getText().trim().substring(0, 9);
-		viaCliente = J2Web_UI.formCliente_getVia().getText().trim().substring(0, 29);
-		numeroCivicoCliente = J2Web_UI.formCliente_getNumeroCivico().getText().trim().substring(0, 7);
-		CAPCliente = J2Web_UI.formCliente_getCAP().getText().trim().substring(0, 4);
-		cittaCliente = J2Web_UI.formCliente_getCitta().getText().trim().substring(0, 29);
+		if(J2Web_UI.formCliente_getNome().getText().trim().length()>30) {nomeCliente = J2Web_UI.formCliente_getNome().getText().trim().substring(0, 29);}
+		if(J2Web_UI.formCliente_getCognome().getText().trim().length()>30) {cognomeCliente = J2Web_UI.formCliente_getCognome().getText().trim().substring(0, 29);}
+		if(J2Web_UI.formCliente_getEmail().getText().trim().length()>30) {emailCliente = J2Web_UI.formCliente_getEmail().getText().trim().substring(0, 29);}
+		if(J2Web_UI.formCliente_getTelefono1().getText().trim().length()>10) {telefono1Cliente = J2Web_UI.formCliente_getTelefono1().getText().trim().substring(0, 9);}
+		if(J2Web_UI.formCliente_getTelefono2().getText().trim().length()>10) {telefono2Cliente = J2Web_UI.formCliente_getTelefono2().getText().trim().substring(0, 9);}
+		if(J2Web_UI.formCliente_getVia().getText().trim().length()>30) {viaCliente = J2Web_UI.formCliente_getVia().getText().trim().substring(0, 29);}
+		if(J2Web_UI.formCliente_getNumeroCivico().getText().trim().length()>8) {numeroCivicoCliente = J2Web_UI.formCliente_getNumeroCivico().getText().trim().substring(0, 7);}
+		if(J2Web_UI.formCliente_getCAP().getText().trim().length()>5) {CAPCliente = J2Web_UI.formCliente_getCAP().getText().trim().substring(0, 4);}
+		if(J2Web_UI.formCliente_getCitta().getText().trim().length()>30) {cittaCliente = J2Web_UI.formCliente_getCitta().getText().trim().substring(0, 29);}
 		
 	}
 	
