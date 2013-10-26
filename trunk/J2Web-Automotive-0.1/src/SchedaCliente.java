@@ -66,9 +66,9 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 				
 		if(J2Web_UI.formCliente_getNome().getText().trim().length()>30) {nomeCliente = J2Web_UI.formCliente_getNome().getText().trim().substring(0, 29);}
 		if(J2Web_UI.formCliente_getCognome().getText().trim().length()>30) {cognomeCliente = J2Web_UI.formCliente_getCognome().getText().trim().substring(0, 29);}
-		if(J2Web_UI.formCliente_getEmail().getText().trim().length()>30) {emailCliente = J2Web_UI.formCliente_getEmail().getText().trim().substring(0, 29);}
-		if(J2Web_UI.formCliente_getTelefono1().getText().trim().length()>10) {telefono1Cliente = J2Web_UI.formCliente_getTelefono1().getText().trim().substring(0, 9);}
-		if(J2Web_UI.formCliente_getTelefono2().getText().trim().length()>10) {telefono2Cliente = J2Web_UI.formCliente_getTelefono2().getText().trim().substring(0, 9);}
+		if(J2Web_UI.formCliente_getEmail().getText().trim().length()>40) {emailCliente = J2Web_UI.formCliente_getEmail().getText().trim().substring(0, 39);}
+		if(J2Web_UI.formCliente_getTelefono1().getText().trim().length()>15) {telefono1Cliente = J2Web_UI.formCliente_getTelefono1().getText().trim().substring(0, 14);}
+		if(J2Web_UI.formCliente_getTelefono2().getText().trim().length()>15) {telefono2Cliente = J2Web_UI.formCliente_getTelefono2().getText().trim().substring(0, 14);}
 		if(J2Web_UI.formCliente_getVia().getText().trim().length()>30) {viaCliente = J2Web_UI.formCliente_getVia().getText().trim().substring(0, 29);}
 		if(J2Web_UI.formCliente_getNumeroCivico().getText().trim().length()>8) {numeroCivicoCliente = J2Web_UI.formCliente_getNumeroCivico().getText().trim().substring(0, 7);}
 		if(J2Web_UI.formCliente_getCAP().getText().trim().length()>5) {CAPCliente = J2Web_UI.formCliente_getCAP().getText().trim().substring(0, 4);}

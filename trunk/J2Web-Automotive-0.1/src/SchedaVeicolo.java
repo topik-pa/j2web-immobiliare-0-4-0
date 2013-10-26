@@ -220,16 +220,16 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		if(J2Web_UI.getTextField_Prezzo().getText().trim().length()>6) {prezzoVeicolo = J2Web_UI.getTextField_Prezzo().getText().trim().substring(0, 5);}
 		if(J2Web_UI.getTextField_ConsumoMedio().getText().trim().length()>5) {comsumeMedioVeicolo = J2Web_UI.getTextField_ConsumoMedio().getText().trim().substring(0, 4);}
 		if(J2Web_UI.getTextField_Cilindrata().getText().trim().length()>6) {cilindrataVeicolo = J2Web_UI.getTextField_Cilindrata().getText().trim().substring(0, 5);}
-		if(J2Web_UI.getTextField_YouTubeUrl().getText().trim().length()>40) {urlVideoYouTube = J2Web_UI.getTextField_YouTubeUrl().getText().trim().substring(0, 39);}
+		if(J2Web_UI.getTextField_YouTubeUrl().getText().trim().length()>50) {urlVideoYouTube = J2Web_UI.getTextField_YouTubeUrl().getText().trim().substring(0, 49);}
 		
 		if(J2Web_UI.getTextPane_Descrizione().getText().trim().length()>1000) {descrizioneVeicolo = J2Web_UI.getTextPane_Descrizione().getText().trim().substring(0, 399);}
 		
 		ragioneSociale = J2Web_UI.getTextFieldRagioneSociale().getText().trim();
 		if(J2Web_UI.getTextFieldIndirizzo().getText().trim().length()>30) {Indirizzo = J2Web_UI.getTextFieldIndirizzo().getText().trim().substring(0, 29);}
-		if(J2Web_UI.getTextFieldTelefonoGenerico().getText().trim().length()>10) {Telefono = J2Web_UI.getTextFieldTelefonoGenerico().getText().trim().substring(0, 9);}
+		if(J2Web_UI.getTextFieldTelefonoGenerico().getText().trim().length()>15) {Telefono = J2Web_UI.getTextFieldTelefonoGenerico().getText().trim().substring(0, 14);}
 		nomeReferente = J2Web_UI.getTextFieldReferente().getText().trim();
-		if(J2Web_UI.getTextFieldTelefonoReferente().getText().trim().length()>10) {TelefonoReferente = J2Web_UI.getTextFieldTelefonoReferente().getText().trim().substring(0, 9);}
-		if(J2Web_UI.getTextFieldEmailReferente().getText().trim().length()>30) {emailReferente = J2Web_UI.getTextFieldEmailReferente().getText().trim().substring(0, 29);}
+		if(J2Web_UI.getTextFieldTelefonoReferente().getText().trim().length()>15) {TelefonoReferente = J2Web_UI.getTextFieldTelefonoReferente().getText().trim().substring(0, 14);}
+		if(J2Web_UI.getTextFieldEmailReferente().getText().trim().length()>40) {emailReferente = J2Web_UI.getTextFieldEmailReferente().getText().trim().substring(0, 39);}
 		
 		imgFile1 = J2Web_UI.getFileImmagine1();
 		if(imgFile1!=null && imgFile1.exists()) {

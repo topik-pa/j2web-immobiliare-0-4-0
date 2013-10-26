@@ -135,17 +135,17 @@ public class j2web implements parametriGenerali {
 		maxCaratteri.put("comboBox_Cilindrata", 6);
 		maxCaratteri.put("comboBox_ConsumoMedio", 5);
 		maxCaratteri.put("textPane_Descrizione", 1000);
-		maxCaratteri.put("textFieldTelefonoGenerico", 10);
-		maxCaratteri.put("textFieldTelefonoReferente", 10);
-		maxCaratteri.put("textFieldEmailReferente", 30);
+		maxCaratteri.put("textFieldTelefonoGenerico", 15);
+		maxCaratteri.put("textFieldTelefonoReferente", 15);
+		maxCaratteri.put("textFieldEmailReferente", 40);
 		maxCaratteri.put("textFieldIndirizzo", 30);	
-		maxCaratteri.put("txtField_YouTubeUrl", 40);
+		maxCaratteri.put("txtField_YouTubeUrl", 50);
 		
 		maxCaratteri.put("formCliente_textFieldNome", 30);
 		maxCaratteri.put("formCliente_textFieldCognome", 30);
-		maxCaratteri.put("formCliente_textFieldEmail", 30);
-		maxCaratteri.put("formCliente_textFieldTelefono1", 10);
-		maxCaratteri.put("formCliente_textFieldTelefono2", 10);
+		maxCaratteri.put("formCliente_textFieldEmail", 40);
+		maxCaratteri.put("formCliente_textFieldTelefono1", 15);
+		maxCaratteri.put("formCliente_textFieldTelefono2", 15);
 		maxCaratteri.put("formCliente_textFieldVia", 30);
 		maxCaratteri.put("formCliente_textFieldNumeroCivico", 7);
 		maxCaratteri.put("formCliente_textFieldCAP", 5);

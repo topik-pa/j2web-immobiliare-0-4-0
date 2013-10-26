@@ -208,6 +208,16 @@ public class J2Web_UI implements parametriGenerali{
   	
   	//Serve per bloccare temporaneamente l'ascoltatore di alcune combobox
   	public static boolean nonUserSelection = false;
+  	private JButton btnImmagine1;
+  	private JButton btnImmagine2;
+  	private JButton btnImmagine3;
+  	private JButton btnImmagine4;
+  	private JButton btnImmagine5;
+  	private JButton btnImmagine6;
+  	private JButton btnImmagine7;
+  	private JButton btnImmagine8;
+  	private JButton btnImmagine9;
+  	private JButton btnImmagine10;
   	
   	
 
@@ -997,7 +1007,7 @@ public class J2Web_UI implements parametriGenerali{
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JButton btnImmagine1 = new JButton("Immagine 1");
+		btnImmagine1 = new JButton("Immagine 1");
 		btnImmagine1.setToolTipText("Inserimento immagine 1");
 		btnImmagine1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1010,118 +1020,118 @@ public class J2Web_UI implements parametriGenerali{
 		label_Immagine1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_23.add(label_Immagine1, "4, 2, fill, fill");
 		
-		JButton btnImmagine_2 = new JButton("Immagine 2");
-		btnImmagine_2.setToolTipText("Inserimento immagine 2");
-		btnImmagine_2.addActionListener(new ActionListener() {
+		btnImmagine2 = new JButton("Immagine 2");
+		btnImmagine2.setToolTipText("Inserimento immagine 2");
+		btnImmagine2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selezionaImmagine(label_Immagine2, 2);
 			}
 		});
-		panel_23.add(btnImmagine_2, "8, 2");
+		panel_23.add(btnImmagine2, "8, 2");
 		
 		label_Immagine2 = new JLabel();
 		label_Immagine2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_23.add(label_Immagine2, "10, 2, fill, fill");
 		
-		JButton btnImmagine_3 = new JButton("Immagine 3");
-		btnImmagine_3.setToolTipText("Inserimento immagine 3");
-		btnImmagine_3.addActionListener(new ActionListener() {
+		btnImmagine3 = new JButton("Immagine 3");
+		btnImmagine3.setToolTipText("Inserimento immagine 3");
+		btnImmagine3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selezionaImmagine(label_Immagine3, 3);
 			}
 		});
-		panel_23.add(btnImmagine_3, "2, 4");
+		panel_23.add(btnImmagine3, "2, 4");
 		
 		label_Immagine3 = new JLabel();
 		label_Immagine3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_23.add(label_Immagine3, "4, 4, fill, fill");
 		
-		JButton btnImmagine_4 = new JButton("Immagine 4");
-		btnImmagine_4.setToolTipText("Inserimento immagine 4");
-		btnImmagine_4.addActionListener(new ActionListener() {
+		btnImmagine4 = new JButton("Immagine 4");
+		btnImmagine4.setToolTipText("Inserimento immagine 4");
+		btnImmagine4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selezionaImmagine(label_Immagine4, 4);
 			}
 		});
-		panel_23.add(btnImmagine_4, "8, 4");
+		panel_23.add(btnImmagine4, "8, 4");
 		
 		label_Immagine4 = new JLabel();
 		label_Immagine4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_23.add(label_Immagine4, "10, 4, fill, fill");
 		
-		JButton btnImmagine_5 = new JButton("Immagine 5");
-		btnImmagine_5.setToolTipText("Inserimento immagine 5");
-		btnImmagine_5.addActionListener(new ActionListener() {
+		btnImmagine5 = new JButton("Immagine 5");
+		btnImmagine5.setToolTipText("Inserimento immagine 5");
+		btnImmagine5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selezionaImmagine(label_Immagine5, 5);
 			}
 		});
-		panel_23.add(btnImmagine_5, "2, 6");
+		panel_23.add(btnImmagine5, "2, 6");
 		
 		label_Immagine5 = new JLabel();
 		label_Immagine5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_23.add(label_Immagine5, "4, 6, fill, fill");
 		
-		JButton btnImmagine_6 = new JButton("Immagine 6");
-		btnImmagine_6.setToolTipText("Inserimento immagine 6");
-		btnImmagine_6.addActionListener(new ActionListener() {
+		btnImmagine6 = new JButton("Immagine 6");
+		btnImmagine6.setToolTipText("Inserimento immagine 6");
+		btnImmagine6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				selezionaImmagine(label_Immagine6, 6);
 			}
 		});
-		panel_23.add(btnImmagine_6, "8, 6");
+		panel_23.add(btnImmagine6, "8, 6");
 		
 		label_Immagine6 = new JLabel();
 		label_Immagine6.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_23.add(label_Immagine6, "10, 6, fill, fill");
 		
-		JButton btnImmagine_7 = new JButton("Immagine 7");
-		btnImmagine_7.setToolTipText("Inserimento immagine 7");
-		btnImmagine_7.addActionListener(new ActionListener() {
+		btnImmagine7 = new JButton("Immagine 7");
+		btnImmagine7.setToolTipText("Inserimento immagine 7");
+		btnImmagine7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selezionaImmagine(label_Immagine7, 7);
 			}
 		});
-		panel_23.add(btnImmagine_7, "2, 8");
+		panel_23.add(btnImmagine7, "2, 8");
 		
 		label_Immagine7 = new JLabel();
 		label_Immagine7.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_23.add(label_Immagine7, "4, 8, fill, fill");
 		
-		JButton btnImmagine_8 = new JButton("Immagine 8");
-		btnImmagine_8.setToolTipText("Inserimento immagine 8");
-		btnImmagine_8.addActionListener(new ActionListener() {
+		btnImmagine8 = new JButton("Immagine 8");
+		btnImmagine8.setToolTipText("Inserimento immagine 8");
+		btnImmagine8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				selezionaImmagine(label_Immagine8, 8);
 			}
 		});
-		panel_23.add(btnImmagine_8, "8, 8");
+		panel_23.add(btnImmagine8, "8, 8");
 		
 		label_Immagine8 = new JLabel();
 		label_Immagine8.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_23.add(label_Immagine8, "10, 8, fill, fill");
 		
-		JButton btnImmagine_9 = new JButton("Immagine 9");
-		btnImmagine_9.setToolTipText("Inserimento immagine 9");
-		btnImmagine_9.addActionListener(new ActionListener() {
+		btnImmagine9 = new JButton("Immagine 9");
+		btnImmagine9.setToolTipText("Inserimento immagine 9");
+		btnImmagine9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selezionaImmagine(label_Immagine9, 9);
 			}
 		});
-		panel_23.add(btnImmagine_9, "2, 10");
+		panel_23.add(btnImmagine9, "2, 10");
 		
 		label_Immagine9 = new JLabel();
 		label_Immagine9.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_23.add(label_Immagine9, "4, 10, fill, fill");
 		
-		JButton btnImmagine_10 = new JButton("Immagine 10");
-		btnImmagine_10.setToolTipText("Inserimento immagine 10");
-		btnImmagine_10.addActionListener(new ActionListener() {
+		btnImmagine10 = new JButton("Immagine 10");
+		btnImmagine10.setToolTipText("Inserimento immagine 10");
+		btnImmagine10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				selezionaImmagine(label_Immagine10, 10);
 			}
 		});
-		panel_23.add(btnImmagine_10, "8, 10");
+		panel_23.add(btnImmagine10, "8, 10");
 		
 		label_Immagine10 = new JLabel();
 		label_Immagine10.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -1338,7 +1348,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnInserisci.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				System.out.print("Creazione della scheda veicolo...");				
-				if(isFormValid(listCampiFormVeicolo)) { 
+				if(isFormValid(listCampiFormVeicoloObbligatori)) { 
 					System.out.println(" ...form valido... ");
 					
 					//Disabilito i campi della form
@@ -1874,7 +1884,7 @@ public class J2Web_UI implements parametriGenerali{
 		btnCreaSchedaCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.print("Creazione della scheda cliente...");				
-				if(isFormValid(listCampiFormCliente)) { 
+				if(isFormValid(listCampiFormClienteObbligatori)) { 
 					System.out.println(" ...form cliente valido... ");
 					
 					//Disabilito i campi della form
@@ -2703,7 +2713,7 @@ public class J2Web_UI implements parametriGenerali{
         	BufferedImage img = null;
         	String selectedFileName = selectedFile.getName().toLowerCase();   
         	
-            if(selectedFile.isFile() && selectedFileName.endsWith(format) && fileSize<=maxFileSize) {   	
+            if(selectedFile.isFile() && (selectedFileName.endsWith(format) || selectedFileName.endsWith(format2)) && fileSize<=maxFileSize) {   	
 				try {
 					img = ImageIO.read(selectedFile);
 					
@@ -2875,6 +2885,20 @@ public class J2Web_UI implements parametriGenerali{
 		listCampiFormVeicolo.add(getLabel_Immagine8());
 		listCampiFormVeicolo.add(getLabel_Immagine9());
 		listCampiFormVeicolo.add(getLabel_Immagine10());
+		
+		listCampiFormVeicolo.add(getBtnImmagine_1());
+		listCampiFormVeicolo.add(getBtnImmagine_2());
+		listCampiFormVeicolo.add(getBtnImmagine_3());
+		listCampiFormVeicolo.add(getBtnImmagine_4());
+		listCampiFormVeicolo.add(getBtnImmagine_5());
+		listCampiFormVeicolo.add(getBtnImmagine_6());
+		listCampiFormVeicolo.add(getBtnImmagine_7());
+		listCampiFormVeicolo.add(getBtnImmagine_8());
+		listCampiFormVeicolo.add(getBtnImmagine_9());
+		listCampiFormVeicolo.add(getBtnImmagine_10());
+		
+		listCampiFormVeicolo.add(getRdbtnAutoveicolo());
+		listCampiFormVeicolo.add(getRdbtnMotoScooter());
 	}
 	
 	
@@ -2943,11 +2967,12 @@ public class J2Web_UI implements parametriGenerali{
 		
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 		while(iteratorListCampiForm.hasNext()) {
+			
 			JComponent campoCorrente = iteratorListCampiForm.next();
 			switch (campoCorrente.getClass().getName())
 			{
 			    case "javax.swing.JTextField": //Campo testuale	    	
-			    	if(listCampiFormVeicoloObbligatori.contains(campoCorrente) && ((JTextField) campoCorrente).getText().trim().equals("") ){
+			    	if(((JTextField) campoCorrente).getText().trim().equals("")){
 			    		campoCorrente.setBackground(red);
 			    		isValid=false;
 			    	}
@@ -2956,7 +2981,7 @@ public class J2Web_UI implements parametriGenerali{
 			    	}
 			        break;
 			    case "javax.swing.JTextPane": //TextPane
-			    	if(listCampiFormVeicoloObbligatori.contains(campoCorrente) && ((JTextPane) campoCorrente).getText().trim().equals("") ){
+			    	if(((JTextPane) campoCorrente).getText().trim().equals("")){
 			    		campoCorrente.setBackground(red);
 			    		isValid=false;
 			    	}
@@ -2982,7 +3007,7 @@ public class J2Web_UI implements parametriGenerali{
 	}
 	
 	
-	//Aggiorna il pannello di sincronizzazione portali 
+	//Disegna il pannello dei portali di sincronizzazione nella sua configurazione attiva (scheda selezionata) 
 	static void panelInserimentoInActiveMode(JPanel pannelloListaPortali, final SchedaVeicolo scheda, final boolean selectAllSelected) {
 		
 		pannelloListaPortali.removeAll();
@@ -3298,7 +3323,6 @@ public class J2Web_UI implements parametriGenerali{
 		
 	}
 
-	//Disegna il pannello dei portali di sincronizzazione nella sua configurazione attiva (scheda selezionata)
 	
 
 	protected static JRadioButton formCliente_getRdbtnSignore() {
@@ -3391,4 +3415,34 @@ public class J2Web_UI implements parametriGenerali{
 		return textFieldEmailReferente;
 	}
 	
+	protected JButton getBtnImmagine_1() {
+		return btnImmagine1;
+	}
+	protected JButton getBtnImmagine_2() {
+		return btnImmagine2;
+	}
+	protected JButton getBtnImmagine_3() {
+		return btnImmagine3;
+	}
+	protected JButton getBtnImmagine_4() {
+		return btnImmagine4;
+	}
+	protected JButton getBtnImmagine_5() {
+		return btnImmagine5;
+	}
+	protected JButton getBtnImmagine_6() {
+		return btnImmagine6;
+	}
+	protected JButton getBtnImmagine_7() {
+		return btnImmagine7;
+	}
+	protected JButton getBtnImmagine_8() {
+		return btnImmagine8;
+	}
+	protected JButton getBtnImmagine_9() {
+		return btnImmagine9;
+	}
+	protected JButton getBtnImmagine_10() {
+		return btnImmagine10;
+	}
 }
