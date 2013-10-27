@@ -27,7 +27,6 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JComponent;
 
 
@@ -243,6 +242,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 	}
 
 	private void  mostraDatiScheda(SchedaVeicolo schedaVeicolo) {
+		
 		J2Web_UI.disabilitaCampiForm(listCampiFormVeicolo);
 
 		J2Web_UI.nonUserSelection = true;

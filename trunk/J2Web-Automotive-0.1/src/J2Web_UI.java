@@ -2827,6 +2827,32 @@ public class J2Web_UI implements parametriGenerali{
 				break;
 			default://
 			}
+			
+			if(listCampiForm.contains(rdbtnAutoveicolo)) {
+				getComboBox_Modello().removeAllItems();
+				getComboBox_Versione().removeAllItems();
+				getComboBox_MeseImmatricolazione().setModel(new DefaultComboBoxModel<String>(comboboxModelMesi));
+				getComboBox_AnnoImmatricolazione().setModel(new DefaultComboBoxModel<String>(comboboxModelAnni));
+				getComboBox_Carburante().setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
+				getComboBox_Tipologia().setModel(new DefaultComboBoxModel<String>(tipologiaAutoveicoli));
+				getComboBox_Carrozzeria().setModel(new DefaultComboBoxModel<String>(comboboxModelCarrozzeria));
+				getComboBox_PostiASedere().setModel(new DefaultComboBoxModel<String>(comboboxModelPostiASedere));
+				getComboBox_ColoreEsterno().setModel(new DefaultComboBoxModel<String>(comboboxModelColoreEsterno));
+				getComboBox_PrecedentiProprietari().setModel(new DefaultComboBoxModel<String>(comboboxModelPrecedentiProprietari));
+				getComboBox_FinitureInterni().setModel(new DefaultComboBoxModel<String>(comboboxModelFinitureInterni));
+				getComboBox_ColoreInterni().setModel(new DefaultComboBoxModel<String>(comboboxModelColoreInterni));
+				getComboBox_Motore().setModel(new DefaultComboBoxModel<String>(comboboxModelMotore));
+				getComboBox_Cambio().setModel(new DefaultComboBoxModel<String>(comboboxModelCambio));
+				getComboBox_NumeroRapporti().setModel(new DefaultComboBoxModel<String>(comboboxModelNumeroRapporti));
+				getComboBox_ClasseEmissioni().setModel(new DefaultComboBoxModel<String>(comboboxModelClasseEmissioni));
+			} else {
+				formCliente_getModelloVeicolo().removeAllItems();
+				formCliente_getVersioneVeicolo().removeAllItems();
+				formCliente_getTipologiaCliente().setModel(new DefaultComboBoxModel<String>(tipologiaAutoveicoli));
+				formCliente_getColoreVeicolo().setModel(new DefaultComboBoxModel<String>(comboboxModelColoreEsterno));
+				formCliente_getTipologiaCarburanteVeicolo().setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
+			}
+			
 		}	
 
 	}	
@@ -2949,11 +2975,16 @@ public class J2Web_UI implements parametriGenerali{
 
 	//Popola la lista con tutti i campi della form
 	private void popolaListaCampiFormCliente() {
+		
+		listCampiFormCliente.add(formCliente_getRdbtnSignore());
+		listCampiFormCliente.add(formCliente_getRdbtnSignora());
+		
 		listCampiFormCliente.add(formCliente_getMarcaVeicolo());
 		listCampiFormCliente.add(formCliente_getModelloVeicolo());
 		listCampiFormCliente.add(formCliente_getVersioneVeicolo());
 		listCampiFormCliente.add(formCliente_getTipologiaCarburanteVeicolo());
 		listCampiFormCliente.add(formCliente_getColoreVeicolo());
+		listCampiFormCliente.add(formCliente_getTipologiaCliente());
 
 		listCampiFormCliente.add(formCliente_getNome());
 		listCampiFormCliente.add(formCliente_getCognome());
@@ -2964,6 +2995,7 @@ public class J2Web_UI implements parametriGenerali{
 		listCampiFormCliente.add(formCliente_getNumeroCivico());
 		listCampiFormCliente.add(formCliente_getCAP());
 		listCampiFormCliente.add(formCliente_getCitta());
+		
 	}
 
 

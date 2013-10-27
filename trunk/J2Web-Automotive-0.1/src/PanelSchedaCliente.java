@@ -6,19 +6,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.ListIterator;
-
-import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -28,7 +22,6 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JComponent;
 
 class PanelSchedaCliente extends JPanel implements parametriGenerali{   
@@ -217,7 +210,8 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 	
 	
 	private void  mostraDatiScheda(SchedaCliente scheda) {
-		J2Web_UI.disabilitaCampiForm(listCampiFormVeicolo);
+		
+		J2Web_UI.disabilitaCampiForm(listCampiFormCliente);
 
 		J2Web_UI.nonUserSelection = true;
 
