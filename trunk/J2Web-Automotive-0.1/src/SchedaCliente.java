@@ -15,13 +15,13 @@ import java.util.UUID;
 
 
 public class SchedaCliente implements Serializable, parametriGenerali  {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	//Attributi della scheda veicolo	
 	long idSchedaCliente = new Date().getTime();	//id univoco riferito alla scheda
 	String codiceSchedaCliente= intestazioneCodiceSchedaCliente + UUID.randomUUID().toString(); //codice scheda univoco
-	
+
 	String titoloCliente;
 	String marcaVeicoloCliente;
 	int marcaVeicoloClienteIndex;
@@ -35,7 +35,7 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 	int coloreEsternoVeicoloClienteIndex;
 	String tipologiaVeicoloCliente;
 	int tipologiaVeicoloClienteIndex;
-	
+
 	String nomeCliente;
 	String cognomeCliente;
 	String emailCliente;
@@ -45,10 +45,10 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 	String numeroCivicoCliente;
 	String CAPCliente;
 	String cittaCliente;	
-	
+
 	//Costruttore
 	public SchedaCliente () {	 	
-	
+
 		//Al momento dell'istanziazione, una scheda immobile inizializza i propri campi prendendone il valore da quelli inseriti nel pannello Form
 		titoloCliente = J2Web_UI.formCliente_getRdbtnSignora().isSelected()?"signora":"signor";
 		marcaVeicoloCliente = (String) J2Web_UI.formCliente_getMarcaVeicolo().getSelectedItem();
@@ -63,20 +63,38 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 		coloreEsternoVeicoloClienteIndex = J2Web_UI.formCliente_getColoreVeicolo().getSelectedIndex();
 		tipologiaVeicoloCliente = (String) J2Web_UI.formCliente_getTipologiaCliente().getSelectedItem();
 		tipologiaVeicoloClienteIndex = J2Web_UI.formCliente_getTipologiaCliente().getSelectedIndex();
-				
-		if(J2Web_UI.formCliente_getNome().getText().trim().length()>30) {nomeCliente = J2Web_UI.formCliente_getNome().getText().trim().substring(0, 29);}
-		if(J2Web_UI.formCliente_getCognome().getText().trim().length()>30) {cognomeCliente = J2Web_UI.formCliente_getCognome().getText().trim().substring(0, 29);}
-		if(J2Web_UI.formCliente_getEmail().getText().trim().length()>40) {emailCliente = J2Web_UI.formCliente_getEmail().getText().trim().substring(0, 39);}
-		if(J2Web_UI.formCliente_getTelefono1().getText().trim().length()>15) {telefono1Cliente = J2Web_UI.formCliente_getTelefono1().getText().trim().substring(0, 14);}
-		if(J2Web_UI.formCliente_getTelefono2().getText().trim().length()>15) {telefono2Cliente = J2Web_UI.formCliente_getTelefono2().getText().trim().substring(0, 14);}
-		if(J2Web_UI.formCliente_getVia().getText().trim().length()>30) {viaCliente = J2Web_UI.formCliente_getVia().getText().trim().substring(0, 29);}
-		if(J2Web_UI.formCliente_getNumeroCivico().getText().trim().length()>8) {numeroCivicoCliente = J2Web_UI.formCliente_getNumeroCivico().getText().trim().substring(0, 7);}
-		if(J2Web_UI.formCliente_getCAP().getText().trim().length()>5) {CAPCliente = J2Web_UI.formCliente_getCAP().getText().trim().substring(0, 4);}
-		if(J2Web_UI.formCliente_getCitta().getText().trim().length()>30) {cittaCliente = J2Web_UI.formCliente_getCitta().getText().trim().substring(0, 29);}
 		
+		nomeCliente = J2Web_UI.formCliente_getNome().getText().trim();	
+		if(nomeCliente.length()>maxCaratteri.get("formCliente_textFieldNome")) {nomeCliente = nomeCliente.substring(0, maxCaratteri.get("formCliente_textFieldNome")-1);}
+		
+		cognomeCliente = J2Web_UI.formCliente_getCognome().getText().trim();	
+		if(cognomeCliente.length()>maxCaratteri.get("formCliente_textFieldCognome")) {cognomeCliente = cognomeCliente.substring(0, maxCaratteri.get("formCliente_textFieldCognome")-1);}
+		
+		emailCliente = J2Web_UI.formCliente_getEmail().getText().trim();	
+		if(emailCliente.length()>maxCaratteri.get("formCliente_textFieldEmail")) {emailCliente = emailCliente.substring(0, maxCaratteri.get("formCliente_textFieldEmail")-1);}
+		
+		telefono1Cliente = J2Web_UI.formCliente_getTelefono1().getText().trim();	
+		if(telefono1Cliente.length()>maxCaratteri.get("formCliente_textFieldTelefono1")) {telefono1Cliente = telefono1Cliente.substring(0, maxCaratteri.get("formCliente_textFieldTelefono1")-1);}
+		
+		telefono2Cliente = J2Web_UI.formCliente_getTelefono2().getText().trim();	
+		if(telefono2Cliente.length()>maxCaratteri.get("formCliente_textFieldTelefono2")) {telefono2Cliente = telefono2Cliente.substring(0, maxCaratteri.get("formCliente_textFieldTelefono2")-1);}
+		
+		viaCliente = J2Web_UI.formCliente_getVia().getText().trim();	
+		if(viaCliente.length()>maxCaratteri.get("formCliente_textFieldVia")) {viaCliente = viaCliente.substring(0, maxCaratteri.get("formCliente_textFieldVia")-1);}
+		
+		numeroCivicoCliente = J2Web_UI.formCliente_getNumeroCivico().getText().trim();	
+		if(numeroCivicoCliente.length()>maxCaratteri.get("formCliente_textFieldNumeroCivico")) {numeroCivicoCliente = numeroCivicoCliente.substring(0, maxCaratteri.get("formCliente_textFieldNumeroCivico")-1);}
+		
+		CAPCliente = J2Web_UI.formCliente_getCAP().getText().trim();	
+		if(CAPCliente.length()>maxCaratteri.get("formCliente_textFieldCAP")) {CAPCliente = CAPCliente.substring(0, maxCaratteri.get("formCliente_textFieldCAP")-1);}
+		
+		cittaCliente = J2Web_UI.formCliente_getCitta().getText().trim();	
+		if(cittaCliente.length()>maxCaratteri.get("formCliente_textFieldCitta")) {cittaCliente = cittaCliente.substring(0, maxCaratteri.get("formCliente_textFieldCitta")-1);}
+
+
 	}
-	
+
 	//Metodi
-	
-	
+
+
 }
