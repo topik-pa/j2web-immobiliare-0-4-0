@@ -15,13 +15,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
@@ -30,7 +26,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import javax.swing.JOptionPane;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.json.JSONArray;
@@ -38,16 +33,15 @@ import org.json.JSONObject;
 
 
 public class SchedaVeicolo implements Serializable, parametriGenerali  {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
+	//Inizializzo il path per il file hash di questa scheda
+	String singolaSchedaDatPath;
+
 	//Attributi della scheda veicolo	
 	long idScheda;	//id univoco riferito alla scheda
 	String codiceScheda; //codice scheda univoco
-	
-	//Inizializzo il path per il file hash di questa scheda
-	String singolaSchedaDatPath;
-	
 	String veicolo;
 	String tipologiaVeicolo;
 	int tipologiaVeicoloIndex;
@@ -83,7 +77,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	int classeEmissioniVeicoloIndex;
 	String carburanteVeicolo;
 	int carburanteVeicoloIndex;
-	
+
 	boolean disponibilitaCupolino;
 	boolean disponibilitaAllestimentoHandicap;
 	boolean disponibilitaServoSterzo;
@@ -112,7 +106,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	boolean coloreMetalizzato;
 	boolean ivaDeducibile;
 	boolean prezzoTrattabile;
-	
+
 	String KWVeicolo;
 	String CVVeicolo;
 	String chilometraggioVeicolo;
@@ -127,27 +121,30 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	String nomeReferente;
 	String TelefonoReferente;
 	String emailReferente;
-	
+
 	//File
 	File imgFile1;	File imgFile2;	File imgFile3;	File imgFile4;	File imgFile5;	File imgFile6;	File imgFile7;	File imgFile8;	File imgFile9;	File imgFile10; 	
 	File[] arrayImages = new File[11]; //Attenzione: lascierò volutamente libera la prima posizione [0]
-	
+
 	//Una scheda veicolo può essere ospitata in diversi portali, la seguente tabella hash contiene i codici dei portali(key) e il codice di inserimento(value) in cui la scheda è attualmente inserita
 	Map<String,String> mappaPortaliOspitanti = new Hashtable<String,String>();
-	
-	
-	//Costruttore
+
+
+	//Costruttore (da form di creazione scheda)
 	public SchedaVeicolo () {
-		
-		//Attributi della scheda veicolo	
-		idScheda = new Date().getTime();	//id univoco riferito alla scheda
-		codiceScheda= intestazioneCodiceSchedaVeicolo + UUID.randomUUID().toString(); //codice scheda univoco
 		
 		//Inizializzo il path per il file hash di questa scheda
 		singolaSchedaDatPath = pathSchede + codiceScheda + ".dat";
-	
+
+		//Attributi della scheda veicolo	
+		idScheda = new Date().getTime();	//id univoco riferito alla scheda
+		codiceScheda= intestazioneCodiceSchedaVeicolo + UUID.randomUUID().toString(); //codice scheda univoco
+
 		//Al momento dell'istanziazione, una scheda veicolo inizializza i propri campi prendendone il valore da quelli inseriti nel pannello form di creazione scheda veicolo
+		//Radio button
 		veicolo = J2Web_UI.getRdbtnAutoveicolo().isSelected()?"auto":"moto";
+		
+		//Combobox
 		tipologiaVeicolo = (String) J2Web_UI.getComboBox_Tipologia().getSelectedItem();
 		tipologiaVeicoloIndex =J2Web_UI.getComboBox_Tipologia().getSelectedIndex();
 		marcaVeicolo = (String) J2Web_UI.getComboBox_Marca().getSelectedItem();
@@ -183,6 +180,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		carburanteVeicolo = (String) J2Web_UI.getComboBox_Carburante().getSelectedItem();
 		carburanteVeicoloIndex = J2Web_UI.getComboBox_Carburante().getSelectedIndex();
 		
+		//Checkbox
 		disponibilitaCupolino = J2Web_UI.getChckbxCupolino().isSelected()?true:false;
 		disponibilitaAllestimentoHandicap = J2Web_UI.getChckbxHandicap().isSelected()?true:false;
 		disponibilitaServoSterzo = J2Web_UI.getChckbxServosterzo().isSelected()?true:false;
@@ -211,26 +209,50 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		coloreMetalizzato = J2Web_UI.getChckbxMetallizzato().isSelected()?true:false;
 		ivaDeducibile = J2Web_UI.getChckbxIvaDeducibile().isSelected()?true:false;
 		prezzoTrattabile = J2Web_UI.getChckbxTrattabile().isSelected()?true:false;
-			
 		
-		if(J2Web_UI.getTextField_Kw().getText().trim().length()>3) {KWVeicolo = J2Web_UI.getTextField_Kw().getText().trim().substring(0, 2);}
+		//Textfield
+		KWVeicolo = J2Web_UI.getTextField_Kw().getText().trim();	
+		if(KWVeicolo.length()>maxCaratteri.get("txtFieldKw")) {KWVeicolo = KWVeicolo.substring(0, maxCaratteri.get("txtFieldKw")-1);}
 		
-		if(J2Web_UI.getTextField_Cv().getText().trim().length()>3) {CVVeicolo = J2Web_UI.getTextField_Cv().getText().trim().substring(0, 2);}
-		if(J2Web_UI.getTextField_Chilometraggio().getText().trim().length()>6) {chilometraggioVeicolo = J2Web_UI.getTextField_Chilometraggio().getText().trim().substring(0, 5);}
-		if(J2Web_UI.getTextField_Prezzo().getText().trim().length()>6) {prezzoVeicolo = J2Web_UI.getTextField_Prezzo().getText().trim().substring(0, 5);}
-		if(J2Web_UI.getTextField_ConsumoMedio().getText().trim().length()>5) {comsumeMedioVeicolo = J2Web_UI.getTextField_ConsumoMedio().getText().trim().substring(0, 4);}
-		if(J2Web_UI.getTextField_Cilindrata().getText().trim().length()>6) {cilindrataVeicolo = J2Web_UI.getTextField_Cilindrata().getText().trim().substring(0, 5);}
-		if(J2Web_UI.getTextField_YouTubeUrl().getText().trim().length()>50) {urlVideoYouTube = J2Web_UI.getTextField_YouTubeUrl().getText().trim().substring(0, 49);}
+		CVVeicolo = J2Web_UI.getTextField_Cv().getText().trim();
+		if(CVVeicolo.length()>maxCaratteri.get("txtFieldCv")) {CVVeicolo = CVVeicolo.substring(0, maxCaratteri.get("txtFieldCv")-1);}
 		
-		if(J2Web_UI.getTextPane_Descrizione().getText().trim().length()>1000) {descrizioneVeicolo = J2Web_UI.getTextPane_Descrizione().getText().trim().substring(0, 399);}
+		chilometraggioVeicolo = J2Web_UI.getTextField_Chilometraggio().getText().trim();		
+		if(chilometraggioVeicolo.length()>maxCaratteri.get("textField_Chilometraggio")) {chilometraggioVeicolo = chilometraggioVeicolo.substring(0, maxCaratteri.get("textField_Chilometraggio")-1);}
 		
-		ragioneSociale = J2Web_UI.getTextFieldRagioneSociale().getText().trim();
-		if(J2Web_UI.getTextFieldIndirizzo().getText().trim().length()>30) {Indirizzo = J2Web_UI.getTextFieldIndirizzo().getText().trim().substring(0, 29);}
-		if(J2Web_UI.getTextFieldTelefonoGenerico().getText().trim().length()>15) {Telefono = J2Web_UI.getTextFieldTelefonoGenerico().getText().trim().substring(0, 14);}
+		prezzoVeicolo = J2Web_UI.getTextField_Prezzo().getText().trim();		
+		if(prezzoVeicolo.length()>maxCaratteri.get("textField_Prezzo")) {prezzoVeicolo = prezzoVeicolo.substring(0, maxCaratteri.get("textField_Prezzo")-1);}
+		
+		comsumeMedioVeicolo = J2Web_UI.getTextField_ConsumoMedio().getText().trim();		
+		if(comsumeMedioVeicolo.length()>maxCaratteri.get("comboBox_ConsumoMedio")) {comsumeMedioVeicolo = comsumeMedioVeicolo.substring(0, maxCaratteri.get("comboBox_ConsumoMedio")-1);}
+		
+		cilindrataVeicolo = J2Web_UI.getTextField_Cilindrata().getText().trim();		
+		if(cilindrataVeicolo.length()>maxCaratteri.get("comboBox_Cilindrata")) {cilindrataVeicolo = cilindrataVeicolo.substring(0, maxCaratteri.get("comboBox_Cilindrata")-1);}
+		
+		urlVideoYouTube = J2Web_UI.getTextField_YouTubeUrl().getText().trim();
+		if(urlVideoYouTube.length()>maxCaratteri.get("txtField_YouTubeUrl")) {urlVideoYouTube = urlVideoYouTube.substring(0, maxCaratteri.get("txtField_YouTubeUrl")-1);}
+		
+		ragioneSociale = J2Web_UI.getTextFieldRagioneSociale().getText();	
+		
+		Indirizzo = J2Web_UI.getTextFieldIndirizzo().getText().trim();
+		if(Indirizzo.length()>maxCaratteri.get("textFieldIndirizzo")) {Indirizzo = Indirizzo.substring(0, maxCaratteri.get("textFieldIndirizzo")-1);}
+		
+		Telefono = J2Web_UI.getTextFieldTelefonoGenerico().getText().trim();		
+		if(Telefono.length()>maxCaratteri.get("textFieldTelefonoGenerico")) {Telefono = Telefono.substring(0, maxCaratteri.get("textFieldTelefonoGenerico")-1);}
+		
 		nomeReferente = J2Web_UI.getTextFieldReferente().getText().trim();
-		if(J2Web_UI.getTextFieldTelefonoReferente().getText().trim().length()>15) {TelefonoReferente = J2Web_UI.getTextFieldTelefonoReferente().getText().trim().substring(0, 14);}
-		if(J2Web_UI.getTextFieldEmailReferente().getText().trim().length()>40) {emailReferente = J2Web_UI.getTextFieldEmailReferente().getText().trim().substring(0, 39);}
 		
+		TelefonoReferente = J2Web_UI.getTextFieldTelefonoReferente().getText().trim();		
+		if(TelefonoReferente.length()>maxCaratteri.get("textFieldTelefonoReferente")) {TelefonoReferente = TelefonoReferente.substring(0, maxCaratteri.get("textFieldTelefonoReferente")-1);}
+		
+		emailReferente = J2Web_UI.getTextFieldEmailReferente().getText().trim();		
+		if(emailReferente.length()>maxCaratteri.get("textFieldEmailReferente")) {emailReferente = emailReferente.substring(0, maxCaratteri.get("textFieldEmailReferente")-1);}
+		
+		//Textpane
+		descrizioneVeicolo = J2Web_UI.getTextPane_Descrizione().getText().trim();
+		if(descrizioneVeicolo.length()>maxCaratteri.get("txtFieldKw")) {descrizioneVeicolo = descrizioneVeicolo.substring(0, maxCaratteri.get("txtFieldKw")-1);}
+		
+		//Immagini
 		imgFile1 = J2Web_UI.getFileImmagine1();
 		if(imgFile1!=null && imgFile1.exists()) {
 			arrayImages[1] = imgFile1;
@@ -270,24 +292,23 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		imgFile10 = J2Web_UI.getFileImmagine10();
 		if(imgFile10!=null && imgFile10.exists()) {
 			arrayImages[10] = imgFile10;
-		}	
-	
+		}
 		
+		
+
+
 	}
-	
-	
-	//Costruttore 2
+
+
+	//Costruttore 2 (da query SQL)
 	public SchedaVeicolo (JSONArray jsonArray) {	 	
-	
-		veicolo = "auto";
-		
-		System.out.println("test1:" + jsonArray);
-		
+
+		veicolo = "auto";	//solo auto attualmente
+
 		for (int h=1; h<jsonArray.length(); h++) {
-			JSONObject json2 = null;
+			JSONObject json = null;
 			try {
-				json2 = new JSONObject(jsonArray.getString(h));
-				System.out.println("test2:" + json2);
+				json = new JSONObject(jsonArray.getString(h));
 			} catch (NoSuchElementException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -295,41 +316,42 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(json2.has(Integer.toString(2))) {codiceScheda = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(2))));}
-			if(json2.has(Integer.toString(3))) {marcaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(3))));} 
-			if(json2.has(Integer.toString(4))) {modelloVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(4))));} 
-			if(json2.has(Integer.toString(5))) {versioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(5))));} 
-			if(json2.has(Integer.toString(6))) {meseImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(6))));} 
-			if(json2.has(Integer.toString(7))) {annoImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(7))));} 
-			if(json2.has(Integer.toString(8))) {carburanteVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(8))));} 
-			if(json2.has(Integer.toString(9))) {tipologiaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(9))));} 
-			if(json2.has(Integer.toString(10))) {carrozzeriaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(10))));} 
-			if(json2.has(Integer.toString(11))) {postiASedereVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(11))));} 
-			if(json2.has(Integer.toString(12))) {KWVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(12))));}
-			if(json2.has(Integer.toString(13))) {CVVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json2.getString(Integer.toString(13))));} 
-			//System.out.println("test3:"+codiceScheda);
+			if(json.has(Integer.toString(2))) {codiceScheda = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(2))));}
+			if(json.has(Integer.toString(3))) {marcaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(3))));} 
+			if(json.has(Integer.toString(4))) {modelloVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(4))));} 
+			if(json.has(Integer.toString(5))) {versioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(5))));} 
+			if(json.has(Integer.toString(6))) {meseImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(6))));} 
+			if(json.has(Integer.toString(7))) {annoImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(7))));} 
+			if(json.has(Integer.toString(8))) {carburanteVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(8))));} 
+			if(json.has(Integer.toString(9))) {tipologiaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(9))));} 
+			if(json.has(Integer.toString(10))) {carrozzeriaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(10))));} 
+			if(json.has(Integer.toString(11))) {postiASedereVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(11))));} 
+			if(json.has(Integer.toString(12))) {KWVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(12))));}
+			if(json.has(Integer.toString(13))) {CVVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(13))));} 
 		}
-		
+
 	}
 
+
+	
 	
 	//Metodi
-	
+
 	//Carica tabella quando premi il radio button relativo alla scheda
 	@SuppressWarnings("unchecked")
 	public void caricaTabellaHash() {
-		
+
 		//Lettura schede dal file .dat
-        File file = new File(singolaSchedaDatPath);
-    	if(file.exists()) {
-    		System.out.print("File hash scheda trovato. Lettura dati da " + singolaSchedaDatPath);
-    		try {
-    			if(file.length()!=0) {
-    				ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
-    				mappaPortaliOspitanti = (Hashtable<String,String>)inputFile.readObject();
+		File file = new File(singolaSchedaDatPath);
+		if(file.exists()) {
+			System.out.print("File hash scheda trovato. Lettura dati da " + singolaSchedaDatPath);
+			try {
+				if(file.length()!=0) {
+					ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(file));
+					mappaPortaliOspitanti = (Hashtable<String,String>)inputFile.readObject();
 					inputFile.close();					
-    			}
-    			System.out.print(" fatto." + "\n");
+				}
+				System.out.print(" fatto." + "\n");
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
@@ -339,9 +361,9 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			} catch (ClassNotFoundException e) {
 				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash"), "ClassNotFoundException", JOptionPane.ERROR_MESSAGE);
 			} 		
-    	}
-    	else {
-    		try {
+		}
+		else {
+			try {
 				FileOutputStream newFile = new FileOutputStream(singolaSchedaDatPath);
 				System.out.print("File hash non trovato. Creazione di un nuovo file hash per questa scheda..." + newFile.toString());
 				System.out.print(" fatto." + "\n");
@@ -349,34 +371,34 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaTabellaHash"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
-    	}
+		}
 	}
-	
-	
+
+
 	public void salvaTabellaHash(String schedaDatPath, Map<String,String> mappaPortaliOspitanti) {
 		try {
- 		   File file = new File(schedaDatPath);
-	    	if(file.exists()) {
-	    		System.out.print("File hash scheda trovato. Salvataggio dati su " + schedaDatPath);
-	    		ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
+			File file = new File(schedaDatPath);
+			if(file.exists()) {
+				System.out.print("File hash scheda trovato. Salvataggio dati su " + schedaDatPath);
+				ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(file));
 				outputFile.writeObject(mappaPortaliOspitanti);
 				outputFile.close();
 				System.out.print(" fatto." + "\n");
-	    	}
-	    	else {
-	    		//La tabella hash è creata in ogni caso al momento della prima lettura della stessa
-	    		System.out.println("File hash scheda non trovato.");
-	    	}
+			}
+			else {
+				//La tabella hash è creata in ogni caso al momento della prima lettura della stessa
+				System.out.println("File hash scheda non trovato.");
+			}
 		} catch (FileNotFoundException e0) {		
-	        JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
-	        e0.printStackTrace();
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash"), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+			e0.printStackTrace();
 		} catch (IOException e1) {
 			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("salvaTabellaHash"), "IOException", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}	
 	}
-	
-	
+
+
 	//Verifico la presenza della scheda immobile in un dato portale
 	public boolean isOnThisPortal(String idPortale) {
 		if(mappaPortaliOspitanti.containsKey(idPortale)) {
@@ -386,28 +408,28 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			return false;
 		}
 	}
-	
-	
+
+
 	//Aggiorno la lista dei portali in cui la scheda è inserita (nuovo inserimento)
 	public void aggiungiInserimentoPortale(String idPortale, String codiceInserzione) {
 		mappaPortaliOspitanti.put(idPortale, codiceInserzione);
-				
+
 		//Salvataggio tabella hash
 		salvaTabellaHash(singolaSchedaDatPath, mappaPortaliOspitanti);
 	}
 
-	
+
 	//Aggiorno la lista dei portali in cui la scheda è inserita (cancellazione)	
 	public void eliminaInserimentoPortale(String idPortale) {
 		//Aggiorno la lista
 		mappaPortaliOspitanti.remove(idPortale);
-		
+
 		//Salvataggio tabella
 		salvaTabellaHash(singolaSchedaDatPath, mappaPortaliOspitanti);
-		    
+
 	}
 
-		
+
 	//Ottenere il codice di inserimento di una scheda tramite l'id del portale (cancellazione)	
 	public String getCodiceInserimento(String idPortale) {		
 		String codiceInserimento = "";
@@ -416,8 +438,8 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		}
 		return codiceInserimento;
 	}
-		
-	
+
+
 }
 
 
@@ -429,12 +451,12 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 class IdComparator implements Comparator<SchedaVeicolo> {
 
 	//Per ID della scheda
-    public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {
-        if (s1.idScheda > s2.idScheda)
-            return 1;
-        else if (s1.idScheda < s2.idScheda)
-            return -1;
-        else
-            return 0;
-    }
+	public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {
+		if (s1.idScheda > s2.idScheda)
+			return 1;
+		else if (s1.idScheda < s2.idScheda)
+			return -1;
+		else
+			return 0;
+	}
 }
