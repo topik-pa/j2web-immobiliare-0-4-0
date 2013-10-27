@@ -90,10 +90,11 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		add(schedaRadio, BorderLayout.NORTH);
 
 		//La label delle schede
-		String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo + " - " + scheda.descrizioneVeicolo;
+		String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;
+		String tooltipScheda = labelScheda;
 		labelScheda+="                              "; //Aggiungo 30 caratteri spazio
 		if(labelScheda.length()>28) {	//è molto probabile che lo sia... :)
-			labelScheda = labelScheda.substring(0, 28); 
+			labelScheda = labelScheda.substring(0, 27); 
 		}		 
 		labelScheda+="...";
 
@@ -118,7 +119,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		add(label, BorderLayout.CENTER);
 
 		//Aggiungo una tooltip
-		setToolTipText(labelScheda);
+		setToolTipText(tooltipScheda);
 
 		JPanel panel_26 = new JPanel();
 		panel_26.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));

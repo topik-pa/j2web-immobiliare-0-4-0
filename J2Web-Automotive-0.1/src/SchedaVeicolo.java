@@ -250,7 +250,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		
 		//Textpane
 		descrizioneVeicolo = J2Web_UI.getTextPane_Descrizione().getText().trim();
-		if(descrizioneVeicolo.length()>maxCaratteri.get("txtFieldKw")) {descrizioneVeicolo = descrizioneVeicolo.substring(0, maxCaratteri.get("txtFieldKw")-1);}
+		if(descrizioneVeicolo.length()>maxCaratteri.get("textPane_Descrizione")) {descrizioneVeicolo = descrizioneVeicolo.substring(0, maxCaratteri.get("textPane_Descrizione")-1);}
 		
 		//Immagini
 		imgFile1 = J2Web_UI.getFileImmagine1();

@@ -76,6 +76,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 
 		//La label delle schede
 		String labelScheda = scheda.nomeCliente + " " + scheda.cognomeCliente + " - " + scheda.telefono1Cliente + " - " + scheda.emailCliente;
+		String tooltipScheda = labelScheda;
 		labelScheda+="                                        "; //Aggiungo 40 caratteri spazio
 		if(labelScheda.length()>38) {	//è molto probabile che lo sia... :)
 			labelScheda = labelScheda.substring(0, 38); 
@@ -98,7 +99,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		add(label, BorderLayout.CENTER);
 
 		//Aggiungo una tooltip
-		setToolTipText(labelScheda);
+		setToolTipText(tooltipScheda);
 
 		JPanel panel_26 = new JPanel();
 		panel_26.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
