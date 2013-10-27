@@ -3020,7 +3020,7 @@ public class J2Web_UI implements parametriGenerali{
 		boolean isValid = true;
 		Color white = new Color(255,255,255);
 		Color red = new Color(255,0,0);
-
+		
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 		while(iteratorListCampiForm.hasNext()) {
 

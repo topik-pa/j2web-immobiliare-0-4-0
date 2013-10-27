@@ -16,7 +16,7 @@ public interface parametriGenerali {
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
 	final String EMAIL_UTENTE ="marco--pavan@libero.it";
-	final String RAGIONESOCIALE_UTENTE ="Case&Case srl";
+	final String RAGIONESOCIALE_UTENTE ="Auto&Auto srl";
 	
 	//Mail del back end
 	final String BACKEND_EMAIL ="marcopavan.mp@gmail.com";
