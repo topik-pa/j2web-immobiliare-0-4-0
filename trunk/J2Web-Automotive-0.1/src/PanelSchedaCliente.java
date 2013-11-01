@@ -88,11 +88,15 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		label.setFont(font);
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 
+		// Get current classloader
+		ClassLoader cl = this.getClass().getClassLoader();
 		if(scheda.titoloCliente.equals("signora")) {
-			label.setIcon(new ImageIcon(pathImmagini + "icon_woman.png"));
+			ImageIcon womanIcon  = new ImageIcon(cl.getResource("images/icon_woman.png"));
+			label.setIcon(womanIcon);
 		}
 		else {
-			label.setIcon(new ImageIcon(pathImmagini + "icon_man.png"));
+			ImageIcon manIcon  = new ImageIcon(cl.getResource("images/icon_man.png"));
+			label.setIcon(manIcon);
 		}
 
 
