@@ -198,4 +198,32 @@ public class j2web implements parametriGenerali {
     	
     }
 	
+	public static void  checkPaths() {
+		File dirJ2web = new File(pathJ2web);
+		File dirSchede = new File(pathSchede);
+		
+		  // if the directory does not exist, create it
+		  if (!dirJ2web.exists()) {
+		    System.out.println("creating directory: " + pathJ2web);
+		    boolean result = dirJ2web.mkdir();  
+	
+		     if(result) {    
+		       System.out.println("DIR j2web created");  
+		     }
+		  }
+		  
+		// if the directory does not exist, create it
+		  if (!dirSchede.exists()) {
+		    System.out.println("creating directory: " + pathSchede);
+		    boolean result = dirSchede.mkdir();  
+	
+		     if(result) {    
+		       System.out.println("DIR schede created");  
+		     }
+		  }
+		  
+		  
+	}
+	
+	
 }

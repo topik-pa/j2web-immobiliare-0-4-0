@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
@@ -45,7 +46,9 @@ public interface parametriGenerali {
     Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>(); 
   	
   	//Percorso directory per le schede
-  	String pathSchede = ".\\schede\\";
+    String pathJ2web = System.getProperty("user.home") + File.separator + ".j2web\\";   
+  	String pathSchede = pathJ2web + "schede\\";
+  	
   	String pathFileDatSchedeVeicolo = pathSchede + "schedeVeicolo.dat";
   	String pathFileDatSchedeCliente = pathSchede + "schedeClienti.dat";
   	
