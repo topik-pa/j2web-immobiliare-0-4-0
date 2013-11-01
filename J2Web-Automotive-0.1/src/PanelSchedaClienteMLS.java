@@ -97,12 +97,16 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		 label.setFont(font);
 		 label.setHorizontalTextPosition(SwingConstants.RIGHT);		 
 		 
-		 if(scheda.titoloCliente.equals("signora")) {
-			 label.setIcon(new ImageIcon(pathImmagini + "icon_woman.png"));
-		 }
-		 else {
-			 label.setIcon(new ImageIcon(pathImmagini + "icon_man.png"));
-		 }
+		// Get current classloader
+		ClassLoader cl = this.getClass().getClassLoader();
+		if(scheda.titoloCliente.equals("signora")) {
+			ImageIcon womanIcon  = new ImageIcon(cl.getResource("images/icon_woman.png"));
+			label.setIcon(womanIcon);
+		}
+		else {
+			ImageIcon manIcon  = new ImageIcon(cl.getResource("images/icon_man.png"));
+			label.setIcon(manIcon);
+		}
 		 
 		 add(label, BorderLayout.CENTER);
 		 

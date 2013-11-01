@@ -1,8 +1,6 @@
-import java.awt.Image;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 
@@ -50,7 +48,6 @@ public interface parametriGenerali {
   	String pathSchede = ".\\schede\\";
   	String pathFileDatSchedeVeicolo = pathSchede + "schedeVeicolo.dat";
   	String pathFileDatSchedeCliente = pathSchede + "schedeClienti.dat";
-  	String pathImmagini = ".\\images\\";
   	
   	//Percorso directory temp
   	String pathTemp = ".\\temp\\";
