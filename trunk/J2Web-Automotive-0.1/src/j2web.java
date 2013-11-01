@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
+
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 
@@ -181,12 +183,17 @@ public class j2web implements parametriGenerali {
 	}
 
 	//Inizializza la lista dei portali attivi
-	public static void inizializzaPortaliAttivi() {	
+	public static void inizializzaPortaliAttivi(J2Web_UI j2Web_UI) {	
 		
-    	PortaleWeb _portaleMLS = new _portaleMLS("./images/_nektasoft.png", "1 - Portale Multi Level Sharing", "001", true);
+		//Classloader per il recupero delle risorse esterne
+		ClassLoader cl = j2Web_UI.getClass().getClassLoader();
+		
+		ImageIcon _portaleMLSIcon  = new ImageIcon(cl.getResource("images/_nektasoft.png"));
+    	PortaleWeb _portaleMLS = new _portaleMLS(_portaleMLSIcon, "1 - Portale Multi Level Sharing", "001", true);
     	J2Web_UI.listPortaliSincronizzazione.add(_portaleMLS);
     	
-    	PortaleWeb _autoscout24It = new _autoscout24It("./images/_autoscout24It.png", "2 - autoscout24.it", "002", true);
+    	ImageIcon _autoscout24ItIcon  = new ImageIcon(cl.getResource("images/_autoscout24It.png"));
+    	PortaleWeb _autoscout24It = new _autoscout24It(_autoscout24ItIcon, "2 - autoscout24.it", "002", true);
     	J2Web_UI.listPortaliSincronizzazione.add(_autoscout24It);
     	
     }

@@ -400,7 +400,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
     	btnCancella= new JButton(labelBtnCancella);
     	checkboxSelezionaPortale = new JCheckBox(labelCheckboxSelezionaPortale);
     	
-    	iconPortale = new ImageIcon(portale.urlIcona);
+    	iconPortale = portale.icon;
         labelPortale = new JLabel(iconPortale, JLabel.LEFT);   
         	
 		//Pulsante Inserisci
@@ -545,7 +545,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
  			btnCancella.setEnabled(false);
  		}
  				
-		iconPortale = new ImageIcon(portale.urlIcona);
+		iconPortale = portale.icon;
         labelPortale = new JLabel(iconPortale, JLabel.LEFT);
     
         add(labelPortale);

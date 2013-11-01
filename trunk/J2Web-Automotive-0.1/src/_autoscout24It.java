@@ -9,6 +9,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import org.apache.http.NameValuePair;
@@ -23,17 +24,17 @@ import org.apache.http.NameValuePair;
 public class _autoscout24It extends PortaleWeb {     
 
     //Variabili generali
-	private final String NOMEPORTALE = "immobiliare.it";
+	/*private final String NOMEPORTALE = "immobiliare.it";
 	private final String URLROOT = "http://getrix.ekbl.net";	//immobiliare.it si appoggia a Getrix
 	private final String URLROOT_2 = "http://media.getrix.ekbl.net";	//la root per le immagini è differente
 	private final String USERNAME = "nfjrpnqp@sharklasers.com";
-    private final String PASSWORD = "ts2cj1n3";
+    private final String PASSWORD = "ts2cj1n3";*/
     	
     //private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
-    private String codiceInserzione;
+    /*private String codiceInserzione;
     private boolean inserimentoOK = false;
     private String location;
-    private boolean debugMode = true;
+    private boolean debugMode = true;*/
     
     /*private String nomeImmagine0;
     private String nomeImmagine1;
@@ -65,9 +66,9 @@ public class _autoscout24It extends PortaleWeb {
 
     
 	//Costruttore
-	public _autoscout24It (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {		
+	public _autoscout24It (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
 		
-		super(urlIcona, valoreLabel, idPortale, isActive);
+		super(icon, valoreLabel, idPortale, isActive);
 		
 		//Inizializzo il cookie di sessione 
 		SESSIONCOOKIENAME = "GETRIXSID";

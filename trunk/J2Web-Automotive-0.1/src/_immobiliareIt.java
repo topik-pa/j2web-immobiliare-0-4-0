@@ -3,19 +3,21 @@
  * and open the template in the editor.
 */ 
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
+//import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JOptionPane;
+
+import javax.swing.ImageIcon;
+/*import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
-import org.apache.http.Header;
+import org.apache.http.Header;*/
 import org.apache.http.NameValuePair;
-import org.apache.http.entity.mime.HttpMultipartMode;
+/*import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
@@ -25,7 +27,7 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xml.sax.SAXException;
+import org.xml.sax.SAXException;*/
 
 
 /**
@@ -37,17 +39,17 @@ import org.xml.sax.SAXException;
 public class _immobiliareIt extends PortaleWeb {     
 
     //Variabili generali
-	private final String NOMEPORTALE = "immobiliare.it";
+	/*private final String NOMEPORTALE = "immobiliare.it";
 	private final String URLROOT = "http://getrix.ekbl.net";	//immobiliare.it si appoggia a Getrix
 	private final String URLROOT_2 = "http://media.getrix.ekbl.net";	//la root per le immagini è differente
 	private final String USERNAME = "nfjrpnqp@sharklasers.com";
-    private final String PASSWORD = "ts2cj1n3";
+    private final String PASSWORD = "ts2cj1n3";*/
     	
     //private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
-    private String codiceInserzione;
+    /*private String codiceInserzione;
     private boolean inserimentoOK = false;
     private String location;
-    private boolean debugMode = true;
+    private boolean debugMode = true;*/
     
     /*private String nomeImmagine0;
     private String nomeImmagine1;
@@ -222,9 +224,9 @@ public class _immobiliareIt extends PortaleWeb {
     
     
 	//Costruttore
-	public _immobiliareIt (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {		
+	public _immobiliareIt (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
 		
-		super(urlIcona, valoreLabel, idPortale, isActive);
+		super(icon, valoreLabel, idPortale, isActive);
 		
 		//Inizializzo il cookie di sessione 
 		SESSIONCOOKIENAME = "GETRIXSID";
