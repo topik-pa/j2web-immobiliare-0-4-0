@@ -4,12 +4,12 @@
 */ 
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+//import java.io.FileInputStream;
+//import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
+/*import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +20,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.Logger;*/
+
+import javax.swing.ImageIcon;
 
 
 /**
@@ -108,9 +110,9 @@ public class _portaleMLS extends PortaleWeb {
 	
    
 	//Costruttore
-	public _portaleMLS (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {		
+	public _portaleMLS (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
 		
-		super(urlIcona, valoreLabel, idPortale, isActive);
+		super(icon, valoreLabel, idPortale, isActive);
 	
 	}
 

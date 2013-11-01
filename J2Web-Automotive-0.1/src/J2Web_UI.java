@@ -64,7 +64,7 @@ import java.awt.event.WindowEvent;
 import java.awt.Dimension;
 
 
-public class J2Web_UI implements parametriGenerali{
+public class J2Web_UI implements parametriGenerali {
 
 	//Nome della GUI
 	private static JFrame imagination_05;
@@ -208,6 +208,7 @@ public class J2Web_UI implements parametriGenerali{
 
 	//Serve per bloccare temporaneamente l'ascoltatore di alcune combobox
 	public static boolean nonUserSelection = false;
+	
 	private JButton btnImmagine1;
 	private JButton btnImmagine2;
 	private JButton btnImmagine3;
@@ -219,8 +220,10 @@ public class J2Web_UI implements parametriGenerali{
 	private JButton btnImmagine9;
 	private JButton btnImmagine10;
 
-
-
+	//Classloader per il recupero delle risorse esterne
+	ClassLoader cl;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -249,6 +252,8 @@ public class J2Web_UI implements parametriGenerali{
 	 * Create the application.
 	 */
 	public J2Web_UI() {
+		
+		cl = this.getClass().getClassLoader();
 
 		//Procedure di inizializzazione
 		System.out.print("Inizializzo la GUI e gli ascoltatori...");
@@ -277,7 +282,7 @@ public class J2Web_UI implements parametriGenerali{
 
 		//Inizializzo la lista concatenata che contiene le informazioni sui portali web in sincronizzazione
 		System.out.print("Inizializzo la lista concatenata che contiene le informazioni sui portali web in sincronizzazione...");
-		j2web.inizializzaPortaliAttivi();
+		j2web.inizializzaPortaliAttivi(this);
 		System.out.print(" fatto." + "\n");
 
 		//La selezione della categoria autoveicoli, nella form veicoli, è forzata all'avvio
@@ -336,6 +341,7 @@ public class J2Web_UI implements parametriGenerali{
 
 		//Caratteristiche principali della GUI
 		imagination_05.setTitle(nomeGUI);
+		Image frameIcon  = new ImageIcon(cl.getResource("images/j2webFrameIcon.png")).getImage();
 		imagination_05.setIconImage(frameIcon);
 		imagination_05.setBounds(GUI_bounds[0], GUI_bounds[1], GUI_bounds[2], GUI_bounds[3]);
 		imagination_05.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -358,7 +364,8 @@ public class J2Web_UI implements parametriGenerali{
 		//Prima tab
 		JPanel panel = new JPanel();
 		panel.setBorder(null);
-		tabbedPane.addTab("Anagrafica veicolo", icoAnagrVeicolo, panel, null);
+		ImageIcon vehicleIcon  = new ImageIcon(cl.getResource("images/icon_car.png"));
+		tabbedPane.addTab("Anagrafica veicolo", vehicleIcon, panel, null);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{437, 0};
 		gbl_panel.rowHeights = new int[] {170, 70, 0};
@@ -1343,7 +1350,8 @@ public class J2Web_UI implements parametriGenerali{
 				getRdbtnAutoveicolo().setSelected(true);
 			}
 		});
-		btnResetta.setIcon(new ImageIcon(".\\images\\refresh.png"));
+		ImageIcon refreshIcon  = new ImageIcon(cl.getResource("images/refresh.png"));
+		btnResetta.setIcon(refreshIcon);
 		panel_18.add(btnResetta);
 
 		JPanel panel_19 = new JPanel();
@@ -1377,7 +1385,8 @@ public class J2Web_UI implements parametriGenerali{
 				}
 			}
 		});
-		btnInserisci.setIcon(new ImageIcon(".\\images\\forward.png"));
+		ImageIcon forwardIcon  = new ImageIcon(cl.getResource("images/forward.png"));
+		btnInserisci.setIcon(forwardIcon);
 		panel_19.add(btnInserisci);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -1466,7 +1475,8 @@ public class J2Web_UI implements parametriGenerali{
 		//Seconda tab
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(null);
-		tabbedPane.addTab("Anagrafica cliente", new ImageIcon(".\\images\\icon_pilot.png"), panel_1, null);
+		ImageIcon pilotIcon  = new ImageIcon(cl.getResource("images/icon_pilot.png"));
+		tabbedPane.addTab("Anagrafica cliente", pilotIcon, panel_1, null);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[] {437, 0};
 		gbl_panel_1.rowHeights = new int[] {170, 70, 0};
@@ -1879,7 +1889,8 @@ public class J2Web_UI implements parametriGenerali{
 		//Pulsante reset form cliente
 		JButton btnResetFormCliente = new JButton("Reset form");
 		btnResetFormCliente.setToolTipText("Resetta la form di creazione scheda cliente");
-		btnResetFormCliente.setIcon(new ImageIcon(".\\images\\refresh.png"));
+		ImageIcon refreshIcon2  = new ImageIcon(cl.getResource("images/refresh.png"));
+		btnResetFormCliente.setIcon(refreshIcon2);
 		btnResetFormCliente.setSelectedIcon(null);
 		btnResetFormCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1897,7 +1908,8 @@ public class J2Web_UI implements parametriGenerali{
 		//Pulsante di creazione della scheda cliente
 		JButton btnCreaSchedaCliente = new JButton("Crea scheda");
 		btnCreaSchedaCliente.setToolTipText("Crea una nuova scheda cliente");
-		btnCreaSchedaCliente.setIcon(new ImageIcon(".\\images\\forward.png"));
+		ImageIcon forwardIcon2  = new ImageIcon(cl.getResource("images/forward.png"));
+		btnCreaSchedaCliente.setIcon(forwardIcon2);
 		btnCreaSchedaCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.print("Creazione della scheda cliente...");				
@@ -1989,7 +2001,8 @@ public class J2Web_UI implements parametriGenerali{
 		//Terza tab
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(null);
-		tabbedPane.addTab("Incrocio MLS", new ImageIcon(".\\images\\icon_db.png"), panel_2, null);
+		ImageIcon dbIcon  = new ImageIcon(cl.getResource("images/icon_db.png"));
+		tabbedPane.addTab("Incrocio MLS", dbIcon, panel_2, null);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[] {437, 0};
 		gbl_panel_2.rowHeights = new int[] {170, 70, 0};
@@ -2054,7 +2067,8 @@ public class J2Web_UI implements parametriGenerali{
 		panel_14.add(panel_32, gbc_panel_32);
 
 		JButton btnAggiornaRisultati = new JButton("Sincronizza risultati");
-		btnAggiornaRisultati.setIcon(new ImageIcon(".\\images\\update.png"));
+		ImageIcon updateIcon  = new ImageIcon(cl.getResource("images/update.png"));
+		btnAggiornaRisultati.setIcon(updateIcon);
 		panel_32.add(btnAggiornaRisultati);
 
 		JScrollPane scrollPane_8 = new JScrollPane();

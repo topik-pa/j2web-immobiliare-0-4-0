@@ -14,6 +14,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -47,7 +48,7 @@ import java.util.Iterator;
 public abstract class PortaleWeb implements parametriGenerali {
 
 	//Attributi
-	String urlIcona;
+	ImageIcon icon;
 	String valoreLabel;
 	String idPortale;
 	boolean isActive;	
@@ -61,9 +62,9 @@ public abstract class PortaleWeb implements parametriGenerali {
 	//La label che identifica i parametri da non inviare
 	protected static String dontSendThisParam = "***DONOTSEND***";
 
-	public PortaleWeb (String urlIcona, String valoreLabel, String idPortale, boolean isActive) {
+	public PortaleWeb (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {
 	
-		this.urlIcona = urlIcona;
+		this.icon = icon;
 		this.valoreLabel = valoreLabel;
 		this.idPortale = idPortale;
 		this.isActive = isActive;

@@ -2,24 +2,24 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+//import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Label;
+//import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+//import java.sql.Connection;
+//import java.sql.DriverManager;
+//import java.sql.PreparedStatement;
+//import java.sql.ResultSet;
+//import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.NoSuchElementException;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
+//import javax.swing.border.TitledBorder;
 import javax.swing.JComponent;
 
 import org.json.JSONArray;
@@ -131,7 +131,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		String dbname = "j2webstu85037";
 		String username = "j2webstu85037";
 		String password = "j2we20858";
-		String query;
+		//String query;
 		
 		
 		//Costruisco la query sql
@@ -159,7 +159,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 			Object[] response = getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, true);
 			String responseBody = (String)response[1];
         	JSONObject json = null;
-        	JSONObject json2 = null;
+        	//JSONObject json2 = null;
 			try {
 				json = new JSONObject(responseBody);
 			} catch (ParseException e) {

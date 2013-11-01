@@ -30,19 +30,6 @@ public interface parametriGenerali {
 	
 	//Dimensioni di default della GUI 
 	final int[] GUI_bounds = {20, 20, 1152, 640};
-	
-	//Icona della finestra principale
-    final Image frameIcon = new ImageIcon("./images/j2webFrameIcon.png").getImage();
-    
-    //Icone dei pulsanti
-    final ImageIcon icoProcedi = new ImageIcon("./images/foreward.png");
-    final ImageIcon icoResetta = new ImageIcon("./images/refresh.png");
-    final ImageIcon icoAggiorna = new ImageIcon("./images/update.png");
-    
-    //Icone delle tab
-    final ImageIcon icoAnagrVeicolo = new ImageIcon("./images/icon_car.png");
-    final ImageIcon icoAnagrCliente = new ImageIcon("./images/icon_pilot.png");
-    final ImageIcon icoMLS = new ImageIcon("./images/icon_db.png");
     
     //User agent utilizzato per le connessioni
     final String USER_AGENT_VALUE = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0";
