@@ -259,6 +259,11 @@ public class J2Web_UI implements parametriGenerali {
 		System.out.print("Inizializzo la GUI e gli ascoltatori...");
 		initialize(); //GUI e ascoltatori
 		System.out.print(" fatto." + "\n");
+		
+		//Controllo l'albero di directory
+		System.out.print("Controllo l'albero di directory...");
+		j2web.checkPaths();
+		System.out.print(" fatto." + "\n");
 
 		//Popolo la mappa dei dialoghi modali
 		System.out.print("Popolo la mappa dei dialoghi modali...");
