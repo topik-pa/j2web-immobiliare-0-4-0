@@ -45,15 +45,15 @@ public interface parametriGenerali {
   	//Mappa che contiene il limite di caratteri immessi per certi campi testuali. L'inizializzazione è nel file: j2web.java
     Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>(); 
   	
-  	//Percorso directory per le schede
+  	//Percorsi directory e file
     String pathJ2web = System.getProperty("user.home") + File.separator + ".j2web\\";   
   	String pathSchede = pathJ2web + "schede\\";
-  	
+  	String pathTemp = pathJ2web + "temp\\";
   	String pathFileDatSchedeVeicolo = pathSchede + "schedeVeicolo.dat";
   	String pathFileDatSchedeCliente = pathSchede + "schedeClienti.dat";
   	
-  	//Percorso directory temp
-  	String pathTemp = ".\\temp\\";
+  	//Url http tunnelinh
+  	String urlHTTPTunnel = "http://www.j2webstudio.it/httptunneling/mysqltunnel.php";
     
     //Lista concatenata che contiene tutti i campi della form veicolo soggetti a lettura/scrittura o modifiche varie a runtime
     LinkedList<JComponent> listCampiFormVeicolo = new LinkedList<JComponent>();

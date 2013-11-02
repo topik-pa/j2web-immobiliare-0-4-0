@@ -128,7 +128,6 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		 
 		 pannelloMatchClienteVeicoloMLS.add(Box.createVerticalStrut(6));
 		 
-		 String urlHTTPTunnel = "http://www.j2webstudio.it/mysqltunnel.php";
 		String host = "sql.j2webstudio.it";
 		String port = "3306";
 		String charset = "latin1";
