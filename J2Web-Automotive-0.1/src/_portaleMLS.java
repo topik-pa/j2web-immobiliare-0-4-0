@@ -37,7 +37,6 @@ public class _portaleMLS extends PortaleWeb {
 	//Connection con = null;
 	//PreparedStatement pst = null;
 	
-	String urlHTTPTunnel = "http://www.j2webstudio.it/mysqltunnel.php";
 	String host = "sql.j2webstudio.it";
 	String port = "3306";
 	String charset = "latin1";
