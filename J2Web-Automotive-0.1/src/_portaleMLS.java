@@ -372,6 +372,11 @@ public class _portaleMLS extends PortaleWeb {
     		} catch (IOException e) {
     			e.printStackTrace();
     		}
+    		
+    		//Tracking dell'evento inserzione di una scheda veicolo in MLS
+			System.out.print("Tracking dell'evento inserzione di una scheda veicolo in MLS...");
+			j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE, scheda.codiceScheda);
+			System.out.print(" fatto." + "\n");
 
 
     	return true;     

@@ -322,6 +322,11 @@ public class J2Web_UI implements parametriGenerali {
 		//aggiorna il pannello di destra (lista portali attivi)
 		aggiornaPannelloListaPortaliSincronizzazione();
 		System.out.print(" fatto." + "\n");
+		
+		//Tracking dell'evento avvio di j2web
+		System.out.print("Tracking dell'evento avvio di j2web...");
+		j2web.trackEvent("avvio_j2web_"+j2web_version, EMAIL_UTENTE, null);
+		System.out.print(" fatto." + "\n");	
 
 	}
 
@@ -1246,6 +1251,7 @@ public class J2Web_UI implements parametriGenerali {
 		panel_33.add(lblTelefonoGenerico, "6, 2");
 
 		textFieldRagioneSociale = new JTextField();
+		textFieldRagioneSociale.setEnabled(false);
 		textFieldRagioneSociale.setToolTipText("Inserimento della ragione sociale dell'inserzionista");
 		panel_33.add(textFieldRagioneSociale, "2, 4, fill, default");
 		textFieldRagioneSociale.setColumns(10);
@@ -1292,6 +1298,7 @@ public class J2Web_UI implements parametriGenerali {
 		panel_33.add(lblEmailReferente, "6, 6");
 
 		textFieldReferente = new JTextField();
+		textFieldReferente.setEnabled(false);
 		textFieldReferente.setToolTipText("Inserimento del nome del referente");
 		panel_33.add(textFieldReferente, "2, 8, fill, default");
 		textFieldReferente.setColumns(10);
@@ -1380,7 +1387,12 @@ public class J2Web_UI implements parametriGenerali {
 					aggiungiSchedaVeicolo(schedaVeicolo);
 
 					//Il pannello centrale viene ridisegnato             	   	
-					aggiornaPannelloListaSchedeVeicolo();        	   
+					aggiornaPannelloListaSchedeVeicolo();
+					
+					//Tracking dell'evento creazione di una scheda veicolo
+					System.out.print("Tracking dell'evento creazione di una scheda veicolo...");
+					j2web.trackEvent("creazioneSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE, schedaVeicolo.codiceScheda);
+					System.out.print(" fatto." + "\n");	
 
 					System.out.print(" fatto." + "\n");
 				}
@@ -1929,7 +1941,12 @@ public class J2Web_UI implements parametriGenerali {
 					aggiungiSchedaCliente(schedaCliente);
 
 					//Il pannello di destra viene ridisegnato             	   	
-					aggiornaPannelloListaSchedeCliente();      	
+					aggiornaPannelloListaSchedeCliente();   
+					
+					//Tracking dell'evento creazione di una scheda cliente
+					System.out.print("Tracking dell'evento creazione di una scheda cliente...");
+					j2web.trackEvent("creazioneSchedaCliente_j2web_"+j2web_version, EMAIL_UTENTE, schedaCliente.codiceSchedaCliente);
+					System.out.print(" fatto." + "\n");	
 
 					System.out.print(" fatto." + "\n");
 				}
@@ -2258,7 +2275,9 @@ public class J2Web_UI implements parametriGenerali {
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 		while(iteratorListCampiForm.hasNext()) {
 			JComponent campoCorrente = iteratorListCampiForm.next();
-			campoCorrente.setEnabled(false);
+			if(!campoCorrente.getClass().getName().equals("javax.swing.JLabel")) {
+				campoCorrente.setEnabled(false);
+			}		
 		}	
 
 	}
@@ -3038,44 +3057,47 @@ public class J2Web_UI implements parametriGenerali {
 
 		boolean isValid = true;
 		Color white = new Color(255,255,255);
-		Color red = new Color(255,0,0);
+		Color error = new Color(255, 200, 0);
 		
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 		while(iteratorListCampiForm.hasNext()) {
 
 			JComponent campoCorrente = iteratorListCampiForm.next();
-			switch (campoCorrente.getClass().getName())
-			{
-			case "javax.swing.JTextField": //Campo testuale	    	
-				if(((JTextField) campoCorrente).getText().trim().equals("")){
-					campoCorrente.setBackground(red);
-					isValid=false;
-				}
-				else {
-					campoCorrente.setBackground(white);
-				}
-				break;
-			case "javax.swing.JTextPane": //TextPane
-				if(((JTextPane) campoCorrente).getText().trim().equals("")){
-					campoCorrente.setBackground(red);
-					isValid=false;
-				}
-				else {
-					campoCorrente.setBackground(white);
-				}
-				break;
-			case "javax.swing.JComboBox": //Select
-				if(((JComboBox<String>) campoCorrente).getSelectedIndex()==0) {	//se la checkbox non è popolata...
-					campoCorrente.setBackground(red);
-					isValid=false;
-				}
-				else {
-					campoCorrente.setBackground(white);
-				}
+			if(campoCorrente.isEnabled()) {
+				switch (campoCorrente.getClass().getName())
+				{
+				case "javax.swing.JTextField": //Campo testuale	  	
+					if(((JTextField) campoCorrente).getText().trim().equals("")){
+						campoCorrente.setBackground(error);
+						isValid=false;
+					}
+					else {
+						campoCorrente.setBackground(white);
+					}
+					break;
+				case "javax.swing.JTextPane": //TextPane
+					if(((JTextPane) campoCorrente).getText().trim().equals("")){
+						campoCorrente.setBackground(error);
+						isValid=false;
+					}
+					else {
+						campoCorrente.setBackground(white);
+					}
+					break;
+				case "javax.swing.JComboBox": //Select
+					if(((JComboBox<String>) campoCorrente).getSelectedIndex()==0) {	//se la checkbox non è popolata...
+						campoCorrente.setBackground(error);
+						isValid=false;
+					}
+					else {
+						campoCorrente.setBackground(white);
+					}
 
-				break;
-			default://
+					break;
+				default://
+				}
 			}
+			
 		}
 
 		return isValid;
