@@ -52,8 +52,11 @@ public interface parametriGenerali {
   	String pathFileDatSchedeVeicolo = pathSchede + "schedeVeicolo.dat";
   	String pathFileDatSchedeCliente = pathSchede + "schedeClienti.dat";
   	
-  	//Url http tunnelinh
+  	//Url http tunneling
   	String urlHTTPTunnel = "http://www.j2webstudio.it/httptunneling/mysqltunnel.php";
+  	
+  	//Url tracking remoto
+  	String urlTrackingRemoto = "http://www.j2webstudio.it/tracking/serverSideAnalytics.php";
     
     //Lista concatenata che contiene tutti i campi della form veicolo soggetti a lettura/scrittura o modifiche varie a runtime
     LinkedList<JComponent> listCampiFormVeicolo = new LinkedList<JComponent>();
