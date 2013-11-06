@@ -4,24 +4,9 @@
 */ 
 
 import java.io.File;
-//import java.io.FileInputStream;
-//import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-/*import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-import org.apache.http.NameValuePair;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;*/
-
 import javax.swing.ImageIcon;
 
 
@@ -32,23 +17,19 @@ import javax.swing.ImageIcon;
 
 //La classe principale
 public class _portaleMLS extends PortaleWeb {     
-
-    //Variabili generali
-	//Connection con = null;
-	//PreparedStatement pst = null;
 	
+	/*Dati di accesso al DB MLS remoto*/
 	String host = "sql.j2webstudio.it";
 	String port = "3306";
 	String charset = "latin1";
 	String dbname = "j2webstu85037";
 	String username = "j2webstu85037";
 	String password = "j2we20858";
+	
+	//La query di inserimento
 	String query;
 	
-	
-	
-	
-	
+	//Inizializzo i dati della da inviare con dei parametri di default
 	String IdScheda = "";
     String Marca = "";
     String Modello = "";
@@ -98,6 +79,7 @@ public class _portaleMLS extends PortaleWeb {
     String ClasseEmissione = "";
     float ConsumoMedio = 0.0f;
     File Immagine1;
+    String Immagine1Path;
     String UrlYT = "";
     String Descrizione = "";
     String RagioneSociale = "";
@@ -118,15 +100,15 @@ public class _portaleMLS extends PortaleWeb {
 	
     //Metodo per l'inserimento della scheda immobile nel portale immobiliare
     public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
-    	System.out.println("Inserimento scheda: " + scheda.idScheda + "...");	
+    	System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
     	
-
+    		//I dati da inviare sono valorizzati con i dati presi dalla scheda
             IdScheda = "'" + scheda.codiceScheda + "'";
             Marca = "'" + scheda.marcaVeicolo + "'";
             Modello ="'" +  scheda.modelloVeicolo + "'";
             Versione = "'" + scheda.versioneVeicolo + "'";
             MeseImmatricolazione = scheda.meseImmatricolazioneVeicoloIndex;
-            AnnoImmatricolazione = Integer.parseInt(scheda.annoImmatricolazioneVeicolo);
+            AnnoImmatricolazione = scheda.annoImmatricolazioneVeicoloIndex;
             Carburante = "'" + scheda.carburanteVeicolo + "'";
             Tipologia = "'" + scheda.tipologiaVeicolo + "'";
             Carrozzeria = "'" + scheda.carrozzeriaVeicolo + "'";
@@ -136,7 +118,9 @@ public class _portaleMLS extends PortaleWeb {
             ColoreEsterno = "'" + scheda.coloreEsternoVeicolo + "'";
             Metallizzato = scheda.coloreMetalizzato?1:0;
             PrecedentiProprietari = scheda.numeroPrecedentiProprietariVeicoloIndex;
-            Chilometraggio = Integer.parseInt(scheda.chilometraggioVeicolo);
+            if(!scheda.chilometraggioVeicolo.equals("")){
+            	Chilometraggio = Integer.parseInt(scheda.chilometraggioVeicolo);
+            }          	
             Prezzo = Integer.parseInt(scheda.prezzoVeicolo);
             Trattabile = scheda.prezzoTrattabile?1:0;
             IVADeducibile = scheda.ivaDeducibile?1:0;
@@ -171,9 +155,7 @@ public class _portaleMLS extends PortaleWeb {
             if(!scheda.comsumeMedioVeicolo.equals("")){ConsumoMedio = Float.parseFloat(scheda.comsumeMedioVeicolo);}
             if(scheda.arrayImages[1]!=null){
             	Immagine1 = scheda.arrayImages[1];
-            	
-            	
-            	
+            	Immagine1Path = Immagine1.getAbsolutePath();
             }
             UrlYT = "'" + scheda.urlVideoYouTube + "'";
             Descrizione = "'" + scheda.descrizioneVeicolo + "'";
@@ -187,184 +169,24 @@ public class _portaleMLS extends PortaleWeb {
             //Costruisco la query sql
             String querySQL_1 = "INSERT INTO autoveicoli(";
             String querySQL_2 = "IdScheda,        Marca,        Modello,        Versione,        MeseImmatricolazione,        AnnoImmatricolazione,        Carburante,        Tipologia,        Carrozzeria,        PostiASedere,        PotenzaKW,        PotenzaCV,        ColoreEsterno,        Metallizzato,        PrecedentiProprietari,        Chilometraggio,        Prezzo,        Trattabile,        IVADeducibile,        FinitureInterni,        ColoreInterni,        ABS,        Airbag,        Antifurto,        ChiusuraCentralizzata,        ControlloAutomTrazione,        ESP,        Immobilizer,        FreniADisco,        AlzacristalliElettrici,        Clima,        NavigatoreSatellitare,        RadioCD,        ParkDistControl,        SediliRiscaldati,        Servosterzo,        VolanteMultifunzione,        Handicap,        CerchiInLega,        GancioTraino,        Portapacchi,        SediliSportivi,        Motore,        Cambio,        NumRapporti,        Cilindrata,        ClasseEmissione,        ConsumoMedio,        Immagine1,        UrlYT,        Descrizione,        RagioneSociale,        Indirizzo,        TelefonoGenerico,        NomeReferente,        TelefonoReferente,        EmailReferente";
-            String querySQL_4 =  IdScheda + "," + Marca + "," + Modello + "," + Versione + "," + MeseImmatricolazione + "," + AnnoImmatricolazione + "," + Carburante + "," + Tipologia + "," + Carrozzeria + "," + PostiASedere + "," + PotenzaKW + "," + PotenzaCV + "," + ColoreEsterno + "," + Metallizzato + "," + PrecedentiProprietari + "," + Chilometraggio + "," + Prezzo + "," + Trattabile + "," + IVADeducibile + "," + FinitureInterni + "," + ColoreInterni + "," + ABS + "," + Airbag + "," + Antifurto + "," + ChiusuraCentralizzata + "," + ControlloAutomTrazione + "," + ESP + "," + Immobilizer + "," + FreniADisco + "," + AlzacristalliElettrici + "," + Clima + "," + NavigatoreSatellitare + "," + RadioCD + "," + ParkDistControl + "," + SediliRiscaldati + "," + Servosterzo + "," + VolanteMultifunzione + "," + Handicap + "," + CerchiInLega + "," + GancioTraino + "," + Portapacchi + "," + SediliSportivi + "," + Motore + "," + Cambio + "," + NumRapporti + "," + Cilindrata + "," + ClasseEmissione + "," + ConsumoMedio + "," + "Immagine1"+ ","+ UrlYT + "," + Descrizione + "," + RagioneSociale + "," + Indirizzo + "," + TelefonoGenerico + "," + NomeReferente + "," + TelefonoReferente + "," + EmailReferente;
+            String querySQL_4 =  IdScheda + "," + Marca + "," + Modello + "," + Versione + "," + MeseImmatricolazione + "," + AnnoImmatricolazione + "," + Carburante + "," + Tipologia + "," + Carrozzeria + "," + PostiASedere + "," + PotenzaKW + "," + PotenzaCV + "," + ColoreEsterno + "," + Metallizzato + "," + PrecedentiProprietari + "," + Chilometraggio + "," + Prezzo + "," + Trattabile + "," + IVADeducibile + "," + FinitureInterni + "," + ColoreInterni + "," + ABS + "," + Airbag + "," + Antifurto + "," + ChiusuraCentralizzata + "," + ControlloAutomTrazione + "," + ESP + "," + Immobilizer + "," + FreniADisco + "," + AlzacristalliElettrici + "," + Clima + "," + NavigatoreSatellitare + "," + RadioCD + "," + ParkDistControl + "," + SediliRiscaldati + "," + Servosterzo + "," + VolanteMultifunzione + "," + Handicap + "," + CerchiInLega + "," + GancioTraino + "," + Portapacchi + "," + SediliSportivi + "," + Motore + "," + Cambio + "," + NumRapporti + "," + Cilindrata + "," + ClasseEmissione + "," + ConsumoMedio + "," + "LOAD_FILE('/images/1.jpg\')"+    ","+ UrlYT + "," + Descrizione + "," + RagioneSociale + "," + Indirizzo + "," + TelefonoGenerico + "," + NomeReferente + "," + TelefonoReferente + "," + EmailReferente;
             String querySQL_3 = ") VALUES(";
             String querySQL_5 = ")";
             
             String querySQL_2_normalized = querySQL_2.replace(" ", "");
-            String querySQL_4_normalized = querySQL_4.replace("'", "\'");
-            String querySQL = querySQL_1 + querySQL_2_normalized + querySQL_3 + querySQL_4_normalized + querySQL_5;
+            //String querySQL_4_normalized = querySQL_4.replace("'", "\'");
+            String querySQL = querySQL_1 + querySQL_2_normalized + querySQL_3 + querySQL_4 + querySQL_5;
             String encodedQuerySQL = "";
             
-            System.out.println("query: " + querySQL);
+            System.out.println("test query: " + querySQL);
             
-            // normalizadQuery = querySQL.replace(" ", "");
             try {
             	encodedQuerySQL = URLEncoder.encode(querySQL, "UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-            
-
-            //Costruisco la query sql
-            /*pst = con.prepareStatement("INSERT INTO autoveicoli(IdScheda, Marca, Modello, Versione, MeseImmatricolazione, AnnoImmatricolazione, Carburante, Tipologia, Carrozzeria, PostiASedere, PotenzaKW, PotenzaCV, ColoreEsterno, Metallizzato, PrecedentiProprietari, Chilometraggio, Prezzo, Trattabile, IVADeducibile, FinitureInterni, ColoreInterni, ABS, Airbag, Antifurto, ChiusuraCentralizzata, ControlloAutomTrazione, ESP, Immobilizer, FreniADisco, AlzacristalliElettrici, Clima, NavigatoreSatellitare, RadioCD, ParkDistControl, SediliRiscaldati, Servosterzo, VolanteMultifunzione, Handicap, CerchiInLega, GancioTraino, Portapacchi, SediliSportivi, Motore, Cambio, NumRapporti, Cilindrata, ClasseEmissione, ConsumoMedio, UrlYT, Descrizione, RagioneSociale, Indirizzo, TelefonoGenerico, NomeReferente, TelefonoReferente, EmailReferente) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            pst.setString(1, scheda.codiceScheda);
-            pst.setString(2, scheda.marcaVeicolo);
-            pst.setString(3, scheda.modelloVeicolo);
-            pst.setString(4, scheda.versioneVeicolo);
-            pst.setInt(5, scheda.meseImmatricolazioneVeicoloIndex);
-            pst.setInt(6, Integer.parseInt(scheda.annoImmatricolazioneVeicolo));
-            pst.setString(7, scheda.carburanteVeicolo);
-            pst.setString(8, scheda.tipologiaVeicolo);
-            pst.setString(9, scheda.carrozzeriaVeicolo);
-            pst.setInt(10, scheda.postiASedereVeicoloIndex);
-            pst.setInt(11, Integer.parseInt(scheda.CVVeicolo));
-            pst.setInt(12, Integer.parseInt(scheda.KWVeicolo));
-            pst.setString(13, scheda.coloreEsternoVeicolo);
-            if (scheda.coloreMetalizzato)
-				pst.setInt(14, 1);
-			else
-				pst.setInt(14, 0);
-            pst.setInt(15, scheda.numeroPrecedentiProprietariVeicoloIndex);
-            pst.setInt(16, Integer.parseInt(scheda.chilometraggioVeicolo));
-            pst.setInt(17, Integer.parseInt(scheda.prezzoVeicolo));
-            if (scheda.prezzoTrattabile)
-				pst.setInt(18, 1);
-			else
-				pst.setInt(18, 0);
-            if (scheda.ivaDeducibile)
-				pst.setInt(19, 1);
-			else
-				pst.setInt(19, 0);
-
-            pst.setString(20, scheda.finitureInterneVeicolo);
-            pst.setString(21, scheda.coloreInterniVeicolo);
-            
-            if (scheda.disponibilitaABS)
-				pst.setInt(22, 1);
-			else
-				pst.setInt(22, 0);
-            if (scheda.disponibilitaAirBag)
-				pst.setInt(23, 1);
-			else
-				pst.setInt(23, 0);
-            if (scheda.disponibilitaAntifurto)
-				pst.setInt(24, 1);
-			else
-				pst.setInt(24, 0);
-            if (scheda.disponibilitaChiusuraCentralizzata)
-				pst.setInt(25, 1);
-			else
-				pst.setInt(25, 0);
-            if (scheda.disponibilitaContrlAutomTrazione)
-				pst.setInt(26, 1);
-			else
-				pst.setInt(26, 0);
-            if (scheda.disponibilitaESP)
-				pst.setInt(27, 1);
-			else
-				pst.setInt(27, 0);
-            if (scheda.disponibilitaImmobilizer)
-				pst.setInt(28, 1);
-			else
-				pst.setInt(28, 0);
-            if (scheda.disponibilitaFreniADisco)
-				pst.setInt(29, 1);
-			else
-				pst.setInt(29, 0);
-            if (scheda.disponibilitaAlzacristalliElettrici)
-				pst.setInt(30, 1);
-			else
-				pst.setInt(30, 0);
-            if (scheda.disponibilitaClima)
-				pst.setInt(31, 1);
-			else
-				pst.setInt(31, 0);
-            if (scheda.disponibilitaNavigatoreSattelitare)
-				pst.setInt(32, 1);
-			else
-				pst.setInt(32, 0);
-            if (scheda.disponibilitaRadioOLettoreCD)
-				pst.setInt(33, 1);
-			else
-				pst.setInt(33, 0);
-            if (scheda.disponibilitaParkDistControl)
-				pst.setInt(34, 1);
-			else
-				pst.setInt(34, 0);
-            if (scheda.disponibilitaSediliRiscaldati)
-				pst.setInt(35, 1);
-			else
-				pst.setInt(35, 0);
-            if (scheda.disponibilitaServoSterzo)
-				pst.setInt(36, 1);
-			else
-				pst.setInt(36, 0);
-            if (scheda.disponibilitaVolanteMultifunzione)
-				pst.setInt(37, 1);
-			else
-				pst.setInt(37, 0);
-            if (scheda.disponibilitaAllestimentoHandicap)
-				pst.setInt(38, 1);
-			else
-				pst.setInt(38, 0);
-            if (scheda.disponibilitaCerchiInLega)
-				pst.setInt(39, 1);
-			else
-				pst.setInt(39, 0);
-            if (scheda.disponibilitaGancioTraino)
-				pst.setInt(40, 1);
-			else
-				pst.setInt(40, 0);
-            if (scheda.disponibilitaPortaPacchi)
-				pst.setInt(41, 1);
-			else
-				pst.setInt(41, 0);
-            if (scheda.disponibilitaSediliSportivi)
-				pst.setInt(42, 1);
-			else
-				pst.setInt(42, 0);
-           
-            pst.setString(43, scheda.tipologiaMotoreVeicolo);
-            pst.setString(44, scheda.tipologiaCambioVeicolo);
-            pst.setInt(45, Integer.parseInt(scheda.numeroRapportiVeicolo));
-            pst.setInt(46, Integer.parseInt(scheda.cilindrataVeicolo));
-            pst.setString(47, scheda.classeEmissioniVeicolo);
-            pst.setFloat(48, Float.parseFloat(scheda.comsumeMedioVeicolo));*/
-            
-           /* FileInputStream fis = null;
-            try {
-				fis = new FileInputStream(scheda.imgFile1);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
-            pst.setBinaryStream(49,fis,(int)scheda.imgFile1.length());*/
-            /*pst.setNull(49, java.sql.Types.BLOB);
-            pst.setNull(50, java.sql.Types.BLOB);
-            pst.setNull(51, java.sql.Types.BLOB);
-            pst.setNull(52, java.sql.Types.BLOB);
-            pst.setNull(53, java.sql.Types.BLOB);
-            pst.setNull(54, java.sql.Types.BLOB);
-            pst.setNull(55, java.sql.Types.BLOB);
-            pst.setNull(56, java.sql.Types.BLOB);
-            pst.setNull(57, java.sql.Types.BLOB);
-            pst.setNull(58, java.sql.Types.BLOB);*/
-           /* pst.setString(49, scheda.urlVideoYouTube);
-            pst.setString(50, scheda.descrizioneVeicolo);
-            pst.setString(51, scheda.ragioneSociale);
-            pst.setString(52, scheda.Indirizzo);
-            pst.setString(53, scheda.Telefono);
-            pst.setString(54, scheda.nomeReferente);
-            pst.setString(55, scheda.TelefonoReferente);
-            pst.setString(56, scheda.emailReferente);*/
-            
-            
-            
-            //pst.executeUpdate();
-            
+            System.out.println("test encoded query: " + encodedQuerySQL);
             //Invio la richiesta al server remoto
     		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
     		try {
@@ -375,7 +197,7 @@ public class _portaleMLS extends PortaleWeb {
     		
     		//Tracking dell'evento inserzione di una scheda veicolo in MLS
 			System.out.print("Tracking dell'evento inserzione di una scheda veicolo in MLS...");
-			j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE, scheda.codiceScheda);
+			j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE+"_"+scheda.codiceScheda);
 			System.out.print(" fatto." + "\n");
 
 
