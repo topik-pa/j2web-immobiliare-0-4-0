@@ -216,14 +216,13 @@ public class j2web implements parametriGenerali {
 	}
 	
 	//Funzione di tracking eventi su j2web
-	public static void  trackEvent(String eventAction, String eventLabel, String eventValue) {
+	public static void  trackEvent(String eventAction, String eventLabel) {
 		
 		if(eventLabel==null) {eventLabel="";}
-		if(eventValue==null) {eventValue="";}
 		
 		HttpPortalGetConnection trackEvent = new HttpPortalGetConnection();
 		try {
-			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + eventAction + "&eventLabel=" + eventLabel + "&eventValue=" + eventValue, false);
+			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + eventAction + "&eventLabel=" + eventLabel, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

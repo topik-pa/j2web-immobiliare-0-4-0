@@ -325,7 +325,7 @@ public class J2Web_UI implements parametriGenerali {
 		
 		//Tracking dell'evento avvio di j2web
 		System.out.print("Tracking dell'evento avvio di j2web...");
-		j2web.trackEvent("avvio_j2web_"+j2web_version, EMAIL_UTENTE, null);
+		j2web.trackEvent("avvio_j2web_"+j2web_version, EMAIL_UTENTE);
 		System.out.print(" fatto." + "\n");	
 
 	}
@@ -1391,7 +1391,7 @@ public class J2Web_UI implements parametriGenerali {
 					
 					//Tracking dell'evento creazione di una scheda veicolo
 					System.out.print("Tracking dell'evento creazione di una scheda veicolo...");
-					j2web.trackEvent("creazioneSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE, schedaVeicolo.codiceScheda);
+					j2web.trackEvent("creazioneSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE+"_"+schedaVeicolo.codiceScheda);
 					System.out.print(" fatto." + "\n");	
 
 					System.out.print(" fatto." + "\n");
@@ -1945,7 +1945,7 @@ public class J2Web_UI implements parametriGenerali {
 					
 					//Tracking dell'evento creazione di una scheda cliente
 					System.out.print("Tracking dell'evento creazione di una scheda cliente...");
-					j2web.trackEvent("creazioneSchedaCliente_j2web_"+j2web_version, EMAIL_UTENTE, schedaCliente.codiceSchedaCliente);
+					j2web.trackEvent("creazioneSchedaCliente_j2web_"+j2web_version, EMAIL_UTENTE+"_"+schedaCliente.codiceSchedaCliente);
 					System.out.print(" fatto." + "\n");	
 
 					System.out.print(" fatto." + "\n");
