@@ -57,7 +57,13 @@ public interface parametriGenerali {
   	
   	//Url tracking remoto
   	String urlTrackingRemoto = "http://www.j2webstudio.it/tracking/tracking.php";
-    
+  	
+  	//Url inserimento immagini in remoto
+  	String urlInserimentoImmaginiInRemoto = "http://www.j2webstudio.it/uploadImages.php";
+  	
+  	//Url posizione immagini in remoto
+  	String urlLocationImmaginiInRemoto = "http://www.j2webstudio.it/j2webVeichleImages/";
+  	  
     //Lista concatenata che contiene tutti i campi della form veicolo soggetti a lettura/scrittura o modifiche varie a runtime
     LinkedList<JComponent> listCampiFormVeicolo = new LinkedList<JComponent>();
     

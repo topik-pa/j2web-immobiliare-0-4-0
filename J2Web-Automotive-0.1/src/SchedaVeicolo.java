@@ -10,14 +10,20 @@
  */
 
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
@@ -25,6 +31,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
@@ -301,7 +309,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 
 
 	//Costruttore 2 (da query SQL)
-	public SchedaVeicolo (JSONArray jsonArray) {	 	
+	public SchedaVeicolo (JSONArray jsonArray) {			
 
 		veicolo = "auto";	//solo auto attualmente
 
@@ -328,6 +336,43 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			if(json.has(Integer.toString(11))) {postiASedereVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(11))));} 
 			if(json.has(Integer.toString(12))) {KWVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(12))));}
 			if(json.has(Integer.toString(13))) {CVVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(13))));} 
+			
+			if(json.has("50") && !json.getString("50").equals("\u0000")) {
+				
+				URL dbUrl;
+				BufferedImage img;
+				arrayImages[1] = new File("image1.jpg");
+				
+				try {
+					dbUrl = new URL(urlLocationImmaginiInRemoto + StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("50"))));
+					URLConnection connection = dbUrl.openConnection();
+					InputStream in = connection.getInputStream();
+					FileOutputStream fos = new FileOutputStream(arrayImages[1]);
+					
+					byte[] buf = new byte[1024];
+					while (true) {
+					    int len = in.read(buf);
+					    if (len == -1) {
+					        break;
+					    }
+					    fos.write(buf, 0, len);
+					}
+					in.close();				
+					fos.flush();
+					fos.close();
+					
+				} catch (MalformedURLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NoSuchElementException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+							
+			}
 		}
 
 	}
