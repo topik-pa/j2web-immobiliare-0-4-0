@@ -67,9 +67,13 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Scheda selezionata: " + scheda.codiceSchedaCliente + " per MLS..."); 
 
-				JPanel pannelloInfoVeicoloMLS = J2Web_UI.getPanel_8();
+				/*JPanel pannelloInfoVeicoloMLS = J2Web_UI.getPanel_8();
 				pannelloInfoVeicoloMLS.removeAll();
-				pannelloInfoVeicoloMLS.updateUI();
+				pannelloInfoVeicoloMLS.updateUI();*/
+				
+				JPanel pannelloListaEstrazioneMLS = J2Web_UI.getPanel_15();
+				pannelloListaEstrazioneMLS.removeAll();
+				pannelloListaEstrazioneMLS.updateUI();
 
 				Component[] test = getParent().getComponents();
 				for(int i=0; i<test.length; i++) {
@@ -120,7 +124,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 		JPanel pannelloMatchClienteVeicoloMLS = J2Web_UI.getPanel_15();
 
-		pannelloMatchClienteVeicoloMLS.removeAll();
+		//pannelloMatchClienteVeicoloMLS.removeAll();
 
 		pannelloMatchClienteVeicoloMLS.add(Box.createVerticalStrut(6));
 
@@ -147,21 +151,21 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		String querySQL_13 = " OR ";
 		String querySQL_14 = "(Versione = ";
 		String querySQL_15 =  "'" + scheda.versioneVeicoloCliente + "')";
-		
+
 		String querySQL_16 = " OR ";
 		String querySQL_17 = "(Marca = ";
 		String querySQL_18 =  "'" + scheda.marcaVeicoloCliente + "'";
 		String querySQL_19 = " AND ";
 		String querySQL_20 = " ColoreEsterno = ";
 		String querySQL_21 = "'" + scheda.coloreEsternoVeicoloCliente + "')";
-		
+
 		String querySQL_22 = " OR ";
 		String querySQL_23 = "(Marca = ";
 		String querySQL_24 =  "'" + scheda.marcaVeicoloCliente + "'";
 		String querySQL_25 = " AND ";
 		String querySQL_26 = " Tipologia = ";
 		String querySQL_27 = "'" + scheda.tipologiaVeicoloCliente + "')";
-		
+
 
 		String querySQL = querySQL_1 + querySQL_2 + querySQL_3 + querySQL_4 + querySQL_5 + querySQL_6 + querySQL_7 + querySQL_8 + querySQL_9 + querySQL_10 + querySQL_11 + querySQL_12 + querySQL_13 + querySQL_14 + querySQL_15 + querySQL_16 + querySQL_17 + querySQL_18 + querySQL_19 + querySQL_20 + querySQL_21 + querySQL_22 + querySQL_23 + querySQL_24 + querySQL_25 + querySQL_26 + querySQL_27;
 		String encodedQuerySQL = "";
@@ -189,30 +193,40 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 				e.printStackTrace();
 			}
 
-			JSONArray jsonResults = json.getJSONArray("rows"); 
 
-			for(int i=0; i<jsonResults.length(); i++) {
-				JSONArray currentJsonArray = jsonResults.getJSONArray(i); //rappresenta una riga della tabella
+			if(!json.get("affectedrows").equals("0")) {
+				JSONArray jsonResults = json.getJSONArray("rows"); 
 
-				SchedaVeicolo schedaVeicoloMLS = new SchedaVeicolo(currentJsonArray);
+				for(int i=0; i<jsonResults.length(); i++) {
+					JSONArray currentJsonArray = jsonResults.getJSONArray(i); //rappresenta una riga della tabella
 
-				PanelSchedaVeicoloMLS panelSchedaVeicoloMLS = new PanelSchedaVeicoloMLS(schedaVeicoloMLS);
+					SchedaVeicolo schedaVeicoloMLS = new SchedaVeicolo(currentJsonArray);
 
-				pannelloMatchClienteVeicoloMLS.add(panelSchedaVeicoloMLS);
+					PanelSchedaVeicoloMLS panelSchedaVeicoloMLS = new PanelSchedaVeicoloMLS(schedaVeicoloMLS);
+
+					pannelloMatchClienteVeicoloMLS.add(panelSchedaVeicoloMLS);
+				}
 			}
+			else {
+				JPanel panelNessunaVeicoloMLSDisponibile = new JPanel();
+				JLabel lblNessunaVeicoloMLSDisponibile = new JLabel("Al momento non è disponibile un veicolo per il cliente selezionato");                
+				panelNessunaVeicoloMLSDisponibile.add(lblNessunaVeicoloMLSDisponibile);
+				pannelloMatchClienteVeicoloMLS.add(panelNessunaVeicoloMLSDisponibile);
+			}
+
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		pannelloMatchClienteVeicoloMLS.updateUI();		
-		
+
 		//Tracking dell'evento di matching MLS
 		System.out.print("Tracking dell'evento di matching MLS...");
 		j2web.trackEvent("matching_j2web_"+j2web_version, EMAIL_UTENTE+"_"+schedaCliente.codiceSchedaCliente);
 		System.out.print(" fatto." + "\n");
 
 	}
-	
+
 
 }

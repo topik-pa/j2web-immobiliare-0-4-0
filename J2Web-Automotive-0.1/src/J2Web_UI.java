@@ -2111,6 +2111,11 @@ public class J2Web_UI implements parametriGenerali {
 			}
 		});
 		panel_15.setLayout(new BoxLayout(panel_15, BoxLayout.Y_AXIS));
+		panel_15.add(Box.createVerticalStrut(6));
+		JPanel panelNessunaSchedaSelezionata4 = new JPanel();
+		JLabel lblNessunaSchedaSelezionata4 = new JLabel("Non è stata selezionata alcuna scheda cliente");                
+		panelNessunaSchedaSelezionata4.add(lblNessunaSchedaSelezionata4);
+		panel_15.add(panelNessunaSchedaSelezionata4);
 
 		JScrollPane scrollPane_9 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_9 = new GridBagConstraints();
