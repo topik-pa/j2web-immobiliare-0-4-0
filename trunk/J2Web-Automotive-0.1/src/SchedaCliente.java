@@ -21,6 +21,8 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 	//Attributi della scheda veicolo	
 	long idSchedaCliente = new Date().getTime();	//id univoco riferito alla scheda
 	String codiceSchedaCliente= intestazioneCodiceSchedaCliente + UUID.randomUUID().toString(); //codice scheda univoco
+	
+	String numResultsMLS = "0";
 
 	String titoloCliente;
 	String marcaVeicoloCliente;

@@ -2089,6 +2089,13 @@ public class J2Web_UI implements parametriGenerali {
 		panel_14.add(panel_32, gbc_panel_32);
 
 		JButton btnAggiornaRisultati = new JButton("Sincronizza risultati");
+		btnAggiornaRisultati.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("ciccio");
+				
+				PanelSchedaClienteMLS.sincronizzaRisultati(listSchedeCliente);
+			}
+		});
 		ImageIcon updateIcon  = new ImageIcon(cl.getResource("images/update.png"));
 		btnAggiornaRisultati.setIcon(updateIcon);
 		panel_32.add(btnAggiornaRisultati);
@@ -2260,7 +2267,7 @@ public class J2Web_UI implements parametriGenerali {
 			while(iterator.hasNext()) {
 				SchedaCliente schedaCorrente = iterator.next();
 
-				//I sottopannelli sono istanze di una classe comune definita più sotto
+				//I sottopannelli sono istanze di una classe comune
 				JPanel pannelloSchedaCliente = new PanelSchedaCliente(schedaCorrente, listSchedeCliente, radioGrpSchede);    
 				JPanel pannelloSchedaClienteMLS = new PanelSchedaClienteMLS(schedaCorrente, listSchedeCliente, radioGrpSchede);  
 

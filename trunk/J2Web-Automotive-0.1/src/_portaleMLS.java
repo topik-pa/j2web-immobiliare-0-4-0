@@ -6,12 +6,19 @@
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 /**
@@ -20,7 +27,9 @@ import org.apache.http.entity.mime.content.StringBody;
  */
 
 //La classe principale
-public class _portaleMLS extends PortaleWeb {     
+public class _portaleMLS extends PortaleWeb { 
+
+	private boolean inserimentoOK = false;
 
 	/*Dati di accesso al DB MLS remoto*/
 	String host = "sql.j2webstudio.it";
@@ -118,18 +127,20 @@ public class _portaleMLS extends PortaleWeb {
 			if(scheda.arrayImages[i]!=null) {
 				HttpPortalPostConnection connessione_inserimentoImmagineInDB = new HttpPortalPostConnection();
 				MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-				
-				/*//Trovo l'estensione del file
+
+				//Trovo l'estensione del file
 				String currentFileType = "";
 				int x = scheda.arrayImages[i].getName().lastIndexOf('.');
 				if (x > 0) {
 					currentFileType = scheda.arrayImages[i].getName().substring(x);
+					System.out.println("test1: " + currentFileType);
 				}
-				
+
 				//Il nome del file sul server remoto
-				String fileName = scheda.codiceScheda + "_img_" + i + currentFileType;*/
-				
-				String fileName = scheda.codiceScheda + "_img_" + i;
+				String fileName = scheda.codiceScheda + "_img_" + i + currentFileType;
+				System.out.println("test2: " + fileName);
+
+				//String fileName = scheda.codiceScheda + "_img_" + i;
 
 				FileBody bin = new FileBody(scheda.arrayImages[i]);
 				reqEntity.addPart("file", bin);
@@ -140,7 +151,7 @@ public class _portaleMLS extends PortaleWeb {
 				} catch (IOException e) {
 					throw new HttpCommunicationException(e);
 				}
-				
+
 				switch (i) {
 				case 1:
 					Immagine1 = "'" + fileName + "'";
@@ -173,10 +184,10 @@ public class _portaleMLS extends PortaleWeb {
 					Immagine10 = "'" + fileName + "'";;
 					break;
 				}
-				
-		
+
+
 			}
-		
+
 		}
 
 
@@ -227,7 +238,7 @@ public class _portaleMLS extends PortaleWeb {
 		SediliSportivi = scheda.disponibilitaSediliSportivi?1:0;
 		Motore = "'" + scheda.tipologiaMotoreVeicolo + "'";
 		Cambio = "'" + scheda.tipologiaCambioVeicolo + "'";
-		NumRapporti = Integer.parseInt(scheda.numeroRapportiVeicolo);
+		if(!scheda.numeroRapportiVeicolo.equals("Seleziona")){NumRapporti = Integer.parseInt(scheda.numeroRapportiVeicolo);}
 		Cilindrata = Integer.parseInt(scheda.cilindrataVeicolo);
 		ClasseEmissione = "'" + scheda.classeEmissioniVeicolo + "'";
 		if(!scheda.comsumeMedioVeicolo.equals("")){ConsumoMedio = Float.parseFloat(scheda.comsumeMedioVeicolo);}
@@ -260,7 +271,6 @@ public class _portaleMLS extends PortaleWeb {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.out.println("test encoded query: " + encodedQuerySQL);
 		//Invio la richiesta al server remoto
 		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 		try {
@@ -269,13 +279,69 @@ public class _portaleMLS extends PortaleWeb {
 			e.printStackTrace();
 		}
 
+		//Costruisco la query sql di verifica inserimento
+		String querySQL_A = "SELECT * FROM autoveicoli WHERE ";
+		String querySQL_B = "(IdScheda = ";
+		String querySQL_C =  "'" + scheda.codiceScheda + "')";
+
+		String querySQLVerifica = querySQL_A + querySQL_B + querySQL_C;
+		String encodedQuerySQLVerifica = "";
+
+		//Encoding della query
+		try {
+			encodedQuerySQLVerifica = URLEncoder.encode(querySQLVerifica, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		//Invio la richiesta al server remoto
+		HttpPortalGetConnection verificaInserimentoVeicolo = new HttpPortalGetConnection();
+		try {
+			Object[] response = verificaInserimentoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQLVerifica, true);
+			String responseBody = (String)response[1];
+			JSONObject json = null;
+			try {
+				json = new JSONObject(responseBody);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+			if(!json.get("affectedrows").equals("0")) {
+				inserimentoOK = true;
+				
+				//Invio mail di conferma inserimento 
+            	sendConfirmationMail(scheda, "PORTALE MLS", scheda.codiceScheda);
+           	
+            	//Stampo a video un messaggio informativo
+                JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + "PORTALE MLS", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+                
+			}
+			else {
+				inserimentoOK = false;
+				
+				//Stampo a video un messaggio informativo
+        		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + "PORTALE MLS" + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
+			}
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+
+
+
 		//Tracking dell'evento inserzione di una scheda veicolo in MLS
 		System.out.print("Tracking dell'evento inserzione di una scheda veicolo in MLS...");
 		j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE+"_"+scheda.codiceScheda);
 		System.out.print(" fatto." + "\n");
 
 
-		return true;     
+		return inserimentoOK;    
 	}
 
 
