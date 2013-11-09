@@ -17,6 +17,7 @@ import java.net.URLEncoder;
 //import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.LinkedList;
+import java.util.ListIterator;
 //import java.util.NoSuchElementException;
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
@@ -100,7 +101,12 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		JLabel label = new JLabel(labelScheda);
 		Font font = new Font("Monospaced", Font.PLAIN, 11);
 		label.setFont(font);
-		label.setHorizontalTextPosition(SwingConstants.RIGHT);		 
+		label.setHorizontalTextPosition(SwingConstants.RIGHT);
+		
+		String numRisultatiMLS = scheda.numResultsMLS;
+		String labelNumeroRisultati = "Numero risultati MLS: " + numRisultatiMLS;
+		JLabel labelNumeroRisultati2 = new JLabel(labelNumeroRisultati);
+		labelNumeroRisultati2.setHorizontalTextPosition(SwingConstants.RIGHT);
 
 		// Get current classloader
 		ClassLoader cl = this.getClass().getClassLoader();
@@ -114,6 +120,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		}
 
 		add(label, BorderLayout.CENTER);
+		add(labelNumeroRisultati2, BorderLayout.SOUTH);
 
 		//Aggiungo una tooltip
 		setToolTipText(tooltipScheda);
@@ -123,8 +130,6 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 	private void  matchClienteVeicoloMLS(SchedaCliente schedaCliente) {
 
 		JPanel pannelloMatchClienteVeicoloMLS = J2Web_UI.getPanel_15();
-
-		//pannelloMatchClienteVeicoloMLS.removeAll();
 
 		pannelloMatchClienteVeicoloMLS.add(Box.createVerticalStrut(6));
 
@@ -205,6 +210,8 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 					PanelSchedaVeicoloMLS panelSchedaVeicoloMLS = new PanelSchedaVeicoloMLS(schedaVeicoloMLS);
 
 					pannelloMatchClienteVeicoloMLS.add(panelSchedaVeicoloMLS);
+					
+					pannelloMatchClienteVeicoloMLS.add(Box.createVerticalStrut(6));
 				}
 			}
 			else {
@@ -228,5 +235,99 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 	}
 
+	
+	public static void  sincronizzaRisultati(final LinkedList<SchedaCliente> listaSchedeCliente) {
+		
+		System.out.print("numero schede: " + listaSchedeCliente.size());
+		
+		String host = "sql.j2webstudio.it";
+		String port = "3306";
+		String charset = "latin1";
+		String dbname = "j2webstu85037";
+		String username = "j2webstu85037";
+		String password = "j2we20858";
+		
+		ListIterator<SchedaCliente> iterator = listaSchedeCliente.listIterator();
+		while(iterator.hasNext()) {
+			SchedaCliente schedaCorrente = iterator.next();
+			
+			
 
+			//Costruisco la query sql
+			String querySQL_1 = "SELECT * FROM autoveicoli WHERE ";
+			String querySQL_2 = "(Marca = ";
+			String querySQL_3 =  "'" + schedaCorrente.marcaVeicoloCliente + "'";
+			String querySQL_4 = " AND ";
+			String querySQL_5 = " Modello = ";
+			String querySQL_6 = "'" + schedaCorrente.modelloVeicoloCliente + "')";
+			String querySQL_7 = " OR ";
+			String querySQL_8 = "(Marca = ";
+			String querySQL_9 =  "'" + schedaCorrente.marcaVeicoloCliente + "'";
+			String querySQL_10 = " AND ";
+			String querySQL_11 = " Carburante = ";
+			String querySQL_12 = "'" + schedaCorrente.tipologiaCarburanteVeicoloCliente + "')";
+			String querySQL_13 = " OR ";
+			String querySQL_14 = "(Versione = ";
+			String querySQL_15 =  "'" + schedaCorrente.versioneVeicoloCliente + "')";
+
+			String querySQL_16 = " OR ";
+			String querySQL_17 = "(Marca = ";
+			String querySQL_18 =  "'" + schedaCorrente.marcaVeicoloCliente + "'";
+			String querySQL_19 = " AND ";
+			String querySQL_20 = " ColoreEsterno = ";
+			String querySQL_21 = "'" + schedaCorrente.coloreEsternoVeicoloCliente + "')";
+
+			String querySQL_22 = " OR ";
+			String querySQL_23 = "(Marca = ";
+			String querySQL_24 =  "'" + schedaCorrente.marcaVeicoloCliente + "'";
+			String querySQL_25 = " AND ";
+			String querySQL_26 = " Tipologia = ";
+			String querySQL_27 = "'" + schedaCorrente.tipologiaVeicoloCliente + "')";
+
+
+			String querySQL = querySQL_1 + querySQL_2 + querySQL_3 + querySQL_4 + querySQL_5 + querySQL_6 + querySQL_7 + querySQL_8 + querySQL_9 + querySQL_10 + querySQL_11 + querySQL_12 + querySQL_13 + querySQL_14 + querySQL_15 + querySQL_16 + querySQL_17 + querySQL_18 + querySQL_19 + querySQL_20 + querySQL_21 + querySQL_22 + querySQL_23 + querySQL_24 + querySQL_25 + querySQL_26 + querySQL_27;
+			String encodedQuerySQL = "";
+
+			System.out.println("query: " + querySQL);
+
+			//Encoding della query
+			try {
+				encodedQuerySQL = URLEncoder.encode(querySQL, "UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			//Invio la richiesta al server remoto
+			HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
+			try {
+				Object[] response = getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, true);
+				String responseBody = (String)response[1];
+				JSONObject json = null;
+				try {
+					json = new JSONObject(responseBody);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+
+				String numResults = (String) json.get("affectedrows");
+				
+				System.out.print("numero risultati: " + numResults);
+				
+				schedaCorrente.numResultsMLS = numResults;
+
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+		J2Web_UI.aggiornaPannelloListaSchedeCliente();
+		
+	}
+	
 }
