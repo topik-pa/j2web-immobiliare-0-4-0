@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -168,6 +167,7 @@ public class j2web implements parametriGenerali {
 		MapModalWindowsDialogs.put("salvaTabellaHash", "Impossibile accedere al file hash scheda: non è stato possibile salvare le impostazioni della scheda. ");
 		MapModalWindowsDialogs.put("creazioneDellaSchedaVeicolo", "Attenzione: alcuni campi obbligatori non sono stati compilati. ");
 		MapModalWindowsDialogs.put("creazioneDellaSchedaCliente", "Attenzione: alcuni campi obbligatori non sono stati compilati. ");
+		MapModalWindowsDialogs.put("primoTrackingFallito", "Verificare la connessione ad Internet, senza connessione alcune funzionalità di J2Web sono inibite. ");
 
 	}
 
@@ -214,17 +214,18 @@ public class j2web implements parametriGenerali {
 		}
 
 	}
-	
+
 	//Funzione di tracking eventi su j2web
-	public static void  trackEvent(String eventAction, String eventLabel) {
-		
+	public static void  trackEvent(String eventAction, String eventLabel) throws IOException {
+
 		if(eventLabel==null) {eventLabel="";}
-		
+
 		HttpPortalGetConnection trackEvent = new HttpPortalGetConnection();
 		try {
 			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + eventAction + "&eventLabel=" + eventLabel, false);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw(new IOException(e));
 		}
 	}
 
