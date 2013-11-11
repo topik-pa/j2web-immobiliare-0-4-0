@@ -7,17 +7,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
-
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 
@@ -337,7 +332,11 @@ public class _portaleMLS extends PortaleWeb {
 
 		//Tracking dell'evento inserzione di una scheda veicolo in MLS
 		System.out.print("Tracking dell'evento inserzione di una scheda veicolo in MLS...");
-		j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE+"_"+scheda.codiceScheda);
+		try {
+			j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE+"_"+scheda.codiceScheda);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+		}
 		System.out.print(" fatto." + "\n");
 
 

@@ -63,7 +63,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		//Clicco su una radio button di una scheda
 		schedaRadio.addActionListener(new ActionListener() {			 
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Scheda veicolo selezionata: " + scheda.idScheda); 
+				System.out.println("Scheda veicolo selezionata: " + scheda.codiceScheda); 
 
 				//Devo caricare la relativa hashtable contenente i portali in cui è inserita e gli associati codici di inserimento
 				scheda.caricaTabellaHash();
@@ -85,6 +85,8 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 
 				//I dati della scheda selezionata sono visualizzati nella form
 				mostraDatiScheda(scheda);
+				
+				J2Web_UI.getBtnInserisciSchedaVeicolo().setEnabled(false);
 			}
 		});
 		add(schedaRadio, BorderLayout.NORTH);

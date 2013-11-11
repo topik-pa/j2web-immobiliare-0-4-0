@@ -230,7 +230,11 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 		//Tracking dell'evento di matching MLS
 		System.out.print("Tracking dell'evento di matching MLS...");
-		j2web.trackEvent("matching_j2web_"+j2web_version, EMAIL_UTENTE+"_"+schedaCliente.codiceSchedaCliente);
+		try {
+			j2web.trackEvent("matching_j2web_"+j2web_version, EMAIL_UTENTE+"_"+schedaCliente.codiceSchedaCliente);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+		}
 		System.out.print(" fatto." + "\n");
 
 	}

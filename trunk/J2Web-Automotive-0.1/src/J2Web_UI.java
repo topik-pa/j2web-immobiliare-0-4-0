@@ -172,8 +172,7 @@ public class J2Web_UI implements parametriGenerali {
 	private static JRadioButton formCliente_rdbtnSignore;
 	private static JRadioButton formCliente_rdbtnSignora;
 	//Button group
-	private static final ButtonGroup buttonGroup_1 = new ButtonGroup(); //sign/sigra
-
+	private static final ButtonGroup buttonGroup_1 = new ButtonGroup(); //sig./sig.ra
 
 	//Variabili immagine
 	private static File imgFile1;
@@ -208,7 +207,7 @@ public class J2Web_UI implements parametriGenerali {
 
 	//Serve per bloccare temporaneamente l'ascoltatore di alcune combobox
 	public static boolean nonUserSelection = false;
-	
+
 	private JButton btnImmagine1;
 	private JButton btnImmagine2;
 	private JButton btnImmagine3;
@@ -219,11 +218,14 @@ public class J2Web_UI implements parametriGenerali {
 	private JButton btnImmagine8;
 	private JButton btnImmagine9;
 	private JButton btnImmagine10;
+	private static JButton btnInserisci;
+	private static JButton btnResetta;
 
 	//Classloader per il recupero delle risorse esterne
 	ClassLoader cl;
 	
-	
+
+
 	/**
 	 * Launch the application.
 	 */
@@ -252,14 +254,15 @@ public class J2Web_UI implements parametriGenerali {
 	 * Create the application.
 	 */
 	public J2Web_UI() {
-		
+
+		//Inizializzo il classLoader per il recupero delle risorse
 		cl = this.getClass().getClassLoader();
 
 		//Procedure di inizializzazione
 		System.out.print("Inizializzo la GUI e gli ascoltatori...");
 		initialize(); //GUI e ascoltatori
 		System.out.print(" fatto." + "\n");
-		
+
 		//Controllo l'albero di directory
 		System.out.print("Controllo l'albero di directory...");
 		j2web.checkPaths();
@@ -322,10 +325,14 @@ public class J2Web_UI implements parametriGenerali {
 		//aggiorna il pannello di destra (lista portali attivi)
 		aggiornaPannelloListaPortaliSincronizzazione();
 		System.out.print(" fatto." + "\n");
-		
+
 		//Tracking dell'evento avvio di j2web
 		System.out.print("Tracking dell'evento avvio di j2web...");
-		j2web.trackEvent("avvio_j2web_"+j2web_version, EMAIL_UTENTE);
+		try {
+			j2web.trackEvent("avvio_j2web_"+j2web_version, EMAIL_UTENTE);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("primoTrackingFallito"), "Problemi di connessione", JOptionPane.WARNING_MESSAGE);
+		}
 		System.out.print(" fatto." + "\n");	
 
 	}
@@ -340,7 +347,6 @@ public class J2Web_UI implements parametriGenerali {
 		/*Il JFrame principale*/
 		imagination_05 = new JFrame();
 
-
 		imagination_05.addWindowListener(new WindowAdapter() {
 			@Override
 			//Messaggio di chiusura applicazione
@@ -351,8 +357,8 @@ public class J2Web_UI implements parametriGenerali {
 
 		//Caratteristiche principali della GUI
 		imagination_05.setTitle(nomeGUI);
-		Image frameIcon  = new ImageIcon(cl.getResource("images/j2webFrameIcon.png")).getImage();
-		imagination_05.setIconImage(frameIcon);
+		Image frameIconImage  = new ImageIcon(cl.getResource(frameIcon)).getImage();
+		imagination_05.setIconImage(frameIconImage);
 		imagination_05.setBounds(GUI_bounds[0], GUI_bounds[1], GUI_bounds[2], GUI_bounds[3]);
 		imagination_05.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		imagination_05.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -374,7 +380,7 @@ public class J2Web_UI implements parametriGenerali {
 		//Prima tab
 		JPanel panel = new JPanel();
 		panel.setBorder(null);
-		ImageIcon vehicleIcon  = new ImageIcon(cl.getResource("images/icon_car.png"));
+		ImageIcon vehicleIcon  = new ImageIcon(cl.getResource(iconCar));
 		tabbedPane.addTab("Anagrafica veicolo", vehicleIcon, panel, null);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{437, 0};
@@ -519,12 +525,12 @@ public class J2Web_UI implements parametriGenerali {
 		comboBox_Marca = new JComboBox<String>();
 		comboBox_Marca.setToolTipText("Selezione marca veicolo");
 		comboBox_Marca.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {			
+			public void itemStateChanged(ItemEvent e) {			
 
 				//Non fare nulla se l'azione non è dell'utente
 				if (nonUserSelection) {return;}
 
-				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					//Selezionando un marca veicolo popolo la combobox Modello veicolo
 					String marcaVeicoloSelezionata = (String) comboBox_Marca.getSelectedItem();
 
@@ -544,10 +550,10 @@ public class J2Web_UI implements parametriGenerali {
 		comboBox_Modello.setToolTipText("Selezione modello veicolo");
 		comboBox_Modello.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				
+
 				//Non fare nulla se l'azione non è dell'utente
 				if (nonUserSelection) {return;}
-				
+
 				//Selezionando un modello veicolo popolo la combobox Versione veicolo
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 
@@ -567,11 +573,11 @@ public class J2Web_UI implements parametriGenerali {
 		comboBox_Versione = new JComboBox<String>();
 		comboBox_Versione.setToolTipText("Selezione versione veicolo");
 		comboBox_Versione.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				
+			public void itemStateChanged(ItemEvent e) {
+
 				//Non fare nulla se l'azione non è dell'utente
 				if (nonUserSelection) {return;}
-				
+
 				//Selezionando una versione veicolo popolo vari campi della form veicolo				
 				String versioneVeicolo = (String) comboBox_Versione.getSelectedItem();
 				if(versioneVeicolo!=null && !versioneVeicolo.equals("Seleziona") && rdbtnAutoveicolo.isSelected()) {
@@ -1252,14 +1258,14 @@ public class J2Web_UI implements parametriGenerali {
 
 		textFieldRagioneSociale = new JTextField();
 		textFieldRagioneSociale.setEnabled(false);
-		textFieldRagioneSociale.setToolTipText("Inserimento della ragione sociale dell'inserzionista");
+		textFieldRagioneSociale.setToolTipText("Inserimento della ragione sociale dell\'inserzionista");
 		panel_33.add(textFieldRagioneSociale, "2, 4, fill, default");
 		textFieldRagioneSociale.setColumns(10);
 		textFieldRagioneSociale.setText(RAGIONESOCIALE_UTENTE);
 		textFieldRagioneSociale.setEditable(false);
 
 		textFieldIndirizzo = new JTextField();
-		textFieldIndirizzo.setToolTipText("Inserimento dell'indirizzo di riferimento dell'inserzionista ");
+		textFieldIndirizzo.setToolTipText("Inserimento dell'indirizzo di riferimento dell\'inserzionista ");
 		panel_33.add(textFieldIndirizzo, "4, 4, fill, default");
 		textFieldIndirizzo.addKeyListener(new KeyAdapter() {
 			@Override
@@ -1274,7 +1280,7 @@ public class J2Web_UI implements parametriGenerali {
 		textFieldIndirizzo.setColumns(10);
 
 		textFieldTelefonoGenerico = new JTextField();
-		textFieldTelefonoGenerico.setToolTipText("Inserimento di un recapito telefonico dell'inserzionista");
+		textFieldTelefonoGenerico.setToolTipText("Inserimento di un recapito telefonico dell\'inserzionista");
 		panel_33.add(textFieldTelefonoGenerico, "6, 4, fill, default");
 		textFieldTelefonoGenerico.addKeyListener(new KeyAdapter() {
 			@Override
@@ -1350,7 +1356,7 @@ public class J2Web_UI implements parametriGenerali {
 
 
 		//Pulsante per resettare la form veicolo
-		JButton btnResetta = new JButton("Reset form");
+		btnResetta = new JButton("Reset form");
 		btnResetta.setToolTipText("Resetta i contenuti del modulo di inserimento scheda veicolo");
 		btnResetta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1360,10 +1366,12 @@ public class J2Web_UI implements parametriGenerali {
 				//Forza la selezione autoveicolo
 				selezioneAutoVeicolo();
 				getRdbtnAutoveicolo().setSelected(true);
+				
+				J2Web_UI.getBtnInserisciSchedaVeicolo().setEnabled(true);
 			}
 		});
-		ImageIcon refreshIcon  = new ImageIcon(cl.getResource("images/refresh.png"));
-		btnResetta.setIcon(refreshIcon);
+		ImageIcon refreshIconImage  = new ImageIcon(cl.getResource(refreshIcon));
+		btnResetta.setIcon(refreshIconImage);
 		panel_18.add(btnResetta);
 
 		JPanel panel_19 = new JPanel();
@@ -1371,7 +1379,7 @@ public class J2Web_UI implements parametriGenerali {
 
 
 		//Pulsante per creare la scheda veicolo
-		final JButton btnInserisci = new JButton("Crea scheda");
+		btnInserisci = new JButton("Crea scheda");
 		btnInserisci.setToolTipText("Crea una scheda veicolo utilizzando i dati inseriti nel modulo di inserimento veicolo");
 		btnInserisci.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
@@ -1382,19 +1390,23 @@ public class J2Web_UI implements parametriGenerali {
 					//Disabilito i campi della form
 					disabilitaCampiForm(listCampiFormVeicolo);
 
-					//Istanzio l'oggetto scheda e lo salvo nel file
+					//Istanzio l'oggetto scheda e lo salvo nel file locale
 					SchedaVeicolo schedaVeicolo = new SchedaVeicolo();
 					aggiungiSchedaVeicolo(schedaVeicolo);
 
 					//Il pannello centrale viene ridisegnato             	   	
 					aggiornaPannelloListaSchedeVeicolo();
-					
+
 					//Tracking dell'evento creazione di una scheda veicolo
 					System.out.print("Tracking dell'evento creazione di una scheda veicolo...");
-					j2web.trackEvent("creazioneSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE+"_"+schedaVeicolo.codiceScheda);
+					try {
+						j2web.trackEvent("creazioneSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE+"_"+schedaVeicolo.codiceScheda);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+					}
 					System.out.print(" fatto." + "\n");	
 
-					System.out.print(" fatto." + "\n");
+					System.out.print(" scheda veicolo creata." + "\n");
 				}
 				else {
 					System.out.println(" ...form non valido. Scheda non creata.");
@@ -1402,8 +1414,8 @@ public class J2Web_UI implements parametriGenerali {
 				}
 			}
 		});
-		ImageIcon forwardIcon  = new ImageIcon(cl.getResource("images/forward.png"));
-		btnInserisci.setIcon(forwardIcon);
+		ImageIcon forwardIconImage  = new ImageIcon(cl.getResource(forwardIcon));
+		btnInserisci.setIcon(forwardIconImage);
 		panel_19.add(btnInserisci);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -1492,8 +1504,8 @@ public class J2Web_UI implements parametriGenerali {
 		//Seconda tab
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(null);
-		ImageIcon pilotIcon  = new ImageIcon(cl.getResource("images/icon_pilot.png"));
-		tabbedPane.addTab("Anagrafica cliente", pilotIcon, panel_1, null);
+		ImageIcon iconPilotImage  = new ImageIcon(cl.getResource(iconPilot));
+		tabbedPane.addTab("Anagrafica cliente", iconPilotImage, panel_1, null);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[] {437, 0};
 		gbl_panel_1.rowHeights = new int[] {170, 70, 0};
@@ -1797,10 +1809,10 @@ public class J2Web_UI implements parametriGenerali {
 		comboBox_Marca_Cliente.setToolTipText("Selezionare la marca dell'automobile ricercata");
 		comboBox_Marca_Cliente.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-				
+
 				//Non fare nulla se l'azione non è dell'utente
 				if (nonUserSelection) {return;}
-				
+
 				System.out.println("Marca veicolo cliente");
 				//Selezionando un marca veicolo popolo la combobox Modello veicolo
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
@@ -1827,10 +1839,10 @@ public class J2Web_UI implements parametriGenerali {
 		comboBox_Modello_Cliente.setEditable(true);
 		comboBox_Modello_Cliente.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-				
+
 				//Non fare nulla se l'azione non è dell'utente
 				if (nonUserSelection) {return;}
-				
+
 				System.out.println("Modello veicolo cliente");
 
 				//Selezionando un modello veicolo popolo la combobox Versione veicolo
@@ -1853,7 +1865,7 @@ public class J2Web_UI implements parametriGenerali {
 		comboBox_Versione_Cliente.setEditable(true);
 		comboBox_Versione_Cliente.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-				//
+				//Non faccio alcunchè...
 			}
 		});
 		panel_30.add(comboBox_Versione_Cliente, "6, 4, fill, default");
@@ -1877,11 +1889,7 @@ public class J2Web_UI implements parametriGenerali {
 		panel_30.add(comboBox_TipologiaCarburante_Cliente, "2, 8, fill, default");
 
 		comboBox_Colore_Cliente = new JComboBox<String>();
-		comboBox_Colore_Cliente.setToolTipText("Selezionare il colore dell'automobile ricercata");
-		comboBox_Colore_Cliente.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-			}
-		});
+		comboBox_Colore_Cliente.setToolTipText("Selezionare il colore dell'automobile ricercata");		
 		comboBox_Colore_Cliente.setModel(new DefaultComboBoxModel<String>(comboboxModelColoreEsterno));
 		panel_30.add(comboBox_Colore_Cliente, "4, 8, fill, default");
 
@@ -1906,8 +1914,8 @@ public class J2Web_UI implements parametriGenerali {
 		//Pulsante reset form cliente
 		JButton btnResetFormCliente = new JButton("Reset form");
 		btnResetFormCliente.setToolTipText("Resetta la form di creazione scheda cliente");
-		ImageIcon refreshIcon2  = new ImageIcon(cl.getResource("images/refresh.png"));
-		btnResetFormCliente.setIcon(refreshIcon2);
+		ImageIcon refreshIconCliente  = new ImageIcon(cl.getResource(refreshIcon));
+		btnResetFormCliente.setIcon(refreshIconCliente);
 		btnResetFormCliente.setSelectedIcon(null);
 		btnResetFormCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1925,11 +1933,12 @@ public class J2Web_UI implements parametriGenerali {
 		//Pulsante di creazione della scheda cliente
 		JButton btnCreaSchedaCliente = new JButton("Crea scheda");
 		btnCreaSchedaCliente.setToolTipText("Crea una nuova scheda cliente");
-		ImageIcon forwardIcon2  = new ImageIcon(cl.getResource("images/forward.png"));
+		ImageIcon forwardIcon2  = new ImageIcon(cl.getResource(forwardIcon));
 		btnCreaSchedaCliente.setIcon(forwardIcon2);
 		btnCreaSchedaCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.print("Creazione della scheda cliente...");				
+				System.out.print("Creazione della scheda cliente...");	
+
 				if(isFormValid(listCampiFormClienteObbligatori)) { 
 					System.out.println(" ...form cliente valido... ");
 
@@ -1942,13 +1951,17 @@ public class J2Web_UI implements parametriGenerali {
 
 					//Il pannello di destra viene ridisegnato             	   	
 					aggiornaPannelloListaSchedeCliente();   
-					
+
 					//Tracking dell'evento creazione di una scheda cliente
 					System.out.print("Tracking dell'evento creazione di una scheda cliente...");
-					j2web.trackEvent("creazioneSchedaCliente_j2web_"+j2web_version, EMAIL_UTENTE+"_"+schedaCliente.codiceSchedaCliente);
+					try {
+						j2web.trackEvent("creazioneSchedaCliente_j2web_"+j2web_version, EMAIL_UTENTE+"_"+schedaCliente.codiceSchedaCliente);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+					}
 					System.out.print(" fatto." + "\n");	
 
-					System.out.print(" fatto." + "\n");
+					System.out.print(" scheda cliente creata." + "\n");
 				}
 				else {
 					System.out.println(" ...form non valido. Scheda cliente non creata.");
@@ -2023,8 +2036,8 @@ public class J2Web_UI implements parametriGenerali {
 		//Terza tab
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(null);
-		ImageIcon dbIcon  = new ImageIcon(cl.getResource("images/icon_db.png"));
-		tabbedPane.addTab("Incrocio MLS", dbIcon, panel_2, null);
+		ImageIcon iconDBImage  = new ImageIcon(cl.getResource(iconDB));
+		tabbedPane.addTab("Incrocio MLS", iconDBImage, panel_2, null);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[] {437, 0};
 		gbl_panel_2.rowHeights = new int[] {170, 70, 0};
@@ -2092,12 +2105,12 @@ public class J2Web_UI implements parametriGenerali {
 		btnAggiornaRisultati.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("ciccio");
-				
+
 				PanelSchedaClienteMLS.sincronizzaRisultati(listSchedeCliente);
 			}
 		});
-		ImageIcon updateIcon  = new ImageIcon(cl.getResource("images/update.png"));
-		btnAggiornaRisultati.setIcon(updateIcon);
+		ImageIcon iconUpdateImage  = new ImageIcon(cl.getResource(iconUpdate));
+		btnAggiornaRisultati.setIcon(iconUpdateImage);
 		panel_32.add(btnAggiornaRisultati);
 
 		JScrollPane scrollPane_8 = new JScrollPane();
@@ -2220,7 +2233,7 @@ public class J2Web_UI implements parametriGenerali {
 				//I sottopannelli sono istanze di una classe comune definita più sotto
 				JPanel pannelloSchedaVeicolo = new PanelSchedaVeicolo(schedaCorrente, listSchedeVeicolo, radioGrpSchede);            
 				pannelloListaSchedeVeicolo.add(pannelloSchedaVeicolo);
-				pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(5));
+				pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(6));
 			}
 		}
 
@@ -2272,10 +2285,10 @@ public class J2Web_UI implements parametriGenerali {
 				JPanel pannelloSchedaClienteMLS = new PanelSchedaClienteMLS(schedaCorrente, listSchedeCliente, radioGrpSchede);  
 
 				pannelloListaSchedeCliente.add(pannelloSchedaCliente);
-				pannelloListaSchedeCliente.add(Box.createVerticalStrut(5));
+				pannelloListaSchedeCliente.add(Box.createVerticalStrut(6));
 
 				pannelloListaSchedeClienteMLS.add(pannelloSchedaClienteMLS);
-				pannelloListaSchedeClienteMLS.add(Box.createVerticalStrut(5));
+				pannelloListaSchedeClienteMLS.add(Box.createVerticalStrut(6));
 			}
 		}
 
@@ -2287,6 +2300,7 @@ public class J2Web_UI implements parametriGenerali {
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 		while(iteratorListCampiForm.hasNext()) {
 			JComponent campoCorrente = iteratorListCampiForm.next();
+			//Disabilito solo i campi che non sono delle JLabel
 			if(!campoCorrente.getClass().getName().equals("javax.swing.JLabel")) {
 				campoCorrente.setEnabled(false);
 			}		
@@ -2497,7 +2511,6 @@ public class J2Web_UI implements parametriGenerali {
 	}
 
 	//Metodo per popolare la combobox Modello veicolo
-	//Metodo per popolare la combobox Modello veicolo
 	private void popolaModelloVeicolo(String marcaVeicolo, JComboBox<String> currentComboboxModello, JComboBox<String> currentComboboxVersione)  {
 
 		marcaVeicolo = marcaVeicolo.toLowerCase().trim().replace(" ", "-");
@@ -2516,7 +2529,7 @@ public class J2Web_UI implements parametriGenerali {
 		//Invio la richiesta al DB remoto
 		HttpPortalGetConnection getModelloVeicolo = new HttpPortalGetConnection();
 		try {
-			response = getModelloVeicolo.get("GET della marca veicolo per ottenere il modello", queryUrl, true);
+			response = getModelloVeicolo.get("GET della marca veicolo per ottenere il modello", queryUrl, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -2539,7 +2552,6 @@ public class J2Web_UI implements parametriGenerali {
 			modelloAttuale = currentJson.getString("model_name");
 			currentComboboxModello.addItem(modelloAttuale);
 		}	
-
 
 	}
 
@@ -2570,7 +2582,7 @@ public class J2Web_UI implements parametriGenerali {
 		//Invio la richiesta al server remoto
 		HttpPortalGetConnection getVersioneVeicolo = new HttpPortalGetConnection();
 		try {
-			response = getVersioneVeicolo.get("GET del modello veicolo per ottenere la versione", queryUrl, true);
+			response = getVersioneVeicolo.get("GET del modello veicolo per ottenere la versione", queryUrl, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -2593,7 +2605,7 @@ public class J2Web_UI implements parametriGenerali {
 			annoFabbricazione = currentJson.getString("model_year");
 			nomeVersione = currentJson.getString("model_trim");
 			nomeModello = currentJson.getString("model_name");
-			currentComboboxVersione.addItem(annoFabbricazione + " - " +  nomeVersione + " - " + nomeModello);
+			currentComboboxVersione.addItem(nomeModello + " - " +  nomeVersione + " - " + annoFabbricazione);
 
 			//Inserisco un id del modello attuale nella lista 
 			listVersioniVeicoli.add(currentJson.getString("model_id"));
@@ -2635,7 +2647,7 @@ public class J2Web_UI implements parametriGenerali {
 		//Invio la richiesta al server remoto
 		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 		try {
-			response = getInfoVeicolo.get("GET delle informazioni veicolo", "http://www.carqueryapi.com/api/0.3/?cmd=getModel&model=" + IdModelloVeicolo + "&_=" + now.getTime(), true);
+			response = getInfoVeicolo.get("GET delle informazioni veicolo", "http://www.carqueryapi.com/api/0.3/?cmd=getModel&model=" + IdModelloVeicolo + "&_=" + now.getTime(), false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -2767,7 +2779,6 @@ public class J2Web_UI implements parametriGenerali {
 
 
 	//Metodo per selezionare una immagine e mostrarla in anteprima
-	//Metodo per selezionare una immmagine
 	private void selezionaImmagine(JLabel labelImmagine, int imageIndex) {
 		JFileChooser dlgFile;
 
@@ -2872,12 +2883,13 @@ public class J2Web_UI implements parametriGenerali {
 			case "javax.swing.JLabel": //Label
 				((JLabel) campoCorrente).setIcon(null);
 				break;
-			case "javax.swing.JRadioButton": //Label
+			case "javax.swing.JRadioButton": //Radio
 				((JRadioButton) campoCorrente).setEnabled(true);
 				break;
 			default://
 			}
-			
+
+			//Controllo su quale form opero e resetto la form ai valori predefiniti
 			if(listCampiForm.contains(rdbtnAutoveicolo)) {
 				getComboBox_Modello().removeAllItems();
 				getComboBox_Versione().removeAllItems();
@@ -2902,7 +2914,7 @@ public class J2Web_UI implements parametriGenerali {
 				formCliente_getColoreVeicolo().setModel(new DefaultComboBoxModel<String>(comboboxModelColoreEsterno));
 				formCliente_getTipologiaCarburanteVeicolo().setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
 			}
-			
+
 		}	
 
 	}	
@@ -2910,10 +2922,10 @@ public class J2Web_UI implements parametriGenerali {
 
 	//Popola la lista con tutti i campi della form
 	private void popolaListaCampiFormVeicolo() {
-		
+
 		listCampiFormVeicolo.add(getRdbtnAutoveicolo());
 		listCampiFormVeicolo.add(getRdbtnMotoScooter());
-		
+
 		listCampiFormVeicolo.add(getComboBox_Marca());
 		listCampiFormVeicolo.add(getComboBox_Modello());
 		listCampiFormVeicolo.add(getComboBox_MeseImmatricolazione());
@@ -3025,10 +3037,10 @@ public class J2Web_UI implements parametriGenerali {
 
 	//Popola la lista con tutti i campi della form
 	private void popolaListaCampiFormCliente() {
-		
+
 		listCampiFormCliente.add(formCliente_getRdbtnSignore());
 		listCampiFormCliente.add(formCliente_getRdbtnSignora());
-		
+
 		listCampiFormCliente.add(formCliente_getMarcaVeicolo());
 		listCampiFormCliente.add(formCliente_getModelloVeicolo());
 		listCampiFormCliente.add(formCliente_getVersioneVeicolo());
@@ -3045,7 +3057,7 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormCliente.add(formCliente_getNumeroCivico());
 		listCampiFormCliente.add(formCliente_getCAP());
 		listCampiFormCliente.add(formCliente_getCitta());
-		
+
 	}
 
 
@@ -3061,16 +3073,14 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormClienteObbligatori.add(formCliente_getCitta());
 	}
 
-
-
 	//Controlla se la form è compilata corettamente
 	@SuppressWarnings("unchecked")
 	private boolean isFormValid(LinkedList<JComponent> listCampiForm) {
 
 		boolean isValid = true;
-		Color white = new Color(255,255,255);
-		Color error = new Color(255, 200, 0);
-		
+		Color defaultColor = new Color(255,255,255);
+		Color errorColor = new Color(255, 200, 0);
+
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 		while(iteratorListCampiForm.hasNext()) {
 
@@ -3080,36 +3090,36 @@ public class J2Web_UI implements parametriGenerali {
 				{
 				case "javax.swing.JTextField": //Campo testuale	  	
 					if(((JTextField) campoCorrente).getText().trim().equals("")){
-						campoCorrente.setBackground(error);
+						campoCorrente.setBackground(errorColor);
 						isValid=false;
 					}
 					else {
-						campoCorrente.setBackground(white);
+						campoCorrente.setBackground(defaultColor);
 					}
 					break;
 				case "javax.swing.JTextPane": //TextPane
 					if(((JTextPane) campoCorrente).getText().trim().equals("")){
-						campoCorrente.setBackground(error);
+						campoCorrente.setBackground(errorColor);
 						isValid=false;
 					}
 					else {
-						campoCorrente.setBackground(white);
+						campoCorrente.setBackground(defaultColor);
 					}
 					break;
 				case "javax.swing.JComboBox": //Select
 					if(((JComboBox<String>) campoCorrente).getSelectedIndex()==0) {	//se la checkbox non è popolata...
-						campoCorrente.setBackground(error);
+						campoCorrente.setBackground(errorColor);
 						isValid=false;
 					}
 					else {
-						campoCorrente.setBackground(white);
+						campoCorrente.setBackground(defaultColor);
 					}
 
 					break;
 				default://
 				}
 			}
-			
+
 		}
 
 		return isValid;
@@ -3145,6 +3155,7 @@ public class J2Web_UI implements parametriGenerali {
 
 	}
 
+
 	//Il nuovo oggetto scheda cliente viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
 	static void aggiungiSchedaCliente(SchedaCliente scheda) {
 
@@ -3155,6 +3166,34 @@ public class J2Web_UI implements parametriGenerali {
 		j2web.salvaListaSchedeClienteCreate();
 
 	}
+
+	//Aggiorna il pannello dei portali di sincronizzazione
+	public static void aggiornaPannelloListaPortaliSincronizzazione() {
+
+		JPanel pannelloListaPortali = getPanel_10();
+
+		pannelloListaPortali.removeAll();
+
+		panelInserimentoInDefaultMode(pannelloListaPortali);
+
+		pannelloListaPortali.updateUI();
+
+	}
+
+	//Disegna il pannello dei portali di sincronizzazione nella sua configurazione standard (nessuna scheda selezionata)
+	private static void panelInserimentoInDefaultMode(JPanel pannelloListaPortali) {
+
+		//Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizi: non hanno alcuna funzionalità )
+		ListIterator<PortaleWeb> iterator = listPortaliSincronizzazione.listIterator();
+		while(iterator.hasNext()) {
+			final PortaleWeb portaleCorrente = iterator.next();
+			InserimentoPortale inserimentoPortale = new InserimentoPortale(portaleCorrente);
+			pannelloListaPortali.add(inserimentoPortale);
+		} 
+
+	}
+
+
 
 	//I metodi che espongono elementi della GUI
 	//Combobox
@@ -3405,35 +3444,6 @@ public class J2Web_UI implements parametriGenerali {
 	}
 
 
-
-	//Aggiorna il pannello dei portali di sincronizzazione
-	public static void aggiornaPannelloListaPortaliSincronizzazione() {
-
-		JPanel pannelloListaPortali = getPanel_10();
-
-		pannelloListaPortali.removeAll();
-
-		panelInserimentoInDefaultMode(pannelloListaPortali);
-
-		pannelloListaPortali.updateUI();
-
-	}
-
-	//Disegna il pannello dei portali di sincronizzazione nella sua configurazione standard (nessuna scheda selezionata)
-	private static void panelInserimentoInDefaultMode(JPanel pannelloListaPortali) {
-
-		//Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizi: non hanno alcuna funzionalità )
-		ListIterator<PortaleWeb> iterator = listPortaliSincronizzazione.listIterator();
-		while(iterator.hasNext()) {
-			final PortaleWeb portaleCorrente = iterator.next();
-			InserimentoPortale inserimentoPortale = new InserimentoPortale(portaleCorrente);
-			pannelloListaPortali.add(inserimentoPortale);
-		} 
-
-	}
-
-
-
 	protected static JRadioButton formCliente_getRdbtnSignore() {
 		return formCliente_rdbtnSignore;
 	}
@@ -3508,19 +3518,19 @@ public class J2Web_UI implements parametriGenerali {
 	protected static JTextField getTextFieldRagioneSociale() {
 		return textFieldRagioneSociale;
 	}
-	protected static  JTextField getTextFieldIndirizzo() {
+	protected static JTextField getTextFieldIndirizzo() {
 		return textFieldIndirizzo;
 	}
-	protected static  JTextField getTextFieldTelefonoGenerico() {
+	protected static JTextField getTextFieldTelefonoGenerico() {
 		return textFieldTelefonoGenerico;
 	}
-	protected static  JTextField getTextFieldReferente() {
+	protected static JTextField getTextFieldReferente() {
 		return textFieldReferente;
 	}
-	protected static  JTextField getTextFieldTelefonoReferente() {
+	protected static JTextField getTextFieldTelefonoReferente() {
 		return textFieldTelefonoReferente;
 	}
-	protected static  JTextField getTextFieldEmailReferente() {
+	protected static JTextField getTextFieldEmailReferente() {
 		return textFieldEmailReferente;
 	}
 
@@ -3553,5 +3563,11 @@ public class J2Web_UI implements parametriGenerali {
 	}
 	protected JButton getBtnImmagine_10() {
 		return btnImmagine10;
+	}
+	protected static JButton getBtnInserisciSchedaVeicolo() {
+		return btnInserisci;
+	}
+	protected JButton getBtnResettaFormVeicolo() {
+		return btnResetta;
 	}
 }
