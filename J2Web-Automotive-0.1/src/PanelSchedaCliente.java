@@ -67,7 +67,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 
 				//Eseguo un match cliente-veicolo in locale
 				matchClienteVeicolo(scheda);
-				
+
 				//I dati della scheda selezionata sono visualizzati nella form
 				mostraDatiScheda(scheda);
 			}
@@ -98,7 +98,6 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 			ImageIcon manIcon  = new ImageIcon(cl.getResource("images/icon_man.png"));
 			label.setIcon(manIcon);
 		}
-
 
 		add(label, BorderLayout.CENTER);
 
@@ -131,7 +130,6 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 				j2web.salvaListaSchedeClienteCreate();
 
 				//Aggiornamento del pannello centrale, la scheda corrente è stata cancellata
-				//j2web_GUI.panelListaSchedeImmobile.updatePanello();
 				J2Web_UI.aggiornaPannelloListaSchedeCliente();
 
 			}
@@ -201,21 +199,15 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 			JTable table = new JTable(matrix, new String[] {
 					"Marca", "Modello", "Versione", "Colore", "Prezzo"
 			});
-			/*table.setModel(new DefaultTableModel(
-					matrix,
-					new String[] {
-							"Marca", "Modello", "Versione", "Colore", "Prezzo"
-					}
-					));*/
+
 			pannelloMatchClienteVeicolo.add(table);
 
 		}
 	}
-	
-	
-	
+
+
 	private void  mostraDatiScheda(SchedaCliente scheda) {
-		
+
 		J2Web_UI.disabilitaCampiForm(listCampiFormCliente);
 
 		J2Web_UI.nonUserSelection = true;
@@ -226,7 +218,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		J2Web_UI.formCliente_getTipologiaCarburanteVeicolo().setModel(new DefaultComboBoxModel<String>(new String[]{scheda.tipologiaCarburanteVeicoloCliente}));
 		J2Web_UI.formCliente_getColoreVeicolo().setModel(new DefaultComboBoxModel<String>(new String[]{scheda.coloreEsternoVeicoloCliente}));
 		J2Web_UI.formCliente_getTipologiaCliente().setModel(new DefaultComboBoxModel<String>(new String[]{scheda.tipologiaVeicoloCliente}));
-		
+
 		J2Web_UI.formCliente_getNome().setText(scheda.nomeCliente);
 		J2Web_UI.formCliente_getCognome().setText(scheda.cognomeCliente);
 		J2Web_UI.formCliente_getEmail().setText(scheda.emailCliente);
@@ -236,7 +228,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		J2Web_UI.formCliente_getNumeroCivico().setText(scheda.numeroCivicoCliente);
 		J2Web_UI.formCliente_getCAP().setText(scheda.CAPCliente);
 		J2Web_UI.formCliente_getCitta().setText(scheda.cittaCliente);	
-		
+
 		if(scheda.titoloCliente=="Sig.") {
 			J2Web_UI.formCliente_getRdbtnSignore().setSelected(true);
 		}
@@ -247,6 +239,6 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 
 		J2Web_UI.nonUserSelection = false;
 	}
-	
+
 
 }

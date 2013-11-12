@@ -223,7 +223,7 @@ public class J2Web_UI implements parametriGenerali {
 
 	//Classloader per il recupero delle risorse esterne
 	ClassLoader cl;
-	
+
 
 
 	/**
@@ -1366,7 +1366,7 @@ public class J2Web_UI implements parametriGenerali {
 				//Forza la selezione autoveicolo
 				selezioneAutoVeicolo();
 				getRdbtnAutoveicolo().setSelected(true);
-				
+
 				J2Web_UI.getBtnInserisciSchedaVeicolo().setEnabled(true);
 			}
 		});
@@ -1396,6 +1396,9 @@ public class J2Web_UI implements parametriGenerali {
 
 					//Il pannello centrale viene ridisegnato             	   	
 					aggiornaPannelloListaSchedeVeicolo();
+					
+					//Il pannello di destra viene ridisegnato             	   	
+					PanelSicronizzazioneConPortali.panelInserimentoInDefaultMode(J2Web_UI.getPanel_10());
 
 					//Tracking dell'evento creazione di una scheda veicolo
 					System.out.print("Tracking dell'evento creazione di una scheda veicolo...");
@@ -2313,87 +2316,53 @@ public class J2Web_UI implements parametriGenerali {
 	private void selezioneAutoVeicolo() {
 
 		//Modifico le opzioni della combobox Marca con le opzioni per i autoveicoli
-		JComboBox<String> comboBoxMarca = getComboBox_Marca();
-		comboBoxMarca.removeAllItems();
-		comboBoxMarca.setModel(new DefaultComboBoxModel<String>(marcheAutoveicoli));
+		getComboBox_Marca().removeAllItems();
+		getComboBox_Marca().setModel(new DefaultComboBoxModel<String>(marcheAutoveicoli));
 
 		//Svuoto la combobox Modello
-		JComboBox<String> comboBoxModello = getComboBox_Modello();
-		comboBoxModello.removeAllItems();
+		getComboBox_Modello().removeAllItems();
 
 		//Attivo le combobox che servono nel caso di autoveicolo
-		JComboBox<String> comboBoxCarrozzeria = getComboBox_Carrozzeria();
-		comboBoxCarrozzeria.setEnabled(true);		
-		JComboBox<String> comboBoxPostiASedere = getComboBox_PostiASedere();
-		comboBoxPostiASedere.setEnabled(true);
-		JComboBox<String> comboBoxFinitureInterni = getComboBox_FinitureInterni();
-		comboBoxFinitureInterni.setEnabled(true);
-		JComboBox<String> comboBoxColoreInterni = getComboBox_ColoreInterni();
-		comboBoxColoreInterni.setEnabled(true);
-		JComboBox<String> comboBoxMotore = getComboBox_Motore();
-		comboBoxMotore.setEnabled(true);
+		getComboBox_Carrozzeria().setEnabled(true);		
+		getComboBox_PostiASedere().setEnabled(true);
+		getComboBox_FinitureInterni().setEnabled(true);
+		getComboBox_ColoreInterni().setEnabled(true);
+		getComboBox_Motore().setEnabled(true);
 
 		//Disattivo le checkbox che non servono nel caso di autoveicolo
-		JCheckBox chckbxHandicap = getChckbxHandicap();
-		chckbxHandicap.setEnabled(true);
-		JCheckBox chckbxServosterzo = getChckbxServosterzo();
-		chckbxServosterzo.setEnabled(true);
-		JCheckBox chckbxSediliSportivi = getChckbxSediliSportivi();
-		chckbxSediliSportivi.setEnabled(true);
-		JCheckBox chckbxParkDistControl = getChckbxParkDistControl();
-		chckbxParkDistControl.setEnabled(true);
-		JCheckBox chckbxFreniADisco = getChckbxFreniADisco();
-		chckbxFreniADisco.setEnabled(true);
-		JCheckBox chckbxRadiolettoreCd = getChckbxRadiolettoreCd();
-		chckbxRadiolettoreCd.setEnabled(true);
-		JCheckBox chckbxAbs = getChckbxAbs();
-		chckbxAbs.setEnabled(true);
-		JCheckBox chckbxGancioTraino = getChckbxGancioTraino();
-		chckbxGancioTraino.setEnabled(true);
-		JCheckBox chckbxVolanteMultifunzione = getChckbxVolanteMultifunzione();
-		chckbxVolanteMultifunzione.setEnabled(true);
-		JCheckBox chckbxImmobilizer = getChckbxImmobilizer();
-		chckbxImmobilizer.setEnabled(true);
-		JCheckBox chckbxPortapacchi = getChckbxPortapacchi();
-		chckbxPortapacchi.setEnabled(true);
-		JCheckBox chckbxAirbag = getChckbxAirbag();
-		chckbxAirbag.setEnabled(true);
-		JCheckBox chckbxEsp = getChckbxEsp();
-		chckbxEsp.setEnabled(true);
-		JCheckBox chckbxAlzacristalliElettrici = getChckbxAlzacristalliElettrici();
-		chckbxAlzacristalliElettrici.setEnabled(true);
-		JCheckBox chckbxNavigatoreSatellitare = getChckbxNavigatoreSatellitare();
-		chckbxNavigatoreSatellitare.setEnabled(true);
-		JCheckBox chckbxCerchiInLega = getChckbxCerchiInLega();
-		chckbxCerchiInLega.setEnabled(true);
-		JCheckBox chckbxContrAutomTrazione = getChckbxContrAutomTrazione();
-		chckbxContrAutomTrazione.setEnabled(true);
-		JCheckBox chckbxChiusuraCentralizzata = getChckbxChiusuraCentralizzata();
-		chckbxChiusuraCentralizzata.setEnabled(true);
-		JCheckBox chckbxSediliRiscaldati = getChckbxSediliRiscaldati();
-		chckbxSediliRiscaldati.setEnabled(true);
-		JCheckBox chckbxClima = getChckbxClima();
-		chckbxClima.setEnabled(true);
-		JCheckBox chckbxAntifurto = getChckbxAntifurto();
-		chckbxAntifurto.setEnabled(true);
-		JCheckBox chckbxCupolino = getChckbxCupolino();
-		chckbxCupolino.setEnabled(false);
-		JCheckBox chckbxBauletto = getChckbxBauletto();
-		chckbxBauletto.setEnabled(false);
-		JCheckBox chckbxAvviamentoAPedale = getChckbxAvviamentoAPedale();
-		chckbxAvviamentoAPedale.setEnabled(false);
-		JCheckBox chckbxAvviamentoElettrico = getChckbxAvviamentoElettrico();
-		chckbxAvviamentoElettrico.setEnabled(false);
+		getChckbxHandicap().setEnabled(true);
+		getChckbxServosterzo().setEnabled(true);
+		getChckbxSediliSportivi().setEnabled(true);
+		getChckbxParkDistControl().setEnabled(true);
+		getChckbxFreniADisco().setEnabled(true);
+		getChckbxRadiolettoreCd().setEnabled(true);
+		getChckbxAbs().setEnabled(true);
+		getChckbxGancioTraino().setEnabled(true);
+		getChckbxVolanteMultifunzione().setEnabled(true);
+		getChckbxImmobilizer().setEnabled(true);
+		getChckbxPortapacchi().setEnabled(true);
+		getChckbxAirbag().setEnabled(true);
+		getChckbxEsp().setEnabled(true);
+		getChckbxAlzacristalliElettrici().setEnabled(true);
+		getChckbxNavigatoreSatellitare().setEnabled(true);
+		getChckbxCerchiInLega().setEnabled(true);
+		getChckbxContrAutomTrazione().setEnabled(true);
+		getChckbxChiusuraCentralizzata().setEnabled(true);
+		getChckbxSediliRiscaldati().setEnabled(true);
+		getChckbxClima().setEnabled(true);
+		getChckbxAntifurto().setEnabled(true);
+		getChckbxCupolino().setEnabled(false);
+		getChckbxBauletto().setEnabled(false);
+		getChckbxAvviamentoAPedale().setEnabled(false);
+		getChckbxAvviamentoElettrico().setEnabled(false);
 
 		//Modifico le opzioni della combobox Carburante con le opzioni per gli autoveicoli
-		JComboBox<String> comboBoxCarburante = getComboBox_Carburante();
-		comboBoxCarburante.removeAllItems();
-		comboBoxCarburante.setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
+		getComboBox_Carburante().removeAllItems();
+		getComboBox_Carburante().setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
 
 		//Modifico le opzioni della combobox Tipologia con le opzioni per gli autoveicoli
-		JComboBox<String> comboBoxTipologia = getComboBox_Tipologia();
-		comboBoxTipologia.removeAllItems();
-		comboBoxTipologia.setModel(new DefaultComboBoxModel<String>(tipologiaAutoveicoli));
+		getComboBox_Tipologia().removeAllItems();
+		getComboBox_Tipologia().setModel(new DefaultComboBoxModel<String>(tipologiaAutoveicoli));
 
 	}
 
@@ -2417,86 +2386,52 @@ public class J2Web_UI implements parametriGenerali {
 		comboBoxVersione.addItem("Inserire la versione");
 
 		//Resetto la combobox Motore
-		JComboBox<String> comboBoxMotore = getComboBox_Motore();
-		comboBoxMotore.setSelectedIndex(0);
+		getComboBox_Motore().setSelectedIndex(0);
 
 		//Resetto la combobox Cambio
-		JComboBox<String> comboBoxCambio = getComboBox_Cambio();
-		comboBoxCambio.setSelectedIndex(0);
+		getComboBox_Cambio().setSelectedIndex(0);
 
 		//Resetto la combobox Cambio
-		JComboBox<String> comboBoxPostiASedere = getComboBox_PostiASedere();
-		comboBoxPostiASedere.setSelectedIndex(0);
+		getComboBox_PostiASedere().setSelectedIndex(0);
 
 		//Svuoto alcune textField
-		JTextField textFieldKW = getTextField_Kw();
-		textFieldKW.setText("");
-		JTextField textFieldCV = getTextField_Cv();
-		textFieldCV.setText("");
-		JTextField textFieldCilindrata = getTextField_Cilindrata();
-		textFieldCilindrata.setText("");
+		getTextField_Kw().setText("");
+		getTextField_Cv().setText("");
+		getTextField_Cilindrata().setText("");
 
 		//Disattivo le combobox che non servono nel caso di motoveicolo
-		JComboBox<String> comboBoxCarrozzeria = getComboBox_Carrozzeria();
-		comboBoxCarrozzeria.setEnabled(false);		
-		comboBoxPostiASedere.setEnabled(false);
-		JComboBox<String> comboBoxFinitureInterni = getComboBox_FinitureInterni();
-		comboBoxFinitureInterni.setEnabled(false);
-		JComboBox<String> comboBoxColoreInterni = getComboBox_ColoreInterni();
-		comboBoxColoreInterni.setEnabled(false);
-		comboBoxMotore.setEnabled(false);
+		getComboBox_Carrozzeria().setEnabled(false);		
+		getComboBox_PostiASedere().setEnabled(false);
+		getComboBox_FinitureInterni().setEnabled(false);
+		getComboBox_ColoreInterni().setEnabled(false);
+		getComboBox_Motore().setEnabled(false);
 
 		//Disattivo le checkbox che non servono nel caso di motoveicolo
-		JCheckBox chckbxHandicap = getChckbxHandicap();
-		chckbxHandicap.setEnabled(false);
-		JCheckBox chckbxServosterzo = getChckbxServosterzo();
-		chckbxServosterzo.setEnabled(false);
-		JCheckBox chckbxSediliSportivi = getChckbxSediliSportivi();
-		chckbxSediliSportivi.setEnabled(false);
-		JCheckBox chckbxParkDistControl = getChckbxParkDistControl();
-		chckbxParkDistControl.setEnabled(false);
-		JCheckBox chckbxFreniADisco = getChckbxFreniADisco();
-		chckbxFreniADisco.setEnabled(true);
-		JCheckBox chckbxRadiolettoreCd = getChckbxRadiolettoreCd();
-		chckbxRadiolettoreCd.setEnabled(false);
-		JCheckBox chckbxAbs = getChckbxAbs();
-		chckbxAbs.setEnabled(true);
-		JCheckBox chckbxGancioTraino = getChckbxGancioTraino();
-		chckbxGancioTraino.setEnabled(false);
-		JCheckBox chckbxVolanteMultifunzione = getChckbxVolanteMultifunzione();
-		chckbxVolanteMultifunzione.setEnabled(false);
-		JCheckBox chckbxImmobilizer = getChckbxImmobilizer();
-		chckbxImmobilizer.setEnabled(false);
-		JCheckBox chckbxPortapacchi = getChckbxPortapacchi();
-		chckbxPortapacchi.setEnabled(false);
-		JCheckBox chckbxAirbag = getChckbxAirbag();
-		chckbxAirbag.setEnabled(false);
-		JCheckBox chckbxEsp = getChckbxEsp();
-		chckbxEsp.setEnabled(false);
-		JCheckBox chckbxAlzacristalliElettrici = getChckbxAlzacristalliElettrici();
-		chckbxAlzacristalliElettrici.setEnabled(false);
-		JCheckBox chckbxNavigatoreSatellitare = getChckbxNavigatoreSatellitare();
-		chckbxNavigatoreSatellitare.setEnabled(false);
-		JCheckBox chckbxCerchiInLega = getChckbxCerchiInLega();
-		chckbxCerchiInLega.setEnabled(false);
-		JCheckBox chckbxContrAutomTrazione = getChckbxContrAutomTrazione();
-		chckbxContrAutomTrazione.setEnabled(false);
-		JCheckBox chckbxChiusuraCentralizzata = getChckbxChiusuraCentralizzata();
-		chckbxChiusuraCentralizzata.setEnabled(false);
-		JCheckBox chckbxSediliRiscaldati = getChckbxSediliRiscaldati();
-		chckbxSediliRiscaldati.setEnabled(false);
-		JCheckBox chckbxClima = getChckbxClima();
-		chckbxClima.setEnabled(false);
-		JCheckBox chckbxAntifurto = getChckbxAntifurto();
-		chckbxAntifurto.setEnabled(false);
-		JCheckBox chckbxCupolino = getChckbxCupolino();
-		chckbxCupolino.setEnabled(true);
-		JCheckBox chckbxBauletto = getChckbxBauletto();
-		chckbxBauletto.setEnabled(true);
-		JCheckBox chckbxAvviamentoAPedale = getChckbxAvviamentoAPedale();
-		chckbxAvviamentoAPedale.setEnabled(true);
-		JCheckBox chckbxAvviamentoElettrico = getChckbxAvviamentoElettrico();
-		chckbxAvviamentoElettrico.setEnabled(true);
+		getChckbxHandicap().setEnabled(false);
+		getChckbxServosterzo().setEnabled(false);
+		getChckbxSediliSportivi().setEnabled(false);
+		getChckbxParkDistControl().setEnabled(false);
+		getChckbxFreniADisco().setEnabled(true);
+		getChckbxRadiolettoreCd().setEnabled(false);
+		getChckbxAbs().setEnabled(true);
+		getChckbxGancioTraino().setEnabled(false);
+		getChckbxVolanteMultifunzione().setEnabled(false);
+		getChckbxImmobilizer().setEnabled(false);
+		getChckbxPortapacchi().setEnabled(false);
+		getChckbxAirbag().setEnabled(false);
+		getChckbxEsp().setEnabled(false);
+		getChckbxAlzacristalliElettrici().setEnabled(false);
+		getChckbxNavigatoreSatellitare().setEnabled(false);
+		getChckbxCerchiInLega().setEnabled(false);
+		getChckbxContrAutomTrazione().setEnabled(false);
+		getChckbxChiusuraCentralizzata().setEnabled(false);
+		getChckbxSediliRiscaldati().setEnabled(false);
+		getChckbxClima().setEnabled(false);
+		getChckbxAntifurto().setEnabled(false);
+		getChckbxCupolino().setEnabled(true);
+		getChckbxBauletto().setEnabled(true);
+		getChckbxAvviamentoAPedale().setEnabled(true);
+		getChckbxAvviamentoElettrico().setEnabled(true);
 
 		//Modifico le opzioni della combobox Carburante con le opzioni per i motoveicoli
 		JComboBox<String> comboBoxCarburante = getComboBox_Carburante();
@@ -2555,8 +2490,6 @@ public class J2Web_UI implements parametriGenerali {
 
 	}
 
-
-
 	//Metodo per popolare la combobox Versione veicolo
 	private void popolaVersioneVeicolo(String marcaVeicolo, String modelloVeicolo, JComboBox<String> currentComboboxVersione) {
 
@@ -2612,7 +2545,6 @@ public class J2Web_UI implements parametriGenerali {
 		}	
 
 	}
-
 
 	//Metodo per popolare altri campi info veicolo
 	private void popolaInfoVeicolo(String IdModelloVeicolo) {
@@ -2777,7 +2709,6 @@ public class J2Web_UI implements parametriGenerali {
 
 	}
 
-
 	//Metodo per selezionare una immagine e mostrarla in anteprima
 	private void selezionaImmagine(JLabel labelImmagine, int imageIndex) {
 		JFileChooser dlgFile;
@@ -2841,8 +2772,6 @@ public class J2Web_UI implements parametriGenerali {
 			}	
 		}
 	}
-
-
 
 	//Metodo per resettare la form (cliente o veicolo dipendono dal parametro attuale)
 	@SuppressWarnings("unchecked")
@@ -3125,25 +3054,6 @@ public class J2Web_UI implements parametriGenerali {
 		return isValid;
 	}
 
-
-	//Disegna il pannello dei portali di sincronizzazione nella sua configurazione attiva (scheda selezionata) 
-	static void panelInserimentoInActiveMode(JPanel pannelloListaPortali, final SchedaVeicolo scheda, final boolean selectAllSelected) {
-
-		pannelloListaPortali.removeAll();
-
-		//Ciclo ogni oggetto PortaleWeb presente nella lista concatenata e per ognuno aggiorno il sottopannello
-		ListIterator<PortaleWeb> iterator = J2Web_UI.listPortaliSincronizzazione.listIterator();
-		while(iterator.hasNext()) {	     		
-			final PortaleWeb portaleCorrente = iterator.next();
-			InserimentoPortale inserimentoPortale = new InserimentoPortale(portaleCorrente, scheda, selectAllSelected);
-			pannelloListaPortali.add(inserimentoPortale);
-		}
-
-		pannelloListaPortali.updateUI();
-
-	}
-
-
 	//Il nuovo oggetto scheda immobile viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
 	static void aggiungiSchedaVeicolo(SchedaVeicolo scheda) {
 
@@ -3154,7 +3064,6 @@ public class J2Web_UI implements parametriGenerali {
 		j2web.salvaListaSchedeVeicoloCreate();
 
 	}
-
 
 	//Il nuovo oggetto scheda cliente viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
 	static void aggiungiSchedaCliente(SchedaCliente scheda) {
@@ -3174,26 +3083,11 @@ public class J2Web_UI implements parametriGenerali {
 
 		pannelloListaPortali.removeAll();
 
-		panelInserimentoInDefaultMode(pannelloListaPortali);
+		PanelSicronizzazioneConPortali.panelInserimentoInDefaultMode(pannelloListaPortali);
 
 		pannelloListaPortali.updateUI();
 
 	}
-
-	//Disegna il pannello dei portali di sincronizzazione nella sua configurazione standard (nessuna scheda selezionata)
-	private static void panelInserimentoInDefaultMode(JPanel pannelloListaPortali) {
-
-		//Ciclo tra i portali immobiliari presenti nella lista concatenata e per ognuno creo dei sottopannelli e dei pulsanti (fittizi: non hanno alcuna funzionalità )
-		ListIterator<PortaleWeb> iterator = listPortaliSincronizzazione.listIterator();
-		while(iterator.hasNext()) {
-			final PortaleWeb portaleCorrente = iterator.next();
-			InserimentoPortale inserimentoPortale = new InserimentoPortale(portaleCorrente);
-			pannelloListaPortali.add(inserimentoPortale);
-		} 
-
-	}
-
-
 
 	//I metodi che espongono elementi della GUI
 	//Combobox
@@ -3214,6 +3108,136 @@ public class J2Web_UI implements parametriGenerali {
 	}
 	protected static JComboBox<String> getComboBox_ColoreInterni() {
 		return comboBox_ColoreInterni;
+	}
+	protected static JComboBox<String> getComboBox_Motore() {
+		return comboBox_Motore;
+	}
+	protected static JComboBox<String> getComboBox_Modello() {
+		return comboBox_Modello;
+	}
+	protected static JComboBox<String> getComboBox_Carburante() {
+		return comboBox_Carburante;
+	}
+	protected static JComboBox<String> getComboBox_Versione() {
+		return comboBox_Versione;
+	}
+	protected static JComboBox<String> getComboBox_MeseImmatricolazione() {
+		return comboBox_MeseImmatricolazione;
+	}
+	protected static JComboBox<String> getComboBox_AnnoImmatricolazione() {
+		return comboBox_AnnoImmatricolazione;
+	}
+	protected static JComboBox<String> getComboBox_Cambio() {
+		return comboBox_Cambio;
+	}
+	protected static JComboBox<String> getComboBox_NumeroRapporti() {
+		return comboBox_NumeroRapporti;
+	}
+	protected static JComboBox<String> getComboBox_ColoreEsterno() {
+		return comboBox_ColoreEsterno;
+	}	
+	protected static JComboBox<String> getComboBox_PrecedentiProprietari() {
+		return comboBox_PrecedentiProprietari;
+	}
+	protected static JComboBox<String> getComboBox_ClasseEmissioni() {
+		return comboBox_ClasseEmissioni;
+	}
+	protected static JComboBox<String> formCliente_getMarcaVeicolo() {
+		return comboBox_Marca_Cliente;
+	}
+	protected static JComboBox<String> formCliente_getModelloVeicolo() {
+		return comboBox_Modello_Cliente;
+	}
+	protected static JComboBox<String> formCliente_getVersioneVeicolo() {
+		return comboBox_Versione_Cliente;
+	}
+	protected static JComboBox<String> formCliente_getTipologiaCarburanteVeicolo() {
+		return comboBox_TipologiaCarburante_Cliente;
+	}
+	protected static JComboBox<String> formCliente_getColoreVeicolo() {
+		return comboBox_Colore_Cliente;
+	}
+	protected static JComboBox<String> formCliente_getTipologiaCliente() {
+		return comboBoxTipologia_Cliente;
+	}
+
+	//Textfield
+	protected static JTextField getTextField_YouTubeUrl() {
+		return txtField_YouTubeUrl;
+	}
+	protected static JTextField getTextField_ConsumoMedio() {
+		return comboBox_ConsumoMedio;
+	}
+	protected static JTextField getTextField_Cilindrata() {
+		return comboBox_Cilindrata;
+	}
+	protected static JTextField getTextField_Kw() {
+		return txtFieldKw;
+	}
+	protected static JTextField getTextField_Cv() {
+		return txtFieldCv;
+	}
+	protected static JTextField getTextField_Chilometraggio() {
+		return textField_Chilometraggio;
+	}
+	protected static JTextField getTextField_Prezzo() {
+		return textField_Prezzo;
+	}
+	protected static JTextField formCliente_getNome() {
+		return formCliente_textFieldNome;
+	}
+	protected static JTextField formCliente_getCognome() {
+		return formCliente_textFieldCognome;
+	}
+	protected static JTextField formCliente_getEmail() {
+		return formCliente_textFieldEmail;
+	}
+	protected static JTextField formCliente_getTelefono1() {
+		return formCliente_textFieldTelefono1;
+	}
+	protected static JTextField formCliente_getTelefono2() {
+		return formCliente_textFieldTelefono2;
+	}
+	protected static JTextField formCliente_getVia() {
+		return formCliente_textFieldVia;
+	}
+	protected static JTextField formCliente_getNumeroCivico() {
+		return formCliente_textFieldNumeroCivico;
+	}
+	protected static JTextField formCliente_getCAP() {
+		return formCliente_textFieldCAP;
+	}
+	protected static JTextField formCliente_getCitta() {
+		return formCliente_textFieldCitta;
+	}
+	protected static JTextField getTextFieldRagioneSociale() {
+		return textFieldRagioneSociale;
+	}
+	protected static JTextField getTextFieldIndirizzo() {
+		return textFieldIndirizzo;
+	}
+	protected static JTextField getTextFieldTelefonoGenerico() {
+		return textFieldTelefonoGenerico;
+	}
+	protected static JTextField getTextFieldReferente() {
+		return textFieldReferente;
+	}
+	protected static JTextField getTextFieldTelefonoReferente() {
+		return textFieldTelefonoReferente;
+	}
+	protected static JTextField getTextFieldEmailReferente() {
+		return textFieldEmailReferente;
+	}
+
+	//Checkbox
+	protected static JCheckBox getChckbxMetallizzato() {
+		return chckbxMetallizzato;
+	}
+	protected static JCheckBox getChckbxTrattabile() {
+		return chckbxTrattabile;
+	}
+	protected static JCheckBox getChckbxIvaDeducibile() {
+		return chckbxIvaDeducibile;
 	}
 	protected static JCheckBox getChckbxCupolino() {
 		return chckbxCupolino;
@@ -3290,73 +3314,6 @@ public class J2Web_UI implements parametriGenerali {
 	protected static JCheckBox getChckbxBauletto() {
 		return chckbxBauletto;
 	}
-	protected static JComboBox<String> getComboBox_Motore() {
-		return comboBox_Motore;
-	}
-	protected static JComboBox<String> getComboBox_Modello() {
-		return comboBox_Modello;
-	}
-	protected static JComboBox<String> getComboBox_Carburante() {
-		return comboBox_Carburante;
-	}
-	protected static JComboBox<String> getComboBox_Versione() {
-		return comboBox_Versione;
-	}
-	protected static JComboBox<String> getComboBox_MeseImmatricolazione() {
-		return comboBox_MeseImmatricolazione;
-	}
-	protected static JComboBox<String> getComboBox_AnnoImmatricolazione() {
-		return comboBox_AnnoImmatricolazione;
-	}
-	protected static JComboBox<String> getComboBox_Cambio() {
-		return comboBox_Cambio;
-	}
-	protected static JComboBox<String> getComboBox_NumeroRapporti() {
-		return comboBox_NumeroRapporti;
-	}
-	protected static JComboBox<String> getComboBox_ColoreEsterno() {
-		return comboBox_ColoreEsterno;
-	}	
-	protected static JComboBox<String> getComboBox_PrecedentiProprietari() {
-		return comboBox_PrecedentiProprietari;
-	}
-	protected static JComboBox<String> getComboBox_ClasseEmissioni() {
-		return comboBox_ClasseEmissioni;
-	}	
-
-	//Textfield
-	protected static JTextField getTextField_YouTubeUrl() {
-		return txtField_YouTubeUrl;
-	}
-	protected static JTextField getTextField_ConsumoMedio() {
-		return comboBox_ConsumoMedio;
-	}
-	protected static JTextField getTextField_Cilindrata() {
-		return comboBox_Cilindrata;
-	}
-	protected static JTextField getTextField_Kw() {
-		return txtFieldKw;
-	}
-	protected static JTextField getTextField_Cv() {
-		return txtFieldCv;
-	}
-	protected static JTextField getTextField_Chilometraggio() {
-		return textField_Chilometraggio;
-	}
-	protected static JTextField getTextField_Prezzo() {
-		return textField_Prezzo;
-	}		
-
-	//Checkbox
-	protected static JCheckBox getChckbxMetallizzato() {
-		return chckbxMetallizzato;
-	}
-	protected static JCheckBox getChckbxTrattabile() {
-		return chckbxTrattabile;
-	}
-	protected static JCheckBox getChckbxIvaDeducibile() {
-		return chckbxIvaDeducibile;
-	}	
 
 	//Radio button
 	protected static JRadioButton getRdbtnAutoveicolo() {
@@ -3364,6 +3321,12 @@ public class J2Web_UI implements parametriGenerali {
 	}
 	protected static JRadioButton getRdbtnMotoScooter() {
 		return rdbtnMotoScooter;
+	}
+	protected static JRadioButton formCliente_getRdbtnSignore() {
+		return formCliente_rdbtnSignore;
+	}
+	protected static JRadioButton formCliente_getRdbtnSignora() {
+		return formCliente_rdbtnSignora;
 	}
 
 	//Label
@@ -3442,60 +3405,6 @@ public class J2Web_UI implements parametriGenerali {
 	protected static JPanel getPanel_10() {
 		return panel_10;
 	}
-
-
-	protected static JRadioButton formCliente_getRdbtnSignore() {
-		return formCliente_rdbtnSignore;
-	}
-	protected static JRadioButton formCliente_getRdbtnSignora() {
-		return formCliente_rdbtnSignora;
-	}
-	protected static JTextField formCliente_getNome() {
-		return formCliente_textFieldNome;
-	}
-	protected static JTextField formCliente_getCognome() {
-		return formCliente_textFieldCognome;
-	}
-	protected static JTextField formCliente_getEmail() {
-		return formCliente_textFieldEmail;
-	}
-	protected static JTextField formCliente_getTelefono1() {
-		return formCliente_textFieldTelefono1;
-	}
-	protected static JTextField formCliente_getTelefono2() {
-		return formCliente_textFieldTelefono2;
-	}
-	protected static JTextField formCliente_getVia() {
-		return formCliente_textFieldVia;
-	}
-	protected static JTextField formCliente_getNumeroCivico() {
-		return formCliente_textFieldNumeroCivico;
-	}
-	protected static JTextField formCliente_getCAP() {
-		return formCliente_textFieldCAP;
-	}
-	protected static JTextField formCliente_getCitta() {
-		return formCliente_textFieldCitta;
-	}
-	protected static JComboBox<String> formCliente_getMarcaVeicolo() {
-		return comboBox_Marca_Cliente;
-	}
-	protected static JComboBox<String> formCliente_getModelloVeicolo() {
-		return comboBox_Modello_Cliente;
-	}
-	protected static JComboBox<String> formCliente_getVersioneVeicolo() {
-		return comboBox_Versione_Cliente;
-	}
-	protected static JComboBox<String> formCliente_getTipologiaCarburanteVeicolo() {
-		return comboBox_TipologiaCarburante_Cliente;
-	}
-	protected static JComboBox<String> formCliente_getColoreVeicolo() {
-		return comboBox_Colore_Cliente;
-	}
-	protected static JComboBox<String> formCliente_getTipologiaCliente() {
-		return comboBoxTipologia_Cliente;
-	}
-
 	protected static JPanel getPanel_13() {
 		return panel_13;
 	}
@@ -3505,7 +3414,6 @@ public class J2Web_UI implements parametriGenerali {
 	protected static JPanel getPanel_6() {
 		return panel_6;
 	}
-
 	protected static JPanel getPanel_31() {
 		return panel_31;
 	}
@@ -3515,25 +3423,8 @@ public class J2Web_UI implements parametriGenerali {
 	protected static JPanel getPanel_8() {
 		return panel_8;
 	}
-	protected static JTextField getTextFieldRagioneSociale() {
-		return textFieldRagioneSociale;
-	}
-	protected static JTextField getTextFieldIndirizzo() {
-		return textFieldIndirizzo;
-	}
-	protected static JTextField getTextFieldTelefonoGenerico() {
-		return textFieldTelefonoGenerico;
-	}
-	protected static JTextField getTextFieldReferente() {
-		return textFieldReferente;
-	}
-	protected static JTextField getTextFieldTelefonoReferente() {
-		return textFieldTelefonoReferente;
-	}
-	protected static JTextField getTextFieldEmailReferente() {
-		return textFieldEmailReferente;
-	}
 
+	//Pulsanti
 	protected JButton getBtnImmagine_1() {
 		return btnImmagine1;
 	}
