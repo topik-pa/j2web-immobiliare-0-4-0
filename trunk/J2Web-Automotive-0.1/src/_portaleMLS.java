@@ -25,6 +25,7 @@ import org.json.JSONObject;
 public class _portaleMLS extends PortaleWeb { 
 
 	private boolean inserimentoOK = false;
+	private boolean eliminazioneOK = false;
 
 	/*Dati di accesso al DB MLS remoto*/
 	String host = "sql.j2webstudio.it";
@@ -128,14 +129,10 @@ public class _portaleMLS extends PortaleWeb {
 				int x = scheda.arrayImages[i].getName().lastIndexOf('.');
 				if (x > 0) {
 					currentFileType = scheda.arrayImages[i].getName().substring(x);
-					System.out.println("test1: " + currentFileType);
 				}
 
 				//Il nome del file sul server remoto
 				String fileName = scheda.codiceScheda + "_img_" + i + currentFileType;
-				System.out.println("test2: " + fileName);
-
-				//String fileName = scheda.codiceScheda + "_img_" + i;
 
 				FileBody bin = new FileBody(scheda.arrayImages[i]);
 				reqEntity.addPart("file", bin);
@@ -180,11 +177,9 @@ public class _portaleMLS extends PortaleWeb {
 					break;
 				}
 
-
 			}
 
 		}
-
 
 		//I dati da inviare sono valorizzati con i dati presi dalla scheda
 		IdScheda = "'" + scheda.codiceScheda + "'";
@@ -258,8 +253,6 @@ public class _portaleMLS extends PortaleWeb {
 		String querySQL = querySQL_1 + querySQL_2_normalized + querySQL_3 + querySQL_4 + querySQL_5;
 		String encodedQuerySQL = "";
 
-		System.out.println("test query: " + querySQL);
-
 		try {
 			encodedQuerySQL = URLEncoder.encode(querySQL, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
@@ -273,6 +266,7 @@ public class _portaleMLS extends PortaleWeb {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Query inviata: " + querySQL);
 
 		//Costruisco la query sql di verifica inserimento
 		String querySQL_A = "SELECT * FROM autoveicoli WHERE ";
@@ -306,28 +300,25 @@ public class _portaleMLS extends PortaleWeb {
 
 			if(!json.get("affectedrows").equals("0")) {
 				inserimentoOK = true;
-				
+
 				//Invio mail di conferma inserimento 
-            	sendConfirmationMail(scheda, "PORTALE MLS", scheda.codiceScheda);
-           	
-            	//Stampo a video un messaggio informativo
-                JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + "PORTALE MLS", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
-                
+				sendConfirmationMail(scheda, "PORTALE MLS", scheda.codiceScheda);
+
+				//Stampo a video un messaggio informativo
+				JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + "PORTALE MLS", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+
 			}
 			else {
 				inserimentoOK = false;
-				
+
 				//Stampo a video un messaggio informativo
-        		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + "PORTALE MLS" + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + "PORTALE MLS" + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
 			}
 
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
-
 
 
 		//Tracking dell'evento inserzione di una scheda veicolo in MLS
@@ -365,20 +356,12 @@ public class _portaleMLS extends PortaleWeb {
 	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {		
 		System.out.println("Eliminazione scheda: " + scheda.idScheda + "...");
 
-
-
-
-		//con = DriverManager.getConnection("jdbc:mysql://localhost:3306/veicoli", "testuser", "test623");
-
-		//pst = con.prepareStatement("DELETE FROM autoveicoli WHERE IdScheda = " + "'" + scheda.codiceScheda + "'");            
-
-		//La query sql viene trasformata in stringa e tradotta in formato urlencoded
-		String encodedQuery="";
-		//String statementText = pst.toString();
-		//query = statementText.substring( statementText.indexOf( ": " ) + 2 );
+		//Costruisco la query sql
+		String query = "DELETE FROM autoveicoli WHERE IdScheda = " + "'" + scheda.codiceScheda + "'";
+		String encodedQuerySQL = "";
 
 		try {
-			encodedQuery = URLEncoder.encode(query, "UTF-8");
+			encodedQuerySQL = URLEncoder.encode(query, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -387,14 +370,74 @@ public class _portaleMLS extends PortaleWeb {
 		//Invio la richiesta al server remoto
 		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 		try {
-			getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuery, true);
+			getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Query inviata: " + query);
+
+		//Costruisco la query sql di verifica inserimento
+		String querySQL_A = "SELECT * FROM autoveicoli WHERE ";
+		String querySQL_B = "(IdScheda = ";
+		String querySQL_C =  "'" + scheda.codiceScheda + "')";
+
+		String querySQLVerifica = querySQL_A + querySQL_B + querySQL_C;
+		String encodedQuerySQLVerifica = "";
+
+		//Encoding della query
+		try {
+			encodedQuerySQLVerifica = URLEncoder.encode(querySQLVerifica, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		//Invio la richiesta al server remoto
+		HttpPortalGetConnection verificaInserimentoVeicolo = new HttpPortalGetConnection();
+		try {
+			Object[] response = verificaInserimentoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQLVerifica, true);
+			String responseBody = (String)response[1];
+			JSONObject json = null;
+			try {
+				json = new JSONObject(responseBody);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+			if(json.get("affectedrows").equals("0")) {
+				eliminazioneOK = true;
+
+				//Stampo a video un messaggio informativo
+				JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + "PORTALE MLS", "Scheda eliminata", JOptionPane.INFORMATION_MESSAGE);
+
+			}
+			else {
+				eliminazioneOK = false;
+
+				//Stampo a video un messaggio informativo
+				JOptionPane.showMessageDialog(null, "Problemi nell'eliminazione scheda in: " + "PORTALE MLS" + ".\n Verificare l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
+			}
+
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 
+		//Tracking dell'evento eliminazione di una scheda veicolo in MLS
+		System.out.print("Tracking dell'evento eliminazione di una scheda veicolo in MLS...");
+		try {
+			j2web.trackEvent("eliminazioneMLSSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE+"_"+scheda.codiceScheda);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+		}
+		System.out.print(" fatto." + "\n");
 
-		return true;
+
+		return eliminazioneOK;
 
 	}
 

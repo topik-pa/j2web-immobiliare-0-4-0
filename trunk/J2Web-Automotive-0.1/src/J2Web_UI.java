@@ -1396,7 +1396,7 @@ public class J2Web_UI implements parametriGenerali {
 
 					//Il pannello centrale viene ridisegnato             	   	
 					aggiornaPannelloListaSchedeVeicolo();
-					
+
 					//Il pannello di destra viene ridisegnato             	   	
 					PanelSicronizzazioneConPortali.panelInserimentoInDefaultMode(J2Web_UI.getPanel_10());
 
