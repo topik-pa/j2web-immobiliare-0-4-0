@@ -130,5 +130,5 @@ class PanelSchedaVeicoloMLS extends JPanel {
 				));
 		pannelloInfoVeicoloMLS.add(table);
 	}
-	
+
 }

@@ -60,7 +60,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		schedaRadio = new JRadioButton("Seleziona scheda veicolo");
 		//Le radio button devono appartenere allo stesso gruppo per funzionare correttamente
 		radioGrpSchede.add(schedaRadio); 
-		//Clicco su una radio button di una scheda
+		//Clicco su una radio button di una scheda veicolo
 		schedaRadio.addActionListener(new ActionListener() {			 
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Scheda veicolo selezionata: " + scheda.codiceScheda); 
@@ -69,7 +69,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				scheda.caricaTabellaHash();
 
 				//Il pannello di destra (sincronizzazione) deve essere aggiornato
-				J2Web_UI.panelInserimentoInActiveMode(pannelloListaPortali, scheda, true);
+				PanelSicronizzazioneConPortali.panelInserimentoInActiveMode(pannelloListaPortali, scheda, true);
 
 				//Coloro il bordo della scheda
 				Component[] wrapperScheda = getParent().getComponents();
@@ -85,7 +85,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 
 				//I dati della scheda selezionata sono visualizzati nella form
 				mostraDatiScheda(scheda);
-				
+
 				J2Web_UI.getBtnInserisciSchedaVeicolo().setEnabled(false);
 			}
 		});
@@ -245,7 +245,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 	}
 
 	private void  mostraDatiScheda(SchedaVeicolo schedaVeicolo) {
-		
+
 		J2Web_UI.disabilitaCampiForm(listCampiFormVeicolo);
 
 		J2Web_UI.nonUserSelection = true;
@@ -281,16 +281,16 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		J2Web_UI.getTextFieldTelefonoGenerico().setText(schedaVeicolo.Telefono);
 		J2Web_UI.getTextFieldTelefonoReferente().setText(schedaVeicolo.TelefonoReferente);
 		J2Web_UI.getTextFieldEmailReferente().setText(schedaVeicolo.emailReferente);
-		
+
 		J2Web_UI.getTextPane_Descrizione().setText(schedaVeicolo.descrizioneVeicolo);	
-		
+
 		if(schedaVeicolo.veicolo=="auto") {
 			J2Web_UI.getRdbtnAutoveicolo().setSelected(true);
 		}
 		else {
 			J2Web_UI.getRdbtnMotoScooter().setSelected(false);
 		}
-	
+
 		if(schedaVeicolo.coloreMetalizzato) {
 			J2Web_UI.getChckbxMetallizzato().setSelected(true);
 		}
@@ -453,9 +453,9 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		else {
 			J2Web_UI.getChckbxAvviamentoElettrico().setSelected(false);
 		}
-		
-		
-		
+
+
+
 		for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null && scheda.arrayImages[i].isFile()) {
 				BufferedImage img = null;
@@ -467,7 +467,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				}
 				Image resizedimg = img.getScaledInstance(70, 50, Image.SCALE_FAST);
 				Icon icoImmagine = new ImageIcon(resizedimg);
-				
+
 				switch (i)
 				{
 				case 1: 
@@ -535,15 +535,11 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 					J2Web_UI.getLabel_Immagine10().setIcon(null);
 				}
 			}
-			
-	
-			
+
 		}	
 
 		J2Web_UI.nonUserSelection = false;
 	}
 
-
-
-
+	
 }

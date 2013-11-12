@@ -2,25 +2,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-//import java.awt.FlowLayout;
 import java.awt.Font;
-//import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-//import java.sql.Connection;
-//import java.sql.DriverManager;
-//import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.ListIterator;
-//import java.util.NoSuchElementException;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -30,14 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-//import javax.swing.border.TitledBorder;
 import javax.swing.JComponent;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {   
-	//JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
 
 	private static final long serialVersionUID = 1L;
 
@@ -67,10 +54,6 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		schedaRadio.addActionListener(new ActionListener() {			 
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Scheda selezionata: " + scheda.codiceSchedaCliente + " per MLS..."); 
-
-				/*JPanel pannelloInfoVeicoloMLS = J2Web_UI.getPanel_8();
-				pannelloInfoVeicoloMLS.removeAll();
-				pannelloInfoVeicoloMLS.updateUI();*/
 				
 				JPanel pannelloListaEstrazioneMLS = J2Web_UI.getPanel_15();
 				pannelloListaEstrazioneMLS.removeAll();
@@ -254,8 +237,6 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		ListIterator<SchedaCliente> iterator = listaSchedeCliente.listIterator();
 		while(iterator.hasNext()) {
 			SchedaCliente schedaCorrente = iterator.next();
-			
-			
 
 			//Costruisco la query sql
 			String querySQL_1 = "SELECT * FROM autoveicoli WHERE ";
@@ -315,7 +296,6 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 					e.printStackTrace();
 				}
 
-
 				String numResults = (String) json.get("affectedrows");
 				
 				System.out.print("numero risultati: " + numResults);
@@ -325,8 +305,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
-			
+			}		
 			
 		}
 		
