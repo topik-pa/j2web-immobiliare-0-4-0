@@ -140,7 +140,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		//Attributi della scheda veicolo	
 		idScheda = new Date().getTime();	//id univoco riferito alla scheda
 		codiceScheda= intestazioneCodiceSchedaVeicolo + UUID.randomUUID().toString(); //codice scheda univoco
-		
+
 		//Inizializzo il path per il file hash di questa scheda
 		singolaSchedaDatPath = pathSchede + codiceScheda + ".dat";
 

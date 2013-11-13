@@ -98,7 +98,7 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 
 	//Pannello disabilitato (nessuna scheda selzionata)
 	public static void panelInserimentoInDefaultMode(final JPanel pannelloListaPortali) {
-		
+
 		pannelloListaPortali.removeAll();
 
 		pannelloListaPortali.add(Box.createVerticalStrut(6));
@@ -118,7 +118,7 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 		} 
 
 		pannelloListaPortali.add(Box.createVerticalGlue());
-		
+
 		pannelloListaPortali.updateUI();
 	}
 
@@ -126,7 +126,7 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 	public static void panelInserimentoInActiveMode(final JPanel pannelloListaPortali, final SchedaVeicolo scheda, final boolean selectAllSelected) {
 
 		pannelloListaPortali.removeAll();
-		
+
 		pannelloListaPortali.add(Box.createVerticalStrut(6));
 
 		//Pannello controllo portali (primo in alto)
@@ -142,7 +142,7 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 		}
 
 		pannelloListaPortali.add(Box.createVerticalGlue());
-		
+
 		pannelloListaPortali.updateUI();
 	}
 
