@@ -135,14 +135,14 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 
 
 	//Costruttore (da form di creazione scheda)
-	public SchedaVeicolo () {
-
-		//Inizializzo il path per il file hash di questa scheda
-		singolaSchedaDatPath = pathSchede + codiceScheda + ".dat";
+	public SchedaVeicolo () {		
 
 		//Attributi della scheda veicolo	
 		idScheda = new Date().getTime();	//id univoco riferito alla scheda
 		codiceScheda= intestazioneCodiceSchedaVeicolo + UUID.randomUUID().toString(); //codice scheda univoco
+		
+		//Inizializzo il path per il file hash di questa scheda
+		singolaSchedaDatPath = pathSchede + codiceScheda + ".dat";
 
 		//Al momento dell'istanziazione, una scheda veicolo inizializza i propri campi prendendone il valore da quelli inseriti nel pannello form di creazione scheda veicolo
 		//Radio button
