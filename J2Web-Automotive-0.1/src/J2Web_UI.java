@@ -2643,7 +2643,7 @@ public class J2Web_UI implements parametriGenerali {
 			comboboxCarburante.setSelectedIndex(0);
 		}
 
-		if(Integer.parseInt(postiASedere)<11) {
+		if(!postiASedere.equals("") && Integer.parseInt(postiASedere)<11) {
 			comboboxPostiASedere.setSelectedItem(postiASedere);
 		}
 

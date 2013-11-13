@@ -67,7 +67,7 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 	}   //Fine costruttore PannelloInserimento
 
 	//Update del pannello, eseguito alla selezione di una scheda sul pannello centrale
-	public void updatePanello(final SchedaVeicolo scheda, final boolean selectAllSelected) {
+	public static void updatePanello(final SchedaVeicolo scheda, final boolean selectAllSelected) {
 
 		JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
 
@@ -75,11 +75,11 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 		listPortaliInserimentoSequenziale.clear();
 		listPortaliCancellazioneSequenziale.clear();
 
-		removeAll();
+		pannelloListaPortali.removeAll();
 
 		panelInserimentoInActiveMode(pannelloListaPortali, scheda, selectAllSelected);
 
-		updateUI();
+		pannelloListaPortali.updateUI();
 
 	}
 
@@ -465,7 +465,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 					System.out.println("Inserisci: " + scheda.codiceScheda + " in " + portale.idPortale);	     				
 					//Il cursone viene messo in modalità attesa
 					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-					//Chiamo il metodo afferente all'oggetto PortaleWeb per inserire una scheda immobile, il metoso chiamata sarà quella della sottoclasse effettiva  				
+					//Chiamo il metodo afferente all'oggetto PortaleWeb per inserire una scheda, il metooo chiamato sarà quello della sottoclasse effettiva  				
 					try {
 						System.out.println("Inserisci: " + scheda.codiceScheda + " in " + portale.idPortale);
 						portale.inserisciScheda(scheda, false);

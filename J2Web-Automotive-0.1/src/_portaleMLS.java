@@ -299,7 +299,16 @@ public class _portaleMLS extends PortaleWeb {
 
 
 			if(!json.get("affectedrows").equals("0")) {
+				
+				System.out.println("Inserita in: " + "PORTALE MLS");  
+				
 				inserimentoOK = true;
+				
+				//Aggiorna la lista dei portali in cui è inserita la scheda
+	    		scheda.aggiungiInserimentoPortale(idPortale, scheda.codiceScheda);
+	    		
+	    		//Aggiorna i pulsanti del pannello sincronizzazione
+    			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
 				//Invio mail di conferma inserimento 
 				sendConfirmationMail(scheda, "PORTALE MLS", scheda.codiceScheda);
@@ -338,6 +347,8 @@ public class _portaleMLS extends PortaleWeb {
 	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
 		System.out.println("Visualizzazione scheda: " + scheda.idScheda + "...");
+		
+		JOptionPane.showMessageDialog(null, "Attualmente il portale non supporta questa funzionalità", "Richiesta non eseguibile", JOptionPane.INFORMATION_MESSAGE);
 		//Apro il browser e inserisco credenziali		
 		/*try {
 			String url = URLROOT;
@@ -409,6 +420,12 @@ public class _portaleMLS extends PortaleWeb {
 
 			if(json.get("affectedrows").equals("0")) {
 				eliminazioneOK = true;
+				
+				//Aggiorno la lista dei portali in cui è presenta la scheda corrente
+		  		scheda.eliminaInserimentoPortale(idPortale);
+		  		
+				//Aggiorna i pulsanti del pannello sincronizzazione
+    			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
 				//Stampo a video un messaggio informativo
 				JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + "PORTALE MLS", "Scheda eliminata", JOptionPane.INFORMATION_MESSAGE);
