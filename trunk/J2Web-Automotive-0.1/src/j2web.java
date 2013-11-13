@@ -184,6 +184,18 @@ public class j2web implements parametriGenerali {
 		ImageIcon _autoscout24ItIcon  = new ImageIcon(cl.getResource("images/_autoscout24It.png"));
 		PortaleWeb _autoscout24It = new _autoscout24It(_autoscout24ItIcon, "2 - autoscout24.it", "002", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_autoscout24It);
+		
+		ImageIcon _cuboAutoIcon  = new ImageIcon(cl.getResource("images/_cuboAutoIt.png"));
+		PortaleWeb _cuboAutoIt = new _cuboAutoIt(_cuboAutoIcon, "3 - cuboauto.it", "003", true);
+		J2Web_UI.listPortaliSincronizzazione.add(_cuboAutoIt);
+		
+		ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
+		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "4 - subito.it", "004", true);
+		J2Web_UI.listPortaliSincronizzazione.add(_subitoIt);
+		
+		ImageIcon _kijijiItIcon  = new ImageIcon(cl.getResource("images/_kijijiIt.png"));
+		PortaleWeb _kijijiIt = new _kijijiIt(_kijijiItIcon, "5 - kijiji.it", "005", true);
+		J2Web_UI.listPortaliSincronizzazione.add(_kijijiIt);
 
 	}
 

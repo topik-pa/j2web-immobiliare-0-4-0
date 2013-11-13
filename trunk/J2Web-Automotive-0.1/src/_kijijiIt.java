@@ -26,7 +26,7 @@ import org.jsoup.select.Elements;
  */
 
 //La classe principale
-public class _autoscout24It extends PortaleWeb {     
+public class _kijijiIt extends PortaleWeb {     
 
     //Variabili generali
 	private final String NOMEPORTALE = "casab.it";
@@ -54,7 +54,7 @@ public class _autoscout24It extends PortaleWeb {
     String codiceInserzione;
     
 	//Costruttore
-	public _autoscout24It (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
+	public _kijijiIt (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
 		
 		super(icon, valoreLabel, idPortale, isActive);
 		
