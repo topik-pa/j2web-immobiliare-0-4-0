@@ -199,8 +199,12 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 			JTable table = new JTable(matrix, new String[] {
 					"Marca", "Modello", "Versione", "Colore", "Prezzo"
 			});
+			
+			table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+			table.setFillsViewportHeight(true);
 
-			pannelloMatchClienteVeicolo.add(table);
+			pannelloMatchClienteVeicolo.add(table.getTableHeader(), BorderLayout.PAGE_START);
+			pannelloMatchClienteVeicolo.add(table, BorderLayout.CENTER);
 
 		}
 	}

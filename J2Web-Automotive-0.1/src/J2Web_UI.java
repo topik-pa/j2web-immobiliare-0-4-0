@@ -1178,7 +1178,8 @@ public class J2Web_UI implements parametriGenerali {
 			@Override
 			//Controllo il numero dei caratteri immessi
 			public void keyTyped(KeyEvent e) {
-				if (txtField_YouTubeUrl.getText().length()>=maxCaratteri.get("txtField_YouTubeUrl")) {
+				char c = e.getKeyChar();
+				if ((c == '\'') || txtField_YouTubeUrl.getText().length()>=maxCaratteri.get("txtField_YouTubeUrl")) {
 					e.getComponent().getToolkit().beep();
 					e.consume();
 				}
@@ -1286,7 +1287,8 @@ public class J2Web_UI implements parametriGenerali {
 			@Override
 			//Controllo il numero dei caratteri immessi
 			public void keyTyped(KeyEvent e) {
-				if (textFieldTelefonoGenerico.getText().length()>=maxCaratteri.get("textFieldTelefonoGenerico")) {
+				char c = e.getKeyChar();
+				if ((c == '\'') || textFieldTelefonoGenerico.getText().length()>=maxCaratteri.get("textFieldTelefonoGenerico")) {
 					e.getComponent().getToolkit().beep();
 					e.consume();
 				}
@@ -1318,7 +1320,8 @@ public class J2Web_UI implements parametriGenerali {
 			@Override
 			//Controllo il numero di caratteri immessi
 			public void keyTyped(KeyEvent e) {
-				if (textFieldTelefonoReferente.getText().length()>=maxCaratteri.get("textFieldTelefonoReferente")) {
+				char c = e.getKeyChar();
+				if ((c == '\'') || textFieldTelefonoReferente.getText().length()>=maxCaratteri.get("textFieldTelefonoReferente")) {
 					e.getComponent().getToolkit().beep();
 					e.consume();
 				}
@@ -1333,7 +1336,8 @@ public class J2Web_UI implements parametriGenerali {
 			@Override
 			//Controllo il numero di caratteri immessi
 			public void keyTyped(KeyEvent e) {
-				if (textFieldEmailReferente.getText().length()>=maxCaratteri.get("textFieldEmailReferente")) {
+				char c = e.getKeyChar();
+				if ((c == '\'') || textFieldEmailReferente.getText().length()>=maxCaratteri.get("textFieldEmailReferente")) {
 					e.getComponent().getToolkit().beep();
 					e.consume();
 				}
@@ -1478,6 +1482,7 @@ public class J2Web_UI implements parametriGenerali {
 		panel_4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Clienti potenzialmente interessati al veicolo selezionato", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane_3.setViewportView(panel_4);
 		panel_4.setBackground(new Color(255, 255, 224));		
+		panel_4.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelNessunaScedaSelezionata = new JPanel();
 		JLabel lblNessunaScedaSelezionata = new JLabel("Non è stata selezionata alcuna scheda veicolo");                
@@ -2011,7 +2016,7 @@ public class J2Web_UI implements parametriGenerali {
 			}
 		});
 		panel_6.setBackground(new Color(255, 255, 224));
-		panel_6.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel_6.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelNessunaScedaSelezionata2 = new JPanel();
 		JLabel lblNessunaScedaSelezionata2 = new JLabel("Non è stata selezionata alcuna scheda cliente");                
@@ -2158,6 +2163,7 @@ public class J2Web_UI implements parametriGenerali {
 		});
 		scrollPane_9.setViewportView(panel_8);
 		panel_8.setBackground(new Color(255, 255, 224));
+		panel_8.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelNessunaScedaSelezionata3 = new JPanel();
 		JLabel lblNessunaScedaSelezionata3 = new JLabel("Non è stata selezionata alcuna scheda veicolo");                
@@ -2269,8 +2275,8 @@ public class J2Web_UI implements parametriGenerali {
 			panelNessunaSchedaClienteMLS.add(lblNessunaSchedaClienteMLS);
 
 			JPanel panelNessunaSchedaVeicoloMLS = new JPanel();
-			JLabel lblNessunaSchedaVeicoloMLS = new JLabel("Non ci sono veicoli che soddisfano le richieste del cliente selezionato.");                
-			panelNessunaSchedaVeicoloMLS.add(lblNessunaSchedaVeicoloMLS);
+			//JLabel lblNessunaSchedaVeicoloMLS = new JLabel("Non ci sono veicoli che soddisfano le richieste del cliente selezionato.");                
+			//panelNessunaSchedaVeicoloMLS.add(lblNessunaSchedaVeicoloMLS);
 
 			pannelloListaSchedeCliente.add(panelNessunaScheda);
 			pannelloListaSchedeClienteMLS.add(panelNessunaSchedaClienteMLS);

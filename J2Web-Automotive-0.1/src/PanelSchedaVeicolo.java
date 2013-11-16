@@ -232,14 +232,12 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 			JTable table = new JTable(matrix, new String[] {
 					"Nome", "Cognome", "Email", "Telefono 1", "Telefono 2", "Via", "Numero civico", "CAP", "Città"
 			});
-			/*table.setModel(new DefaultTableModel(
-					matrix,
-					new String[] {
-							"Nome", "Cognome", "Email", "Telefono 1", "Telefono 2", "Via", "Numero civico", "CAP", "Città"
-					}
-					));
-			table.*/
-			pannelloMatchVeicoloCliente.add(table);
+			
+			table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+			table.setFillsViewportHeight(true);
+			
+			pannelloMatchVeicoloCliente.add(table.getTableHeader(), BorderLayout.PAGE_START);
+			pannelloMatchVeicoloCliente.add(table, BorderLayout.CENTER);
 
 		}
 	}
