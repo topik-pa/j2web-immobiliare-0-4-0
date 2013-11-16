@@ -119,7 +119,7 @@ public class _portaleMLS extends PortaleWeb {
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException, UnsupportedEncodingException {
 		System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
 
-		for(int i=0; i<scheda.arrayImages.length; i++) {
+		for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null) {
 				HttpPortalPostConnection connessione_inserimentoImmagineInDB = new HttpPortalPostConnection();
 				MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -133,6 +133,7 @@ public class _portaleMLS extends PortaleWeb {
 
 				//Il nome del file sul server remoto
 				String fileName = scheda.codiceScheda + "_img_" + i + currentFileType;
+				System.out.println("test: " + fileName);
 
 				FileBody bin = new FileBody(scheda.arrayImages[i]);
 				reqEntity.addPart("file", bin);
@@ -233,9 +234,9 @@ public class _portaleMLS extends PortaleWeb {
 		ClasseEmissione = "'" + scheda.classeEmissioniVeicolo + "'";
 		if(!scheda.comsumeMedioVeicolo.equals("")){ConsumoMedio = Float.parseFloat(scheda.comsumeMedioVeicolo);}
 		UrlYT = "'" + scheda.urlVideoYouTube + "'";
-		Descrizione = "'" + scheda.descrizioneVeicolo + "'";
+		Descrizione = "'" + scheda.descrizioneVeicolo.replace("'", "''") + "'";
 		RagioneSociale = "'" + scheda.ragioneSociale + "'";
-		Indirizzo = "'" + scheda.Indirizzo + "'";
+		Indirizzo = "'" + scheda.Indirizzo.replace("'", "''") + "'";
 		TelefonoGenerico = "'" + scheda.Telefono + "'";
 		NomeReferente = "'" + scheda.nomeReferente + "'";
 		TelefonoReferente = "'" + scheda.TelefonoReferente + "'";
@@ -249,10 +250,10 @@ public class _portaleMLS extends PortaleWeb {
 		String querySQL_5 = ")";
 
 		String querySQL_2_normalized = querySQL_2.replace(" ", "");
-		//String querySQL_4_normalized = querySQL_4.replace("'", "\'");
+		//String querySQL_4_escaped = querySQL_4.replace("'", "''");
 		String querySQL = querySQL_1 + querySQL_2_normalized + querySQL_3 + querySQL_4 + querySQL_5;
 		String encodedQuerySQL = "";
-
+		
 		try {
 			encodedQuerySQL = URLEncoder.encode(querySQL, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {

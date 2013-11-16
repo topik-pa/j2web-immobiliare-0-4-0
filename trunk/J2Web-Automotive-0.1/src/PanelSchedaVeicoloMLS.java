@@ -128,7 +128,12 @@ class PanelSchedaVeicoloMLS extends JPanel {
 						"Marca", "Modello", "Versione", "Colore", "Chilometri"
 				}
 				));
-		pannelloInfoVeicoloMLS.add(table);
+		
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table.setFillsViewportHeight(true);
+		
+		pannelloInfoVeicoloMLS.add(table.getTableHeader(), BorderLayout.PAGE_START);
+		pannelloInfoVeicoloMLS.add(table, BorderLayout.CENTER);
 	}
 
 }
