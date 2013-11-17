@@ -13,9 +13,9 @@ public interface parametriGenerali {
 	final String  intestazioneCodiceSchedaCliente = "j2w05_C_";
 
 	//Utente del programma
-	final String UTENTE ="Marco Pavan";
-	final String EMAIL_UTENTE ="marco--pavan@libero.it";
-	final String RAGIONESOCIALE_UTENTE ="Auto&Auto srl";
+	final String UTENTE ="Nazario Morsillo";
+	final String EMAIL_UTENTE ="n.morsillo@nektasoft.it";
+	final String RAGIONESOCIALE_UTENTE ="NektaSoft srl";
 
 	//Mail del back end
 	final String BACKEND_EMAIL ="marcopavan.mp@gmail.com";
@@ -25,7 +25,7 @@ public interface parametriGenerali {
 	final int BACKEND_EMAIL_SMTP_PORT =465;
 
 	//Nome della GUI
-	final String nomeGUI = "J2Web - Automotive" + " " + j2web_version + " Nektasoft";
+	final String nomeGUI = "J2Web - Automotive" + " " + j2web_version + " - Nektasoft";
 
 	//Dimensioni di default della GUI 
 	final int[] GUI_bounds = {20, 20, 1152, 640};
