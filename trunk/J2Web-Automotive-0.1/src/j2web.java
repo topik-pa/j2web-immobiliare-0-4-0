@@ -168,6 +168,7 @@ public class j2web implements parametriGenerali {
 		MapModalWindowsDialogs.put("creazioneDellaSchedaVeicolo", "Attenzione: alcuni campi obbligatori non sono stati compilati. ");
 		MapModalWindowsDialogs.put("creazioneDellaSchedaCliente", "Attenzione: alcuni campi obbligatori non sono stati compilati. ");
 		MapModalWindowsDialogs.put("primoTrackingFallito", "Verificare la connessione ad Internet, senza connessione alcune funzionalità di J2Web sono inibite. ");
+		MapModalWindowsDialogs.put("sincronizzazioneImpossibile", "La sincronizzazione della scheda corrente non è possibile per il portale selezionato. ");
 
 	}
 
