@@ -1,0 +1,18 @@
+model_id	model_make_id	model_name	model_trim	model_year	model_body	model_engine_position	model_engine_cc	model_engine_num_cyl	model_engine_type	mode_engine_valves_per_cyl	model_engine_power_ps	model_engine_power_rpm	model_engine_torque_nm	model_engine_torque_rpm	model_engine_bore_mm	model_engine_stroke_mm	model_engine_compression	model_engine_fuel	model_top_speed_kph	model_0_to_100_kph	model_drive	model_transmission_type	model_seats	model_doors	model_weight_kg	model_length_mm	model_width_mm	model_height_mm	model_wheelbase	model_lkm_hwy	model_lkm_mixed	model_lkm_city	model_fuel_cap_l	model_sold_in_us	model_make_display_name
+44328	acura	MDX		2011	SUV	Front	3700	6	V	4	304	6300	366	4500				Gasoline			AWD	Automatic	7	5	2064	4867	1994	1732	2751	11.02		14.07	79	1	Acura
+44331	acura	RDX		2011	SUV	Front	2300	4	in-line	4	243	6000	352	4500				Gasoline			Front	Automatic	5	5	1698	4636	1869	1654	2649	9.08		12.04	68	1	Acura
+44332	acura	RDX	SH-AWD	2011	SUV	Front	2300	4	in-line	4	243	6000	352	4500				Gasoline			AWD	Automatic	5	5	1783	4636	1869	1654	2649	10.07		13.08	68	1	Acura
+44334	acura	RL		2011	Sedan	Front	3700	6	V	4	304	6300	367	5000				Gasoline			AWD	Automatic	5	4	1852	4971	1847	1453	2799	9.08		13.08	73	1	Acura
+44337	acura	TL		2011	Sedan	Front	3500	6	V	4	284	6200	344	5000				Gasoline			Front	Automatic	5	4	1688	4966	1880	1453	2776	9		13.01	70	1	Acura
+44338	acura	TL	SH-AWD	2011	Sedan	Front	3700	6	V	4	309	6300	370	5000				Gasoline			AWD	Automatic	5	4	1797	4966	1880	1453	2776	9.04		13.08	70	1	Acura
+44340	acura	TSX		2011	Sedan	Front	2400	4	in-line	4	204	7000	230	4300				Gasoline			Front	Automatic	5	4	1574	4714	1839	1438	2708	7.06		10.07	70	1	Acura
+44342	acura	ZDX		2011	Crossover	Front	3700	6	V	4	304	6300	366	4500				Gasoline			AWD	Automatic	5	5	2000	4887	1994	1595	2751	10.02		14.07	79	1	Acura
+46988	alfa-romeo	Giulietta	1.4 TB	2011	Hatchback	Front	1368	4	in-line		105	5000	206	1750				Gasoline	186	10.09	Front	Manual	5	5	1355	4351	1798	1465	2634	5.03	6.04	8.04		0	Alfa Romeo
+46989	alfa-romeo	Giulietta	1.4 TB MultiAir	2011	Hatchback	Front	1368	4	in-line		170	5500	250	2500				Gasoline	218	7.08	Front	Manual	5	5	1355	4351	1798	1465	2634	4.07	5.09	7.09		0	Alfa Romeo
+46990	alfa-romeo	Giulietta	1.4 TB MultiAir TCT	2011	Hatchback	Front	1368	4	in-line		170	5500	250	2500				Gasoline	218	7.07	Front	Manual	5	5	1355	4351	1798	1465	2634	4.03	5.02	6.07		0	Alfa Romeo
+46991	alfa-romeo	Giulietta	1.6L MultiJet	2011	Hatchback	Front	1598	4	in-line		105	4000	320	1750				Diesel	185	11.03	Front	Manual	5	5	1355	4351	1798	1465	2634	3.07	4.04	5.05		0	Alfa Romeo
+46992	alfa-romeo	Giulietta	1750 Tbi	2011	Hatchback	Front	1742	4	in-line		235	5500	340	1900				Gasoline	242	6.08	Front	Manual	5	5	1355	4351	1798	1465	2634	5.08	7.06	10.08		0	Alfa Romeo
+46993	alfa-romeo	Giulietta	2.0L MultiJet	2011	Hatchback	Front	1956	4	in-line		140	4000	350	1750				Diesel	218	8	Front	Manual	5	5	1355	4351	1798	1465	2634	4.01	4.07	5.06		0	Alfa Romeo
+46994	alfa-romeo	Giulietta	2.0L MultiJet TCT	2011	Hatchback	Front	1956	4	in-line		170	4000	350	1750				Diesel	218	7.09	Front	Manual	5	5	1355	4351	1798	1465	2634	4	4.05	5.03		0	Alfa Romeo
+47249	alfa-romeo	MiTo	1.4 16V MPI	2011	Hatchback	Front	1366	4	in-line	4	95	6000	129	4500	72	84	10.08.01	Gasoline - unleaded 95	180	11.02	Front	Manual	5	3	1155	4070	1730	1450	2520		5.09		45	0	Alfa Romeo
+47250	alfa-romeo	MiTo	1.4 TB 16V	2011	Hatchback	Front	1368	4	in-line	4	155	6000	230	3000	72	84	9.08.01	Gasoline - unleaded 95	215	8	Front	Manual	5	3	1146	4070	1730	1450	2520		6.05		45	0	Alfa Romeo
