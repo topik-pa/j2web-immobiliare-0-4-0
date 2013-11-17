@@ -1,0 +1,60 @@
+case24
+Username: hsttdjjh@sharklasers.com
+Password: mfdlogm9
+
+casab
+Email: hsttdjjh@sharklasers.com
+Password: password
+
+cubocasa
+Username: testAccount01
+Password: test1234
+
+
+
+attualmente si prevede solo un cookie di sessione (o più in generale: si invia solo un cookie per sessione)
+
+
+
+Tres via mimiela
+
+http://getrix.ekbl.net/getComuneFromCoords.php?lat=46.3226403&lon=11.095072800000025&idComune=11535&action=checkIsInComune
+
+
+http://getrix.ekbl.net/getComuneFromCoords.php?lat=45.038771&lon=7.417430899999999&idComune=9991&action=checkIsInComune
+
+http://getrix.ekbl.net/getComuneFromCoords.php?lat=41.2775526&lon=16.41609649999998&idComune=10238&action=checkIsInComune
+
+
+
+
+
+/**/
+        	//Parse XML to retrieve some informations
+        	Document doc = null;
+    		DocumentBuilder db = null;
+    		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            
+    		db = dbf.newDocumentBuilder();    
+    		doc = db.parse(URLROOT + "/getZonaFromCoords.php?lat=" + mappaDeiParametri.get("latitudine") + "&lon=" + mappaDeiParametri.get("longitudine") + "&idComune=" + mappaDeiParametri.get("idComune"));
+            
+    		doc.getDocumentElement().normalize();
+    		
+            System.out.println("Root element " + doc.getDocumentElement().getNodeName());
+            
+            NodeList id_macrozonaList = doc.getElementsByTagName("id_macrozona");       
+            Node id_macrozonaNode = id_macrozonaList.item(1);
+            idMacrozona = id_macrozonaNode.getNodeValue();
+            mappaDeiParametri.put("idMacrozona", idMacrozona);
+            System.out.println("Root element " + idMacrozona);
+            
+            NodeList microzonaList = doc.getElementsByTagName("microzona");       
+            Node id_microzonaNode = microzonaList.item(1).getFirstChild();
+            idMicrozona = id_microzonaNode.getNodeValue();
+            mappaDeiParametri.put("idMicrozona", idMicrozona);
+            
+            
+            
+                   
+            
+        	/**/
