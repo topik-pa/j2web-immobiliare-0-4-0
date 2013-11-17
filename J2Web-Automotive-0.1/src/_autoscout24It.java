@@ -29,8 +29,8 @@ import org.jsoup.select.Elements;
 public class _autoscout24It extends PortaleWeb {     
 
     //Variabili generali
-	private final String NOMEPORTALE = "casab.it";
-	private final String URLROOT = "http://casab.it";
+	private final String NOMEPORTALE = "autoscout24.it";
+	private final String URLROOT = "http://www.autoscout24.it";
 	private final String USERNAME = "hsttdjjh@sharklasers.com";
     private final String PASSWORD = "password";
 	
@@ -74,7 +74,7 @@ public class _autoscout24It extends PortaleWeb {
     public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
     	System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
     	
-    	//Inizializzazione parametri
+    	/*//Inizializzazione parametri
     	this.scheda=scheda;
     	    	
     	//Inizializza i parametri http del portale 
@@ -358,7 +358,10 @@ public class _autoscout24It extends PortaleWeb {
     		
     		return inserimentoOK;
     	}
-    	       
+    	*/
+    	
+    	JOptionPane.showMessageDialog(null, "Funzionalità non supportata", "Funzionalità non supportata", JOptionPane.WARNING_MESSAGE);
+    	return false;
 	}
 	
     

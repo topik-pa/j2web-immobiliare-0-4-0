@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import org.json.JSONArray;
@@ -510,6 +509,7 @@ public class J2Web_UI implements parametriGenerali {
 				selezioneMotoScooter();
 			}
 		});
+		rdbtnMotoScooter.setEnabled(false); //disattivato per il momento
 		buttonGroup.add(rdbtnMotoScooter);
 		panel_20.add(rdbtnMotoScooter, "6, 2");
 
@@ -2849,6 +2849,8 @@ public class J2Web_UI implements parametriGenerali {
 				formCliente_getColoreVeicolo().setModel(new DefaultComboBoxModel<String>(comboboxModelColoreEsterno));
 				formCliente_getTipologiaCarburanteVeicolo().setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
 			}
+			
+			rdbtnMotoScooter.setEnabled(false); //disattivato per il momento
 
 		}	
 

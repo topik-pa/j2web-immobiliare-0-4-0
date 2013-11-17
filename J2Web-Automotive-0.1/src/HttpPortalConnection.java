@@ -242,6 +242,9 @@ public class HttpPortalConnection implements parametriGenerali {
 		SESSIONCOOKIE_NAME = cookieName;
 		SESSIONCOOKIE_VALUE = cookieValue;
 		isSessionCookieSet = true;
+		
+		//Stampo i valori trovati
+		System.out.println("Method: setSessionCookie \n" + "sessionCookie_header-->"+SESSIONCOOKIE_HEADER + "\nsessionCookieName-->"+SESSIONCOOKIE_NAME + "\nsessionCookie_value-->"+SESSIONCOOKIE_VALUE + "\nsessionCookieDomain-->"+SESSIONCOOKIE_DOMAIN);
 	}
 
 	//Una connessione di test con parametri, headers e cookie statici

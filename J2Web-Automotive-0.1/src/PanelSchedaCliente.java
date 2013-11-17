@@ -144,6 +144,8 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 
 	//Funzione di matching tra clienti e veicoli salvati in locale
 	private void  matchClienteVeicolo(SchedaCliente schedaCliente) {
+		
+		
 
 		JPanel pannelloMatchClienteVeicolo = J2Web_UI.getPanel_6();
 
@@ -158,11 +160,11 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 			SchedaVeicolo schedaCorrente = iterator.next();
 
 			if(
-					(schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && schedaCliente.modelloVeicoloCliente.equalsIgnoreCase(schedaCorrente.modelloVeicolo)) ||
-					(schedaCliente.versioneVeicoloCliente.equalsIgnoreCase(schedaCorrente.versioneVeicolo)) ||
-					(schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && schedaCliente.tipologiaCarburanteVeicoloCliente.equalsIgnoreCase(schedaCorrente.carburanteVeicolo)) ||
-					(schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && schedaCliente.coloreEsternoVeicoloCliente.equalsIgnoreCase(schedaCorrente.coloreEsternoVeicolo)) ||
-					(schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && schedaCliente.tipologiaVeicoloCliente.equalsIgnoreCase(schedaCorrente.tipologiaVeicolo))
+					(schedaCliente.marcaVeicoloCliente!=null && schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && (schedaCliente.modelloVeicoloCliente!=null && schedaCliente.modelloVeicoloCliente.equalsIgnoreCase(schedaCorrente.modelloVeicolo) )) ||
+					(schedaCliente.versioneVeicoloCliente!=null && schedaCliente.versioneVeicoloCliente.equalsIgnoreCase(schedaCorrente.versioneVeicolo)) ||
+					(schedaCliente.marcaVeicoloCliente!=null && schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && (schedaCliente.tipologiaCarburanteVeicoloCliente!=null && schedaCliente.tipologiaCarburanteVeicoloCliente.equalsIgnoreCase(schedaCorrente.carburanteVeicolo) )) ||
+					(schedaCliente.marcaVeicoloCliente!=null && schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && (schedaCliente.coloreEsternoVeicoloCliente!=null && schedaCliente.coloreEsternoVeicoloCliente.equalsIgnoreCase(schedaCorrente.coloreEsternoVeicolo) )) ||
+					(schedaCliente.marcaVeicoloCliente!=null && schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && (schedaCliente.tipologiaVeicoloCliente!=null && schedaCliente.tipologiaVeicoloCliente.equalsIgnoreCase(schedaCorrente.tipologiaVeicolo) ))
 
 					) {
 				J2Web_UI.listSchedeVeicoliMatch.add(schedaCorrente);

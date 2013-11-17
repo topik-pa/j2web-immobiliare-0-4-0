@@ -74,7 +74,7 @@ public class _subitoIt extends PortaleWeb {
     public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
     	System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
     	
-    	//Inizializzazione parametri
+    	/*//Inizializzazione parametri
     	this.scheda=scheda;
     	    	
     	//Inizializza i parametri http del portale 
@@ -358,6 +358,11 @@ public class _subitoIt extends PortaleWeb {
     		
     		return inserimentoOK;
     	}
+    	
+    	*/
+    	
+    	JOptionPane.showMessageDialog(null, "Funzionalità non supportata", "Funzionalità non supportata", JOptionPane.WARNING_MESSAGE);
+    	return false;
     	       
 	}
 	

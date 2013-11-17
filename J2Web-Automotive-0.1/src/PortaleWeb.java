@@ -187,11 +187,12 @@ public abstract class PortaleWeb implements parametriGenerali {
 					//Aggiorno i parametri dei cookie (del portale chiamante)
 					SESSIONCOOKIEHEADER = cookie_header;
 					SESSIONCOOKIEVALUE = cookie_value;
+					
+					//Stampo i valori trovati
+					System.out.println("Method: findSessionCookie \n" + "cookie_header-->"+cookie_header + "\ncookieName-->"+cookieName + "\ncookie_value-->"+cookie_value + "\ncookieDomain-->"+cookieDomain);
 				}   
 			}       	
-		} 
-		//Stampo i valori trovati
-		System.out.println("Method: findSessionCookie \n" + "cookie_header-->"+cookie_header + "\ncookieName-->"+cookieName + "\ncookie_value-->"+cookie_value + "\ncookieDomain-->"+cookieDomain);
+		}		
 
 		//Valori di ritorno
 		return cookieHeaderFound?true:false;

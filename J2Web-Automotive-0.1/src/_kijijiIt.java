@@ -74,6 +74,7 @@ public class _kijijiIt extends PortaleWeb {
     public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
     	System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
     	
+    	/*
     	//Inizializzazione parametri
     	this.scheda=scheda;
     	    	
@@ -357,7 +358,10 @@ public class _kijijiIt extends PortaleWeb {
     		}
     		
     		return inserimentoOK;
-    	}
+    	}*/
+    	
+    	JOptionPane.showMessageDialog(null, "Funzionalità non supportata", "Funzionalità non supportata", JOptionPane.WARNING_MESSAGE);
+    	return false;
     	       
 	}
 	
