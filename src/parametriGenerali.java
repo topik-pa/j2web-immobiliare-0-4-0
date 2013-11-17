@@ -25,7 +25,7 @@ public interface parametriGenerali {
 	final int BACKEND_EMAIL_SMTP_PORT =465;
 
 	//Nome della GUI
-	final String nomeGUI = "J2Web - Automotive" + " " + j2web_version;
+	final String nomeGUI = "J2Web - Automotive" + " " + j2web_version + " Nektasoft";
 
 	//Dimensioni di default della GUI 
 	final int[] GUI_bounds = {20, 20, 1152, 640};
