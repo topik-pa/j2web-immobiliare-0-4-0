@@ -283,4 +283,53 @@ public abstract class PortaleWeb implements parametriGenerali {
 		}
 		return cleanedList;
 	}
+
+	//Ritorna il valore di un input dato il valore nella scheda e l'elemento input del DOM
+  	public String getParamValue(String valueScheda, Element domElement) {
+  		
+  		String returnValue = "";
+  		
+  		switch (domElement.nodeName()) {
+		case "select":		
+			Elements childrens = domElement.children();
+			if(childrens.isEmpty()) {
+            	return "Nessun elemento";
+            }
+			
+			Iterator<Element> iterator = childrens.iterator();
+			List<char[]> stringaScheda = bigram(valueScheda.toLowerCase());
+        	double resultComparation = 0;
+        	while(iterator.hasNext()) {
+            	Element currentElement = iterator.next();
+            	List<char[]> stringaPortale = bigram(currentElement.text().toLowerCase());        		
+        		double actualResultComparation = dice(stringaPortale, stringaScheda);
+        		System.out.println("comp: " + actualResultComparation);
+        		if(actualResultComparation>=resultComparation) {
+        			resultComparation = actualResultComparation;
+        			returnValue = currentElement.attr("value");            		
+        		}       		
+        	}
+			break;
+			
+		case "input":
+			if(domElement.attr("type").equals("text") || domElement.attr("type").equals("password") || domElement.attr("type").equals("submit")) {
+				returnValue = valueScheda;
+			}
+			break;
+			
+		case "textarea":
+			returnValue = valueScheda;
+			break;
+			
+		case "button":
+			returnValue = valueScheda;
+			break;
+			
+		default:
+			
+		}
+  		
+  		return returnValue;
+  	}
+	
 }

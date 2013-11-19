@@ -6,6 +6,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.ImageIcon;
@@ -19,6 +20,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
@@ -38,7 +40,8 @@ public class _cuboAutoIt extends PortaleWeb {
 
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
 	private String codiceInserzione;
-	private String location = "";
+	private String location;
+	private String responseBody;
 	private boolean inserimentoOK = false;
 	private boolean debugMode = true;
 
@@ -82,17 +85,56 @@ public class _cuboAutoIt extends PortaleWeb {
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
 		
-		JOptionPane.showMessageDialog(null, "Funzionalità non supportata", "Funzionalità non supportata", JOptionPane.WARNING_MESSAGE);
-    	return false;
+		/*JOptionPane.showMessageDialog(null, "Funzionalità non supportata", "Funzionalità non supportata", JOptionPane.WARNING_MESSAGE);
+    	return false;*/
 
-		/*//Inizializzazione parametri
+		//Inizializzazione parametri
 		this.scheda=scheda;
+		
+		
+		/*String responseBody;
+		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
+		try {
+			requestHeaders = new ArrayList<NameValuePair>();
+			requestHeaders.add(new BasicNameValuePair("Host", HOST));
+			requestHeaders.add(new BasicNameValuePair("Cookie", "PHPSESSID" + "=" + "eiclulk112j3tf55oc967gof56"));
+			
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, debugMode);
+			responseBody = (String)response[1];
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+		
+		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
+		System.out.println(doc.toString());
+		
+		Element testElement = doc.getElementById("idMarca");
+		System.out.println(testElement.toString());
+		
+		System.out.println("test1 " + testElement.nodeName());
+		
+		System.out.println("test2 " + testElement.children());
+		
+		//Elements childrens = testElement.children();
+		
+		String result = getParamValue("merzedes", testElement);
+		System.out.println("Risultato: " + result);*/
 
 		//Inizializza i parametri http del portale 
-		if(!inizializzaParametri()) {
+		/*if(!inizializzaParametri()) {
 			System.out.println("La scheda: " + scheda.codiceScheda + " non può essere inserita nel portale selezionato" );
 			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("sincronizzazioneImpossibile"), "Sincronizzazione non possibile", JOptionPane.ERROR_MESSAGE);
-		}
+		}*/
+		
+		
+		
+		//Tabella di dipendenza dei parametri
+		Map<String,String> tabellaDiDipendenza = new Hashtable<String,String>();
+		tabellaDiDipendenza.put("password",PASSWORD);
+		tabellaDiDipendenza.put("submit","Entra");
+		tabellaDiDipendenza.put("username",USERNAME);
+		tabellaDiDipendenza.put("idMarca",scheda.marcaVeicolo);
+		
 
 		//Connessione 0 - GET della home page - Opzionale
 		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -106,19 +148,44 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login - Opzionale
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", debugMode);
-
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", debugMode);
+			responseBody = (String)response[1];
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
+		
+		//Valuto parametri
+		String paramName;
+		String paramValue;
+		String dipendenza;
+		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
+		Elements inputElements = doc.select("#frmLogin input");
+		if(inputElements!=null) {
+			Iterator<Element> iterator = inputElements.iterator();
+			while(iterator.hasNext()) {
+				Element currentElement = iterator.next();
+				paramName = currentElement.attr("name");
+				dipendenza = tabellaDiDipendenza.get(paramName);
+				if(dipendenza != null) {
+					paramValue = getParamValue(dipendenza, currentElement);
+					mappaDeiParamerti.put(paramName, paramValue);
+				}	
+			}	
+		}
+		
+		System.out.println("test1 "+mappaDeiParamerti);
 
 
 		//Connessione 2 - POST dei parametri di accesso
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();   	
 		postParameters = new ArrayList<NameValuePair>();
-		postParameters.add(new BasicNameValuePair("password", PASSWORD));
+		/*postParameters.add(new BasicNameValuePair("password", PASSWORD));
 		postParameters.add(new BasicNameValuePair("submit", "Entra"));
-		postParameters.add(new BasicNameValuePair("username", USERNAME));
+		postParameters.add(new BasicNameValuePair("username", USERNAME));*/
+		
+		postParameters.add(new BasicNameValuePair("password", mappaDeiParamerti.get("password")));
+		postParameters.add(new BasicNameValuePair("submit", mappaDeiParamerti.get("submit")));
+		postParameters.add(new BasicNameValuePair("username", mappaDeiParamerti.get("username")));
 
 		try {        	
 			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, debugMode);
@@ -128,9 +195,9 @@ public class _cuboAutoIt extends PortaleWeb {
 			if( (responseStatus.getStatusCode()==302)) {
 
 				//Trovo il cookie di sessione
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+				//findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 				//Imposto il cookie di sessione per tutte le successive connessioni
-				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
+				//connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
 
 				location = getHeaderValueByName(responseHeaders, "Location");
 			}
@@ -152,7 +219,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
 		requestHeaders = new ArrayList<NameValuePair>();
 		requestHeaders.add(new BasicNameValuePair("Host", HOST));
-		requestHeaders.add(new BasicNameValuePair("Cookie", SESSIONCOOKIENAME + "=" + SESSIONCOOKIEVALUE));
+		requestHeaders.add(new BasicNameValuePair("Cookie", "PHPSESSID" + "=" + "ols4m0g7ocu5fecu2lv3gcmqc1"));
 
 		try {
 			connessione_3.get("Connessione 3 - GET della pagina \"Area concessionario\"", URLROOT + "/" + location, requestHeaders, debugMode);
@@ -164,11 +231,32 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 4 - GET della pagina "Inserisci un nuovo annuncio"
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
-			connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, debugMode);
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, debugMode);
+			responseBody = (String)response[1];
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
 
+		//Valuto parametri
+		String paramName2;
+		String paramValue2;
+		String dipendenza2;
+		org.jsoup.nodes.Document doc2 = Jsoup.parse(responseBody);
+		Elements inputElements2 = doc2.select("select#idMarca");
+		if(inputElements2!=null) {
+			Iterator<Element> iterator2 = inputElements2.iterator();
+			while(iterator2.hasNext()) {
+				Element currentElement2 = iterator2.next();
+				paramName2 = currentElement2.attr("name");
+				dipendenza2 = tabellaDiDipendenza.get(paramName2);
+				if(dipendenza2 != null) {
+					paramValue2 = getParamValue(dipendenza2, currentElement2);
+					mappaDeiParamerti.put(paramName2, paramValue2);
+				}	
+			}	
+		}
+		
+		System.out.println("test2 "+mappaDeiParamerti);
 
 		//Connessione 5 - GET della pagina "Inserisci un nuovo annuncio (con parametro circa la marca veicolo)"
 		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
@@ -176,7 +264,7 @@ public class _cuboAutoIt extends PortaleWeb {
 			connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo annuncio (con parametro circa la marca veicolo)\"", URLROOT + "/concessionari/inserisci-annuncio.php?idMarca=" + mappaDeiParamerti.get("idMarca"), requestHeaders, debugMode);
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}*/
+		}
 
 		/*
     	//Connessione 6 - POST dello step 1
@@ -332,7 +420,7 @@ public class _cuboAutoIt extends PortaleWeb {
             }
 		} catch (IOException | HttpWrongResponseBodyException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
@@ -364,7 +452,7 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 
 			return inserimentoOK;
-		}*/
+		}
 
 	}
 
