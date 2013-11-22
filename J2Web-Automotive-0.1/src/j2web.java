@@ -169,6 +169,12 @@ public class j2web implements parametriGenerali {
 		MapModalWindowsDialogs.put("creazioneDellaSchedaCliente", "Attenzione: alcuni campi obbligatori non sono stati compilati. ");
 		MapModalWindowsDialogs.put("primoTrackingFallito", "Verificare la connessione ad Internet, senza connessione alcune funzionalità di J2Web sono inibite. ");
 		MapModalWindowsDialogs.put("sincronizzazioneImpossibile", "La sincronizzazione della scheda corrente non è possibile per il portale selezionato. ");
+		
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_IOException", "Errore I/O. ");
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseStatusCodeException", "Errore HTTP Response Status Code. ");
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseHeaderException", "Errore HTTP Response Header. ");
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseBodyException", "Errore HTTP Response Body. ");
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_Generic", "Errore Generico. ");
 
 	}
 

@@ -154,19 +154,19 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 		switch (errorType)
 		{
 		case "IOException": //Errore standard GET/POST
-			JOptionPane.showMessageDialog(null, errorType + "\n" + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_IOException"), errorType, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_IOException"), errorType, JOptionPane.ERROR_MESSAGE);
 			break;
 		case "HttpWrongResponseStatusCodeException":	//Errore status code inaspettato
-			JOptionPane.showMessageDialog(null, errorType + "\n" + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_HttpWrongResponseStatusCodeException"), errorType, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_HttpWrongResponseStatusCodeException") + "\n" + ((HttpCommunicationException) e1).getCauseDescription(), errorType, JOptionPane.ERROR_MESSAGE);
 			break;
 		case "HttpWrongResponseHeaderException":	//Errore response header inaspettato
-			JOptionPane.showMessageDialog(null, errorType + "\n" + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_HttpWrongResponseHeaderException"), errorType, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_HttpWrongResponseHeaderException") + "\n" + ((HttpCommunicationException) e1).getCauseDescription(), errorType, JOptionPane.ERROR_MESSAGE);
 			break;
 		case "HttpWrongResponseBodyException":	//Errore response body inaspettato
-			JOptionPane.showMessageDialog(null, errorType + "\n" + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_HttpWrongResponseBodyException"), errorType, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_HttpWrongResponseBodyException") + "\n" + ((HttpCommunicationException) e1).getCauseDescription(), errorType, JOptionPane.ERROR_MESSAGE);
 			break;
 		default:	//Altra tipologia di errore 
-			JOptionPane.showMessageDialog(null, errorType + "\n" + MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_Generic"), errorType, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("manageErrorsOnPortalSubmission_Generic"), errorType, JOptionPane.ERROR_MESSAGE);
 			break;
 		} 
 

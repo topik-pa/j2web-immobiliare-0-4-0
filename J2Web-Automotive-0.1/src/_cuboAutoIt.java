@@ -85,48 +85,12 @@ public class _cuboAutoIt extends PortaleWeb {
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
 		
-		/*JOptionPane.showMessageDialog(null, "Funzionalità non supportata", "Funzionalità non supportata", JOptionPane.WARNING_MESSAGE);
-    	return false;*/
-
 		//Inizializzazione parametri
 		this.scheda=scheda;
 		
-		
-		/*String responseBody;
-		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
-		try {
-			requestHeaders = new ArrayList<NameValuePair>();
-			requestHeaders.add(new BasicNameValuePair("Host", HOST));
-			requestHeaders.add(new BasicNameValuePair("Cookie", "PHPSESSID" + "=" + "eiclulk112j3tf55oc967gof56"));
-			
-			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, debugMode);
-			responseBody = (String)response[1];
-		} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-		
-		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
-		System.out.println(doc.toString());
-		
-		Element testElement = doc.getElementById("idMarca");
-		System.out.println(testElement.toString());
-		
-		System.out.println("test1 " + testElement.nodeName());
-		
-		System.out.println("test2 " + testElement.children());
-		
-		//Elements childrens = testElement.children();
-		
-		String result = getParamValue("merzedes", testElement);
-		System.out.println("Risultato: " + result);*/
-
-		//Inizializza i parametri http del portale 
-		/*if(!inizializzaParametri()) {
-			System.out.println("La scheda: " + scheda.codiceScheda + " non può essere inserita nel portale selezionato" );
-			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("sincronizzazioneImpossibile"), "Sincronizzazione non possibile", JOptionPane.ERROR_MESSAGE);
-		}*/
-		
-		
+		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
+		requestHeaders = new ArrayList<NameValuePair>();
+		requestHeaders.add(new BasicNameValuePair("Host", HOST));
 		
 		//Tabella di dipendenza dei parametri
 		Map<String,String> tabellaDiDipendenza = new Hashtable<String,String>();
@@ -139,70 +103,56 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 0 - GET della home page - Opzionale
 		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
-			connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/index.php", debugMode);
+			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/index.php", debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
 
 
-		//Connessione 1 - GET della pagina di login - Opzionale
+		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", debugMode);
-			responseBody = (String)response[1];
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				responseBody = (String)response[1];
+			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
+	
 		
-		//Valuto parametri
-		String paramName;
-		String paramValue;
-		String dipendenza;
-		org.jsoup.nodes.Document doc = Jsoup.parse(responseBody);
-		Elements inputElements = doc.select("#frmLogin input");
-		if(inputElements!=null) {
-			Iterator<Element> iterator = inputElements.iterator();
-			while(iterator.hasNext()) {
-				Element currentElement = iterator.next();
-				paramName = currentElement.attr("name");
-				dipendenza = tabellaDiDipendenza.get(paramName);
-				if(dipendenza != null) {
-					paramValue = getParamValue(dipendenza, currentElement);
-					mappaDeiParamerti.put(paramName, paramValue);
-				}	
-			}	
-		}
-		
-		System.out.println("test1 "+mappaDeiParamerti);
-
-
 		//Connessione 2 - POST dei parametri di accesso
-		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();   	
-		postParameters = new ArrayList<NameValuePair>();
-		/*postParameters.add(new BasicNameValuePair("password", PASSWORD));
-		postParameters.add(new BasicNameValuePair("submit", "Entra"));
-		postParameters.add(new BasicNameValuePair("username", USERNAME));*/
-		
-		postParameters.add(new BasicNameValuePair("password", mappaDeiParamerti.get("password")));
-		postParameters.add(new BasicNameValuePair("submit", mappaDeiParamerti.get("submit")));
-		postParameters.add(new BasicNameValuePair("username", mappaDeiParamerti.get("username")));
-
+		//Raccolgo e valorizzo i parametri mettendoli nella mappaDeiParametri
+		valutaParametri(responseBody, "#frmLogin input", tabellaDiDipendenza, mappaDeiParamerti);	
+		//Trasferisco i parametri dalla mappa alla lista
+		setPostParameters(mappaDeiParamerti, postParameters);
+		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, debugMode);
-			Header[] responseHeaders = (Header[])response[0];
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, debugMode);			
 
+			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-
+				Header[] responseHeaders = (Header[])response[0];
 				//Trovo il cookie di sessione
-				//findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				//Imposto il cookie di sessione per tutte le successive connessioni
-				//connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-
+				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+				//Aggiungo il cookie di sessione ai requestHeaders
+				requestHeaders.add(new BasicNameValuePair("Cookie", "PHPSESSID" + "=" + SESSIONCOOKIEVALUE));
+				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 			}
 			else {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto: mi aspettavo un 302"));
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}    	
 
 		} catch (IOException | RuntimeException e) {
@@ -210,19 +160,19 @@ public class _cuboAutoIt extends PortaleWeb {
 		}
 		finally {
 			postParameters.clear();
+			mappaDeiParamerti.clear();
 		}
 
 
-		//Connessione 3 - GET della pagina "Area concessionario"
+		//Connessione 3 - GET della pagina "Area concessionario" - Opzionale
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
-
-		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		requestHeaders = new ArrayList<NameValuePair>();
-		requestHeaders.add(new BasicNameValuePair("Host", HOST));
-		requestHeaders.add(new BasicNameValuePair("Cookie", "PHPSESSID" + "=" + "ols4m0g7ocu5fecu2lv3gcmqc1"));
-
 		try {
-			connessione_3.get("Connessione 3 - GET della pagina \"Area concessionario\"", URLROOT + "/" + location, requestHeaders, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area concessionario\"", URLROOT + "/" + location, requestHeaders, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -232,39 +182,76 @@ public class _cuboAutoIt extends PortaleWeb {
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, debugMode);
-			responseBody = (String)response[1];
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				responseBody = (String)response[1];
+			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
-
-		//Valuto parametri
-		String paramName2;
-		String paramValue2;
-		String dipendenza2;
-		org.jsoup.nodes.Document doc2 = Jsoup.parse(responseBody);
-		Elements inputElements2 = doc2.select("select#idMarca");
-		if(inputElements2!=null) {
-			Iterator<Element> iterator2 = inputElements2.iterator();
-			while(iterator2.hasNext()) {
-				Element currentElement2 = iterator2.next();
-				paramName2 = currentElement2.attr("name");
-				dipendenza2 = tabellaDiDipendenza.get(paramName2);
-				if(dipendenza2 != null) {
-					paramValue2 = getParamValue(dipendenza2, currentElement2);
-					mappaDeiParamerti.put(paramName2, paramValue2);
-				}	
-			}	
 		}
 		
-		System.out.println("test2 "+mappaDeiParamerti);
-
+		
 		//Connessione 5 - GET della pagina "Inserisci un nuovo annuncio (con parametro circa la marca veicolo)"
+		//Raccolgo e valorizzo i parametri mettendoli nella mappaDeiParametri
+		valutaParametri(responseBody, "select#idMarca", tabellaDiDipendenza, mappaDeiParamerti);
 		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
 		try {
-			connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo annuncio (con parametro circa la marca veicolo)\"", URLROOT + "/concessionari/inserisci-annuncio.php?idMarca=" + mappaDeiParamerti.get("idMarca"), requestHeaders, debugMode);
+			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo annuncio (con parametro circa la marca veicolo)\"", URLROOT + "/concessionari/inserisci-annuncio.php?idMarca=" + mappaDeiParamerti.get("idMarca"), requestHeaders, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				responseBody = (String)response[1];
+			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
+		mappaDeiParamerti.clear();
+		
+		
+		//Connessione 6 - POST dei parametri di accesso
+		//Raccolgo e valorizzo i parametri mettendoli nella mappaDeiParametri
+		valutaParametri(responseBody, "#centrale form input", tabellaDiDipendenza, mappaDeiParamerti);
+		//Trasferisco i parametri dalla mappa alla lista
+		setPostParameters(mappaDeiParamerti, postParameters);
+		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
+		try {        	
+			Object[] response = connessione_6.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/concessionari/_inserisci-annuncio.php", postParameters, debugMode);			
+
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()==302)) {
+				Header[] responseHeaders = (Header[])response[0];
+				
+				//Trovo la location
+				location = getHeaderValueByName(responseHeaders, "Location");
+				if(location.contains("?id=")) {
+					int start = location.indexOf("?id=");
+					int end = location.length();
+					location = location.substring(start, end);
+				}
+				else {
+					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
+				}
+			}
+			else {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}    	
+
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+		finally {
+			postParameters.clear();
+			mappaDeiParamerti.clear();
+		}
+		
 
 		/*
     	//Connessione 6 - POST dello step 1
