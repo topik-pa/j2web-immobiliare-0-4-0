@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -331,5 +333,44 @@ public abstract class PortaleWeb implements parametriGenerali {
   		
   		return returnValue;
   	}
-	
+
+  	//Valuta i parametri presenti nella tabella di dipendenza
+  	public void valutaParametri(String dom, String selettore, Map<String,String> inputMap, Map<String,String> outputMap) {
+		
+		String paramName;
+		String paramValue;
+		String dipendenza;
+		
+		org.jsoup.nodes.Document doc = Jsoup.parse(dom);
+		Elements inputElements = doc.select(selettore);
+		
+		if(inputElements!=null) {
+			Iterator<Element> iterator = inputElements.iterator();
+			while(iterator.hasNext()) {
+				Element currentElement = iterator.next();
+				paramName = currentElement.attr("name");
+				dipendenza = inputMap.get(paramName);
+				if(dipendenza != null) {
+					paramValue = getParamValue(dipendenza, currentElement);
+					outputMap.put(paramName, paramValue);
+				}
+				else {
+					System.out.println("Method valutaParametri: " +  "input non presente nella tabella di dipendenza-->" + currentElement.attr("name") + "(" + currentElement.nodeName() + ")");
+				}
+			}	
+		}
+	}
+  	
+  	//Prepara i parametri POST da inviare nella connessione corrente
+  	public void setPostParameters(Map<String,String> inputMap, List<NameValuePair> outputList) {
+  		if(!inputMap.isEmpty()) {
+			Iterator<Entry<String, String>> iterator = inputMap.entrySet().iterator();
+			while(iterator.hasNext()) {
+				Map.Entry<String,String> currentParam = (Map.Entry<String,String>)iterator.next();
+				outputList.add(new BasicNameValuePair((String)currentParam.getKey(), (String)currentParam.getValue()));			
+			}	
+		}
+  	}
+  	
+  	
 }
