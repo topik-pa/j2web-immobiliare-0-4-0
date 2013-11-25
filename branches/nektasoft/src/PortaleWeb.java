@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -283,4 +284,94 @@ public abstract class PortaleWeb implements parametriGenerali {
 		}
 		return cleanedList;
 	}
+
+	//Ritorna il valore di un input dato il valore nella scheda e l'elemento input del DOM
+  	public String getParamValue(String valueScheda, Element domElement) {
+  		
+  		String returnValue = "";
+  		
+  		switch (domElement.nodeName()) {
+		case "select":		
+			Elements childrens = domElement.children();
+			if(childrens.isEmpty()) {
+            	return "Nessun elemento option";
+            }
+			
+			Iterator<Element> iterator = childrens.iterator();
+			List<char[]> stringaScheda = bigram(valueScheda.toLowerCase());
+        	double resultComparation = 0;
+        	while(iterator.hasNext()) {
+            	Element currentElement = iterator.next();
+            	List<char[]> stringaPortale = bigram(currentElement.text().toLowerCase());        		
+        		double actualResultComparation = dice(stringaPortale, stringaScheda);
+        		System.out.println("comp: " + actualResultComparation);
+        		if(actualResultComparation>=resultComparation) {
+        			resultComparation = actualResultComparation;
+        			returnValue = currentElement.attr("value");            		
+        		}       		
+        	}
+			break;
+			
+		case "input":
+			if(domElement.attr("type").equals("text") || domElement.attr("type").equals("password") || domElement.attr("type").equals("submit") || domElement.attr("type").equals("hidden")) {
+				returnValue = valueScheda;
+			}
+			break;
+			
+		case "textarea":
+			returnValue = valueScheda;
+			break;
+			
+		case "button":
+			returnValue = valueScheda;
+			break;
+			
+		default:
+			System.out.println("Method getParamValue: " +  "input non elaborato-->" + domElement.nodeName());
+			
+		}
+  		
+  		return returnValue;
+  	}
+
+  	//Valuta i parametri presenti nella tabella di dipendenza
+  	public void valutaParametri(String dom, String selettore, Map<String,String> inputMap, Map<String,String> outputMap) {
+		
+		String paramName;
+		String paramValue;
+		String dipendenza;
+		
+		org.jsoup.nodes.Document doc = Jsoup.parse(dom);
+		Elements inputElements = doc.select(selettore);
+		
+		if(inputElements!=null) {
+			Iterator<Element> iterator = inputElements.iterator();
+			while(iterator.hasNext()) {
+				Element currentElement = iterator.next();
+				paramName = currentElement.attr("name");
+				dipendenza = inputMap.get(paramName);
+				if(dipendenza != null) {
+					paramValue = getParamValue(dipendenza, currentElement);
+					outputMap.put(paramName, paramValue);
+				}
+				else {
+					System.out.println("Method valutaParametri: " +  "input non presente nella tabella di dipendenza-->" + currentElement.attr("name") + "(" + currentElement.nodeName() + ")");
+				}
+			}	
+		}
+		System.out.println("Method valutaParametri : " +  "mappaDeiParametri-->" + outputMap.toString());
+	}
+  	
+  	//Prepara i parametri POST da inviare nella connessione corrente
+  	public void setPostParameters(Map<String,String> inputMap, List<NameValuePair> outputList) {
+  		if(!inputMap.isEmpty()) {
+			Iterator<Entry<String, String>> iterator = inputMap.entrySet().iterator();
+			while(iterator.hasNext()) {
+				Map.Entry<String,String> currentParam = (Map.Entry<String,String>)iterator.next();
+				outputList.add(new BasicNameValuePair((String)currentParam.getKey(), (String)currentParam.getValue()));			
+			}	
+		}
+  	}
+  	
+  	
 }
