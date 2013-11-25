@@ -26,6 +26,7 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 	
 	
 	//GET di una risorsa
+	@Deprecated
 	public Object[] get(String connectionDescription, String url, boolean debugMode) throws IOException {
 		
 		//La risposta che verrà restituita
@@ -78,8 +79,8 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 	}
 	
 	
-	//GET di una risorsa ()
-		public Object[] get(String connectionDescription, String url, List<NameValuePair> requestHeaders, boolean debugMode) throws IOException {
+	//GET di una risorsa
+	public Object[] get(String connectionDescription, String url, List<NameValuePair> requestHeaders, boolean debugMode) throws IOException {
 			
 			//La risposta che verrà restituita
 			Object[] headersAndBodyResponseAndStatus = new Object[3];
@@ -87,7 +88,7 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 			//Inizializza la connessione
 			httpget = new HttpGet(url);
 			
-			//Add request headers
+			//Add request headers (comprende i cookies)
 			BasicHeader newHeader;
 			BasicNameValuePair currentHeaderListItem;
 			Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
@@ -101,16 +102,6 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 	        //L'header User-Agent è aggiunto sempre in modo predefinito
 	        requestHeader = new BasicHeader("User-Agent", USER_AGENT);
 	        httpget.addHeader(requestHeader);
-	        
-	        //Set the cookies
-	        if(isSessionCookieSet==true) {
-		        BasicCookieStore cookieStore = new BasicCookieStore(); 
-		        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
-		        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
-		        cookie.setPath("/");           
-		        cookieStore.addCookie(cookie); 
-		        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
-	        }
 	        
 	        //Send the request
 	        response = httpclient.execute(httpget);
