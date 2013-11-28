@@ -16,6 +16,8 @@ public interface parametriGenerali {
 	final String UTENTE ="Marco Pavan";
 	final String EMAIL_UTENTE ="marco--pavan@libero.it";
 	final String RAGIONESOCIALE_UTENTE ="Auto&Auto srl";
+	final String INDIRIZZO_UTENTE ="via Buttrio, 667 - 33100 Udine";
+	final String TELEFONO_UTENTE ="329656598";
 
 	//Mail del back end
 	final String BACKEND_EMAIL ="marcopavan.mp@gmail.com";
@@ -122,6 +124,6 @@ public interface parametriGenerali {
 	final String[] comboboxModelCambio = {"Seleziona", "Automatico", "Manuale", "Semiautomatico", "Nessuno"};
 	final String[] comboboxModelNumeroRapporti = {"Seleziona", "3", "4", "5", "6", "7"};
 	final String[] comboboxModelClasseEmissioni = {"Seleziona", "Euro 1", "Euro 2", "Euro 3", "Euro 4", "Euro 5", "Euro 6"};
-
+	final String[] comboboxModelTipologieContratto = {"Seleziona", "Vendita", "Affitto", "Leasing"};
 
 }
