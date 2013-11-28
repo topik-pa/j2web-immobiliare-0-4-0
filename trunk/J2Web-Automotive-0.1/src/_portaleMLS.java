@@ -57,7 +57,7 @@ public class _portaleMLS extends PortaleWeb {
 	int Chilometraggio = 0;
 	int Prezzo = 0;
 	int Trattabile = 0;
-	int IVADeducibile = 0;
+	//int IVADeducibile = 0;
 	String FinitureInterni = "";
 	String ColoreInterni = "";
 	int ABS = 0;
@@ -105,6 +105,7 @@ public class _portaleMLS extends PortaleWeb {
 	String NomeReferente = "";
 	String TelefonoReferente = "";
 	String EmailReferente = "";
+	String Contratto = "";
 
 
 	//Costruttore
@@ -203,7 +204,7 @@ public class _portaleMLS extends PortaleWeb {
 		}          	
 		Prezzo = Integer.parseInt(scheda.prezzoVeicolo);
 		Trattabile = scheda.prezzoTrattabile?1:0;
-		IVADeducibile = scheda.ivaDeducibile?1:0;
+		//IVADeducibile = scheda.ivaDeducibile?1:0;
 		FinitureInterni = "'" + scheda.finitureInterneVeicolo + "'";
 		ColoreInterni = "'" + scheda.coloreInterniVeicolo + "'";
 		ABS = scheda.disponibilitaABS?1:0;
@@ -241,11 +242,12 @@ public class _portaleMLS extends PortaleWeb {
 		NomeReferente = "'" + scheda.nomeReferente + "'";
 		TelefonoReferente = "'" + scheda.TelefonoReferente + "'";
 		EmailReferente = "'" + scheda.emailReferente + "'";
+		Contratto = "'" + scheda.tipologiaContrattoVeicolo + "'";
 
 		//Costruisco la query sql
 		String querySQL_1 = "INSERT INTO autoveicoli(";
-		String querySQL_2 = "IdScheda,        Marca,        Modello,        Versione,        MeseImmatricolazione,        AnnoImmatricolazione,        Carburante,        Tipologia,        Carrozzeria,        PostiASedere,        PotenzaKW,        PotenzaCV,        ColoreEsterno,        Metallizzato,        PrecedentiProprietari,        Chilometraggio,        Prezzo,        Trattabile,        IVADeducibile,        FinitureInterni,        ColoreInterni,        ABS,        Airbag,        Antifurto,        ChiusuraCentralizzata,        ControlloAutomTrazione,        ESP,        Immobilizer,        FreniADisco,        AlzacristalliElettrici,        Clima,        NavigatoreSatellitare,        RadioCD,        ParkDistControl,        SediliRiscaldati,        Servosterzo,        VolanteMultifunzione,        Handicap,        CerchiInLega,        GancioTraino,        Portapacchi,        SediliSportivi,        Motore,        Cambio,        NumRapporti,        Cilindrata,        ClasseEmissione,        ConsumoMedio,        Immagine1,        Immagine2,        Immagine3,        Immagine4,        Immagine5,        Immagine6,        Immagine7,        Immagine8,        Immagine9,        Immagine10,        UrlYT,        Descrizione,        RagioneSociale,        Indirizzo,        TelefonoGenerico,        NomeReferente,        TelefonoReferente,        EmailReferente";
-		String querySQL_4 =  IdScheda + "," + Marca + "," + Modello + "," + Versione + "," + MeseImmatricolazione + "," + AnnoImmatricolazione + "," + Carburante + "," + Tipologia + "," + Carrozzeria + "," + PostiASedere + "," + PotenzaKW + "," + PotenzaCV + "," + ColoreEsterno + "," + Metallizzato + "," + PrecedentiProprietari + "," + Chilometraggio + "," + Prezzo + "," + Trattabile + "," + IVADeducibile + "," + FinitureInterni + "," + ColoreInterni + "," + ABS + "," + Airbag + "," + Antifurto + "," + ChiusuraCentralizzata + "," + ControlloAutomTrazione + "," + ESP + "," + Immobilizer + "," + FreniADisco + "," + AlzacristalliElettrici + "," + Clima + "," + NavigatoreSatellitare + "," + RadioCD + "," + ParkDistControl + "," + SediliRiscaldati + "," + Servosterzo + "," + VolanteMultifunzione + "," + Handicap + "," + CerchiInLega + "," + GancioTraino + "," + Portapacchi + "," + SediliSportivi + "," + Motore + "," + Cambio + "," + NumRapporti + "," + Cilindrata + "," + ClasseEmissione + "," + ConsumoMedio + "," + Immagine1 + "," + Immagine2 + "," + Immagine3 + "," + Immagine4 + "," + Immagine5 + "," + Immagine6 + "," + Immagine7 + "," + Immagine8 + "," + Immagine9 + "," + Immagine10 + "," + UrlYT + "," + Descrizione + "," + RagioneSociale + "," + Indirizzo + "," + TelefonoGenerico + "," + NomeReferente + "," + TelefonoReferente + "," + EmailReferente;
+		String querySQL_2 = "IdScheda,        Marca,        Modello,        Versione,        MeseImmatricolazione,        AnnoImmatricolazione,        Carburante,        Tipologia,        Carrozzeria,        PostiASedere,        PotenzaKW,        PotenzaCV,        ColoreEsterno,        Metallizzato,        PrecedentiProprietari,        Chilometraggio,        Prezzo,        Trattabile,        Contratto,        FinitureInterni,        ColoreInterni,        ABS,        Airbag,        Antifurto,        ChiusuraCentralizzata,        ControlloAutomTrazione,        ESP,        Immobilizer,        FreniADisco,        AlzacristalliElettrici,        Clima,        NavigatoreSatellitare,        RadioCD,        ParkDistControl,        SediliRiscaldati,        Servosterzo,        VolanteMultifunzione,        Handicap,        CerchiInLega,        GancioTraino,        Portapacchi,        SediliSportivi,        Motore,        Cambio,        NumRapporti,        Cilindrata,        ClasseEmissione,        ConsumoMedio,        Immagine1,        Immagine2,        Immagine3,        Immagine4,        Immagine5,        Immagine6,        Immagine7,        Immagine8,        Immagine9,        Immagine10,        UrlYT,        Descrizione,        RagioneSociale,        Indirizzo,        TelefonoGenerico,        NomeReferente,        TelefonoReferente,        EmailReferente";
+		String querySQL_4 =  IdScheda + "," + Marca + "," + Modello + "," + Versione + "," + MeseImmatricolazione + "," + AnnoImmatricolazione + "," + Carburante + "," + Tipologia + "," + Carrozzeria + "," + PostiASedere + "," + PotenzaKW + "," + PotenzaCV + "," + ColoreEsterno + "," + Metallizzato + "," + PrecedentiProprietari + "," + Chilometraggio + "," + Prezzo + "," + Trattabile + "," + Contratto + "," + FinitureInterni + "," + ColoreInterni + "," + ABS + "," + Airbag + "," + Antifurto + "," + ChiusuraCentralizzata + "," + ControlloAutomTrazione + "," + ESP + "," + Immobilizer + "," + FreniADisco + "," + AlzacristalliElettrici + "," + Clima + "," + NavigatoreSatellitare + "," + RadioCD + "," + ParkDistControl + "," + SediliRiscaldati + "," + Servosterzo + "," + VolanteMultifunzione + "," + Handicap + "," + CerchiInLega + "," + GancioTraino + "," + Portapacchi + "," + SediliSportivi + "," + Motore + "," + Cambio + "," + NumRapporti + "," + Cilindrata + "," + ClasseEmissione + "," + ConsumoMedio + "," + Immagine1 + "," + Immagine2 + "," + Immagine3 + "," + Immagine4 + "," + Immagine5 + "," + Immagine6 + "," + Immagine7 + "," + Immagine8 + "," + Immagine9 + "," + Immagine10 + "," + UrlYT + "," + Descrizione + "," + RagioneSociale + "," + Indirizzo + "," + TelefonoGenerico + "," + NomeReferente + "," + TelefonoReferente + "," + EmailReferente;
 		String querySQL_3 = ") VALUES(";
 		String querySQL_5 = ")";
 
