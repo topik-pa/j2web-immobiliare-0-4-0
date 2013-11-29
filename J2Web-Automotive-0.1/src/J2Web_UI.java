@@ -2906,8 +2906,8 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormVeicolo.add(getTextField_Cilindrata());
 		listCampiFormVeicolo.add(getTextField_ConsumoMedio());
 		listCampiFormVeicolo.add(getTextField_YouTubeUrl());
-		listCampiFormVeicolo.add(getTextFieldIndirizzo());
-		listCampiFormVeicolo.add(getTextFieldTelefonoGenerico());
+		//listCampiFormVeicolo.add(getTextFieldIndirizzo());
+		//listCampiFormVeicolo.add(getTextFieldTelefonoGenerico());
 		listCampiFormVeicolo.add(getTextFieldTelefonoReferente());
 		listCampiFormVeicolo.add(getTextFieldEmailReferente());
 
