@@ -7,7 +7,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -37,7 +36,7 @@ import java.util.Iterator;
 
 
 /*
- * Questa classe definische i metodi e gli attributi dell'oggetto portale web, qui definiti in termini generici, vengono riscritti nelle classi più specifiche
+ * Questa classe definische i metodi e gli attributi dell'oggetto portale web, qui definiti in termini generici, vengono riscritti nelle classi piÃ¹ specifiche
  *
  */
 
@@ -101,7 +100,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 
 		String textBody = "";	  	
 		textBody += "E' stata inserita una scheda nel portale: " + nomePortale + ".";
-		textBody += "Il codice della scheda è: \n" + scheda.codiceScheda + "/n" + "Il codice di inserimento è: /n" + codInserzione;
+		textBody += "Il codice della scheda Ã¨: \n" + scheda.codiceScheda + "/n" + "Il codice di inserimento Ã¨: /n" + codInserzione;
 
 
 		try {
@@ -128,7 +127,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		}
 	}
 
-	//Valutazione similarità tra stringhe
+	//Valutazione similaritÃ  tra stringhe
 	public static List<char[]> bigram(String input)
 	{
 		ArrayList<char[]> bigram = new ArrayList<char[]>();
@@ -219,7 +218,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return headerValue;
 	}
 
-	//Metodo per ottenere le coordinate della città
+	//Metodo per ottenere le coordinate della cittÃ 
 	public Map<String,String> getLatLonCoord(String indirizzo, String comune, String provincia, String regione) throws ParserConfigurationException, SAXException, IOException {
 		Map<String,String> mappaLatLon = new Hashtable<String,String>();
 		String url;
@@ -295,7 +294,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		case "select":		
 			Elements childrens = domElement.children();
 			if(childrens.isEmpty()) {
-            	return "Nessun elemento";
+            	return "Nessun elemento option";
             }
 			
 			Iterator<Element> iterator = childrens.iterator();
@@ -314,7 +313,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 			break;
 			
 		case "input":
-			if(domElement.attr("type").equals("text") || domElement.attr("type").equals("password") || domElement.attr("type").equals("submit")) {
+			if(domElement.attr("type").equals("text") || domElement.attr("type").equals("password") || domElement.attr("type").equals("submit") || domElement.attr("type").equals("hidden")) {
 				returnValue = valueScheda;
 			}
 			break;
@@ -328,6 +327,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 			break;
 			
 		default:
+			System.out.println("Method getParamValue: " +  "input non elaborato-->" + domElement.nodeName());
 			
 		}
   		
@@ -359,6 +359,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 				}
 			}	
 		}
+		System.out.println("Method valutaParametri : " +  "mappaDeiParametri-->" + outputMap.toString());
 	}
   	
   	//Prepara i parametri POST da inviare nella connessione corrente

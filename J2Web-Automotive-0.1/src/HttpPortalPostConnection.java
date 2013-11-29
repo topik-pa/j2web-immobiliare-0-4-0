@@ -28,9 +28,10 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	
 	
 	//POST URLENCODED VALUES
+	@Deprecated
 	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, boolean debugMode) throws IOException {
 		
-		//La risposta che verrà restituita
+		//La risposta che verrÃ  restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
 		
 		//Inizializza la connessione
@@ -82,11 +83,13 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         return headersAndBodyResponseAndStatus; 
         
 	}
+
 	
 	//POST MULTIPART/FORM-DATA
+	@Deprecated
 	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, boolean debugMode) throws IOException {
 		
-		//La risposta che verrà restituita
+		//La risposta che verrÃ  restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
 		
 		//Inizializza la connessione
@@ -137,17 +140,18 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
         return headersAndBodyResponseAndStatus;     
 		
 	}	
-		
+
+	
 	//POST URLENCODED VALUES (2)
 	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, List<NameValuePair> requestHeaders, boolean debugMode) throws IOException {
 		
-		//La risposta che verrà restituita
+		//La risposta che verrÃ  restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
 		
 		//Inizializza la connessione
 		httppost = new HttpPost(url);
 		
-		//Add request headers
+		//Add request headers (comprende i cookies)
 		BasicHeader newHeader;
 		BasicNameValuePair currentHeaderListItem;
 		Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
@@ -158,23 +162,13 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	        	httppost.addHeader(newHeader);
         	}
         }
-        //L'header User-Agent è aggiunto sempre in modo predefinito
+        //L'header User-Agent Ã¨ aggiunto sempre in modo predefinito
         requestHeader = new BasicHeader("User-Agent", USER_AGENT);
         httppost.addHeader(requestHeader);
         
         //Add request parameters
         UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
         httppost.setEntity(formEntity);
-        
-        //Set the cookies
-        if(isSessionCookieSet==true) {
-	        BasicCookieStore cookieStore = new BasicCookieStore(); 
-	        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
-	        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
-	        cookie.setPath("/");           
-	        cookieStore.addCookie(cookie); 
-	        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
-        }
         
         //Send the request
         response = httpclient.execute(httppost);
@@ -209,13 +203,13 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	//POST MULTIPART/FORM-DATA (2)
 	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, List<NameValuePair> requestHeaders, boolean debugMode) throws IOException {
 		
-		//La risposta che verrà restituita
+		//La risposta che verrÃ  restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
 		
 		//Inizializza la connessione
 		httppost = new HttpPost(url);
 		
-		//Add request headers
+		//Add request headers (comprende i cookies)
 		BasicHeader newHeader;
 		BasicNameValuePair currentHeaderListItem;
 		Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
@@ -226,22 +220,12 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	        	httppost.addHeader(newHeader);
         	}
         }
-        //L'header User-Agent è aggiunto sempre in modo predefinito
+        //L'header User-Agent Ã¨ aggiunto sempre in modo predefinito
         requestHeader = new BasicHeader("User-Agent", USER_AGENT);
         httppost.addHeader(requestHeader);
         
         //Add request parameters
         httppost.setEntity(reqEntity);
-        
-        //Set the cookies
-        if(isSessionCookieSet==true) {
-	        BasicCookieStore cookieStore = new BasicCookieStore(); 
-	        BasicClientCookie cookie = new BasicClientCookie(SESSIONCOOKIE_NAME, SESSIONCOOKIE_VALUE);
-	        cookie.setDomain(SESSIONCOOKIE_DOMAIN);
-	        cookie.setPath("/");           
-	        cookieStore.addCookie(cookie); 
-	        ((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
-        }
         
         //Send the request
         response = httpclient.execute(httppost);

@@ -46,7 +46,7 @@ public class HttpPortalConnection implements parametriGenerali {
 		/*responseHandler = new BasicResponseHandler();*/
 	}
 	
-	//Stampa a video le proprietà della connessione corrente (per i GET)
+	//Stampa a video le proprietÃ  della connessione corrente (per i GET)
 	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody) throws IOException {
 		
 		//Show Request URL
@@ -103,7 +103,7 @@ public class HttpPortalConnection implements parametriGenerali {
         
 	}
 	
-	//Stampa a video le proprietà della connessione corrente (overloading del metodo per gestire i POST urlencoded)
+	//Stampa a video le proprietÃ  della connessione corrente (overloading del metodo per gestire i POST urlencoded)
 	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody, List<NameValuePair> postParameters) throws IOException {
 		
 		//Show Request URL
@@ -171,7 +171,7 @@ public class HttpPortalConnection implements parametriGenerali {
         
 	}
 	
-	//Stampa a video le proprietà della connessione corrente (overloading del metodo per gestire i POST multipart)
+	//Stampa a video le proprietÃ  della connessione corrente (overloading del metodo per gestire i POST multipart)
 	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody, MultipartEntity postParameters) throws IOException {
 		
 		//Show Request URL
@@ -241,7 +241,7 @@ public class HttpPortalConnection implements parametriGenerali {
 		SESSIONCOOKIE_HEADER = cookieHeader;
 		SESSIONCOOKIE_NAME = cookieName;
 		SESSIONCOOKIE_VALUE = cookieValue;
-		isSessionCookieSet = true;
+		//isSessionCookieSet = true;
 		
 		//Stampo i valori trovati
 		System.out.println("Method: setSessionCookie \n" + "sessionCookie_header-->"+SESSIONCOOKIE_HEADER + "\nsessionCookieName-->"+SESSIONCOOKIE_NAME + "\nsessionCookie_value-->"+SESSIONCOOKIE_VALUE + "\nsessionCookieDomain-->"+SESSIONCOOKIE_DOMAIN);
@@ -256,7 +256,7 @@ public class HttpPortalConnection implements parametriGenerali {
 		HttpEntity responseEntity;	//la risposta ricevuta dopo la connessione
 		String responseBody = "";
 		
-		//La risposta che verrà restituita
+		//La risposta che verrÃ  restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
 		
 		//Set the cookies
