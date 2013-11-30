@@ -16,6 +16,7 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
 
@@ -30,11 +31,12 @@ public class _subitoIt extends PortaleWeb {
 	//Variabili portale
 	private final String NOMEPORTALE = "www.subito.it";
 	private final String URLROOT = "http://www.subito.it";
+	private final String SECUREURLROOT = "https://www2.subito.it";
 	private final String USERNAME = "c1669723@drdrb.com";
 	private final String PASSWORD = "topik123";
 	private final String HOST = "www.subito.it";
-	private final String SESSIONCOOKIENAME = "PHPSESSID";
-	private final String SESSIONCOOKIEDOMAIN = ".subito.it";
+	private final String HOST2 = "www2.subito.it";
+	
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
@@ -54,6 +56,9 @@ public class _subitoIt extends PortaleWeb {
 
 	//Lista degli headers inviati in una singola connessione
 	List<NameValuePair> requestHeaders;
+	
+	//Lista dei cookies inviati in una singola connessione
+	List<BasicClientCookie> requestCookies;
 
 	//Mappa che rappresenta la tabella di dipendennza dei parametri da inviare
 	Map<String,String> tabellaDiDipendenza;
@@ -67,7 +72,12 @@ public class _subitoIt extends PortaleWeb {
 	//Costruttore
 	public _subitoIt (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
 
-		super(icon, valoreLabel, idPortale, isActive);		
+		super(icon, valoreLabel, idPortale, isActive);
+		
+		SESSIONCOOKIENAME = "s";
+		SESSIONCOOKIEDOMAIN = ".subito.it";
+		SESSIONCOOKIEHEADER = "";
+		SESSIONCOOKIEVALUE = "";
 
 		//La hashTable contenente i valori dei parametri da inviare durante la sessione
 		mappaDeiParamerti =  new Hashtable<String,String>();
@@ -77,6 +87,9 @@ public class _subitoIt extends PortaleWeb {
 
 		//La lista degli header (nome-valore) inviati
 		requestHeaders = new ArrayList<NameValuePair>();
+		
+		//La lista dei cookies inviati
+		requestCookies = new ArrayList<BasicClientCookie>();
 
 		//Iniziallizzo la tabella di dipendenza
 		tabellaDiDipendenza = new Hashtable<String,String>();
@@ -92,13 +105,17 @@ public class _subitoIt extends PortaleWeb {
 		this.scheda=scheda;
 
 		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		requestHeaders = new ArrayList<NameValuePair>();
 		requestHeaders.add(new BasicNameValuePair("Host", HOST));
+		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
+		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
+		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
+		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
+		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
 
 		//Connessione 0 - GET della home page - Opzionale
 		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/index.php", requestHeaders, debugMode);
+			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -112,7 +129,7 @@ public class _subitoIt extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/account/login_form/", requestHeaders, null, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -128,27 +145,27 @@ public class _subitoIt extends PortaleWeb {
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("password",PASSWORD);
-		tabellaDiDipendenza.put("submit","Entra");
-		tabellaDiDipendenza.put("username",USERNAME);
+		tabellaDiDipendenza.put("login_email",USERNAME);
+		tabellaDiDipendenza.put("login_passwd",PASSWORD);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#frmLogin input", tabellaDiDipendenza, mappaDeiParamerti);	
+		valutaParametri(responseBody, "#boxLoginContainer input", tabellaDiDipendenza, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
+		//Cambio del valore HOST nei request headers
+		requestHeaders.remove(0);
+		requestHeaders.add(new BasicNameValuePair("Host", HOST2));
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", SECUREURLROOT + "/account/login", postParameters, requestHeaders, null, debugMode);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
 				Header[] responseHeaders = (Header[])response[0];
-				//Trovo il cookie di sessione
+				//Gestione dei cookie
 				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				//Aggiungo il cookie di sessione ai requestHeaders
-				sessionCookie = new BasicNameValuePair("Cookie", "PHPSESSID" + "=" + SESSIONCOOKIEVALUE);
-				requestHeaders.add(sessionCookie);
+				setCookies(responseHeaders, requestCookies);			
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 			}
@@ -166,10 +183,29 @@ public class _subitoIt extends PortaleWeb {
 		}
 
 
-		//Connessione 3 - GET della pagina "Area concessionario" - Opzionale
+		//Connessione 3 - GET della pagina di redirect dopo inserimento parametri login
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area concessionario\"", URLROOT + "/" + location, requestHeaders, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + location, requestHeaders, requestCookies, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()==302)) {
+				Header[] responseHeaders = (Header[])response[0];
+				//Trovo la location
+				location = getHeaderValueByName(responseHeaders, "Location");
+			}
+			else if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+		
+		
+		//Connessione 4 - GET della pagina di redirect dopo inserimento parametri login
+		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
+		try {
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + "/account/manageads/", requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -179,7 +215,7 @@ public class _subitoIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 
-
+/*
 		//Connessione 4 - GET della pagina "Inserisci un nuovo annuncio"
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
@@ -355,10 +391,10 @@ public class _subitoIt extends PortaleWeb {
 					postParameters.clear();
 				}
 			}
-		}
+		}*/
 		
 		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		requestHeaders.remove(sessionCookie);
+		//requestHeaders.remove(sessionCookie);
 
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
 		if(inserimentoOK) {

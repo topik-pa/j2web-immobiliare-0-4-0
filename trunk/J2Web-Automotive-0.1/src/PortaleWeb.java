@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -199,6 +200,40 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return cookieHeaderFound?true:false;
 	}
 
+	public boolean setCookies(Header[] inputHeaders, List<BasicClientCookie> outputHeaders) {
+		
+		boolean cookiesFound = false;
+		
+		String current_cookie_header;
+		String current_cookie_name;
+		String current_cookie_value;
+		BasicClientCookie currentCookie;
+		
+		for(int i=0; i<inputHeaders.length; i++) {       	
+			Header currentHeader = inputHeaders[i];
+			//Get cookie
+			if(currentHeader.getName().contains("Set-Cookie")) {
+				cookiesFound = true;
+				
+				current_cookie_header = currentHeader.getValue();
+				int end = current_cookie_header.indexOf("=");
+				current_cookie_name = current_cookie_header.substring(0, end);                   
+				int start = end + 1;
+				end = current_cookie_header.indexOf(";");
+				current_cookie_value = current_cookie_header.substring(start, end);
+				
+				//Stampo i valori trovati
+				System.out.println("Method: setCookies \n" + "cookie_header-->"+current_cookie_header + "\ncookieName-->"+current_cookie_name + "\ncookie_value-->"+current_cookie_value);
+
+				currentCookie = new BasicClientCookie(current_cookie_name, current_cookie_value);
+				outputHeaders.add(currentCookie);
+			}       	
+		}
+		
+		return cookiesFound;
+		
+	}
+	
 	//Ritorna il valore di una header dato il nome dell'header stesso
 	public String getHeaderValueByName(Header[] headers, String headerName) {
 
