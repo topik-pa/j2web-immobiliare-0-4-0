@@ -187,6 +187,8 @@ public abstract class PortaleWeb implements parametriGenerali {
 					cookieHeaderFound = true;            		
 
 					//Aggiorno i parametri dei cookie (del portale chiamante)
+					SESSIONCOOKIENAME = cookieName;
+					SESSIONCOOKIEDOMAIN = cookieDomain;
 					SESSIONCOOKIEHEADER = cookie_header;
 					SESSIONCOOKIEVALUE = cookie_value;
 					
@@ -200,6 +202,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return cookieHeaderFound?true:false;
 	}
 
+	
 	public boolean setCookies(Header[] inputHeaders, List<BasicClientCookie> outputHeaders) {
 		
 		boolean cookiesFound = false;
@@ -348,7 +351,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 			break;
 			
 		case "input":
-			if(domElement.attr("type").equals("text") || domElement.attr("type").equals("password") || domElement.attr("type").equals("submit") || domElement.attr("type").equals("hidden")) {
+			if(domElement.attr("type").equals("text") || domElement.attr("type").equals("password") || domElement.attr("type").equals("submit") || domElement.attr("type").equals("hidden") || domElement.attr("type").equals("radio")) {
 				returnValue = valueScheda;
 			}
 			break;
