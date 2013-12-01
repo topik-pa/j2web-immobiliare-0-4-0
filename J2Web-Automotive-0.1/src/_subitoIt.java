@@ -215,32 +215,11 @@ public class _subitoIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 
-/*
-		//Connessione 4 - GET della pagina "Inserisci un nuovo annuncio"
-		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
-		try {
-			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, debugMode);
-			//Controllo il response status
-			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()!=200)) {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-			}
-			else {
-				responseBody = (String)response[1];
-			}
-		} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
 
-
-		//Connessione 5 - GET della pagina "Inserisci un nuovo annuncio (con parametro circa la marca veicolo)"
-		//Raccolgo i parametri nella tabella di dipendenza
-		tabellaDiDipendenza.put("idMarca",scheda.marcaVeicolo);
-		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "select#idMarca", tabellaDiDipendenza, mappaDeiParamerti);
+		//Connessione 5 - GET della pagina "Inserisci il tuo annuncio"
 		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo annuncio (con parametro circa la marca veicolo)\"", URLROOT + "/concessionari/inserisci-annuncio.php?idMarca=" + mappaDeiParamerti.get("idMarca"), requestHeaders, debugMode);
+			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci il tuo annuncio\"", SECUREURLROOT + "/ai/form/0", requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -252,76 +231,100 @@ public class _subitoIt extends PortaleWeb {
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-		finally {
-			var_idMarca = mappaDeiParamerti.get("idMarca");
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();	
-		}
-
 
 
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
-		tabellaDiDipendenza.put("CV",scheda.CVVeicolo);
-		tabellaDiDipendenza.put("KW",scheda.KWVeicolo);
-		tabellaDiDipendenza.put("Submit","Salva Annuncio"); 
-		tabellaDiDipendenza.put("annoimmatricolazione",scheda.annoImmatricolazioneVeicolo);
-		tabellaDiDipendenza.put("annoprossimarevisione","");
-		tabellaDiDipendenza.put("cambio",scheda.tipologiaCambioVeicolo);
-		tabellaDiDipendenza.put("chilometri",scheda.chilometraggioVeicolo);
-		tabellaDiDipendenza.put("cilindrata",scheda.cilindrataVeicolo);
-		tabellaDiDipendenza.put("cilindri","");
-		tabellaDiDipendenza.put("codice",scheda.marcaVeicolo+scheda.modelloVeicolo+scheda.coloreEsternoVeicolo); //da aggiungere in form
-		tabellaDiDipendenza.put("coloredett","");
-		tabellaDiDipendenza.put("coloreesterno",scheda.coloreEsternoVeicolo);
-		tabellaDiDipendenza.put("coloreinterni",scheda.coloreInterniVeicolo);
-		tabellaDiDipendenza.put("contratto","Vendita"); //da aggiungere in form
-		tabellaDiDipendenza.put("descrizione",scheda.descrizioneVeicolo);
-		tabellaDiDipendenza.put("idAlimentazione",scheda.carburanteVeicolo);
-		tabellaDiDipendenza.put("idCarrozzeria",""); //da implementare come ogbbligatorio
-		tabellaDiDipendenza.put("idMarca",var_idMarca);
-		tabellaDiDipendenza.put("idMarca2",var_idMarca);
-		tabellaDiDipendenza.put("idModello",scheda.modelloVeicolo);
-		tabellaDiDipendenza.put("idTipologia",scheda.tipologiaVeicolo);
-		tabellaDiDipendenza.put("meseimmatricolazione",scheda.meseImmatricolazioneVeicolo);
-		tabellaDiDipendenza.put("meseprossimarevisione","");
-		tabellaDiDipendenza.put("normativa",scheda.classeEmissioniVeicolo);
-		tabellaDiDipendenza.put("peso","");
-		tabellaDiDipendenza.put("porte","");
-		tabellaDiDipendenza.put("prezzo",scheda.prezzoVeicolo);
-		tabellaDiDipendenza.put("provimmatricolazione","");
-		tabellaDiDipendenza.put("rapporti",scheda.numeroRapportiVeicolo);
-		tabellaDiDipendenza.put("sedili",scheda.postiASedereVeicolo);
-		tabellaDiDipendenza.put("versione",scheda.versioneVeicolo);
+		tabellaDiDipendenza.put("check_type_diff", "1");
+		tabellaDiDipendenza.put("category", "Auto"); //Auto
+		tabellaDiDipendenza.put("animal_type","");
+		tabellaDiDipendenza.put("office_type",""); 
+		tabellaDiDipendenza.put("room_type",""); 
+		tabellaDiDipendenza.put("ship_type",""); 
+		tabellaDiDipendenza.put("vehicle_type",""); 
+		tabellaDiDipendenza.put("caravan_type",""); 
+		tabellaDiDipendenza.put("sport_type",""); 
+		tabellaDiDipendenza.put("children_type",""); 
+		tabellaDiDipendenza.put("children_age",""); 
+		tabellaDiDipendenza.put("hobby_type",""); 
+		tabellaDiDipendenza.put("audiovideo_type",""); 
+		tabellaDiDipendenza.put("bicycle_type","");
+		tabellaDiDipendenza.put("phone_type",""); 
+		tabellaDiDipendenza.put("bikebrand","");
+		tabellaDiDipendenza.put("bikeversion",""); 
+		tabellaDiDipendenza.put("moto_type","");
+		tabellaDiDipendenza.put("computer_type",""); 
+		tabellaDiDipendenza.put("clothing_type","");
+		tabellaDiDipendenza.put("clothing_gender",""); 
+		tabellaDiDipendenza.put("clothing_number","");
+		tabellaDiDipendenza.put("region", "Friuli-Venezia Giulia"); //Friuli-Venezia Giulia
+		tabellaDiDipendenza.put("city","Udine"); //Udine
+		tabellaDiDipendenza.put("town","Udine"); //Udine
+		tabellaDiDipendenza.put("zone","");
+		tabellaDiDipendenza.put("company_ad", "1"); //Azienda
+		tabellaDiDipendenza.put("name","autoeauto"); //autoeauto
+		tabellaDiDipendenza.put("servicetype","Seleziona la tipologia");
+		tabellaDiDipendenza.put("phone",scheda.Telefono);
+		tabellaDiDipendenza.put("type","s"); //Vendita
+		tabellaDiDipendenza.put("carbrand",scheda.marcaVeicolo);
+		tabellaDiDipendenza.put("carmodel","XXX"); //da aggiungere
+		tabellaDiDipendenza.put("regdate",scheda.annoImmatricolazioneVeicolo);
+		tabellaDiDipendenza.put("carversion", "XXX"); //da fare
+		tabellaDiDipendenza.put("mileage","2"); //da fare
+		tabellaDiDipendenza.put("fuel",scheda.carburanteVeicolo);
+		tabellaDiDipendenza.put("country","Seleziona");
+		tabellaDiDipendenza.put("car_type",scheda.carrozzeriaVeicolo);
+		tabellaDiDipendenza.put("gearbox",scheda.tipologiaCambioVeicolo);
+		tabellaDiDipendenza.put("pollution",scheda.classeEmissioniVeicolo);
+		tabellaDiDipendenza.put("seats",scheda.postiASedereVeicolo);
+		tabellaDiDipendenza.put("doors","Porte");
+		tabellaDiDipendenza.put("color","3"); //da fare
+		tabellaDiDipendenza.put("subject",scheda.marcaVeicolo + " " + scheda.modelloVeicolo);
+		tabellaDiDipendenza.put("price",scheda.prezzoVeicolo);
+		tabellaDiDipendenza.put("gender","Scegli");
+		tabellaDiDipendenza.put("smoker","Scegli");
+		tabellaDiDipendenza.put("cubic_capacity",scheda.cilindrataVeicolo);
+		tabellaDiDipendenza.put("rooms","Seleziona");
+		tabellaDiDipendenza.put("size","");
+		tabellaDiDipendenza.put("length","");
+		tabellaDiDipendenza.put("contract_type","Seleziona il tipo di contratto");
+		tabellaDiDipendenza.put("degree","Seleziona il tuo titolo di studio");
+		tabellaDiDipendenza.put("worklevel","Seleziona l'inquadramento");
+		tabellaDiDipendenza.put("workhours","Seleziona l'orario di lavoro");
+		tabellaDiDipendenza.put("body",scheda.descrizioneVeicolo);
+		tabellaDiDipendenza.put("cites_cert_numb","");
+		tabellaDiDipendenza.put("cites_cert_date","");
+		tabellaDiDipendenza.put("cites_cert_from","");
+		tabellaDiDipendenza.put("show_map",""); //non mostrare la mappa
+		tabellaDiDipendenza.put("address","");
+		tabellaDiDipendenza.put("latitude","");
+		tabellaDiDipendenza.put("longitude","");
+		tabellaDiDipendenza.put("zoom","");
+		tabellaDiDipendenza.put("image","");
+		tabellaDiDipendenza.put("accept_equal_opp","1"); //annuncio per ambo i sessi
+		tabellaDiDipendenza.put("accept_term_of_use","1"); //accetto i termini d'uso
+		tabellaDiDipendenza.put("validate","continua");
+		
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#centrale form input, #centrale form select, #centrale form textarea", tabellaDiDipendenza, mappaDeiParamerti);
+		valutaParametri(responseBody, "#content form input, #content form select, #content form textarea", tabellaDiDipendenza, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", URLROOT + "/concessionari/_inserisci-annuncio.php", postParameters, requestHeaders, debugMode);			
+			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", SECUREURLROOT + "/ai/verify/0", postParameters, requestHeaders, requestCookies, debugMode);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
 				Header[] responseHeaders = (Header[])response[0];
-
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
-				if(location.contains("?id=")) {
-					int start = location.indexOf("?id=")+4;
-					int end = location.length();
-					codiceInserzione = location.substring(start, end);
-
-					//L'inserzione è assicurata
-					inserimentoOK = true;
-				}
-				else {
-					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
+				if(!location.contains("/ai/preview")) {
+					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto 1"));
 				}
 			}
 			else {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto 2"));
 			}    	
 
 		} catch (IOException | RuntimeException e) {
@@ -334,10 +337,10 @@ public class _subitoIt extends PortaleWeb {
 		}
 
 
-		//Connessione 7 - GET della pagina "Dettaglio annuncio" - Opzionale
+		//Connessione 7 - GET della pagina "Preview annuncio" - Opzionale
 		HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
 		try {
-			Object[] response =  connessione_7.get("Connessione 7 - GET della pagina \"Dettaglio annuncio\"", URLROOT + "/" + location, requestHeaders, debugMode);
+			Object[] response =  connessione_7.get("Connessione 7 - GET della pagina \"Preview annuncio\"", SECUREURLROOT + location, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -347,7 +350,7 @@ public class _subitoIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 
-
+/*
 		//Connessione 8 - GET della pagina "Inserisci una nuova foto" - Opzionale
 		HttpPortalGetConnection connessione_8 = new HttpPortalGetConnection();
 		try {

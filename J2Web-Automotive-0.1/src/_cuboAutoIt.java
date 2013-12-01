@@ -16,6 +16,7 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
 
@@ -35,6 +36,8 @@ public class _cuboAutoIt extends PortaleWeb {
 	private final String HOST = "www.cuboauto.it";
 	private final String SESSIONCOOKIENAME = "PHPSESSID";
 	private final String SESSIONCOOKIEDOMAIN = "www.cuboauto.it";
+	private final String SESSIONCOOKIEHEADER = "";
+	private final String SESSIONCOOKIEVALUE = "";
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
@@ -45,6 +48,7 @@ public class _cuboAutoIt extends PortaleWeb {
 	private boolean inserimentoOK = false;
 	private boolean debugMode = true;
 
+
 	//Strutture dati di supporto
 	//Mappa dei parametri da inviare
 	Map<String,String> mappaDeiParamerti;
@@ -54,6 +58,9 @@ public class _cuboAutoIt extends PortaleWeb {
 
 	//Lista degli headers inviati in una singola connessione
 	List<NameValuePair> requestHeaders;
+
+	//Lista dei cookies inviati in una singola connessione
+	List<BasicClientCookie> requestCookies;
 
 	//Mappa che rappresenta la tabella di dipendennza dei parametri da inviare
 	Map<String,String> tabellaDiDipendenza;
@@ -67,7 +74,7 @@ public class _cuboAutoIt extends PortaleWeb {
 	//Costruttore
 	public _cuboAutoIt (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
 
-		super(icon, valoreLabel, idPortale, isActive);		
+		super(icon, valoreLabel, idPortale, isActive);			
 
 		//La hashTable contenente i valori dei parametri da inviare durante la sessione
 		mappaDeiParamerti =  new Hashtable<String,String>();
@@ -81,6 +88,9 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Iniziallizzo la tabella di dipendenza
 		tabellaDiDipendenza = new Hashtable<String,String>();
 
+		//La lista dei cookies inviati
+		requestCookies = new ArrayList<BasicClientCookie>();
+
 	}
 
 
@@ -92,13 +102,17 @@ public class _cuboAutoIt extends PortaleWeb {
 		this.scheda=scheda;
 
 		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		requestHeaders = new ArrayList<NameValuePair>();
 		requestHeaders.add(new BasicNameValuePair("Host", HOST));
+		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
+		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
+		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
+		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
+		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
 
 		//Connessione 0 - GET della home page - Opzionale
 		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/index.php", requestHeaders, debugMode);
+			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/index.php", requestHeaders, null, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -112,7 +126,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, null, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -137,7 +151,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, null, debugMode);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -146,9 +160,7 @@ public class _cuboAutoIt extends PortaleWeb {
 				//Trovo il cookie di sessione
 				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				//Aggiungo il cookie di sessione ai requestHeaders
-				sessionCookie = new BasicNameValuePair("Cookie", "PHPSESSID" + "=" + SESSIONCOOKIEVALUE);
-				requestHeaders.add(sessionCookie);
+				setCookies(responseHeaders, requestCookies);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 			}
@@ -169,7 +181,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 3 - GET della pagina "Area concessionario" - Opzionale
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area concessionario\"", URLROOT + "/" + location, requestHeaders, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area concessionario\"", URLROOT + "/" + location, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -183,7 +195,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 4 - GET della pagina "Inserisci un nuovo annuncio"
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, debugMode);
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -204,7 +216,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		valutaParametri(responseBody, "select#idMarca", tabellaDiDipendenza, mappaDeiParamerti);
 		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo annuncio (con parametro circa la marca veicolo)\"", URLROOT + "/concessionari/inserisci-annuncio.php?idMarca=" + mappaDeiParamerti.get("idMarca"), requestHeaders, debugMode);
+			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo annuncio (con parametro circa la marca veicolo)\"", URLROOT + "/concessionari/inserisci-annuncio.php?idMarca=" + mappaDeiParamerti.get("idMarca"), requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -263,7 +275,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", URLROOT + "/concessionari/_inserisci-annuncio.php", postParameters, requestHeaders, debugMode);			
+			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", URLROOT + "/concessionari/_inserisci-annuncio.php", postParameters, requestHeaders, requestCookies, debugMode);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -301,7 +313,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 7 - GET della pagina "Dettaglio annuncio" - Opzionale
 		HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
 		try {
-			Object[] response =  connessione_7.get("Connessione 7 - GET della pagina \"Dettaglio annuncio\"", URLROOT + "/" + location, requestHeaders, debugMode);
+			Object[] response =  connessione_7.get("Connessione 7 - GET della pagina \"Dettaglio annuncio\"", URLROOT + "/" + location, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -315,7 +327,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 8 - GET della pagina "Inserisci una nuova foto" - Opzionale
 		HttpPortalGetConnection connessione_8 = new HttpPortalGetConnection();
 		try {
-			Object[] response =  connessione_8.get("Connessione 8 - GET della pagina \"Inserisci una nuova foto\"", URLROOT + "/concessionari/foto.php?id=" + codiceInserzione, requestHeaders, debugMode);
+			Object[] response =  connessione_8.get("Connessione 8 - GET della pagina \"Inserisci una nuova foto\"", URLROOT + "/concessionari/foto.php?id=" + codiceInserzione, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -338,7 +350,7 @@ public class _cuboAutoIt extends PortaleWeb {
 					reqEntity.addPart("id", new StringBody(codiceInserzione) );
 					reqEntity.addPart("Submit", new StringBody("Invia la foto") );
 
-					Object[] response = connessione_9.post("Connessione 9 - Invio delle foto", URLROOT + "/concessionari/_foto.php", reqEntity, requestHeaders, debugMode);			
+					Object[] response = connessione_9.post("Connessione 9 - Invio delle foto", URLROOT + "/concessionari/_foto.php", reqEntity, requestHeaders, requestCookies, debugMode);			
 
 					//Controllo il response status
 					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -356,7 +368,7 @@ public class _cuboAutoIt extends PortaleWeb {
 				}
 			}
 		}
-		
+
 		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
 		requestHeaders.remove(sessionCookie);
 
@@ -422,7 +434,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, null, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -447,7 +459,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, null, debugMode);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -456,9 +468,9 @@ public class _cuboAutoIt extends PortaleWeb {
 				//Trovo il cookie di sessione
 				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
 				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				//Aggiungo il cookie di sessione ai requestHeaders
-				sessionCookie = new BasicNameValuePair("Cookie", "PHPSESSID" + "=" + SESSIONCOOKIEVALUE);
-				requestHeaders.add(sessionCookie);
+				setCookies(responseHeaders, requestCookies);
+				//Trovo la location
+				location = getHeaderValueByName(responseHeaders, "Location");
 			}
 			else {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
@@ -477,7 +489,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 3 - GET della pagina di eliminazione annuncio
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di eliminazione annuncio", URLROOT + "/concessionari/_del_annunci.php?id=" + codiceInserzione, requestHeaders, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di eliminazione annuncio", URLROOT + "/concessionari/_del_annunci.php?id=" + codiceInserzione, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (!(responseStatus.getStatusCode()==200 || responseStatus.getStatusCode()==302))) {
