@@ -37,6 +37,11 @@ public class _subitoIt extends PortaleWeb {
 	private final String HOST = "www.subito.it";
 	private final String HOST2 = "www2.subito.it";
 	
+	private final String SESSIONCOOKIENAME = "s";
+	private final String SESSIONCOOKIEDOMAIN = ".subito.it";
+	private final String SESSIONCOOKIEHEADER = "";
+	private final String SESSIONCOOKIEVALUE = "";
+	
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
@@ -73,11 +78,6 @@ public class _subitoIt extends PortaleWeb {
 	public _subitoIt (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
 
 		super(icon, valoreLabel, idPortale, isActive);
-		
-		SESSIONCOOKIENAME = "s";
-		SESSIONCOOKIEDOMAIN = ".subito.it";
-		SESSIONCOOKIEHEADER = "";
-		SESSIONCOOKIEVALUE = "";
 
 		//La hashTable contenente i valori dei parametri da inviare durante la sessione
 		mappaDeiParamerti =  new Hashtable<String,String>();

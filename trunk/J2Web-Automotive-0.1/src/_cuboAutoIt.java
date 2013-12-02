@@ -34,6 +34,7 @@ public class _cuboAutoIt extends PortaleWeb {
 	private final String USERNAME = "topik123";
 	private final String PASSWORD = "topik123";
 	private final String HOST = "www.cuboauto.it";
+
 	private final String SESSIONCOOKIENAME = "PHPSESSID";
 	private final String SESSIONCOOKIEDOMAIN = "www.cuboauto.it";
 	private final String SESSIONCOOKIEHEADER = "";
@@ -44,7 +45,6 @@ public class _cuboAutoIt extends PortaleWeb {
 	private String codiceInserzione;
 	private String location;
 	private String responseBody;
-	private BasicNameValuePair sessionCookie;
 	private boolean inserimentoOK = false;
 	private boolean debugMode = true;
 
@@ -96,6 +96,7 @@ public class _cuboAutoIt extends PortaleWeb {
 
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
+
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
 
 		//Inizializzazione scheda
@@ -192,7 +193,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		}
 
 
-		//Connessione 4 - GET della pagina "Inserisci un nuovo annuncio"
+		//Connessione 4 - GET della pagina "Inserisci un nuovo annuncio" - Opzionale
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, requestCookies, debugMode);
@@ -235,44 +236,62 @@ public class _cuboAutoIt extends PortaleWeb {
 		}
 
 
-
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
 		tabellaDiDipendenza.put("CV",scheda.CVVeicolo);
 		tabellaDiDipendenza.put("KW",scheda.KWVeicolo);
 		tabellaDiDipendenza.put("Submit","Salva Annuncio"); 
 		tabellaDiDipendenza.put("annoimmatricolazione",scheda.annoImmatricolazioneVeicolo);
-		tabellaDiDipendenza.put("annoprossimarevisione","");
+		tabellaDiDipendenza.put("annoprossimarevisione","vuoto");
 		tabellaDiDipendenza.put("cambio",scheda.tipologiaCambioVeicolo);
 		tabellaDiDipendenza.put("chilometri",scheda.chilometraggioVeicolo);
 		tabellaDiDipendenza.put("cilindrata",scheda.cilindrataVeicolo);
-		tabellaDiDipendenza.put("cilindri","");
-		tabellaDiDipendenza.put("codice",scheda.marcaVeicolo+scheda.modelloVeicolo+scheda.coloreEsternoVeicolo); //da aggiungere in form
+		tabellaDiDipendenza.put("cilindri","vuoto");
+		tabellaDiDipendenza.put("codice",(scheda.marcaVeicolo+"-"+scheda.modelloVeicolo+"-"+scheda.coloreEsternoVeicolo+"-"+scheda.tipologiaContrattoVeicolo).replace(" " , ""));
 		tabellaDiDipendenza.put("coloredett","");
 		tabellaDiDipendenza.put("coloreesterno",scheda.coloreEsternoVeicolo);
+		if(scheda.coloreMetalizzato){tabellaDiDipendenza.put("metallizzato","1");}
 		tabellaDiDipendenza.put("coloreinterni",scheda.coloreInterniVeicolo);
-		tabellaDiDipendenza.put("contratto","Vendita"); //da aggiungere in form
+		tabellaDiDipendenza.put("contratto",scheda.tipologiaContrattoVeicolo);
 		tabellaDiDipendenza.put("descrizione",scheda.descrizioneVeicolo);
 		tabellaDiDipendenza.put("idAlimentazione",scheda.carburanteVeicolo);
-		tabellaDiDipendenza.put("idCarrozzeria",""); //da implementare come ogbbligatorio
+		tabellaDiDipendenza.put("idCarrozzeria",scheda.carrozzeriaVeicolo);
 		tabellaDiDipendenza.put("idMarca",var_idMarca);
 		tabellaDiDipendenza.put("idMarca2",var_idMarca);
 		tabellaDiDipendenza.put("idModello",scheda.modelloVeicolo);
 		tabellaDiDipendenza.put("idTipologia",scheda.tipologiaVeicolo);
-		tabellaDiDipendenza.put("meseimmatricolazione",scheda.meseImmatricolazioneVeicolo);
-		tabellaDiDipendenza.put("meseprossimarevisione","");
+		tabellaDiDipendenza.put("meseimmatricolazione","0"+scheda.meseImmatricolazioneVeicoloIndex);
+		tabellaDiDipendenza.put("meseprossimarevisione","vuoto");
 		tabellaDiDipendenza.put("normativa",scheda.classeEmissioniVeicolo);
 		tabellaDiDipendenza.put("peso","");
 		tabellaDiDipendenza.put("porte","");
 		tabellaDiDipendenza.put("prezzo",scheda.prezzoVeicolo);
-		tabellaDiDipendenza.put("provimmatricolazione","");
+		tabellaDiDipendenza.put("provimmatricolazione","vuoto");
 		tabellaDiDipendenza.put("rapporti",scheda.numeroRapportiVeicolo);
-		tabellaDiDipendenza.put("sedili",scheda.postiASedereVeicolo);
+		tabellaDiDipendenza.put("sedili",""+scheda.postiASedereVeicoloIndex);
 		tabellaDiDipendenza.put("versione",scheda.versioneVeicolo);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
 		valutaParametri(responseBody, "#centrale form input, #centrale form select, #centrale form textarea", tabellaDiDipendenza, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
+		//Aggiungo qui questi parametri perchè se li aggiungessi nella tabellaDiDipendenza si sovrascriverebbero (hanno lo stesso nome)
+		if(scheda.disponibilitaABS){ postParameters.add(new BasicNameValuePair("sicurezza[]", "1")); }
+		if(scheda.disponibilitaAirBag){ postParameters.add(new BasicNameValuePair("sicurezza[]", "2")); postParameters.add(new BasicNameValuePair("sicurezza[]", "4"));}
+		if(scheda.disponibilitaAntifurto){ postParameters.add(new BasicNameValuePair("sicurezza[]", "128")); }
+		if(scheda.disponibilitaChiusuraCentralizzata){ postParameters.add(new BasicNameValuePair("comfort[]", "64")); }
+		if(scheda.disponibilitaContrlAutomTrazione){ postParameters.add(new BasicNameValuePair("sicurezza[]", "512")); }
+		if(scheda.disponibilitaESP){ postParameters.add(new BasicNameValuePair("sicurezza[]", "2048")); }
+		if(scheda.disponibilitaImmobilizer){ postParameters.add(new BasicNameValuePair("sicurezza[]", "256")); }
+		if(scheda.disponibilitaAlzacristalliElettrici){ postParameters.add(new BasicNameValuePair("comfort[]", "4")); }
+		if(scheda.disponibilitaClima){ postParameters.add(new BasicNameValuePair("comfort[]", "1")); }
+		if(scheda.disponibilitaRadioOLettoreCD){ postParameters.add(new BasicNameValuePair("audio[]", "8")); postParameters.add(new BasicNameValuePair("audio[]", "2")); }
+		if(scheda.disponibilitaParkDistControl){ postParameters.add(new BasicNameValuePair("comfort[]", "8192")); }
+		if(scheda.disponibilitaSediliRiscaldati){ postParameters.add(new BasicNameValuePair("comfort[]", "32")); }
+		if(scheda.disponibilitaServoSterzo){ postParameters.add(new BasicNameValuePair("comfort[]", "128")); }
+		if(scheda.disponibilitaVolanteMultifunzione){ postParameters.add(new BasicNameValuePair("audio[]", "128")); }
+		if(scheda.disponibilitaCerchiInLega){ postParameters.add(new BasicNameValuePair("linea[]", "2")); }
+		if(scheda.disponibilitaGancioTraino){ postParameters.add(new BasicNameValuePair("varie[]", "16")); }
+		if(scheda.disponibilitaPortaPacchi){ postParameters.add(new BasicNameValuePair("varie[]", "8")); }
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
 			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", URLROOT + "/concessionari/_inserisci-annuncio.php", postParameters, requestHeaders, requestCookies, debugMode);			
@@ -369,9 +388,6 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 		}
 
-		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		requestHeaders.remove(sessionCookie);
-
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
 		if(inserimentoOK) {
 
@@ -408,6 +424,7 @@ public class _cuboAutoIt extends PortaleWeb {
 
 	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
+
 		System.out.println("Visualizzazione scheda: " + scheda.codiceScheda + "...");
 
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
@@ -426,7 +443,8 @@ public class _cuboAutoIt extends PortaleWeb {
 
 
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
-	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {		
+	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
+
 		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
 
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
@@ -498,6 +516,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
+
 
 		//Aggiorno la lista dei portali in cui è presenta la scheda corrente
 		scheda.eliminaInserimentoPortale(idPortale);			
