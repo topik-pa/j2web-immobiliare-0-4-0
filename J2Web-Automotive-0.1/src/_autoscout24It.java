@@ -37,6 +37,11 @@ public class _autoscout24It extends PortaleWeb {
 	private final String HOST = "www.autoscout24.it";
 	private final String HOST2 = "secure.autoscout24.it";
 	
+	private final String SESSIONCOOKIENAME = "GUID";
+	private final String SESSIONCOOKIEDOMAIN = ".autoscout24.it";
+	private final String SESSIONCOOKIEHEADER = "";
+	private final String SESSIONCOOKIEVALUE = "";
+	
 	private final String SECONDCOOKIENAME = "__RequestVerificationToken_Lw__";
 	private final String SECONDCOOKIEDOMAIN = "secure.autoscout24.it";
 	private final String SECONDCOOKIEHEADER = "";
@@ -78,11 +83,6 @@ public class _autoscout24It extends PortaleWeb {
 	public _autoscout24It (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
 
 		super(icon, valoreLabel, idPortale, isActive);
-		
-		SESSIONCOOKIENAME = "GUID";
-		SESSIONCOOKIEDOMAIN = ".autoscout24.it";
-		SESSIONCOOKIEHEADER = "";
-		SESSIONCOOKIEVALUE = "";
 
 		//La hashTable contenente i valori dei parametri da inviare durante la sessione
 		mappaDeiParamerti =  new Hashtable<String,String>();

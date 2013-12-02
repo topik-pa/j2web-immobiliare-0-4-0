@@ -162,7 +162,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return (double) matches / (bigram1.size() + bigram2.size());
 	}
 
-	//Trova il cookie di sessione
+	//Trova il cookie di sessione e lo esporta a livello di portale
 	public boolean findSessionCookie(Header[] headers, String cookieName, String cookieDomain) {
 
 		boolean cookieHeaderFound = false;
@@ -351,7 +351,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 			break;
 			
 		case "input":
-			if(domElement.attr("type").equals("text") || domElement.attr("type").equals("password") || domElement.attr("type").equals("submit") || domElement.attr("type").equals("hidden") || domElement.attr("type").equals("radio")) {
+			if(domElement.attr("type").equals("text") || domElement.attr("type").equals("password") || domElement.attr("type").equals("submit") || domElement.attr("type").equals("hidden") || domElement.attr("type").equals("radio") || domElement.attr("type").equals("checkbox")) {
 				returnValue = valueScheda;
 			}
 			break;

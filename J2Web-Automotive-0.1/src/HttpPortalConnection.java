@@ -332,7 +332,7 @@ public class HttpPortalConnection implements parametriGenerali {
         
 	}
 	 
-	//Metodi Set per definire il cookie di sessione
+	//Metodi Set per definire il cookie di sessione a livello di connessione
 	public void setSessionCookie(String cookieHeader, String cookieName, String cookieValue, String cookieDomain) {
 		SESSIONCOOKIE_DOMAIN = cookieDomain;
 		SESSIONCOOKIE_HEADER = cookieHeader;

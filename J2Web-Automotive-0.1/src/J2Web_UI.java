@@ -622,7 +622,7 @@ public class J2Web_UI implements parametriGenerali {
 		JLabel lblTipologia = new JLabel("Tipologia*");
 		panel_20.add(lblTipologia, "2, 12");
 
-		JLabel lblCarrozzeria = new JLabel("Carrozzeria");
+		JLabel lblCarrozzeria = new JLabel("Carrozzeria*");
 		panel_20.add(lblCarrozzeria, "6, 12");
 
 		JLabel lblPostiASedere = new JLabel("Posti a sedere");
@@ -2976,6 +2976,7 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormVeicoloObbligatori.add(getComboBox_Tipologia());
 		listCampiFormVeicoloObbligatori.add(getComboBox_ColoreEsterno());
 		listCampiFormVeicoloObbligatori.add(getCombobox_Contratto());
+		listCampiFormVeicoloObbligatori.add(getComboBox_Carrozzeria());
 
 		listCampiFormVeicoloObbligatori.add(getTextField_Prezzo());			
 		listCampiFormVeicoloObbligatori.add(getTextFieldIndirizzo());
