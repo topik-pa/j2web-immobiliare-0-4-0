@@ -4,6 +4,7 @@
  */ 
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
+import org.json.JSONObject;
 
 /**
  *
@@ -36,11 +38,7 @@ public class _autoscout24It extends PortaleWeb {
 	private final String PASSWORD = "topik123";
 	private final String HOST = "www.autoscout24.it";
 	private final String HOST2 = "secure.autoscout24.it";
-	
-	private final String SESSIONCOOKIENAME = "GUID";
-	private final String SESSIONCOOKIEDOMAIN = ".autoscout24.it";
-	private final String SESSIONCOOKIEHEADER = "";
-	private final String SESSIONCOOKIEVALUE = "";
+	private final String HOST3 = "offerta.autoscout24.it";
 	
 	private final String SECONDCOOKIENAME = "__RequestVerificationToken_Lw__";
 	private final String SECONDCOOKIEDOMAIN = "secure.autoscout24.it";
@@ -77,7 +75,7 @@ public class _autoscout24It extends PortaleWeb {
 	SchedaVeicolo scheda;
 
 	//Altre variabili di supporto a livello globale
-	String var_idMarca;
+	String articleId;
 
 	//Costruttore
 	public _autoscout24It (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
@@ -108,6 +106,12 @@ public class _autoscout24It extends PortaleWeb {
 
 		//Inizializzazione scheda
 		this.scheda=scheda;
+		
+		//Inposto le variabili per il session cookie
+		SESSIONCOOKIENAME = "GUID";
+		SESSIONCOOKIEDOMAIN = ".autoscout24.it";
+		SESSIONCOOKIEHEADER = "";
+		SESSIONCOOKIEVALUE = "";
 
 		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
 		requestHeaders.add(new BasicNameValuePair("Host", HOST));
@@ -145,37 +149,49 @@ public class _autoscout24It extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+				connessione_1.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
+				setCookies(responseHeaders, requestCookies);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
 
-/*
+
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("login_email",USERNAME);
-		tabellaDiDipendenza.put("login_passwd",PASSWORD);
+		tabellaDiDipendenza.put("__EVENTARGUMENT","***site***");
+		tabellaDiDipendenza.put("__EVENTTARGET","ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$weviLoginButton");
+		tabellaDiDipendenza.put("__INFOMESSAGEPRESENT","***site***");
+		tabellaDiDipendenza.put("__RequestVerificationToken","***site***");
+		tabellaDiDipendenza.put("__VIEWSTATE","***site***");
+		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$passwordForgotten$usernameTextbox","***site***");
+		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$passwordTextbox",PASSWORD);
+		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$passwordTextboxTxt","");
+		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$usernameTextbox",USERNAME);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#boxLoginContainer input", tabellaDiDipendenza, mappaDeiParamerti);	
+		valutaParametri(responseBody, "#aspnetForm input", tabellaDiDipendenza, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
-		//Cambio del valore HOST nei request headers
-		requestHeaders.remove(0);
-		requestHeaders.add(new BasicNameValuePair("Host", HOST2));
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", SECUREURLROOT + "/account/login", postParameters, requestHeaders, null, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", SECUREURLROOT + "/Login.aspx", postParameters, requestHeaders, requestCookies, debugMode);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
 				Header[] responseHeaders = (Header[])response[0];
-				//Gestione dei cookie
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				setCookies(responseHeaders, requestCookies);			
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
+				if(location.contains("MyPrivateArea")) {
+					responseBody = (String)response[1];
+				}
+				else {
+					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Location non corretta"));
+				}	
 			}
 			else {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
@@ -191,18 +207,16 @@ public class _autoscout24It extends PortaleWeb {
 		}
 
 
-		//Connessione 3 - GET della pagina di redirect dopo inserimento parametri login
+		//Connessione 3 - GET della pagina di inserzione annuncio semplificata
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
+		//Cambio del valore HOST nei request headers
+		requestHeaders.remove(requestHeaders.size()-1);
+		requestHeaders.add(new BasicNameValuePair("Host", HOST3));
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + location, requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di inserzione annuncio semplificata", "https://offerta.autoscout24.it/classified", requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
-				//Trovo la location
-				location = getHeaderValueByName(responseHeaders, "Location");
-			}
-			else if( (responseStatus.getStatusCode()!=200)) {
+			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
 		} catch (IOException | RuntimeException e) {
@@ -210,38 +224,38 @@ public class _autoscout24It extends PortaleWeb {
 		}
 		
 		
-		//Connessione 4 - GET della pagina di redirect dopo inserimento parametri login
+		//Connessione 4 - GET per ottenere l'articleId
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_4.get("Connessione 4 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + "/account/manageads/", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_4.get("Connessione 4 - GET per ottenere l'articleId", "https://offerta.autoscout24.it/classified/temporary/C?_=1386424481612", requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()!=200)) {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-			}
-		} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-
-
-		//Connessione 5 - GET della pagina "Inserisci il tuo annuncio"
-		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
-		try {
-			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci il tuo annuncio\"", SECUREURLROOT + "/ai/form/0", requestHeaders, requestCookies, debugMode);
-			//Controllo il response status
-			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()!=200)) {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			if( (responseStatus.getStatusCode()==200)) {
+				responseBody = (String)response[1];
+				
+				//Parsing JSON della risposta
+				JSONObject json = null;
+				try {
+					json = new JSONObject(responseBody);
+					if(json.getString("status").equals("Success")) {
+						articleId = json.getString("articleId");
+					}
+					else {
+						throw new HttpCommunicationException(new HttpWrongResponseBodyException("La GET ha ritornato un response inatteso"));
+					}				
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 			}
 			else {
-				responseBody = (String)response[1];
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-
-
-		//Connessione 6 - POST dei parametri di annuncio
+		
+		
+		/*//Connessione 4 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
 		tabellaDiDipendenza.put("check_type_diff", "1");
 		tabellaDiDipendenza.put("category", "Auto"); //Auto
@@ -344,7 +358,7 @@ public class _autoscout24It extends PortaleWeb {
 			tabellaDiDipendenza.clear();
 		}
 
-
+/*
 		//Connessione 7 - GET della pagina "Preview annuncio" - Opzionale
 		HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
 		try {
