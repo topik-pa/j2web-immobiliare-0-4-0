@@ -16,6 +16,8 @@ public interface parametriGenerali {
 	final String UTENTE ="Marco Pavan";
 	final String EMAIL_UTENTE ="marco--pavan@libero.it";
 	final String RAGIONESOCIALE_UTENTE ="Auto&Auto srl";
+	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
+	final String CITTA_UTENTE ="Udine";
 	final String INDIRIZZO_UTENTE ="via Buttrio, 667 - 33100 Udine";
 	final String TELEFONO_UTENTE ="329656598";
 

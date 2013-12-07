@@ -36,12 +36,12 @@ public class _subitoIt extends PortaleWeb {
 	private final String PASSWORD = "topik123";
 	private final String HOST = "www.subito.it";
 	private final String HOST2 = "www2.subito.it";
-	
+
 	private final String SESSIONCOOKIENAME = "s";
 	private final String SESSIONCOOKIEDOMAIN = ".subito.it";
 	private final String SESSIONCOOKIEHEADER = "";
 	private final String SESSIONCOOKIEVALUE = "";
-	
+
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
@@ -61,7 +61,7 @@ public class _subitoIt extends PortaleWeb {
 
 	//Lista degli headers inviati in una singola connessione
 	List<NameValuePair> requestHeaders;
-	
+
 	//Lista dei cookies inviati in una singola connessione
 	List<BasicClientCookie> requestCookies;
 
@@ -87,7 +87,7 @@ public class _subitoIt extends PortaleWeb {
 
 		//La lista degli header (nome-valore) inviati
 		requestHeaders = new ArrayList<NameValuePair>();
-		
+
 		//La lista dei cookies inviati
 		requestCookies = new ArrayList<BasicClientCookie>();
 
@@ -99,6 +99,7 @@ public class _subitoIt extends PortaleWeb {
 
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
+
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
 
 		//Inizializzazione scheda
@@ -126,7 +127,7 @@ public class _subitoIt extends PortaleWeb {
 		}
 
 
-		//Connessione 1 - GET della pagina di login
+		//Connessione 1 - GET della pagina di login - Opzionale
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/account/login_form/", requestHeaders, null, debugMode);
@@ -183,7 +184,7 @@ public class _subitoIt extends PortaleWeb {
 		}
 
 
-		//Connessione 3 - GET della pagina di redirect dopo inserimento parametri login
+		//Connessione 3 - GET della pagina di redirect dopo inserimento parametri login - (Opzionale)
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + location, requestHeaders, requestCookies, debugMode);
@@ -200,9 +201,9 @@ public class _subitoIt extends PortaleWeb {
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-		
-		
-		//Connessione 4 - GET della pagina di redirect dopo inserimento parametri login
+
+
+		//Connessione 4 - GET della pagina di redirect dopo inserimento parametri login - la connessione precedente non mi ritorna la location (Opzionale)
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_4.get("Connessione 4 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + "/account/manageads/", requestHeaders, requestCookies, debugMode);
@@ -216,7 +217,7 @@ public class _subitoIt extends PortaleWeb {
 		}
 
 
-		//Connessione 5 - GET della pagina "Inserisci il tuo annuncio"
+		//Connessione 5 - GET della pagina "Inserisci il tuo annuncio" - Opzionale
 		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci il tuo annuncio\"", SECUREURLROOT + "/ai/form/0", requestHeaders, requestCookies, debugMode);
@@ -233,10 +234,101 @@ public class _subitoIt extends PortaleWeb {
 		}
 
 
+		//Connessione5b - POST delle immagini
+		for(int i=1; i<scheda.arrayImages.length; i++) {
+			if(scheda.arrayImages[i]!=null && i<=6) {
+
+				//Raccolgo i parametri nella tabella di dipendenza
+				MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+				FileBody bin = new FileBody(scheda.arrayImages[i]);
+
+				HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
+				try {   
+
+					reqEntity.addPart("image", bin );
+					reqEntity.addPart("check_type_diff", new StringBody("0") );
+					reqEntity.addPart("category", new StringBody("2") );
+					reqEntity.addPart("animal_type", new StringBody("") );
+					reqEntity.addPart("office_type", new StringBody("") );
+					reqEntity.addPart("room_type", new StringBody("") );
+					reqEntity.addPart("ship_type", new StringBody("") );
+					reqEntity.addPart("vehicle_type", new StringBody("") );
+					reqEntity.addPart("caravan_type", new StringBody("") );
+					reqEntity.addPart("sport_type", new StringBody("") );
+					reqEntity.addPart("children_type", new StringBody("") );
+					reqEntity.addPart("children_age", new StringBody("") );
+					reqEntity.addPart("hobby_type", new StringBody("") );
+					reqEntity.addPart("audiovideo_type", new StringBody("") );
+					reqEntity.addPart("bicycle_type", new StringBody("") );
+					reqEntity.addPart("bikeversion", new StringBody("") );
+					reqEntity.addPart("moto_type", new StringBody("") );
+					reqEntity.addPart("computer_type", new StringBody("") );
+					reqEntity.addPart("clothing_type", new StringBody("") );
+					reqEntity.addPart("clothing_gender", new StringBody("") );
+					reqEntity.addPart("region", new StringBody("0") );
+					reqEntity.addPart("city", new StringBody("0") );
+					reqEntity.addPart("town", new StringBody("0") );
+					reqEntity.addPart("zone", new StringBody("") );
+					reqEntity.addPart("company_ad", new StringBody("1") );
+					reqEntity.addPart("name", new StringBody("") );
+					reqEntity.addPart("phone", new StringBody("") );
+					reqEntity.addPart("type", new StringBody("s") );
+					reqEntity.addPart("carbrand", new StringBody("") );
+					reqEntity.addPart("regdate", new StringBody("0") );
+					reqEntity.addPart("mileage", new StringBody("") );
+					reqEntity.addPart("fuel", new StringBody("") );
+					reqEntity.addPart("car_type", new StringBody("") );
+					reqEntity.addPart("gearbox", new StringBody("") );
+					reqEntity.addPart("pollution", new StringBody("") );
+					reqEntity.addPart("seats", new StringBody("") );
+					reqEntity.addPart("doors", new StringBody("") );
+					reqEntity.addPart("color", new StringBody("") );
+					reqEntity.addPart("subject", new StringBody("") );
+					reqEntity.addPart("price", new StringBody("") );
+					reqEntity.addPart("body", new StringBody("") );
+					reqEntity.addPart("cites_cert_numb", new StringBody("") );
+					reqEntity.addPart("cites_cert_date", new StringBody("") );
+					reqEntity.addPart("cites_cert_from", new StringBody("") );
+					reqEntity.addPart("show_map", new StringBody("0") );
+					reqEntity.addPart("address", new StringBody("") );
+					reqEntity.addPart("latitude", new StringBody("") );
+					reqEntity.addPart("longitude", new StringBody("") );
+					reqEntity.addPart("zoom", new StringBody("") );
+					reqEntity.addPart("accept_equal_opp", new StringBody("1") );
+					reqEntity.addPart("validate", new StringBody("continua") );
+					reqEntity.addPart("extra_images", new StringBody("Carica") );
+
+					Object[] response = connessione_6.post("Connessione5b - POST delle immagini", SECUREURLROOT + "/ai/verify/1", reqEntity, requestHeaders, requestCookies, debugMode);			
+
+					//Controllo il response status
+					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+					if( (responseStatus.getStatusCode()==302)) {
+						Header[] responseHeaders = (Header[])response[0];
+						//Trovo la location
+						location = getHeaderValueByName(responseHeaders, "Location");
+						if(!location.contains("/ai/form/1")) {
+							//throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
+						}
+					}
+					else {
+						throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+					}    	
+
+				} catch (IOException | RuntimeException e) {
+					throw new HttpCommunicationException(e);
+				}
+				finally {
+				}
+			}
+		}
+
+
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
 		tabellaDiDipendenza.put("check_type_diff", "1");
-		tabellaDiDipendenza.put("category", "Auto"); //Auto
+		if(scheda.veicolo.equals("auto")) {
+			tabellaDiDipendenza.put("category", "Auto"); //Auto
+		}
 		tabellaDiDipendenza.put("animal_type","");
 		tabellaDiDipendenza.put("office_type",""); 
 		tabellaDiDipendenza.put("room_type",""); 
@@ -257,20 +349,20 @@ public class _subitoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("clothing_type","");
 		tabellaDiDipendenza.put("clothing_gender",""); 
 		tabellaDiDipendenza.put("clothing_number","");
-		tabellaDiDipendenza.put("region", "Friuli-Venezia Giulia"); //Friuli-Venezia Giulia
-		tabellaDiDipendenza.put("city","Udine"); //Udine
-		tabellaDiDipendenza.put("town","Udine"); //Udine
+		tabellaDiDipendenza.put("region", REGIONE_UTENTE); //Friuli-Venezia Giulia
+		tabellaDiDipendenza.put("city",CITTA_UTENTE); //Udine
+		tabellaDiDipendenza.put("town",CITTA_UTENTE); //Udine
 		tabellaDiDipendenza.put("zone","");
-		tabellaDiDipendenza.put("company_ad", "1"); //Azienda
-		tabellaDiDipendenza.put("name","autoeauto"); //autoeauto
+		tabellaDiDipendenza.put("company_ad", "1"); //pubblica come Azienda
+		tabellaDiDipendenza.put("name",RAGIONESOCIALE_UTENTE); //autoeauto
 		tabellaDiDipendenza.put("servicetype","Seleziona la tipologia");
-		tabellaDiDipendenza.put("phone",scheda.Telefono);
-		tabellaDiDipendenza.put("type","s"); //Vendita
+		tabellaDiDipendenza.put("phone",scheda.Telefono); //deve essere preventivamente validato da subito.it
+		tabellaDiDipendenza.put("type","s"); //Vendita 
 		tabellaDiDipendenza.put("carbrand",scheda.marcaVeicolo);
-		tabellaDiDipendenza.put("carmodel","XXX"); //da aggiungere
+		tabellaDiDipendenza.put("carmodel","003854"); //da fare
 		tabellaDiDipendenza.put("regdate",scheda.annoImmatricolazioneVeicolo);
-		tabellaDiDipendenza.put("carversion", "XXX"); //da fare
-		tabellaDiDipendenza.put("mileage","2"); //da fare
+		tabellaDiDipendenza.put("carversion", "099565"); //da fare
+		tabellaDiDipendenza.put("mileage","2"); // da gestire sotto
 		tabellaDiDipendenza.put("fuel",scheda.carburanteVeicolo);
 		tabellaDiDipendenza.put("country","Seleziona");
 		tabellaDiDipendenza.put("car_type",scheda.carrozzeriaVeicolo);
@@ -278,8 +370,36 @@ public class _subitoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("pollution",scheda.classeEmissioniVeicolo);
 		tabellaDiDipendenza.put("seats",scheda.postiASedereVeicolo);
 		tabellaDiDipendenza.put("doors","Porte");
-		tabellaDiDipendenza.put("color","3"); //da fare
-		tabellaDiDipendenza.put("subject",scheda.marcaVeicolo + " " + scheda.modelloVeicolo);
+		switch (scheda.coloreEsternoVeicolo) {
+		case "Bianco":
+			tabellaDiDipendenza.put("color","1");
+			break;
+		case "Grigio":
+			tabellaDiDipendenza.put("color","2");	
+			break;
+		case "Marrone":
+			tabellaDiDipendenza.put("color","3");
+			break;
+		case "Nero":
+			tabellaDiDipendenza.put("color","4");
+			break;
+		case "Rosso":
+			tabellaDiDipendenza.put("color","5");
+			break;
+		case "Verde":
+			tabellaDiDipendenza.put("color","6");
+			break;
+		case "Giallo":
+			tabellaDiDipendenza.put("color","7");
+			break;
+		case "Blu":
+			tabellaDiDipendenza.put("color","8");
+			break;			
+		default:
+			tabellaDiDipendenza.put("color","");
+			break;
+		}
+		tabellaDiDipendenza.put("subject",scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " " + scheda.tipologiaContrattoVeicolo);
 		tabellaDiDipendenza.put("price",scheda.prezzoVeicolo);
 		tabellaDiDipendenza.put("gender","Scegli");
 		tabellaDiDipendenza.put("smoker","Scegli");
@@ -295,7 +415,7 @@ public class _subitoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("cites_cert_numb","");
 		tabellaDiDipendenza.put("cites_cert_date","");
 		tabellaDiDipendenza.put("cites_cert_from","");
-		tabellaDiDipendenza.put("show_map",""); //non mostrare la mappa
+		tabellaDiDipendenza.put("show_map","0"); //non mostrare la mappa
 		tabellaDiDipendenza.put("address","");
 		tabellaDiDipendenza.put("latitude","");
 		tabellaDiDipendenza.put("longitude","");
@@ -304,7 +424,36 @@ public class _subitoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("accept_equal_opp","1"); //annuncio per ambo i sessi
 		tabellaDiDipendenza.put("accept_term_of_use","1"); //accetto i termini d'uso
 		tabellaDiDipendenza.put("validate","continua");
-		
+
+		/*if(!scheda.chilometraggioVeicolo.equals("")) {
+			int chilometraggio = Integer.parseInt(scheda.chilometraggioVeicolo);
+			if(chilometraggio<=139999) {postParameters.add(new BasicNameValuePair("mileage", "24"));}
+			if(chilometraggio<=129999) {postParameters.add(new BasicNameValuePair("mileage", "23"));}
+			if(chilometraggio<=119999) {postParameters.add(new BasicNameValuePair("mileage", "22"));}
+			if(chilometraggio<=109999) {postParameters.add(new BasicNameValuePair("mileage", "21"));}
+			if(chilometraggio<=99999) {postParameters.add(new BasicNameValuePair("mileage", "20"));}
+			if(chilometraggio<=94999) {postParameters.add(new BasicNameValuePair("mileage", "19"));}
+			if(chilometraggio<=89999) {postParameters.add(new BasicNameValuePair("mileage", "18"));}
+			if(chilometraggio<=84999) {postParameters.add(new BasicNameValuePair("mileage", "17"));}
+			if(chilometraggio<=79999) {postParameters.add(new BasicNameValuePair("mileage", "16"));}
+			if(chilometraggio<=74999) {postParameters.add(new BasicNameValuePair("mileage", "15"));}
+			if(chilometraggio<=69999) {postParameters.add(new BasicNameValuePair("mileage", "14"));}
+			if(chilometraggio<=64999) {postParameters.add(new BasicNameValuePair("mileage", "13"));}
+			if(chilometraggio<=59999) {postParameters.add(new BasicNameValuePair("mileage", "12"));}
+			if(chilometraggio<=54999) {postParameters.add(new BasicNameValuePair("mileage", "11"));}
+			if(chilometraggio<=49999) {postParameters.add(new BasicNameValuePair("mileage", "10"));}
+			if(chilometraggio<=44999) {postParameters.add(new BasicNameValuePair("mileage", "9"));}
+			if(chilometraggio<=39999) {postParameters.add(new BasicNameValuePair("mileage", "8"));}
+			if(chilometraggio<=34999) {postParameters.add(new BasicNameValuePair("mileage", "7"));}
+			if(chilometraggio<=29999) {postParameters.add(new BasicNameValuePair("mileage", "6"));}
+			if(chilometraggio<=24999) {postParameters.add(new BasicNameValuePair("mileage", "5"));}
+			if(chilometraggio<=19999) {postParameters.add(new BasicNameValuePair("mileage", "4"));}
+			if(chilometraggio<=14999) {postParameters.add(new BasicNameValuePair("mileage", "3"));}
+			if(chilometraggio<=9999) {postParameters.add(new BasicNameValuePair("mileage", "2"));}
+			if(chilometraggio<=4999) {postParameters.add(new BasicNameValuePair("mileage", "1"));}
+			if(chilometraggio==0) {postParameters.add(new BasicNameValuePair("mileage", "0"));}
+		}*/
+
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
 		valutaParametri(responseBody, "#content form input, #content form select, #content form textarea", tabellaDiDipendenza, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
@@ -319,12 +468,15 @@ public class _subitoIt extends PortaleWeb {
 				Header[] responseHeaders = (Header[])response[0];
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
-				if(!location.contains("/ai/preview")) {
-					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto 1"));
+				if(location.contains("/ai/preview")) {
+					//inserimentoOK=true;
+				}
+				else {
+					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
 				}
 			}
 			else {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto 2"));
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}    	
 
 		} catch (IOException | RuntimeException e) {
@@ -350,54 +502,38 @@ public class _subitoIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 
-/*
-		//Connessione 8 - GET della pagina "Inserisci una nuova foto" - Opzionale
-		HttpPortalGetConnection connessione_8 = new HttpPortalGetConnection();
-		try {
-			Object[] response =  connessione_8.get("Connessione 8 - GET della pagina \"Inserisci una nuova foto\"", URLROOT + "/concessionari/foto.php?id=" + codiceInserzione, requestHeaders, debugMode);
+
+		//Connessione 8 - POST della conferma alla pubblicazione
+		/*HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
+		try {    
+			postParameters.add(new BasicNameValuePair("payment_type", "cc"));
+
+			Object[] response = connessione_8.post("Connessione 8 - POST della conferma alla pubblicazione", SECUREURLROOT + "/ai/create/0", postParameters, requestHeaders, null, debugMode);			
+
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()!=200)) {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			if( (responseStatus.getStatusCode()==302)) {
+				Header[] responseHeaders = (Header[])response[0];
+				//Trovo la location
+				location = getHeaderValueByName(responseHeaders, "Location");
+				if(location.contains("/ai/confirm/")) {
+					inserimentoOK=true;
+				}
+				else {
+					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
+				}
 			}
+			else {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}    	
+
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-
-
-		//Connessione 9 - Invio delle foto
-		for(int i=1; i<scheda.arrayImages.length; i++) {
-			if(scheda.arrayImages[i]!=null) {
-				HttpPortalPostConnection connessione_9 = new HttpPortalPostConnection();        
-				try {
-
-					MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-					FileBody bin = new FileBody(scheda.arrayImages[i]);
-					reqEntity.addPart("foto", bin );
-					reqEntity.addPart("id", new StringBody(codiceInserzione) );
-					reqEntity.addPart("Submit", new StringBody("Invia la foto") );
-
-					Object[] response = connessione_9.post("Connessione 9 - Invio delle foto", URLROOT + "/concessionari/_foto.php", reqEntity, requestHeaders, debugMode);			
-
-					//Controllo il response status
-					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-					if( (responseStatus.getStatusCode()!=302)) {
-						throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-					}    	
-
-				} catch (IOException | RuntimeException e) {
-					throw new HttpCommunicationException(e);
-				}
-				finally {
-					tabellaDiDipendenza.clear();
-					mappaDeiParamerti.clear();
-					postParameters.clear();
-				}
-			}
+		finally {
+			postParameters.clear();
 		}*/
-		
-		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		//requestHeaders.remove(sessionCookie);
+
 
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
 		if(inserimentoOK) {
@@ -440,7 +576,7 @@ public class _subitoIt extends PortaleWeb {
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT + "/concessionari/dett-annuncio.php?id=" + codiceInserzione;
+			String url = SECUREURLROOT + "/account/manageads/";
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			System.out.println("Visualizzata in: " + NOMEPORTALE);
 

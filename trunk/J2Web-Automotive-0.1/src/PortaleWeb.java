@@ -351,7 +351,10 @@ public abstract class PortaleWeb implements parametriGenerali {
 			break;
 			
 		case "input":
-			if(domElement.attr("type").equals("text") || domElement.attr("type").equals("password") || domElement.attr("type").equals("submit") || domElement.attr("type").equals("hidden") || domElement.attr("type").equals("radio") || domElement.attr("type").equals("checkbox")) {
+			if(valueScheda.equals("***site***")) {
+				returnValue = domElement.val();
+			}
+			else {
 				returnValue = valueScheda;
 			}
 			break;
