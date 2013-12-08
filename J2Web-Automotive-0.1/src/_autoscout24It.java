@@ -112,16 +112,23 @@ public class _autoscout24It extends PortaleWeb {
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
 
+		//autoscout24 è un portale che accetta solo veicoli usati
+		if(scheda.tipologiaVeicolo.equals("Veicolo nuovo")) {
+			JOptionPane.showMessageDialog(null, "Non è possibile inserire veicoli nuovi nel portale: " + NOMEPORTALE);
+			return false;
+		}
+
 		//Inizializzazione scheda
 		this.scheda=scheda;
 
-		//Inposto le variabili per il session cookie
+		//Imposto le variabili per il session cookie
 		SESSIONCOOKIENAME = "GUID";
 		SESSIONCOOKIEDOMAIN = ".autoscout24.it";
 		SESSIONCOOKIEHEADER = "";
 		SESSIONCOOKIEVALUE = "";
 
 		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
+		requestHeaders.clear();
 		requestHeaders.add(new BasicNameValuePair("Host", HOST));
 		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
 		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
@@ -227,6 +234,9 @@ public class _autoscout24It extends PortaleWeb {
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
+			else {
+				responseBody = (String)response[1];
+			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -239,12 +249,12 @@ public class _autoscout24It extends PortaleWeb {
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==200)) {
-				responseBody = (String)response[1];
+				String responseBody2 = (String)response[1];
 
 				//Parsing JSON della risposta
 				JSONObject json = null;
 				try {
-					json = new JSONObject(responseBody);
+					json = new JSONObject(responseBody2);
 					if(json.getString("status").equals("Success")) {
 						articleId = json.getString("articleId");
 					}
@@ -308,37 +318,38 @@ public class _autoscout24It extends PortaleWeb {
 
 
 		//Connessione 5 - POST dei parametri di annuncio
+		DecimalFormat df = new DecimalFormat("###,###.###"); 
 		//Raccolgo i parametri nella tabella di dipendenza
 		tabellaDiDipendenza.put("ArticleId", articleId);
-		tabellaDiDipendenza.put("ArticleType", "***site***"); //Auto
+		tabellaDiDipendenza.put("ArticleType", "***site***"); //Automobile
 		tabellaDiDipendenza.put("BaseData.Accident","***site***");
-		tabellaDiDipendenza.put("BaseData.ArticleOfferTypeId",scheda.tipologiaVeicolo);  //da fare
+		//tabellaDiDipendenza.put("BaseData.ArticleOfferTypeId",scheda.tipologiaVeicolo);  //calcolato sotto
 		if(scheda.prezzoTrattabile){tabellaDiDipendenza.put("BaseData.AskingPrice","true");}
 		tabellaDiDipendenza.put("BaseData.BodyColorId",scheda.coloreEsternoVeicolo); 
 		tabellaDiDipendenza.put("BaseData.BodyTypeId",scheda.carrozzeriaVeicolo); 
 		tabellaDiDipendenza.put("BaseData.Doors","***site***"); //bho 
 		tabellaDiDipendenza.put("BaseData.FirstRegistrationMonth","0"+scheda.meseImmatricolazioneVeicoloIndex); 
-		tabellaDiDipendenza.put("BaseData.FirstRegistrationYear",""+scheda.annoImmatricolazioneVeicoloIndex); 
+		tabellaDiDipendenza.put("BaseData.FirstRegistrationYear",""+scheda.annoImmatricolazioneVeicolo); 
 		tabellaDiDipendenza.put("BaseData.FuelId",scheda.carburanteVeicolo); 
 		tabellaDiDipendenza.put("BaseData.HSN","***site***"); 
 		tabellaDiDipendenza.put("BaseData.LicensePlate","***site***"); 
 		tabellaDiDipendenza.put("BaseData.MakeId",scheda.marcaVeicolo);
-		if(scheda.coloreMetalizzato){tabellaDiDipendenza.put("BaseData.MetallicColor","true");}
-		DecimalFormat df = new DecimalFormat("#.###.##0"); 
-		tabellaDiDipendenza.put("BaseData.Mileage", df.format(scheda.chilometraggioVeicolo));
-		//tabellaDiDipendenza.put("BaseData.ModelId",""); //lo devo valutare dopo
+		//if(scheda.coloreMetalizzato){tabellaDiDipendenza.put("BaseData.MetallicColor","true");}
+		tabellaDiDipendenza.put("BaseData.MetallicColor","***site***");
+		tabellaDiDipendenza.put("BaseData.Mileage", df.format(new Integer(scheda.chilometraggioVeicolo)));
+		//tabellaDiDipendenza.put("BaseData.ModelId",""); //calcolato sotto
 		tabellaDiDipendenza.put("BaseData.ParticulateFilter","***site***");
 		tabellaDiDipendenza.put("BaseData.Power",scheda.KWVeicolo); 
 		tabellaDiDipendenza.put("BaseData.PowerHp",scheda.CVVeicolo);
-		tabellaDiDipendenza.put("BaseData.PreviousOwners",scheda.numeroPrecedentiProprietariVeicolo); 
-		tabellaDiDipendenza.put("BaseData.PricePublic",df.format(scheda.prezzoVeicolo));
+		tabellaDiDipendenza.put("BaseData.PreviousOwners",""+scheda.numeroPrecedentiProprietariVeicolo); 
+		tabellaDiDipendenza.put("BaseData.PricePublic",df.format(new Integer(scheda.prezzoVeicolo)));
 		tabellaDiDipendenza.put("BaseData.TSN", "***site***");
 		tabellaDiDipendenza.put("BaseData.VatDeductible","***site***");
 		tabellaDiDipendenza.put("BaseData.Version", scheda.versioneVeicolo);
 		tabellaDiDipendenza.put("Description.Description",scheda.descrizioneVeicolo);
 		tabellaDiDipendenza.put("Equipment.AlloyWheelInches", "Altezza"); 	
 
-		if(scheda.disponibilitaABS){tabellaDiDipendenza.put("Equipment.SecurityLeft.1","1"); Equipment_EquipmentIds+="1,";}
+		/*if(scheda.disponibilitaABS){tabellaDiDipendenza.put("Equipment.SecurityLeft.1","1"); Equipment_EquipmentIds+="1,";}
 		if(scheda.disponibilitaAirBag){tabellaDiDipendenza.put("Equipment.SecurityLeft.-1","-1");}
 		if(scheda.disponibilitaAntifurto){tabellaDiDipendenza.put("Equipment.SecurityLeft.18","18");Equipment_EquipmentIds+="18,";}
 		if(scheda.disponibilitaChiusuraCentralizzata){tabellaDiDipendenza.put("Equipment.SecurityLeft.17","17");Equipment_EquipmentIds+="17,";}
@@ -356,10 +367,50 @@ public class _autoscout24It extends PortaleWeb {
 		if(scheda.disponibilitaGancioTraino){tabellaDiDipendenza.put("Equipment.ExtrasLeft.20","20");Equipment_EquipmentIds+="20,";}
 		if(scheda.disponibilitaPortaPacchi){tabellaDiDipendenza.put("Equipment.ExtrasRight.27","27");Equipment_EquipmentIds+="27,";}
 		if(scheda.disponibilitaSediliSportivi){tabellaDiDipendenza.put("Equipment.ExtrasRight.117","117");Equipment_EquipmentIds+="117,";}
-		if(scheda.disponibilitaSediliRiscaldati){tabellaDiDipendenza.put("Equipment.ComfortRight.34","34");Equipment_EquipmentIds+="34,";}
+		if(scheda.disponibilitaSediliRiscaldati){tabellaDiDipendenza.put("Equipment.ComfortRight.34","34");Equipment_EquipmentIds+="34,";}*/
+		tabellaDiDipendenza.put("Equipment.ComfortLeft.10","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortLeft.13","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortLeft.16","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortLeft.30","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortLeft.38","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortLeft.39","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortLeft.40","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortLeft.41","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortLeft.5","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortRight.112","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortRight.114","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortRight.12","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortRight.23","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortRight.34","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortRight.4","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortRight.50","***site***");
+		tabellaDiDipendenza.put("Equipment.ComfortLeft.52","***site***");
+		tabellaDiDipendenza.put("Equipment.ExtrasLeft.112","***site***");
+		tabellaDiDipendenza.put("Equipment.ExtrasLeft.15","***site***");
+		tabellaDiDipendenza.put("Equipment.ExtrasLeft.20","***site***");
+		tabellaDiDipendenza.put("Equipment.ExtrasLeft.36","***site***");
+		tabellaDiDipendenza.put("Equipment.ExtrasRight.116","***site***");
+		tabellaDiDipendenza.put("Equipment.ExtrasRight.117","***site***");
+		tabellaDiDipendenza.put("Equipment.ExtrasRight.119","***site***");
+		tabellaDiDipendenza.put("Equipment.ExtrasRight.27","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityLeft.-1","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityLeft.1","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityLeft.17","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityLeft.18","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityLeft.2","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityLeft.3","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityLeft.31","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityLeft.32","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityRight.115","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityRight.118","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityRight.19","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityRight.26","***site***");
+		tabellaDiDipendenza.put("Equipment.SecurityRight.42","***site***");
 
-		if(Equipment_EquipmentIds.endsWith(",")){Equipment_EquipmentIds.substring(0, Equipment_EquipmentIds.length()-1);}
-		tabellaDiDipendenza.put("Equipment.EquipmentIds","Equipment_EquipmentIds");
+
+		//if(Equipment_EquipmentIds.endsWith(",")){Equipment_EquipmentIds.substring(0, Equipment_EquipmentIds.length()-1);}
+		//tabellaDiDipendenza.put("Equipment.EquipmentIds","Equipment_EquipmentIds");
+		tabellaDiDipendenza.put("Equipment.EquipmentIds","***site***");
 		tabellaDiDipendenza.put("Equipment.InteriorColorId",scheda.coloreInterniVeicolo);
 		tabellaDiDipendenza.put("Equipment.Seats",scheda.postiASedereVeicolo);
 		tabellaDiDipendenza.put("Equipment.UpholsteryId",scheda.finitureInterneVeicolo);
@@ -385,21 +436,35 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("State.NonSmokingVehicle","***site***");
 		tabellaDiDipendenza.put("Tracking.Pagename","***site***");
 		tabellaDiDipendenza.put("Tracking.TrackingAttribute","***site***");
-		tabellaDiDipendenza.put("__RequestVerificationToken",""); //calcolato più sotto
-
+		//tabellaDiDipendenza.put("__RequestVerificationToken",""); //calcolato più sotto
 		tabellaDiDipendenza.put("validate","continua");
 
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#content form input, #content form select, #content form textarea", tabellaDiDipendenza, mappaDeiParamerti);
+		valutaParametri(responseBody, "#offerContent form input, #offerContent form select, #offerContent form textarea", tabellaDiDipendenza, mappaDeiParamerti);
 
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 
-		//Questo parametro lo devo valorizzare qui
+		//Questi parametri li devo valorizzare
 		String actualMakeId = mappaDeiParamerti.get("BaseData.MakeId");
 		BaseData_ModelId = getBaseData_ModelId(actualMakeId);
 		postParameters.add(new BasicNameValuePair("BaseData.ModelId", BaseData_ModelId));
-		postParameters.add(new BasicNameValuePair("__RequestVerificationToken", "EhEdN_8j5znK565KcirBfcnQWYz6jTCUP1Aht70T_qYQ0yjxROZcztemzN15idgukEZwGfombkBQ8MqsmNxyCoqWPnWG7rOx93nCPb6wX79i-C18xP0__vxvYysSvZeC0"));
+		postParameters.add(new BasicNameValuePair("__RequestVerificationToken", "EhEdN_8j5znK565KcirBfcnQWYz6jTCUP1Aht70T_qYQ0yjxROZcztemzN15idgukEZwGfombkBQ8MqsmNxyCoqWPnWG7rOx93nCPb6wX79i-C18xP0__vxvYysSvZeC0")); //lo metto statico perchè non so come valutarlo
+
+		switch (scheda.tipologiaVeicolo) {
+		case "Veicolo d'epoca":
+			postParameters.add(new BasicNameValuePair("BaseData.ArticleOfferTypeId", "O"));
+			break;
+		case "Veicolo aziendale":
+			postParameters.add(new BasicNameValuePair("BaseData.ArticleOfferTypeId", "J"));
+			break;
+			/*case "Veicolo nuovo":
+			postParameters.add(new BasicNameValuePair("BaseData.ArticleOfferTypeId", "J"));
+			break;*/
+		default:
+			postParameters.add(new BasicNameValuePair("BaseData.ArticleOfferTypeId", "U"));
+			break;
+		}
 
 		HttpPortalPostConnection connessione_5 = new HttpPortalPostConnection();
 		try {        	
@@ -438,7 +503,7 @@ public class _autoscout24It extends PortaleWeb {
 			mappaDeiParamerti.clear();
 			tabellaDiDipendenza.clear();
 		}
-		
+
 
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
 		if(inserimentoOK) {
@@ -481,7 +546,7 @@ public class _autoscout24It extends PortaleWeb {
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT + "/concessionari/dett-annuncio.php?id=" + codiceInserzione;
+			String url = URLROOT + "/MyPrivateArea.aspx";
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			System.out.println("Visualizzata in: " + NOMEPORTALE);
 
@@ -499,10 +564,25 @@ public class _autoscout24It extends PortaleWeb {
 
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 
+		//Imposto le variabili per il session cookie
+		SESSIONCOOKIENAME = "GUID";
+		SESSIONCOOKIEDOMAIN = ".autoscout24.it";
+		SESSIONCOOKIEHEADER = "";
+		SESSIONCOOKIEVALUE = "";
+
+		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
+		requestHeaders.clear();
+		requestHeaders.add(new BasicNameValuePair("Host", HOST2));
+		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
+		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
+		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
+		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
+		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
+
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/Login.aspx", requestHeaders, null, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -510,6 +590,12 @@ public class _autoscout24It extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+				connessione_1.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
+				setCookies(responseHeaders, requestCookies);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -518,27 +604,35 @@ public class _autoscout24It extends PortaleWeb {
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("password",PASSWORD);
-		tabellaDiDipendenza.put("submit","Entra");
-		tabellaDiDipendenza.put("username",USERNAME);
+		tabellaDiDipendenza.put("__EVENTARGUMENT","***site***");
+		tabellaDiDipendenza.put("__EVENTTARGET","ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$weviLoginButton");
+		tabellaDiDipendenza.put("__INFOMESSAGEPRESENT","***site***");
+		tabellaDiDipendenza.put("__RequestVerificationToken","***site***");
+		tabellaDiDipendenza.put("__VIEWSTATE","***site***");
+		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$passwordForgotten$usernameTextbox","***site***");
+		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$passwordTextbox",PASSWORD);
+		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$passwordTextboxTxt","");
+		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$usernameTextbox",USERNAME);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#frmLogin input", tabellaDiDipendenza, mappaDeiParamerti);	
+		valutaParametri(responseBody, "#aspnetForm input", tabellaDiDipendenza, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", SECUREURLROOT + "/Login.aspx", postParameters, requestHeaders, requestCookies, debugMode);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
 				Header[] responseHeaders = (Header[])response[0];
-				//Trovo il cookie di sessione
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				//Aggiungo il cookie di sessione ai requestHeaders
-				sessionCookie = new BasicNameValuePair("Cookie", "PHPSESSID" + "=" + SESSIONCOOKIEVALUE);
-				requestHeaders.add(sessionCookie);
+				//Trovo la location
+				location = getHeaderValueByName(responseHeaders, "Location");
+				if(location.contains("MyPrivateArea")) {
+					responseBody = (String)response[1];
+				}
+				else {
+					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Location non corretta"));
+				}	
 			}
 			else {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
@@ -552,19 +646,64 @@ public class _autoscout24It extends PortaleWeb {
 			mappaDeiParamerti.clear();
 			postParameters.clear();
 		}
-
-
-		//Connessione 3 - GET della pagina di eliminazione annuncio
+		
+		
+		//Connessione 3 - GET della pagina MyAccount
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
+		//Cambio del valore HOST nei request headers
+		requestHeaders.remove(0);
+		requestHeaders.add(new BasicNameValuePair("Host", HOST));
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di eliminazione annuncio", URLROOT + "/concessionari/_del_annunci.php?id=" + codiceInserzione, requestHeaders, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina MyAccount", URLROOT + "/MyPrivateArea.aspx", requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (!(responseStatus.getStatusCode()==200 || responseStatus.getStatusCode()==302))) {
+			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				responseBody = (String)response[1];
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
+		}
+		
+		
+		//Connessione 4 - POST di eliminazione annuncio
+		//Raccolgo i parametri nella tabella di dipendennza
+		tabellaDiDipendenza.put("__EVENTARGUMENT","***site***");
+		tabellaDiDipendenza.put("__EVENTTARGET","***site***");
+		tabellaDiDipendenza.put("__VIEWSTATE","***site***");
+		tabellaDiDipendenza.put("deletionConfirmKey",codiceInserzione);
+		tabellaDiDipendenza.put("genderHiddenFieldName","***site***");
+		tabellaDiDipendenza.put("insertionDateHiddenFieldName=","07/12/2013 15:03:30");
+		tabellaDiDipendenza.put("isArticleDeletedHiddenFieldName","***site***");
+		tabellaDiDipendenza.put("makeHiddenFieldName",scheda.marcaVeicolo);
+		tabellaDiDipendenza.put("modelHiddenFieldName",scheda.modelloVeicolo);
+		tabellaDiDipendenza.put("packageIdHiddenFieldName","Free");
+		tabellaDiDipendenza.put("pageViewsHiddenFieldName","***site***");
+		tabellaDiDipendenza.put("priceHiddenFieldName",scheda.prezzoVeicolo);
+		tabellaDiDipendenza.put("registrationDateHiddenFieldName","01/08/2010 00:00:00");
+		//Valorizzo i parametri mettendoli nella mappaDeiParametri
+		valutaParametri(responseBody, "#aspnetForm input", tabellaDiDipendenza, mappaDeiParamerti);	
+		//Trasferisco i parametri dalla mappa alla lista
+		setPostParameters(mappaDeiParamerti, postParameters);
+		HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();
+		try {        	
+			Object[] response = connessione_4.post("Connessione 4 - POST di eliminazione annuncio", URLROOT + "/MyPrivateArea.aspx", postParameters, requestHeaders, requestCookies, debugMode);			
+
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+		finally {
+			tabellaDiDipendenza.clear();
+			mappaDeiParamerti.clear();
+			postParameters.clear();
 		}
 
 		//Aggiorno la lista dei portali in cui è presenta la scheda corrente
