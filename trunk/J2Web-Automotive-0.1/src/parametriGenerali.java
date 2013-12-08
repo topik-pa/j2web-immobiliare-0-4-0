@@ -19,7 +19,7 @@ public interface parametriGenerali {
 	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
 	final String CITTA_UTENTE ="Udine";
 	final String INDIRIZZO_UTENTE ="via Buttrio, 667 - 33100 Udine";
-	final String TELEFONO_UTENTE ="329656598";
+	final String TELEFONO_UTENTE ="3295698985";
 
 	//Mail del back end
 	final String BACKEND_EMAIL ="marcopavan.mp@gmail.com";

@@ -45,7 +45,8 @@ public class _subitoIt extends PortaleWeb {
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
-	private String codiceInserzione;
+	int random = (int)Math.random() * 100000;
+	private String codiceInserzione = Integer.toString(random);
 	private String location;
 	private String responseBody;
 	private BasicNameValuePair sessionCookie;
@@ -235,7 +236,7 @@ public class _subitoIt extends PortaleWeb {
 
 
 		//Connessione5b - POST delle immagini
-		for(int i=1; i<scheda.arrayImages.length; i++) {
+		/*for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null && i<=6) {
 
 				//Raccolgo i parametri nella tabella di dipendenza
@@ -320,55 +321,56 @@ public class _subitoIt extends PortaleWeb {
 				finally {
 				}
 			}
-		}
+		}*/
 
 
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
-		tabellaDiDipendenza.put("check_type_diff", "1");
+		tabellaDiDipendenza.put("check_type_diff", "***site***");
 		if(scheda.veicolo.equals("auto")) {
 			tabellaDiDipendenza.put("category", "Auto"); //Auto
 		}
-		tabellaDiDipendenza.put("animal_type","");
-		tabellaDiDipendenza.put("office_type",""); 
-		tabellaDiDipendenza.put("room_type",""); 
-		tabellaDiDipendenza.put("ship_type",""); 
-		tabellaDiDipendenza.put("vehicle_type",""); 
-		tabellaDiDipendenza.put("caravan_type",""); 
-		tabellaDiDipendenza.put("sport_type",""); 
-		tabellaDiDipendenza.put("children_type",""); 
-		tabellaDiDipendenza.put("children_age",""); 
-		tabellaDiDipendenza.put("hobby_type",""); 
-		tabellaDiDipendenza.put("audiovideo_type",""); 
-		tabellaDiDipendenza.put("bicycle_type","");
-		tabellaDiDipendenza.put("phone_type",""); 
-		tabellaDiDipendenza.put("bikebrand","");
-		tabellaDiDipendenza.put("bikeversion",""); 
-		tabellaDiDipendenza.put("moto_type","");
-		tabellaDiDipendenza.put("computer_type",""); 
-		tabellaDiDipendenza.put("clothing_type","");
-		tabellaDiDipendenza.put("clothing_gender",""); 
-		tabellaDiDipendenza.put("clothing_number","");
+		tabellaDiDipendenza.put("animal_type","Seleziona il tipo");
+		tabellaDiDipendenza.put("office_type","Seleziona il tipo di ufficio o locale commerciale"); 
+		tabellaDiDipendenza.put("room_type","Seleziona il tipo di stanza"); 
+		tabellaDiDipendenza.put("ship_type","Seleziona il tipo di imbarcazione"); 
+		tabellaDiDipendenza.put("vehicle_type","Seleziona il tipo di veicolo"); 
+		tabellaDiDipendenza.put("caravan_type","Seleziona il tipo di veicolo"); 
+		tabellaDiDipendenza.put("sport_type","Seleziona il tipo di sport"); 
+		tabellaDiDipendenza.put("children_type","Seleziona il tipo di oggetto"); 
+		tabellaDiDipendenza.put("children_age","Seleziona la fascia d'et"); 
+		tabellaDiDipendenza.put("hobby_type","Seleziona il tipo di hobby"); 
+		tabellaDiDipendenza.put("audiovideo_type","Seleziona il prodotto"); 
+		tabellaDiDipendenza.put("bicycle_type","Seleziona il tipo di bicicletta");
+		tabellaDiDipendenza.put("phone_type","Scegli"); 
+		tabellaDiDipendenza.put("bikebrand","Seleziona la marca");
+		tabellaDiDipendenza.put("bikeversion",";Seleziona prima il modell"); 
+		tabellaDiDipendenza.put("moto_type","Seleziona tipologia");
+		tabellaDiDipendenza.put("computer_type","Scegli"); 
+		tabellaDiDipendenza.put("clothing_type","Scegli");
+		tabellaDiDipendenza.put("clothing_gender","Scegli"); 
+		tabellaDiDipendenza.put("clothing_number","Scegli");
 		tabellaDiDipendenza.put("region", REGIONE_UTENTE); //Friuli-Venezia Giulia
-		tabellaDiDipendenza.put("city",CITTA_UTENTE); //Udine
-		tabellaDiDipendenza.put("town",CITTA_UTENTE); //Udine
+		//tabellaDiDipendenza.put("city",CITTA_UTENTE); //Udine - devo valutarla dopo
+		//tabellaDiDipendenza.put("town",CITTA_UTENTE); //Udine - devo valutarla dopo
 		tabellaDiDipendenza.put("zone","");
 		tabellaDiDipendenza.put("company_ad", "1"); //pubblica come Azienda
 		tabellaDiDipendenza.put("name",RAGIONESOCIALE_UTENTE); //autoeauto
 		tabellaDiDipendenza.put("servicetype","Seleziona la tipologia");
-		tabellaDiDipendenza.put("phone",scheda.Telefono); //deve essere preventivamente validato da subito.it
+		tabellaDiDipendenza.put("phone",TELEFONO_UTENTE); //deve essere preventivamente validato da subito.it
+		tabellaDiDipendenza.put("phone_hidden","***site***");
 		tabellaDiDipendenza.put("type","s"); //Vendita 
 		tabellaDiDipendenza.put("carbrand",scheda.marcaVeicolo);
-		tabellaDiDipendenza.put("carmodel","003854"); //da fare
+		//tabellaDiDipendenza.put("carmodel","003854"); //da fare - calcolato sotto
 		tabellaDiDipendenza.put("regdate",scheda.annoImmatricolazioneVeicolo);
 		tabellaDiDipendenza.put("carversion", "099565"); //da fare
-		tabellaDiDipendenza.put("mileage","2"); // da gestire sotto
+		tabellaDiDipendenza.put("mileage","25.000 - 29.999"); // da gestire sotto
 		tabellaDiDipendenza.put("fuel",scheda.carburanteVeicolo);
 		tabellaDiDipendenza.put("country","Seleziona");
 		tabellaDiDipendenza.put("car_type",scheda.carrozzeriaVeicolo);
 		tabellaDiDipendenza.put("gearbox",scheda.tipologiaCambioVeicolo);
 		tabellaDiDipendenza.put("pollution",scheda.classeEmissioniVeicolo);
-		tabellaDiDipendenza.put("seats",scheda.postiASedereVeicolo);
+		tabellaDiDipendenza.put("seats",""+scheda.postiASedereVeicolo);
 		tabellaDiDipendenza.put("doors","Porte");
 		switch (scheda.coloreEsternoVeicolo) {
 		case "Bianco":
@@ -458,6 +460,13 @@ public class _subitoIt extends PortaleWeb {
 		valutaParametri(responseBody, "#content form input, #content form select, #content form textarea", tabellaDiDipendenza, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
+		
+		//Questi parametri li devo valorizzare qui
+		postParameters.add(new BasicNameValuePair("city", "4")); //Udine
+		postParameters.add(new BasicNameValuePair("town", "030129"));  //Udine
+		postParameters.add(new BasicNameValuePair("carmodel", "004142")); //da fare
+		
+		
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
 			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", SECUREURLROOT + "/ai/verify/0", postParameters, requestHeaders, requestCookies, debugMode);			
@@ -497,6 +506,9 @@ public class _subitoIt extends PortaleWeb {
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				inserimentoOK=true;
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -551,7 +563,7 @@ public class _subitoIt extends PortaleWeb {
 				sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
 
 				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
 			}
 
 			return inserimentoOK;        	
@@ -572,8 +584,10 @@ public class _subitoIt extends PortaleWeb {
 	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceScheda + "...");
+		
+		JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
 
-		codiceInserzione = scheda.getCodiceInserimento(idPortale);
+		/*codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
 			String url = SECUREURLROOT + "/account/manageads/";
@@ -582,100 +596,25 @@ public class _subitoIt extends PortaleWeb {
 
 		} catch (IOException e ) {
 			//
-		}
+		}*/
 
 		return true;
 	}
 
 
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
-	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {		
+	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
+		
 		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
 
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
-
-		//Connessione 1 - GET della pagina di login
-		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
-		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, debugMode);
-			//Controllo il response status
-			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()!=200)) {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-			}
-			else {
-				responseBody = (String)response[1];
-			}
-		} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-
-
-		//Connessione 2 - POST dei parametri di accesso
-		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("password",PASSWORD);
-		tabellaDiDipendenza.put("submit","Entra");
-		tabellaDiDipendenza.put("username",USERNAME);
-		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#frmLogin input", tabellaDiDipendenza, mappaDeiParamerti);	
-		//Trasferisco i parametri dalla mappa alla lista
-		setPostParameters(mappaDeiParamerti, postParameters);
-		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
-		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, debugMode);			
-
-			//Controllo il response status
-			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
-				//Trovo il cookie di sessione
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				//Aggiungo il cookie di sessione ai requestHeaders
-				sessionCookie = new BasicNameValuePair("Cookie", "PHPSESSID" + "=" + SESSIONCOOKIEVALUE);
-				requestHeaders.add(sessionCookie);
-			}
-			else {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-			}    	
-
-		} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-		finally {
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();
-			postParameters.clear();
-		}
-
-
-		//Connessione 3 - GET della pagina di eliminazione annuncio
-		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
-		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di eliminazione annuncio", URLROOT + "/concessionari/_del_annunci.php?id=" + codiceInserzione, requestHeaders, debugMode);
-			//Controllo il response status
-			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (!(responseStatus.getStatusCode()==200 || responseStatus.getStatusCode()==302))) {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-			}
-		} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-
-		//Aggiorno la lista dei portali in cui è presenta la scheda corrente
-		scheda.eliminaInserimentoPortale(idPortale);			
-
-		if(!isSequential) {
-			//Aggiorno i pulsanti del pannello inserimento
-			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
-
-			System.out.println("Eliminata da: " + NOMEPORTALE);
-
-			//Stampo a video un messaggio informativo
-			JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + NOMEPORTALE);
-		}
-
+		
+		JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+		
+		
 		return true;
+
+		
 
 	}
 
