@@ -81,7 +81,9 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	int classeEmissioniVeicoloIndex;
 	String carburanteVeicolo;
 	int carburanteVeicoloIndex;
-
+	String tipologiaContrattoVeicolo;
+	int tipologiaContrattoVeicoloIndex;
+	
 	boolean disponibilitaCupolino;
 	boolean disponibilitaAllestimentoHandicap;
 	boolean disponibilitaServoSterzo;
@@ -108,7 +110,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	boolean disponibilitaAvviamentoAPedale;
 	boolean disponibilitaBauletto;
 	boolean coloreMetalizzato;
-	boolean ivaDeducibile;
+	//boolean ivaDeducibile;
 	boolean prezzoTrattabile;
 
 	String KWVeicolo;
@@ -183,6 +185,9 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		classeEmissioniVeicoloIndex = J2Web_UI.getComboBox_ClasseEmissioni().getSelectedIndex();
 		carburanteVeicolo = (String) J2Web_UI.getComboBox_Carburante().getSelectedItem();
 		carburanteVeicoloIndex = J2Web_UI.getComboBox_Carburante().getSelectedIndex();
+		tipologiaContrattoVeicolo = (String) J2Web_UI.getCombobox_Contratto().getSelectedItem();
+		tipologiaContrattoVeicoloIndex = J2Web_UI.getCombobox_Contratto().getSelectedIndex();
+		
 
 		//Checkbox
 		disponibilitaCupolino = J2Web_UI.getChckbxCupolino().isSelected()?true:false;
@@ -211,7 +216,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		disponibilitaAvviamentoAPedale = J2Web_UI.getChckbxAvviamentoAPedale().isSelected()?true:false;
 		disponibilitaBauletto = J2Web_UI.getChckbxBauletto().isSelected()?true:false;
 		coloreMetalizzato = J2Web_UI.getChckbxMetallizzato().isSelected()?true:false;
-		ivaDeducibile = J2Web_UI.getChckbxIvaDeducibile().isSelected()?true:false;
+		//ivaDeducibile = J2Web_UI.getChckbxIvaDeducibile().isSelected()?true:false;
 		prezzoTrattabile = J2Web_UI.getChckbxTrattabile().isSelected()?true:false;
 
 		//Textfield

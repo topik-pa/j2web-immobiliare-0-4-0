@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -36,7 +37,7 @@ import java.util.Iterator;
 
 
 /*
- * Questa classe definische i metodi e gli attributi dell'oggetto portale web, qui definiti in termini generici, vengono riscritti nelle classi più specifiche
+ * Questa classe definische i metodi e gli attributi dell'oggetto portale web, qui definiti in termini generici, vengono riscritti nelle classi piÃ¹ specifiche
  *
  */
 
@@ -100,7 +101,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 
 		String textBody = "";	  	
 		textBody += "E' stata inserita una scheda nel portale: " + nomePortale + ".";
-		textBody += "Il codice della scheda è: \n" + scheda.codiceScheda + "/n" + "Il codice di inserimento è: /n" + codInserzione;
+		textBody += "Il codice della scheda Ã¨: \n" + scheda.codiceScheda + "/n" + "Il codice di inserimento Ã¨: /n" + codInserzione;
 
 
 		try {
@@ -127,7 +128,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		}
 	}
 
-	//Valutazione similarità tra stringhe
+	//Valutazione similaritÃ  tra stringhe
 	public static List<char[]> bigram(String input)
 	{
 		ArrayList<char[]> bigram = new ArrayList<char[]>();
@@ -161,7 +162,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return (double) matches / (bigram1.size() + bigram2.size());
 	}
 
-	//Trova il cookie di sessione
+	//Trova il cookie di sessione e lo esporta a livello di portale
 	public boolean findSessionCookie(Header[] headers, String cookieName, String cookieDomain) {
 
 		boolean cookieHeaderFound = false;
@@ -186,6 +187,8 @@ public abstract class PortaleWeb implements parametriGenerali {
 					cookieHeaderFound = true;            		
 
 					//Aggiorno i parametri dei cookie (del portale chiamante)
+					SESSIONCOOKIENAME = cookieName;
+					SESSIONCOOKIEDOMAIN = cookieDomain;
 					SESSIONCOOKIEHEADER = cookie_header;
 					SESSIONCOOKIEVALUE = cookie_value;
 					
@@ -199,6 +202,41 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return cookieHeaderFound?true:false;
 	}
 
+	
+	public boolean setCookies(Header[] inputHeaders, List<BasicClientCookie> outputHeaders) {
+		
+		boolean cookiesFound = false;
+		
+		String current_cookie_header;
+		String current_cookie_name;
+		String current_cookie_value;
+		BasicClientCookie currentCookie;
+		
+		for(int i=0; i<inputHeaders.length; i++) {       	
+			Header currentHeader = inputHeaders[i];
+			//Get cookie
+			if(currentHeader.getName().contains("Set-Cookie")) {
+				cookiesFound = true;
+				
+				current_cookie_header = currentHeader.getValue();
+				int end = current_cookie_header.indexOf("=");
+				current_cookie_name = current_cookie_header.substring(0, end);                   
+				int start = end + 1;
+				end = current_cookie_header.indexOf(";");
+				current_cookie_value = current_cookie_header.substring(start, end);
+				
+				//Stampo i valori trovati
+				System.out.println("Method: setCookies \n" + "cookie_header-->"+current_cookie_header + "\ncookieName-->"+current_cookie_name + "\ncookie_value-->"+current_cookie_value);
+
+				currentCookie = new BasicClientCookie(current_cookie_name, current_cookie_value);
+				outputHeaders.add(currentCookie);
+			}       	
+		}
+		
+		return cookiesFound;
+		
+	}
+	
 	//Ritorna il valore di una header dato il nome dell'header stesso
 	public String getHeaderValueByName(Header[] headers, String headerName) {
 
@@ -218,7 +256,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return headerValue;
 	}
 
-	//Metodo per ottenere le coordinate della città
+	//Metodo per ottenere le coordinate della cittÃ 
 	public Map<String,String> getLatLonCoord(String indirizzo, String comune, String provincia, String regione) throws ParserConfigurationException, SAXException, IOException {
 		Map<String,String> mappaLatLon = new Hashtable<String,String>();
 		String url;
@@ -313,7 +351,10 @@ public abstract class PortaleWeb implements parametriGenerali {
 			break;
 			
 		case "input":
-			if(domElement.attr("type").equals("text") || domElement.attr("type").equals("password") || domElement.attr("type").equals("submit") || domElement.attr("type").equals("hidden")) {
+			if(valueScheda.equals("***site***")) {
+				returnValue = domElement.val();
+			}
+			else {
 				returnValue = valueScheda;
 			}
 			break;

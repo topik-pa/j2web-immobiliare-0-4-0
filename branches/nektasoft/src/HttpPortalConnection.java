@@ -11,6 +11,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -24,7 +25,6 @@ import org.apache.http.util.EntityUtils;
 public class HttpPortalConnection implements parametriGenerali {
 	
 	//Variabili di connessione
-	protected static final String USER_AGENT = USER_AGENT_VALUE;
 	protected static String SESSIONCOOKIE_HEADER;
 	protected static String SESSIONCOOKIE_NAME;
 	protected static String SESSIONCOOKIE_VALUE;
@@ -35,18 +35,24 @@ public class HttpPortalConnection implements parametriGenerali {
 	protected HttpPost httppost;
 	protected HttpClient httpclient;
 	protected HttpResponse response;
-	protected BasicHeader requestHeader;
-	/*protected ResponseHandler<String> responseHandler;*/
+	protected BasicHeader userAgentHeader;
+	protected BasicHeader connectionHeader;
+	protected BasicHeader cacheControlHeader;
+	protected BasicHeader acceptLanguageHeader;
+	protected BasicHeader acceptEncodingHeader;
+	protected BasicHeader AcceptHeader;
 	protected Header[] requestHeaders;
+	protected List<Cookie> requestCookiesList;
 	protected Header[] responseHeaders;
+	protected List<Cookie> responseCookies;
     
 	//Costruttore
 	public HttpPortalConnection() {
 		httpclient = new DefaultHttpClient();
-		/*responseHandler = new BasicResponseHandler();*/
 	}
 	
-	//Stampa a video le proprietà della connessione corrente (per i GET)
+	//Stampa a video le proprietÃ  della connessione corrente (per i GET)
+	@Deprecated
 	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody) throws IOException {
 		
 		//Show Request URL
@@ -103,7 +109,97 @@ public class HttpPortalConnection implements parametriGenerali {
         
 	}
 	
-	//Stampa a video le proprietà della connessione corrente (overloading del metodo per gestire i POST urlencoded)
+	//Stampa a video le proprietà  della connessione corrente (per i GET)
+	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, List<Cookie> requestCookies, MultipartEntity multipartPostParameters, List<NameValuePair> urlencodedPostParameters, Header[] responseHeaders, String responseBody) throws IOException {
+			
+			//Show Request URL
+			System.out.println("\n\n\n");
+	        System.out.println("----------------------------------------");
+	        System.out.println("Executing request: " + connectionDescription);
+	        System.out.println("Request uri: " + httpRequest.getURI()); 
+	        System.out.println("----------------------------------------");
+	        
+	        //Show session cookies
+	        System.out.println("Session cookie header: " + SESSIONCOOKIE_HEADER);
+	        System.out.println("Session cookie name: " + SESSIONCOOKIE_NAME);
+	        System.out.println("Session cookie value: " + SESSIONCOOKIE_VALUE);
+	        System.out.println("Session cookie domain: " + SESSIONCOOKIE_DOMAIN);
+	        System.out.println("----------------------------------------");
+	        
+	        //Show Request properties
+	        System.out.println("Request method: " + httpRequest.getMethod());
+	        System.out.println("Protocol version: " + httpRequest.getProtocolVersion());
+	        System.out.println("----------------------------------------");   
+	        
+	        //Show request headers
+	        requestHeaders = httpRequest.getAllHeaders(); 
+	        System.out.println("Request headers: " + requestHeaders.length + "\n");
+	        for(int i=0; i<requestHeaders.length; i++) {
+	        	System.out.println(requestHeaders[i]);
+	        }
+	        System.out.println("----------------------------------------");
+	        
+	        //Show request cookies
+	        if(requestCookies!=null) {
+	        	//requestCookiesList = new ArrayList<Cookie>();
+		        //requestCookiesList = requestCookies.getCookies(); 
+		        System.out.println("Request cookies: " + requestCookies.size() + "\n");
+		        for(int i=0; i<requestCookies.size(); i++) {
+		        	System.out.println(requestCookies.get(i));
+		        }
+		        System.out.println("----------------------------------------");
+	        }
+	        
+	        
+	        //Show request urlencoded parameters
+	        if(urlencodedPostParameters!=null) {
+		    	//Show post parameters
+		        System.out.println("URLEncoded POST parameters: " + "\n");
+		        Iterator<NameValuePair> iterator = urlencodedPostParameters.iterator();
+		        while(iterator.hasNext()) {
+		        	BasicNameValuePair currentParam = (BasicNameValuePair) iterator.next();
+		        	System.out.println(currentParam.getName() + "-->" + currentParam.getValue());  	
+		        }
+		        System.out.println("----------------------------------------");
+		    }
+	        
+	      //Show request multipart parameters
+	        if(multipartPostParameters!=null) {
+	        	//Show post parameters
+	            System.out.println("Multipart POST parameters: " + "\n");
+	            System.out.println(multipartPostParameters.toString());
+	            System.out.println("----------------------------------------");
+	        }
+	        
+	        //Show response headers                          
+	        System.out.println("Response status: " + response.getStatusLine());
+	        System.out.println("Response headers: " + responseHeaders.length + "\n");
+	        for(int i=0; i<responseHeaders.length; i++) {
+	        	System.out.println(responseHeaders[i]);
+	        }
+	        System.out.println("----------------------------------------");
+	        
+	        //Show response body
+	        if(response.getStatusLine().toString().contains("200")) {
+	            System.out.println("Response body: \n");
+	            System.out.println(responseBody);                     
+	        }
+	        else {
+	        	System.out.println("Nessuna risposta nel body"); 
+	        }       
+	        System.out.println("----------------------------------------");
+	        
+	        //Stampa fine connessione
+	        System.out.println("\n");
+	        System.out.println("----------------------------------------");
+	        System.out.println("Request end");
+	        System.out.println("----------------------------------------");
+	        System.out.println("\n\n\n");
+	        
+		}
+	
+	//Stampa a video le proprietÃ  della connessione corrente (overloading del metodo per gestire i POST urlencoded)
+	@Deprecated
 	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody, List<NameValuePair> postParameters) throws IOException {
 		
 		//Show Request URL
@@ -171,7 +267,8 @@ public class HttpPortalConnection implements parametriGenerali {
         
 	}
 	
-	//Stampa a video le proprietà della connessione corrente (overloading del metodo per gestire i POST multipart)
+	//Stampa a video le proprietÃ  della connessione corrente (overloading del metodo per gestire i POST multipart)
+	@Deprecated
 	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody, MultipartEntity postParameters) throws IOException {
 		
 		//Show Request URL
@@ -235,7 +332,7 @@ public class HttpPortalConnection implements parametriGenerali {
         
 	}
 	 
-	//Metodi Set per definire il cookie di sessione
+	//Metodi Set per definire il cookie di sessione a livello di connessione
 	public void setSessionCookie(String cookieHeader, String cookieName, String cookieValue, String cookieDomain) {
 		SESSIONCOOKIE_DOMAIN = cookieDomain;
 		SESSIONCOOKIE_HEADER = cookieHeader;
@@ -256,7 +353,7 @@ public class HttpPortalConnection implements parametriGenerali {
 		HttpEntity responseEntity;	//la risposta ricevuta dopo la connessione
 		String responseBody = "";
 		
-		//La risposta che verrà restituita
+		//La risposta che verrÃ  restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
 		
 		//Set the cookies

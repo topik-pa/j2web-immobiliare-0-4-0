@@ -1,7 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
-*/ 
+ */ 
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
-import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
+import org.apache.http.message.BasicStatusLine;
 
 /**
  *
@@ -28,462 +28,593 @@ import org.jsoup.select.Elements;
 //La classe principale
 public class _subitoIt extends PortaleWeb {     
 
-    //Variabili generali
-	private final String NOMEPORTALE = "casab.it";
-	private final String URLROOT = "http://casab.it";
-	private final String USERNAME = "hsttdjjh@sharklasers.com";
-    private final String PASSWORD = "password";
-	
-    //private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();   
-    private boolean inserimentoOK = false;
-    private boolean debugMode = true;
+	//Variabili portale
+	private final String NOMEPORTALE = "www.subito.it";
+	private final String URLROOT = "http://www.subito.it";
+	private final String SECUREURLROOT = "https://www2.subito.it";
+	private final String USERNAME = "c1669723@drdrb.com";
+	private final String PASSWORD = "topik123";
+	private final String HOST = "www.subito.it";
+	private final String HOST2 = "www2.subito.it";
 
-    //Mappa dei parametri da inviare
-    Map<String,String> mappaDeiParamerti;
-    
-    //Lista dei parametri inviati in una singola connessione
-    List<NameValuePair> postParameters;
-    
-    //Lista degli headers inviati in una singola connessione
-    List<NameValuePair> requestHeaders;
+	private final String SESSIONCOOKIENAME = "s";
+	private final String SESSIONCOOKIEDOMAIN = ".subito.it";
+	private final String SESSIONCOOKIEHEADER = "";
+	private final String SESSIONCOOKIEVALUE = "";
 
-    //La scheda immobile su cui si lavora
-    SchedaVeicolo scheda;
-    
-    //Lista di alcuni dei parametri inviati
-    String codiceInserzione;
-    
+
+	//Variabili navigazione
+	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
+	int random = (int)Math.random() * 100000;
+	private String codiceInserzione = Integer.toString(random);
+	private String location;
+	private String responseBody;
+	private BasicNameValuePair sessionCookie;
+	private boolean inserimentoOK = false;
+	private boolean debugMode = true;
+
+	//Strutture dati di supporto
+	//Mappa dei parametri da inviare
+	Map<String,String> mappaDeiParamerti;
+
+	//Lista dei parametri inviati in una singola connessione
+	List<NameValuePair> postParameters;
+
+	//Lista degli headers inviati in una singola connessione
+	List<NameValuePair> requestHeaders;
+
+	//Lista dei cookies inviati in una singola connessione
+	List<BasicClientCookie> requestCookies;
+
+	//Mappa che rappresenta la tabella di dipendennza dei parametri da inviare
+	Map<String,String> tabellaDiDipendenza;
+
+	//La scheda immobile su cui si lavora
+	SchedaVeicolo scheda;
+
+	//Altre variabili di supporto a livello globale
+	String var_idMarca;
+
 	//Costruttore
 	public _subitoIt (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
-		
+
 		super(icon, valoreLabel, idPortale, isActive);
-		
-		SESSIONCOOKIENAME = "PHPSESSID";
-		SESSIONCOOKIEDOMAIN = "www.casab.it";
-		
+
+		//La hashTable contenente i valori dei parametri da inviare durante la sessione
 		mappaDeiParamerti =  new Hashtable<String,String>();
-	    
-	    postParameters = new ArrayList<NameValuePair>();	
-	    
-	    requestHeaders = new ArrayList<NameValuePair>();
-	
+
+		//La lista dei parametri (nome-valore) inviati
+		postParameters = new ArrayList<NameValuePair>();	
+
+		//La lista degli header (nome-valore) inviati
+		requestHeaders = new ArrayList<NameValuePair>();
+
+		//La lista dei cookies inviati
+		requestCookies = new ArrayList<BasicClientCookie>();
+
+		//Iniziallizzo la tabella di dipendenza
+		tabellaDiDipendenza = new Hashtable<String,String>();
+
 	}
 
-	
-    //Metodo per l'inserimento della scheda immobile nel portale immobiliare
-    public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
-    	System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
-    	
-    	/*//Inizializzazione parametri
-    	this.scheda=scheda;
-    	    	
-    	//Inizializza i parametri http del portale 
-		inizializzaParametri();
-	
+
+	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
+	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
+
+		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
+
+		//Inizializzazione scheda
+		this.scheda=scheda;
+
+		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
+		requestHeaders.add(new BasicNameValuePair("Host", HOST));
+		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
+		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
+		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
+		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
+		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
+
+		//Connessione 0 - GET della home page - Opzionale
+		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
+		try {
+			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+
+
+		//Connessione 1 - GET della pagina di login - Opzionale
+		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
+		try {
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/account/login_form/", requestHeaders, null, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				responseBody = (String)response[1];
+			}
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+
+
+		//Connessione 2 - POST dei parametri di accesso
+		//Raccolgo i parametri nella tabella di dipendennza
+		tabellaDiDipendenza.put("login_email",USERNAME);
+		tabellaDiDipendenza.put("login_passwd",PASSWORD);
+		//Valorizzo i parametri mettendoli nella mappaDeiParametri
+		valutaParametri(responseBody, "#boxLoginContainer input", tabellaDiDipendenza, mappaDeiParamerti);	
+		//Trasferisco i parametri dalla mappa alla lista
+		setPostParameters(mappaDeiParamerti, postParameters);
+		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
+		//Cambio del valore HOST nei request headers
+		requestHeaders.remove(0);
+		requestHeaders.add(new BasicNameValuePair("Host", HOST2));
+		try {        	
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", SECUREURLROOT + "/account/login", postParameters, requestHeaders, null, debugMode);			
+
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()==302)) {
+				Header[] responseHeaders = (Header[])response[0];
+				//Gestione dei cookie
+				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
+				setCookies(responseHeaders, requestCookies);			
+				//Trovo la location
+				location = getHeaderValueByName(responseHeaders, "Location");
+			}
+			else {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}    	
+
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+		finally {
+			tabellaDiDipendenza.clear();
+			mappaDeiParamerti.clear();
+			postParameters.clear();
+		}
+
+
+		//Connessione 3 - GET della pagina di redirect dopo inserimento parametri login - (Opzionale)
+		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
+		try {
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + location, requestHeaders, requestCookies, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()==302)) {
+				Header[] responseHeaders = (Header[])response[0];
+				//Trovo la location
+				location = getHeaderValueByName(responseHeaders, "Location");
+			}
+			else if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+
+
+		//Connessione 4 - GET della pagina di redirect dopo inserimento parametri login - la connessione precedente non mi ritorna la location (Opzionale)
+		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
+		try {
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + "/account/manageads/", requestHeaders, requestCookies, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+
+
+		//Connessione 5 - GET della pagina "Inserisci il tuo annuncio" - Opzionale
+		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
+		try {
+			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci il tuo annuncio\"", SECUREURLROOT + "/ai/form/0", requestHeaders, requestCookies, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				responseBody = (String)response[1];
+			}
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+
+
+		//Connessione5b - POST delle immagini
+		/*for(int i=1; i<scheda.arrayImages.length; i++) {
+			if(scheda.arrayImages[i]!=null && i<=6) {
+
+				//Raccolgo i parametri nella tabella di dipendenza
+				MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+				FileBody bin = new FileBody(scheda.arrayImages[i]);
+
+				HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
+				try {   
+
+					reqEntity.addPart("image", bin );
+					reqEntity.addPart("check_type_diff", new StringBody("0") );
+					reqEntity.addPart("category", new StringBody("2") );
+					reqEntity.addPart("animal_type", new StringBody("") );
+					reqEntity.addPart("office_type", new StringBody("") );
+					reqEntity.addPart("room_type", new StringBody("") );
+					reqEntity.addPart("ship_type", new StringBody("") );
+					reqEntity.addPart("vehicle_type", new StringBody("") );
+					reqEntity.addPart("caravan_type", new StringBody("") );
+					reqEntity.addPart("sport_type", new StringBody("") );
+					reqEntity.addPart("children_type", new StringBody("") );
+					reqEntity.addPart("children_age", new StringBody("") );
+					reqEntity.addPart("hobby_type", new StringBody("") );
+					reqEntity.addPart("audiovideo_type", new StringBody("") );
+					reqEntity.addPart("bicycle_type", new StringBody("") );
+					reqEntity.addPart("bikeversion", new StringBody("") );
+					reqEntity.addPart("moto_type", new StringBody("") );
+					reqEntity.addPart("computer_type", new StringBody("") );
+					reqEntity.addPart("clothing_type", new StringBody("") );
+					reqEntity.addPart("clothing_gender", new StringBody("") );
+					reqEntity.addPart("region", new StringBody("0") );
+					reqEntity.addPart("city", new StringBody("0") );
+					reqEntity.addPart("town", new StringBody("0") );
+					reqEntity.addPart("zone", new StringBody("") );
+					reqEntity.addPart("company_ad", new StringBody("1") );
+					reqEntity.addPart("name", new StringBody("") );
+					reqEntity.addPart("phone", new StringBody("") );
+					reqEntity.addPart("type", new StringBody("s") );
+					reqEntity.addPart("carbrand", new StringBody("") );
+					reqEntity.addPart("regdate", new StringBody("0") );
+					reqEntity.addPart("mileage", new StringBody("") );
+					reqEntity.addPart("fuel", new StringBody("") );
+					reqEntity.addPart("car_type", new StringBody("") );
+					reqEntity.addPart("gearbox", new StringBody("") );
+					reqEntity.addPart("pollution", new StringBody("") );
+					reqEntity.addPart("seats", new StringBody("") );
+					reqEntity.addPart("doors", new StringBody("") );
+					reqEntity.addPart("color", new StringBody("") );
+					reqEntity.addPart("subject", new StringBody("") );
+					reqEntity.addPart("price", new StringBody("") );
+					reqEntity.addPart("body", new StringBody("") );
+					reqEntity.addPart("cites_cert_numb", new StringBody("") );
+					reqEntity.addPart("cites_cert_date", new StringBody("") );
+					reqEntity.addPart("cites_cert_from", new StringBody("") );
+					reqEntity.addPart("show_map", new StringBody("0") );
+					reqEntity.addPart("address", new StringBody("") );
+					reqEntity.addPart("latitude", new StringBody("") );
+					reqEntity.addPart("longitude", new StringBody("") );
+					reqEntity.addPart("zoom", new StringBody("") );
+					reqEntity.addPart("accept_equal_opp", new StringBody("1") );
+					reqEntity.addPart("validate", new StringBody("continua") );
+					reqEntity.addPart("extra_images", new StringBody("Carica") );
+
+					Object[] response = connessione_6.post("Connessione5b - POST delle immagini", SECUREURLROOT + "/ai/verify/1", reqEntity, requestHeaders, requestCookies, debugMode);			
+
+					//Controllo il response status
+					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+					if( (responseStatus.getStatusCode()==302)) {
+						Header[] responseHeaders = (Header[])response[0];
+						//Trovo la location
+						location = getHeaderValueByName(responseHeaders, "Location");
+						if(!location.contains("/ai/form/1")) {
+							//throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
+						}
+					}
+					else {
+						throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+					}    	
+
+				} catch (IOException | RuntimeException e) {
+					throw new HttpCommunicationException(e);
+				}
+				finally {
+				}
+			}
+		}*/
+
+
+		//Connessione 6 - POST dei parametri di annuncio
+		//Raccolgo i parametri nella tabella di dipendenza
+		tabellaDiDipendenza.put("check_type_diff", "***site***");
+		if(scheda.veicolo.equals("auto")) {
+			tabellaDiDipendenza.put("category", "Auto"); //Auto
+		}
+		tabellaDiDipendenza.put("animal_type","Seleziona il tipo");
+		tabellaDiDipendenza.put("office_type","Seleziona il tipo di ufficio o locale commerciale"); 
+		tabellaDiDipendenza.put("room_type","Seleziona il tipo di stanza"); 
+		tabellaDiDipendenza.put("ship_type","Seleziona il tipo di imbarcazione"); 
+		tabellaDiDipendenza.put("vehicle_type","Seleziona il tipo di veicolo"); 
+		tabellaDiDipendenza.put("caravan_type","Seleziona il tipo di veicolo"); 
+		tabellaDiDipendenza.put("sport_type","Seleziona il tipo di sport"); 
+		tabellaDiDipendenza.put("children_type","Seleziona il tipo di oggetto"); 
+		tabellaDiDipendenza.put("children_age","Seleziona la fascia d'et"); 
+		tabellaDiDipendenza.put("hobby_type","Seleziona il tipo di hobby"); 
+		tabellaDiDipendenza.put("audiovideo_type","Seleziona il prodotto"); 
+		tabellaDiDipendenza.put("bicycle_type","Seleziona il tipo di bicicletta");
+		tabellaDiDipendenza.put("phone_type","Scegli"); 
+		tabellaDiDipendenza.put("bikebrand","Seleziona la marca");
+		tabellaDiDipendenza.put("bikeversion",";Seleziona prima il modell"); 
+		tabellaDiDipendenza.put("moto_type","Seleziona tipologia");
+		tabellaDiDipendenza.put("computer_type","Scegli"); 
+		tabellaDiDipendenza.put("clothing_type","Scegli");
+		tabellaDiDipendenza.put("clothing_gender","Scegli"); 
+		tabellaDiDipendenza.put("clothing_number","Scegli");
+		tabellaDiDipendenza.put("region", REGIONE_UTENTE); //Friuli-Venezia Giulia
+		//tabellaDiDipendenza.put("city",CITTA_UTENTE); //Udine - devo valutarla dopo
+		//tabellaDiDipendenza.put("town",CITTA_UTENTE); //Udine - devo valutarla dopo
+		tabellaDiDipendenza.put("zone","");
+		tabellaDiDipendenza.put("company_ad", "1"); //pubblica come Azienda
+		tabellaDiDipendenza.put("name",RAGIONESOCIALE_UTENTE); //autoeauto
+		tabellaDiDipendenza.put("servicetype","Seleziona la tipologia");
+		tabellaDiDipendenza.put("phone",TELEFONO_UTENTE); //deve essere preventivamente validato da subito.it
+		tabellaDiDipendenza.put("phone_hidden","***site***");
+		tabellaDiDipendenza.put("type","s"); //Vendita 
+		tabellaDiDipendenza.put("carbrand",scheda.marcaVeicolo);
+		//tabellaDiDipendenza.put("carmodel","003854"); //da fare - calcolato sotto
+		tabellaDiDipendenza.put("regdate",scheda.annoImmatricolazioneVeicolo);
+		tabellaDiDipendenza.put("carversion", "099565"); //da fare
+		tabellaDiDipendenza.put("mileage","25.000 - 29.999"); // da gestire sotto
+		tabellaDiDipendenza.put("fuel",scheda.carburanteVeicolo);
+		tabellaDiDipendenza.put("country","Seleziona");
+		tabellaDiDipendenza.put("car_type",scheda.carrozzeriaVeicolo);
+		tabellaDiDipendenza.put("gearbox",scheda.tipologiaCambioVeicolo);
+		tabellaDiDipendenza.put("pollution",scheda.classeEmissioniVeicolo);
+		tabellaDiDipendenza.put("seats",""+scheda.postiASedereVeicolo);
+		tabellaDiDipendenza.put("doors","Porte");
+		switch (scheda.coloreEsternoVeicolo) {
+		case "Bianco":
+			tabellaDiDipendenza.put("color","1");
+			break;
+		case "Grigio":
+			tabellaDiDipendenza.put("color","2");	
+			break;
+		case "Marrone":
+			tabellaDiDipendenza.put("color","3");
+			break;
+		case "Nero":
+			tabellaDiDipendenza.put("color","4");
+			break;
+		case "Rosso":
+			tabellaDiDipendenza.put("color","5");
+			break;
+		case "Verde":
+			tabellaDiDipendenza.put("color","6");
+			break;
+		case "Giallo":
+			tabellaDiDipendenza.put("color","7");
+			break;
+		case "Blu":
+			tabellaDiDipendenza.put("color","8");
+			break;			
+		default:
+			tabellaDiDipendenza.put("color","");
+			break;
+		}
+		tabellaDiDipendenza.put("subject",scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " " + scheda.tipologiaContrattoVeicolo);
+		tabellaDiDipendenza.put("price",scheda.prezzoVeicolo);
+		tabellaDiDipendenza.put("gender","Scegli");
+		tabellaDiDipendenza.put("smoker","Scegli");
+		tabellaDiDipendenza.put("cubic_capacity",scheda.cilindrataVeicolo);
+		tabellaDiDipendenza.put("rooms","Seleziona");
+		tabellaDiDipendenza.put("size","");
+		tabellaDiDipendenza.put("length","");
+		tabellaDiDipendenza.put("contract_type","Seleziona il tipo di contratto");
+		tabellaDiDipendenza.put("degree","Seleziona il tuo titolo di studio");
+		tabellaDiDipendenza.put("worklevel","Seleziona l'inquadramento");
+		tabellaDiDipendenza.put("workhours","Seleziona l'orario di lavoro");
+		tabellaDiDipendenza.put("body",scheda.descrizioneVeicolo);
+		tabellaDiDipendenza.put("cites_cert_numb","");
+		tabellaDiDipendenza.put("cites_cert_date","");
+		tabellaDiDipendenza.put("cites_cert_from","");
+		tabellaDiDipendenza.put("show_map","0"); //non mostrare la mappa
+		tabellaDiDipendenza.put("address","");
+		tabellaDiDipendenza.put("latitude","");
+		tabellaDiDipendenza.put("longitude","");
+		tabellaDiDipendenza.put("zoom","");
+		tabellaDiDipendenza.put("image","");
+		tabellaDiDipendenza.put("accept_equal_opp","1"); //annuncio per ambo i sessi
+		tabellaDiDipendenza.put("accept_term_of_use","1"); //accetto i termini d'uso
+		tabellaDiDipendenza.put("validate","continua");
+
+		/*if(!scheda.chilometraggioVeicolo.equals("")) {
+			int chilometraggio = Integer.parseInt(scheda.chilometraggioVeicolo);
+			if(chilometraggio<=139999) {postParameters.add(new BasicNameValuePair("mileage", "24"));}
+			if(chilometraggio<=129999) {postParameters.add(new BasicNameValuePair("mileage", "23"));}
+			if(chilometraggio<=119999) {postParameters.add(new BasicNameValuePair("mileage", "22"));}
+			if(chilometraggio<=109999) {postParameters.add(new BasicNameValuePair("mileage", "21"));}
+			if(chilometraggio<=99999) {postParameters.add(new BasicNameValuePair("mileage", "20"));}
+			if(chilometraggio<=94999) {postParameters.add(new BasicNameValuePair("mileage", "19"));}
+			if(chilometraggio<=89999) {postParameters.add(new BasicNameValuePair("mileage", "18"));}
+			if(chilometraggio<=84999) {postParameters.add(new BasicNameValuePair("mileage", "17"));}
+			if(chilometraggio<=79999) {postParameters.add(new BasicNameValuePair("mileage", "16"));}
+			if(chilometraggio<=74999) {postParameters.add(new BasicNameValuePair("mileage", "15"));}
+			if(chilometraggio<=69999) {postParameters.add(new BasicNameValuePair("mileage", "14"));}
+			if(chilometraggio<=64999) {postParameters.add(new BasicNameValuePair("mileage", "13"));}
+			if(chilometraggio<=59999) {postParameters.add(new BasicNameValuePair("mileage", "12"));}
+			if(chilometraggio<=54999) {postParameters.add(new BasicNameValuePair("mileage", "11"));}
+			if(chilometraggio<=49999) {postParameters.add(new BasicNameValuePair("mileage", "10"));}
+			if(chilometraggio<=44999) {postParameters.add(new BasicNameValuePair("mileage", "9"));}
+			if(chilometraggio<=39999) {postParameters.add(new BasicNameValuePair("mileage", "8"));}
+			if(chilometraggio<=34999) {postParameters.add(new BasicNameValuePair("mileage", "7"));}
+			if(chilometraggio<=29999) {postParameters.add(new BasicNameValuePair("mileage", "6"));}
+			if(chilometraggio<=24999) {postParameters.add(new BasicNameValuePair("mileage", "5"));}
+			if(chilometraggio<=19999) {postParameters.add(new BasicNameValuePair("mileage", "4"));}
+			if(chilometraggio<=14999) {postParameters.add(new BasicNameValuePair("mileage", "3"));}
+			if(chilometraggio<=9999) {postParameters.add(new BasicNameValuePair("mileage", "2"));}
+			if(chilometraggio<=4999) {postParameters.add(new BasicNameValuePair("mileage", "1"));}
+			if(chilometraggio==0) {postParameters.add(new BasicNameValuePair("mileage", "0"));}
+		}*/
+
+		//Valorizzo i parametri mettendoli nella mappaDeiParametri
+		valutaParametri(responseBody, "#content form input, #content form select, #content form textarea", tabellaDiDipendenza, mappaDeiParamerti);
+		//Trasferisco i parametri dalla mappa alla lista
+		setPostParameters(mappaDeiParamerti, postParameters);
 		
-    	//Connessione 0 - GET della home page - Opzionale
-    	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
-    	try {
-			connessione_0.get("Connessione 0 - GET della home page", URLROOT, debugMode);
-    	} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	
-    	
-    	//Connessione 1 - GET della pagina di login
-    	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
-    	try {
-    		connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/page/14/login_agenzie.html", debugMode);
-    		
-    	} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	
-    	
-    	//Connessione 2 - POST dei parametri di accesso (1)
-    	HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();   	
-    	postParameters = new ArrayList<NameValuePair>();          
-        postParameters.add(new BasicNameValuePair("email", USERNAME));
-        postParameters.add(new BasicNameValuePair("password", PASSWORD));
-        
-        try {        	
-        	Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso (1)", URLROOT + "/funzioni/login_agenzia.php", postParameters, debugMode);
-        	Header[] responseHeaders = (Header[])response[0];
-        	//Trovo il cookie di sessione
-        	findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-        	//Imposto il cookie di sessione per tutte le successive connessioni
-        	connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-        } catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	finally {
-    		postParameters.clear();
-    	}
-        
-        
-        //Connessione 2b - POST dei parametri di accesso (2)
-    	HttpPortalPostConnection connessione_2b = new HttpPortalPostConnection();   	
-        try {
-        	MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-        	reqEntity.addPart("email", new StringBody(USERNAME));
-        	reqEntity.addPart("password", new StringBody(PASSWORD));
-        	reqEntity.addPart("action", new StringBody("1"));
-        	reqEntity.addPart("permalinkPaginaOspite", new StringBody("http://www.casab.it/page/14/login_agenzie.html"));
-        	
-        	//Immposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-        	requestHeaders = new ArrayList<NameValuePair>();
-            requestHeaders.add(new BasicNameValuePair("Host", "www.casab.it"));
-        	requestHeaders.add(new BasicNameValuePair("Cookie", SESSIONCOOKIENAME + "=" + SESSIONCOOKIEVALUE));
-        	        	
-        	connessione_2b.post("Connessione 2b - POST dei parametri di accesso (2)", URLROOT + "/page/14/login_agenzie.html", reqEntity, requestHeaders, debugMode);
+		//Questi parametri li devo valorizzare qui
+		postParameters.add(new BasicNameValuePair("city", "4")); //Udine
+		postParameters.add(new BasicNameValuePair("town", "030129"));  //Udine
+		postParameters.add(new BasicNameValuePair("carmodel", "004142")); //da fare
+		
+		
+		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
+		try {        	
+			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", SECUREURLROOT + "/ai/verify/0", postParameters, requestHeaders, requestCookies, debugMode);			
 
-        } catch (IOException | RuntimeException e) {
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()==302)) {
+				Header[] responseHeaders = (Header[])response[0];
+				//Trovo la location
+				location = getHeaderValueByName(responseHeaders, "Location");
+				if(location.contains("/ai/preview")) {
+					//inserimentoOK=true;
+				}
+				else {
+					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
+				}
+			}
+			else {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}    	
+
+		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	finally {
-    		postParameters.clear();
-    	}
-   
-    	
-    	//Connessione 3 - GET della pagina "Annunci immobiliari"
-    	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
-    	try {
-            connessione_3.get("Connessione 3 - GET della pagina \"Annunci immobiliari\"", URLROOT + "/area_riservata.php?pg=modimmo&tipo=age", requestHeaders, debugMode);
-    	} catch (IOException | RuntimeException e) {
+		finally {
+			postParameters.clear();
+			mappaDeiParamerti.clear();
+			tabellaDiDipendenza.clear();
+		}
+
+
+		//Connessione 7 - GET della pagina "Preview annuncio" - Opzionale
+		HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
+		try {
+			Object[] response =  connessione_7.get("Connessione 7 - GET della pagina \"Preview annuncio\"", SECUREURLROOT + location, requestHeaders, requestCookies, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				inserimentoOK=true;
+			}
+		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	
-    	
-    	//Connessione 4 - GET della pagina "Inserisci un nuovo immobile"
-    	HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
-    	try {
-			connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo immobile\"", URLROOT + "/area_riservata.php?pg=newimmo&tipo=age", requestHeaders, debugMode);
-    	} catch (IOException | RuntimeException e) {
+
+
+		//Connessione 8 - POST della conferma alla pubblicazione
+		/*HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
+		try {    
+			postParameters.add(new BasicNameValuePair("payment_type", "cc"));
+
+			Object[] response = connessione_8.post("Connessione 8 - POST della conferma alla pubblicazione", SECUREURLROOT + "/ai/create/0", postParameters, requestHeaders, null, debugMode);			
+
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()==302)) {
+				Header[] responseHeaders = (Header[])response[0];
+				//Trovo la location
+				location = getHeaderValueByName(responseHeaders, "Location");
+				if(location.contains("/ai/confirm/")) {
+					inserimentoOK=true;
+				}
+				else {
+					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
+				}
+			}
+			else {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}    	
+
+		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-    	
-    	
-    	//Connessione 5 - GET della pagina "Inserisci un nuovo immobile (con parametro circa la tipologia)"
-    	HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
-    	try {
-			connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo immobile (con parametro circa la tipologia)\"", URLROOT + "/moduli/agenzie/immobile2.php?tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", requestHeaders, debugMode);
-    	} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
+		finally {
+			postParameters.clear();
+		}*/
+
+
+		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
+		if(inserimentoOK) {
+
+			//Aggiorna la lista dei portali in cui è inserita la scheda
+			scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
+
+			if(!isSequential) {   			
+				System.out.println("Inserita in: " + NOMEPORTALE);       		
+
+				//Aggiorna i pulsanti del pannello inserimento
+				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
+
+				//Invio mail di conferma inserimento 
+				sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+
+				//Stampo a video un messaggio informativo
+				JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+			}
+
+			return inserimentoOK;        	
 		}
-    	
-    	
-    	//Connessione 6 - POST dello step 1
-    	HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();   	
-    	postParameters = new ArrayList<NameValuePair>();          
-        postParameters.add(new BasicNameValuePair("Categoria", mappaDeiParamerti.get("Categoria")));
-        postParameters.add(new BasicNameValuePair("Codice", mappaDeiParamerti.get("Codice")));
-        postParameters.add(new BasicNameValuePair("ComuneSM", mappaDeiParamerti.get("ComuneSM")));
-        postParameters.add(new BasicNameValuePair("Locali", mappaDeiParamerti.get("Locali")));	//solo residenziali
-        postParameters.add(new BasicNameValuePair("Motivazione", mappaDeiParamerti.get("Motivazione")));
-        postParameters.add(new BasicNameValuePair("Nazione", mappaDeiParamerti.get("Nazione")));
-        postParameters.add(new BasicNameValuePair("Prezzo_Richiesto", mappaDeiParamerti.get("Prezzo_Richiesto")));
-        postParameters.add(new BasicNameValuePair("ProvinciaSM", mappaDeiParamerti.get("ProvinciaSM")));
-        postParameters.add(new BasicNameValuePair("RegioneSM", mappaDeiParamerti.get("RegioneSM")));
-        postParameters.add(new BasicNameValuePair("Totale_mq", mappaDeiParamerti.get("Totale_mq")));
-        postParameters.add(new BasicNameValuePair("act", mappaDeiParamerti.get("act")));
-        postParameters.add(new BasicNameValuePair("action", mappaDeiParamerti.get("action")));
-        postParameters.add(new BasicNameValuePair("bagni", mappaDeiParamerti.get("bagni")));	//solo residenziali
-        postParameters.add(new BasicNameValuePair("camere", mappaDeiParamerti.get("camere")));	//solo residenziali
-        postParameters.add(new BasicNameValuePair("certificazione_acustica", mappaDeiParamerti.get("certificazione_acustica")));
-        postParameters.add(new BasicNameValuePair("classe_energetica", mappaDeiParamerti.get("classe_energetica")));
-        postParameters.add(new BasicNameValuePair("epi", mappaDeiParamerti.get("epi")));
-        postParameters.add(new BasicNameValuePair("idImmobile", mappaDeiParamerti.get("idImmobile")));
-        postParameters.add(new BasicNameValuePair("indirizzo", mappaDeiParamerti.get("indirizzo")));
-        postParameters.add(new BasicNameValuePair("latitudine", mappaDeiParamerti.get("latitudine")));
-        postParameters.add(new BasicNameValuePair("longitudine", mappaDeiParamerti.get("longitudine")));
-        postParameters.add(new BasicNameValuePair("tipo", mappaDeiParamerti.get("tipo")));	
-        
-        //Rimuovo i parametri che non devono essere inviati
-        postParameters.retainAll(removeNotUsedParams(postParameters));
-        
-        try {
-        	Object[] response = connessione_6.post("Connessione 6 - POST dello step 1", URLROOT + "/moduli/agenzie/immobile2.php", postParameters, requestHeaders, debugMode);
-        	String responseBody = (String)response[1];
-        	
-        	//Parse HMTL to retrieve some informations
-            org.jsoup.nodes.Document doc = Jsoup.parse(responseBody); 
-            Elements inputElement = doc.select("input[name=idImmobile]");
-            codiceInserzione = inputElement.attr("value");
-            //System.out.println("CODICEINSERZIONE: " + codiceInserzione);
-            mappaDeiParamerti.put("codiceInserzione", codiceInserzione);
-            mappaDeiParamerti.put("idImmobile", codiceInserzione); //Da questo momento, questo parametro cambia valore
-        } catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
+		else {
+
+			if(!isSequential) {
+				//Stampo a video un messaggio informativo
+				JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
+			}
+
+			return inserimentoOK;
 		}
-    	finally {
-    		postParameters.clear();
-    	}	
-        
-        
-        //Connessione 7 - GET della pagina "Inserisci un nuovo immobile (step 2)"
-    	HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
-    	try {
-			connessione_7.get("Connessione 7 - GET della pagina \"Inserisci un nuovo immobile (step 2)\"", URLROOT + "/moduli/agenzie/immobile3.php?idImmobile=" + mappaDeiParamerti.get("codiceInserzione") + "&tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", requestHeaders, debugMode);
-    	} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	
-    	
-    	//Connessione 8 - POST dello step 2
-    	HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();   	
-    	postParameters = new ArrayList<NameValuePair>();          
-        postParameters.add(new BasicNameValuePair("Ascensore", mappaDeiParamerti.get("Ascensore"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("Balconi", mappaDeiParamerti.get("Balconi"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("Box", mappaDeiParamerti.get("Box"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("Cucina", mappaDeiParamerti.get("Cucina"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("Disposizione_interna", mappaDeiParamerti.get("Disposizione_interna")));
-        postParameters.add(new BasicNameValuePair("Eta_Costruzione", mappaDeiParamerti.get("Eta_Costruzione"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("Garage", mappaDeiParamerti.get("Garage"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("Giardino", mappaDeiParamerti.get("Giardino"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("Posto_Auto", mappaDeiParamerti.get("Posto_Auto"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("Riscaldamento_Autonomo", mappaDeiParamerti.get("Riscaldamento_Autonomo"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("Terrazzo", mappaDeiParamerti.get("Terrazzo"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("act", mappaDeiParamerti.get("act")));
-        postParameters.add(new BasicNameValuePair("action", mappaDeiParamerti.get("action")));
-        postParameters.add(new BasicNameValuePair("costruzione_presente", mappaDeiParamerti.get("costruzione_presente"))); //solo ter
-        postParameters.add(new BasicNameValuePair("arredato", mappaDeiParamerti.get("arredato"))); //solo comm e res
-        postParameters.add(new BasicNameValuePair("attivita_consentite", mappaDeiParamerti.get("attivita_consentite"))); //solo commerciale
-        postParameters.add(new BasicNameValuePair("esposizione", mappaDeiParamerti.get("esposizione"))); //solo res
-        postParameters.add(new BasicNameValuePair("idImmobile", mappaDeiParamerti.get("idImmobile")));
-        postParameters.add(new BasicNameValuePair("mq_agricoli", mappaDeiParamerti.get("mq_agricoli"))); //solo ter
-        postParameters.add(new BasicNameValuePair("mq_edificabili", mappaDeiParamerti.get("mq_edificabili"))); //solo ter
-        postParameters.add(new BasicNameValuePair("possibili_realizzazione", mappaDeiParamerti.get("possibili_realizzazione"))); //solo ter
-        postParameters.add(new BasicNameValuePair("progetto_approvato", mappaDeiParamerti.get("progetto_approvato"))); //solo ter
-        postParameters.add(new BasicNameValuePair("mq_coperti", mappaDeiParamerti.get("mq_coperti"))); //solo comm	
-        postParameters.add(new BasicNameValuePair("mq_copribili", mappaDeiParamerti.get("mq_copribili"))); //solo comm
-        postParameters.add(new BasicNameValuePair("mq_scoperti", mappaDeiParamerti.get("mq_scoperti"))); //solo comm	
-        postParameters.add(new BasicNameValuePair("num_vetrine", mappaDeiParamerti.get("num_vetrine"))); //solo comm	
-        postParameters.add(new BasicNameValuePair("piani_totali", mappaDeiParamerti.get("piani_totali"))); //solo residenziale
-        postParameters.add(new BasicNameValuePair("posizione", mappaDeiParamerti.get("posizione")));
-        postParameters.add(new BasicNameValuePair("riscaldamento_autonomo", mappaDeiParamerti.get("riscaldamento_autonomo"))); //solo commerciale
-        postParameters.add(new BasicNameValuePair("tipo", mappaDeiParamerti.get("tipo")));
-        postParameters.add(new BasicNameValuePair("tipo_terreno", mappaDeiParamerti.get("tipo_terreno"))); //solo ter
-        
-        //Rimuovo i parametri che non devono essere inviati
-        postParameters.retainAll(removeNotUsedParams(postParameters));
-        
-        try {
-        	connessione_8.post("Connessione 8 - POST dello step 2", URLROOT + "/moduli/agenzie/immobile3.php", postParameters, requestHeaders, debugMode);
-        } catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	finally {
-    		postParameters.clear();
-    	}
-        
-        
-        //Connessione 9 - GET della pagina "Inserisci un nuovo immobile (step 3)"
-    	HttpPortalGetConnection connessione_9 = new HttpPortalGetConnection();
-    	try {
-			connessione_9.get("Connessione 9 - GET della pagina \"Inserisci un nuovo immobile (step 3)\"", URLROOT + "/moduli/agenzie/immobile4.php?idImmobile=" + mappaDeiParamerti.get("codiceInserzione") + "&tipo=" + mappaDeiParamerti.get("tipo") + "&act=ins", requestHeaders, debugMode);
-    	} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	
-    	
-    	//Connessioni 10 - inserimento immagini
-    	for(int i=0; i<scheda.arrayImages.length; i++) {
-    		if(scheda.arrayImages[i]!=null) {
-    			HttpPortalPostConnection connessione_10 = new HttpPortalPostConnection();
-    	    	
-    			try {
-	    			MultipartEntity reqEntity2 = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-	    	        FileBody bin = new FileBody(scheda.arrayImages[i]);
-	    	        reqEntity2.addPart("file", bin );
-	    	        reqEntity2.addPart("action", new StringBody(mappaDeiParamerti.get("action")));
-	    	        reqEntity2.addPart("tipo", new StringBody(mappaDeiParamerti.get("tipo")));
-	    	        reqEntity2.addPart("act", new StringBody(mappaDeiParamerti.get("act")));
-	    	        reqEntity2.addPart("idImmobile", new StringBody(mappaDeiParamerti.get("idImmobile")));
-    	    	
-	    	        connessione_10.post("Connessione 10_" + i + " - inserimento immagine " + i, URLROOT + "/moduli/agenzie/immobile4.php", reqEntity2, requestHeaders, debugMode);
-    			} catch (IOException | RuntimeException e) {
-    				throw new HttpCommunicationException(e);
-    			}
-    	    	finally {
-    	    		postParameters.clear();
-    	    	}
-            }
-    	}
-    	
-    	
-    	//Connessione 11 - GET della pagina "Modifica gli immobili" per verificare l'inserimento
-    	HttpPortalGetConnection connessione_11 = new HttpPortalGetConnection();
-    	try {
-    		Object[] response = connessione_11.get("Connessione 11 - GET della pagina \"Modifica gli immobili\" per verificare l'inserimento", URLROOT + "/area_riservata.php?pg=modimmo", requestHeaders, debugMode);
-    		String responseBody = (String) response[1];
-    		
-    		if(responseBody.contains("idImmobile=" + mappaDeiParamerti.get("codiceInserzione"))) {
-            	inserimentoOK = true;
-            }
-            else {
-            	throw(new HttpWrongResponseBodyException("Non trovo un riferimento all'annuncio appena inserito. Non è possibile verificare l'effettivo inserimento"));
-            }
-		} catch (IOException | HttpWrongResponseBodyException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-      
-    	
-    	//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
-    	if(inserimentoOK) {
-    		
-    		//Aggiorna la lista dei portali in cui è inserita la scheda
-    		scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
-    		      	
-    		if(!isSequential) {   			
-    			System.out.println("Inserita in: " + NOMEPORTALE);       		
-        		
-    			//Aggiorna i pulsanti del pannello inserimento
-    			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
-    			
-    			//Invio mail di conferma inserimento 
-    			sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
-           	
-            	//Stampo a video un messaggio informativo
-                JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
-    		}
-    		
-    		return inserimentoOK;        	
-    	}
-    	else {
-    		
-    		if(!isSequential) {
-    			//Stampo a video un messaggio informativo
-        		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
-    		}
-    		
-    		return inserimentoOK;
-    	}
-    	
-    	*/
-    	
-    	JOptionPane.showMessageDialog(null, "Funzionalità non supportata", "Funzionalità non supportata", JOptionPane.WARNING_MESSAGE);
-    	return false;
-    	       
+
 	}
-	
-    
-    //Metodo per la visualizzazione della scheda immobile nel portale immobiliare
+
+
+	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceScheda + "...");
+		
+		JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+
+		/*codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT + "/area_riservata.php?pg=modimmo&tipo=age";
+			String url = SECUREURLROOT + "/account/manageads/";
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			System.out.println("Visualizzata in: " + NOMEPORTALE);
-			
+
 		} catch (IOException e ) {
 			//
-		}
-		
+		}*/
+
 		return true;
 	}
 
-	
-	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
-	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {		
-		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
-		
-		codiceInserzione = scheda.getCodiceInserimento(idPortale);			
-		
-	
-		//Connessione 0 - GET della home page - Opzionale
-    	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
-    	try {
-			connessione_0.get("Connessione 0 - GET della home page", URLROOT, debugMode);
-    	} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	
-    	
-    	//Connessione 1 - GET della pagina di login
-    	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
-    	try {
-    		connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/page/14/login_agenzie.html", debugMode);
-    		
-    	} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	
-    	
-    	//Connessione 2 - POST dei parametri di accesso (1)
-    	HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();   	
-    	postParameters = new ArrayList<NameValuePair>();          
-        postParameters.add(new BasicNameValuePair("email", USERNAME));
-        postParameters.add(new BasicNameValuePair("password", PASSWORD));
-        
-        try {        	
-        	Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso (1)", URLROOT + "/funzioni/login_agenzia.php", postParameters, debugMode);
-        	Header[] responseHeaders = (Header[])response[0];
-        	//Trovo il cookie di sessione
-        	findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-        	//Imposto il cookie di sessione per tutte le successive connessioni
-        	connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-        } catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	finally {
-    		postParameters.clear();
-    	}
-        
-        
-        //Connessione 2b - POST dei parametri di accesso (2)
-    	HttpPortalPostConnection connessione_2b = new HttpPortalPostConnection();   	
-        try {
-        	MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-        	reqEntity.addPart("email", new StringBody(USERNAME));
-        	reqEntity.addPart("password", new StringBody(PASSWORD));
-        	reqEntity.addPart("action", new StringBody("1"));
-        	reqEntity.addPart("permalinkPaginaOspite", new StringBody("http://www.casab.it/page/14/login_agenzie.html"));
-        	
-        	//Immposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-        	requestHeaders = new ArrayList<NameValuePair>();
-            requestHeaders.add(new BasicNameValuePair("Host", "www.casab.it"));
-        	requestHeaders.add(new BasicNameValuePair("Cookie", SESSIONCOOKIENAME + "=" + SESSIONCOOKIEVALUE));
-        	        	
-        	connessione_2b.post("Connessione 2b - POST dei parametri di accesso (2)", URLROOT + "/page/14/login_agenzie.html", reqEntity, requestHeaders, debugMode);
 
-        } catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	finally {
-    		postParameters.clear();
-    	}
-        
-    	
-    	//Connessione 3 - GET della pagina "Elimina immobile"
-    	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
-    	try {
-			connessione_3.get("Connessione 3 - GET della pagina \"Elimina immobile\"", URLROOT + "/moduli/agenzie/elimina_immobile.php?idImmobile=" + codiceInserzione, requestHeaders, debugMode);
-    	} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-    	
-        
-        //Aggiorno la lista dei portali in cui è presenta la scheda corrente
-  		scheda.eliminaInserimentoPortale(idPortale);			
-  	 		
-  		if(!isSequential) {
-  			//Aggiorno i pulsanti del pannello inserimento
-  			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
-  			
-  			System.out.println("Eliminata da: " + NOMEPORTALE);
-  		  	
-  	  		//Stampo a video un messaggio informativo
-  	        JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + NOMEPORTALE);
-		}
-  		
-  		return true;
-	
-	}
+	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
+	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 		
-	
-	//Metodo per la valutazione dei parametri
-	public void inizializzaParametri() throws HttpCommunicationException {		
+		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
+
+		codiceInserzione = scheda.getCodiceInserimento(idPortale);
+		
+		JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+		
+		
+		return true;
+
+		
 
 	}
 

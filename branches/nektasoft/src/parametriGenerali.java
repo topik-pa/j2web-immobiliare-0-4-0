@@ -16,6 +16,10 @@ public interface parametriGenerali {
 	final String UTENTE ="Nazario Morsillo";
 	final String EMAIL_UTENTE ="n.morsillo@nektasoft.it";
 	final String RAGIONESOCIALE_UTENTE ="NektaSoft srl";
+	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
+	final String CITTA_UTENTE ="Udine";
+	final String INDIRIZZO_UTENTE ="via Buttrio, 667 - 33100 Udine";
+	final String TELEFONO_UTENTE ="3295698985";
 
 	//Mail del back end
 	final String BACKEND_EMAIL ="marcopavan.mp@gmail.com";
@@ -30,8 +34,13 @@ public interface parametriGenerali {
 	//Dimensioni di default della GUI 
 	final int[] GUI_bounds = {20, 20, 1152, 640};
 
-	//User agent utilizzato per le connessioni
+	//Request headers utilizzati per le connessioni
 	final String USER_AGENT_VALUE = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0";
+	final String CONNECTION = "keep-alive";
+	final String CACHE_CONTROL = "max-age=0";
+	final String ACCEPT_LANGUAGE = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
+	//final String ACCEPT_ENCODING = "gzip,deflate,sdch";
+	final String ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
 
 	//Messaggi delle finestre modali: inizializzo la mappa che conterrà la ntipologia di evento e il relativo messaggio. L'inizializzazione è nel file: j2web.java
 	final Map<String,String> MapModalWindowsDialogs = new Hashtable<String,String>();
@@ -122,6 +131,6 @@ public interface parametriGenerali {
 	final String[] comboboxModelCambio = {"Seleziona", "Automatico", "Manuale", "Semiautomatico", "Nessuno"};
 	final String[] comboboxModelNumeroRapporti = {"Seleziona", "3", "4", "5", "6", "7"};
 	final String[] comboboxModelClasseEmissioni = {"Seleziona", "Euro 1", "Euro 2", "Euro 3", "Euro 4", "Euro 5", "Euro 6"};
-
+	final String[] comboboxModelTipologieContratto = {"Seleziona", "Vendita", "Affitto", "Leasing"};
 
 }
