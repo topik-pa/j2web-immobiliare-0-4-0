@@ -88,9 +88,10 @@ public class J2Web_UI implements parametriGenerali {
 	private static JComboBox<String> comboBox_Cambio;
 	private static JComboBox<String> comboBox_NumeroRapporti;
 	private static JComboBox<String> comboBox_ClasseEmissioni;
+	private static JComboBox<String> comboBox_Contratto;
+	//Textfield
 	private static JTextField comboBox_ConsumoMedio;
 	private static JTextField comboBox_Cilindrata;
-	//Textfield	
 	private static JTextField txtFieldKw;
 	private static JTextField txtFieldCv;
 	private static JTextField textField_Chilometraggio;
@@ -128,8 +129,7 @@ public class J2Web_UI implements parametriGenerali {
 	private static JCheckBox chckbxChiusuraCentralizzata;
 	private static JCheckBox chckbxSediliRiscaldati;
 	private static JCheckBox chckbxClima;
-	private static JCheckBox chckbxTrattabile;
-	private static JCheckBox chckbxIvaDeducibile;
+	private static JCheckBox chckbxTrattabile;	
 	private static JCheckBox chckbxMetallizzato;
 	//Radio button
 	private static JRadioButton rdbtnAutoveicolo;
@@ -222,6 +222,7 @@ public class J2Web_UI implements parametriGenerali {
 
 	//Classloader per il recupero delle risorse esterne
 	ClassLoader cl;
+	private JLabel lblTipologiaDiContratto;
 
 
 
@@ -326,13 +327,18 @@ public class J2Web_UI implements parametriGenerali {
 		System.out.print(" fatto." + "\n");
 
 		//Tracking dell'evento avvio di j2web
-		System.out.print("Tracking dell'evento avvio di j2web...");
-		try {
-			j2web.trackEvent("avvio_j2web_"+j2web_version, EMAIL_UTENTE);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("primoTrackingFallito"), "Problemi di connessione", JOptionPane.WARNING_MESSAGE);
+		/*System.out.print("Tracking dell'evento avvio di j2web...");
+		long start = System.currentTimeMillis();
+		long end = start + 10*1000; // 60 seconds * 1000 ms/sec
+		while (System.currentTimeMillis() < end)
+		{
+			try {
+				j2web.trackEvent("avvio_j2web_"+j2web_version, EMAIL_UTENTE);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("primoTrackingFallito"), "Problemi di connessione", JOptionPane.WARNING_MESSAGE);
+			}
 		}
-		System.out.print(" fatto." + "\n");	
+		System.out.print(" fatto." + "\n");	*/
 
 	}
 
@@ -616,7 +622,7 @@ public class J2Web_UI implements parametriGenerali {
 		JLabel lblTipologia = new JLabel("Tipologia*");
 		panel_20.add(lblTipologia, "2, 12");
 
-		JLabel lblCarrozzeria = new JLabel("Carrozzeria");
+		JLabel lblCarrozzeria = new JLabel("Carrozzeria*");
 		panel_20.add(lblCarrozzeria, "6, 12");
 
 		JLabel lblPostiASedere = new JLabel("Posti a sedere");
@@ -729,6 +735,9 @@ public class J2Web_UI implements parametriGenerali {
 				}
 			}
 		});
+		
+		lblTipologiaDiContratto = new JLabel("Tipologia di contratto*");
+		panel_20.add(lblTipologiaDiContratto, "10, 28");
 		panel_20.add(textField_Prezzo, "2, 30, fill, default");
 		textField_Prezzo.setColumns(10);
 
@@ -736,9 +745,10 @@ public class J2Web_UI implements parametriGenerali {
 		chckbxTrattabile.setToolTipText("Il prezzo di vendita è trattabile?");
 		panel_20.add(chckbxTrattabile, "6, 30");
 
-		chckbxIvaDeducibile = new JCheckBox("IVA deducibile");
-		chckbxIvaDeducibile.setToolTipText("Il prezzo di vendita è deducibile?");
-		panel_20.add(chckbxIvaDeducibile, "10, 30");
+		comboBox_Contratto = new JComboBox<String>();
+		comboBox_Contratto.setToolTipText("Tipologia di contratto");
+		panel_20.add(comboBox_Contratto, "10, 30, fill, default");
+		comboBox_Contratto.setModel(new DefaultComboBoxModel<String>(comboboxModelTipologieContratto));
 
 		JLabel lblFinitureInterne = new JLabel("Finiture interni");
 		panel_20.add(lblFinitureInterne, "2, 32");
@@ -1255,6 +1265,7 @@ public class J2Web_UI implements parametriGenerali {
 		panel_33.add(lblIndirizzo, "4, 2");
 
 		JLabel lblTelefonoGenerico = new JLabel("Telefono*");
+		lblTelefonoGenerico.setToolTipText("Per sincronizzare su subito.it, il numero di telefono deve essere prima validato. Seguire le indicazioni sul sito: www.subito.it");
 		panel_33.add(lblTelefonoGenerico, "6, 2");
 
 		textFieldRagioneSociale = new JTextField();
@@ -1266,6 +1277,7 @@ public class J2Web_UI implements parametriGenerali {
 		textFieldRagioneSociale.setEditable(false);
 
 		textFieldIndirizzo = new JTextField();
+		textFieldIndirizzo.setEnabled(false);
 		textFieldIndirizzo.setToolTipText("Inserimento dell'indirizzo di riferimento dell\'inserzionista ");
 		panel_33.add(textFieldIndirizzo, "4, 4, fill, default");
 		textFieldIndirizzo.addKeyListener(new KeyAdapter() {
@@ -1278,9 +1290,12 @@ public class J2Web_UI implements parametriGenerali {
 				}
 			}
 		});
+		textFieldIndirizzo.setText(INDIRIZZO_UTENTE);
+		textFieldIndirizzo.setEditable(false);
 		textFieldIndirizzo.setColumns(10);
 
 		textFieldTelefonoGenerico = new JTextField();
+		textFieldTelefonoGenerico.setEnabled(false);
 		textFieldTelefonoGenerico.setToolTipText("Inserimento di un recapito telefonico dell\'inserzionista");
 		panel_33.add(textFieldTelefonoGenerico, "6, 4, fill, default");
 		textFieldTelefonoGenerico.addKeyListener(new KeyAdapter() {
@@ -1294,12 +1309,14 @@ public class J2Web_UI implements parametriGenerali {
 				}
 			}
 		});
+		textFieldTelefonoGenerico.setText(TELEFONO_UTENTE);
+		textFieldTelefonoGenerico.setEditable(false);
 		textFieldTelefonoGenerico.setColumns(10);
 
 		JLabel lblReferente = new JLabel("Referente*");
 		panel_33.add(lblReferente, "2, 6");
 
-		JLabel lblTelefonoReferente = new JLabel("Telefono*");
+		JLabel lblTelefonoReferente = new JLabel("Mobile*");
 		panel_33.add(lblTelefonoReferente, "4, 6");
 
 		JLabel lblEmailReferente = new JLabel("E-mail*");
@@ -2880,6 +2897,7 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormVeicolo.add(getComboBox_NumeroRapporti());
 		listCampiFormVeicolo.add(getComboBox_ClasseEmissioni());	
 		listCampiFormVeicolo.add(getComboBox_Versione());
+		listCampiFormVeicolo.add(getCombobox_Contratto());
 
 		listCampiFormVeicolo.add(getTextField_Kw());
 		listCampiFormVeicolo.add(getTextField_Cv());
@@ -2888,14 +2906,13 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormVeicolo.add(getTextField_Cilindrata());
 		listCampiFormVeicolo.add(getTextField_ConsumoMedio());
 		listCampiFormVeicolo.add(getTextField_YouTubeUrl());
-		listCampiFormVeicolo.add(getTextFieldIndirizzo());
-		listCampiFormVeicolo.add(getTextFieldTelefonoGenerico());
+		//listCampiFormVeicolo.add(getTextFieldIndirizzo());
+		//listCampiFormVeicolo.add(getTextFieldTelefonoGenerico());
 		listCampiFormVeicolo.add(getTextFieldTelefonoReferente());
 		listCampiFormVeicolo.add(getTextFieldEmailReferente());
 
 		listCampiFormVeicolo.add(getChckbxMetallizzato());
 		listCampiFormVeicolo.add(getChckbxTrattabile());
-		listCampiFormVeicolo.add(getChckbxIvaDeducibile());
 		listCampiFormVeicolo.add(getChckbxAbs());
 		listCampiFormVeicolo.add(getChckbxAirbag());
 		listCampiFormVeicolo.add(getChckbxAntifurto());
@@ -2957,7 +2974,9 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormVeicoloObbligatori.add(getComboBox_Modello());
 		listCampiFormVeicoloObbligatori.add(getComboBox_Versione());
 		listCampiFormVeicoloObbligatori.add(getComboBox_Tipologia());
-		listCampiFormVeicoloObbligatori.add(getComboBox_ColoreEsterno());		
+		listCampiFormVeicoloObbligatori.add(getComboBox_ColoreEsterno());
+		listCampiFormVeicoloObbligatori.add(getCombobox_Contratto());
+		listCampiFormVeicoloObbligatori.add(getComboBox_Carrozzeria());
 
 		listCampiFormVeicoloObbligatori.add(getTextField_Prezzo());			
 		listCampiFormVeicoloObbligatori.add(getTextFieldIndirizzo());
@@ -3168,6 +3187,9 @@ public class J2Web_UI implements parametriGenerali {
 	protected static JComboBox<String> formCliente_getTipologiaCliente() {
 		return comboBoxTipologia_Cliente;
 	}
+	protected static JComboBox<String> getCombobox_Contratto() {
+		return comboBox_Contratto;
+	}
 
 	//Textfield
 	protected static JTextField getTextField_YouTubeUrl() {
@@ -3243,9 +3265,6 @@ public class J2Web_UI implements parametriGenerali {
 	}
 	protected static JCheckBox getChckbxTrattabile() {
 		return chckbxTrattabile;
-	}
-	protected static JCheckBox getChckbxIvaDeducibile() {
-		return chckbxIvaDeducibile;
 	}
 	protected static JCheckBox getChckbxCupolino() {
 		return chckbxCupolino;
