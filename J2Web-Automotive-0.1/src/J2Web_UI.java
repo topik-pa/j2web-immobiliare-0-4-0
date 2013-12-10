@@ -61,6 +61,10 @@ import java.awt.event.ContainerEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.Dimension;
+import javax.swing.JPopupMenu;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JInternalFrame;
 
 
 public class J2Web_UI implements parametriGenerali {
@@ -223,7 +227,20 @@ public class J2Web_UI implements parametriGenerali {
 	//Classloader per il recupero delle risorse esterne
 	ClassLoader cl;
 	private JLabel lblTipologiaDiContratto;
-
+	private JMenu menu3;
+	private JMenuItem menuItem_2;
+	private JMenu menuItem_3;
+	private JMenu menuItem_4;
+	private JMenuItem mntmDatInserimento;
+	private JMenuItem mntmMarca;
+	private JMenuItem mntmDataImmatricolazione;
+	private JMenuItem mntmTipolologia;
+	private JMenuItem mntmPrezzo;
+	private JMenuItem mntmDataInserimento;
+	private JMenuItem mntmCognome;
+	private JMenuItem mntmCitt;
+	private JMenuItem mntmNewMenuItem_1;
+	private JMenuItem mntmNewMenuItem_2;
 
 
 	/**
@@ -2200,29 +2217,106 @@ public class J2Web_UI implements parametriGenerali {
 		JMenuBar menuBar = new JMenuBar();
 		imagination_05.getContentPane().add(menuBar, BorderLayout.NORTH);
 
-		JMenu mnTest = new JMenu("Menu1");
-		menuBar.add(mnTest);
+		JMenu menu1 = new JMenu("J2Web");
+		menuBar.add(menu1);
 
-		JMenuItem mntmTesting = new JMenuItem("MenuItem1");
-		mnTest.add(mntmTesting);
+		JMenuItem menuItem_1 = new JMenuItem("Informazioni");
+		menuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				createInfoFrame();
+			}
+		});
+		menu1.add(menuItem_1);
+		
+		menuItem_2 = new JMenuItem("Esci");
+		menuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		menu1.add(menuItem_2);
 
-		JMenuItem mntmNewMenuItem = new JMenuItem("MenuItem2");
-		mnTest.add(mntmNewMenuItem);
-
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("MenuItem3");
-		mnTest.add(mntmNewMenuItem_1);
-
-		JMenu mnNewMenu = new JMenu("Menu2");
-		menuBar.add(mnNewMenu);
-
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("MenuItem1");
-		mnNewMenu.add(mntmNewMenuItem_2);
-
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("MenuItem2");
-		mnNewMenu.add(mntmNewMenuItem_3);
-
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("MenuItem3");
-		mnNewMenu.add(mntmNewMenuItem_4);
+		JMenu menu2 = new JMenu("Schede veicolo");
+		menuBar.add(menu2);
+		
+		menuItem_3 = new JMenu("Ordina per");
+		menu2.add(menuItem_3);
+		
+		mntmDatInserimento = new JMenuItem("Data inserimento");
+		mntmDatInserimento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuItem_3.add(mntmDatInserimento);
+		
+		mntmMarca = new JMenuItem("Marca");
+		mntmMarca.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuItem_3.add(mntmMarca);
+		
+		mntmDataImmatricolazione = new JMenuItem("Data immatricolazione");
+		mntmDataImmatricolazione.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuItem_3.add(mntmDataImmatricolazione);
+		
+		mntmTipolologia = new JMenuItem("Tipologia");
+		mntmTipolologia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuItem_3.add(mntmTipolologia);
+		
+		mntmPrezzo = new JMenuItem("Prezzo");
+		mntmPrezzo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuItem_3.add(mntmPrezzo);
+		
+		mntmNewMenuItem_1 = new JMenuItem("Elimina tutte");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menu2.add(mntmNewMenuItem_1);
+		
+		menu3 = new JMenu("Schede cliente");
+		menuBar.add(menu3);
+		
+		menuItem_4 = new JMenu("Ordina per");
+		menu3.add(menuItem_4);
+		
+		mntmDataInserimento = new JMenuItem("Data inserimento");
+		mntmDataInserimento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuItem_4.add(mntmDataInserimento);
+		
+		mntmCognome = new JMenuItem("Cognome");
+		mntmCognome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuItem_4.add(mntmCognome);
+		
+		mntmCitt = new JMenuItem("Città");
+		mntmCitt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menuItem_4.add(mntmCitt);
+		
+		mntmNewMenuItem_2 = new JMenuItem("Elimina tutte");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menu3.add(mntmNewMenuItem_2);
 		//Fine menu top window
 
 	}
@@ -3488,4 +3582,52 @@ public class J2Web_UI implements parametriGenerali {
 	protected JButton getBtnResettaFormVeicolo() {
 		return btnResetta;
 	}
+	
+	
+	public static void createInfoFrame()
+    {
+        EventQueue.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                JFrame frame = new JFrame("J2Web Info");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                try 
+                {
+                   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception e) {
+                   e.printStackTrace();
+                }
+                JPanel panel = new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                panel.setOpaque(true);
+               // JTextArea textArea = new JTextArea(15, 50);
+                //textArea.setWrapStyleWord(true);
+               // textArea.setEditable(false);
+                //textArea.setFont(Font.getFont(Font.SANS_SERIF));
+               // JScrollPane scroller = new JScrollPane(textArea);
+              //  scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+             //   scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+              //  JPanel inputpanel = new JPanel();
+              //  inputpanel.setLayout(new FlowLayout());
+              //  JTextField input = new JTextField(20);
+              //  JButton button = new JButton("Enter");
+              //  DefaultCaret caret = (DefaultCaret) textArea.getCaret();
+            //    caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+              //  panel.add(scroller);
+             //   inputpanel.add(input);
+             //   inputpanel.add(button);
+             //   panel.add(inputpanel);
+                frame.getContentPane().add(BorderLayout.CENTER, panel);
+                frame.pack();
+                frame.setLocationByPlatform(true);
+                frame.setVisible(true);
+                frame.setResizable(false);
+               // input.requestFocus();
+            }
+        });
+    }
+	
+	
 }
