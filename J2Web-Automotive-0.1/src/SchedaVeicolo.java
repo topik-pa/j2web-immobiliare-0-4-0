@@ -491,7 +491,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 //Classi Comparator per l'ordinamento delle schede secondo specifici criteri
 class IdComparator implements Comparator<SchedaVeicolo> {
 
-	//Per ID della scheda
+	//Per ID della scheda (data di inserimento)
 	public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {
 		if (s1.idScheda > s2.idScheda)
 			return 1;
@@ -500,4 +500,43 @@ class IdComparator implements Comparator<SchedaVeicolo> {
 		else
 			return 0;
 	}
+}
+
+class marcaComparator implements Comparator<SchedaVeicolo>	{
+	
+    public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {    	
+    	int i = s1.marcaVeicolo.compareTo(s2.marcaVeicolo); 
+        if (i > 0)
+            return 1;
+        else if (i < 0)
+            return -1;
+        else
+            return 0;
+    }
+}
+
+class tipologiaComparator implements Comparator<SchedaVeicolo>	{
+	
+    public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {    	
+    	int i = s1.tipologiaVeicolo.compareTo(s2.tipologiaVeicolo); 
+        if (i > 0)
+            return 1;
+        else if (i < 0)
+            return -1;
+        else
+            return 0;
+    }
+}
+
+class prezzoComparator implements Comparator<SchedaVeicolo>	{
+	
+    public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {    	
+    	int i = s1.prezzoVeicolo.compareTo(s2.prezzoVeicolo); 
+        if (i > 0)
+            return 1;
+        else if (i < 0)
+            return -1;
+        else
+            return 0;
+    }
 }
