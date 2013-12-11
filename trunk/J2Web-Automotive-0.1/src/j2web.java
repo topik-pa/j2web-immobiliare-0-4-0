@@ -175,6 +175,9 @@ public class j2web implements parametriGenerali {
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseHeaderException", "Errore HTTP Response Header. ");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseBodyException", "Errore HTTP Response Body. ");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_Generic", "Errore Generico. ");
+		
+		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeVeicolo", "Questa azione eliminerà tutte le schede veicolo. Confermi? ");
+		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeCliente", "Questa azione eliminerà tutte le schede cliente. Confermi? ");
 
 	}
 

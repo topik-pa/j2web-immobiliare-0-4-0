@@ -44,6 +44,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -2245,6 +2246,9 @@ public class J2Web_UI implements parametriGenerali {
 		mntmDatInserimento = new JMenuItem("Data inserimento");
 		mntmDatInserimento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Ordino schede veicolo per data di inserimento...");
+				Collections.sort(listSchedeVeicolo, new IdComparator());
+				J2Web_UI.aggiornaPannelloListaSchedeVeicolo();
 			}
 		});
 		menuItem_3.add(mntmDatInserimento);
@@ -2252,20 +2256,19 @@ public class J2Web_UI implements parametriGenerali {
 		mntmMarca = new JMenuItem("Marca");
 		mntmMarca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Ordino schede veicolo per marca veicolo...");
+				Collections.sort(listSchedeVeicolo, new marcaComparator());
+				J2Web_UI.aggiornaPannelloListaSchedeVeicolo();
 			}
 		});
 		menuItem_3.add(mntmMarca);
 		
-		mntmDataImmatricolazione = new JMenuItem("Data immatricolazione");
-		mntmDataImmatricolazione.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		menuItem_3.add(mntmDataImmatricolazione);
-		
 		mntmTipolologia = new JMenuItem("Tipologia");
 		mntmTipolologia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Ordino schede veicolo per tipologia veicolo...");
+				Collections.sort(listSchedeVeicolo, new tipologiaComparator());
+				J2Web_UI.aggiornaPannelloListaSchedeVeicolo();
 			}
 		});
 		menuItem_3.add(mntmTipolologia);
@@ -2273,6 +2276,9 @@ public class J2Web_UI implements parametriGenerali {
 		mntmPrezzo = new JMenuItem("Prezzo");
 		mntmPrezzo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Ordino schede veicolo per prezzo veicolo...");
+				Collections.sort(listSchedeVeicolo, new prezzoComparator());
+				J2Web_UI.aggiornaPannelloListaSchedeVeicolo();
 			}
 		});
 		menuItem_3.add(mntmPrezzo);
@@ -2280,6 +2286,16 @@ public class J2Web_UI implements parametriGenerali {
 		mntmNewMenuItem_1 = new JMenuItem("Elimina tutte");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Elimino tutte le schede...");				
+				int response = JOptionPane.showConfirmDialog(null, MapModalWindowsDialogs.get("menu_ConfermaEliminaTutteLeSchedeVeicolo"), "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (response == JOptionPane.NO_OPTION) {
+				    } else if (response == JOptionPane.YES_OPTION) {
+				    	//Elimino tutte le schede e salvo su dat
+				    	listSchedeVeicolo.clear();
+				    	j2web.salvaListaSchedeVeicoloCreate();
+				    	J2Web_UI.aggiornaPannelloListaSchedeVeicolo();					
+				    } else if (response == JOptionPane.CLOSED_OPTION) {				    	
+				}
 			}
 		});
 		menu2.add(mntmNewMenuItem_1);
@@ -2293,6 +2309,9 @@ public class J2Web_UI implements parametriGenerali {
 		mntmDataInserimento = new JMenuItem("Data inserimento");
 		mntmDataInserimento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Ordino schede cliente per data inserimento...");
+				Collections.sort(listSchedeCliente, new IdComparatorCliente());
+				J2Web_UI.aggiornaPannelloListaSchedeCliente();
 			}
 		});
 		menuItem_4.add(mntmDataInserimento);
@@ -2300,6 +2319,9 @@ public class J2Web_UI implements parametriGenerali {
 		mntmCognome = new JMenuItem("Cognome");
 		mntmCognome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Ordino schede cliente per cognome cliente...");
+				Collections.sort(listSchedeCliente, new cognomeComparator());
+				J2Web_UI.aggiornaPannelloListaSchedeCliente();
 			}
 		});
 		menuItem_4.add(mntmCognome);
@@ -2307,6 +2329,9 @@ public class J2Web_UI implements parametriGenerali {
 		mntmCitt = new JMenuItem("Città");
 		mntmCitt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Ordino schede cliente per città cliente...");
+				Collections.sort(listSchedeCliente, new cittaComparator());
+				J2Web_UI.aggiornaPannelloListaSchedeCliente();
 			}
 		});
 		menuItem_4.add(mntmCitt);
@@ -2314,6 +2339,16 @@ public class J2Web_UI implements parametriGenerali {
 		mntmNewMenuItem_2 = new JMenuItem("Elimina tutte");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Elimino tutte le schede...");				
+				int response = JOptionPane.showConfirmDialog(null, MapModalWindowsDialogs.get("menu_ConfermaEliminaTutteLeSchedeCliente"), "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (response == JOptionPane.NO_OPTION) {
+				    } else if (response == JOptionPane.YES_OPTION) {
+				    	//Elimino tutte le schede e salvo su dat
+				    	listSchedeCliente.clear();
+				    	j2web.salvaListaSchedeClienteCreate();
+				    	J2Web_UI.aggiornaPannelloListaSchedeCliente();					
+				    } else if (response == JOptionPane.CLOSED_OPTION) {				    	
+				}
 			}
 		});
 		menu3.add(mntmNewMenuItem_2);
