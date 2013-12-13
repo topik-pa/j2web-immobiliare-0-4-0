@@ -336,7 +336,7 @@ public class _portaleMLS extends PortaleWeb {
 		//Tracking dell'evento inserzione di una scheda veicolo in MLS
 		System.out.print("Tracking dell'evento inserzione di una scheda veicolo in MLS...");
 		try {
-			j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE+"_"+scheda.codiceScheda);
+			j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, scheda.codiceScheda);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 		}
@@ -450,7 +450,7 @@ public class _portaleMLS extends PortaleWeb {
 		//Tracking dell'evento eliminazione di una scheda veicolo in MLS
 		System.out.print("Tracking dell'evento eliminazione di una scheda veicolo in MLS...");
 		try {
-			j2web.trackEvent("eliminazioneMLSSchedaVeicolo_j2web_"+j2web_version, EMAIL_UTENTE+"_"+scheda.codiceScheda);
+			j2web.trackEvent("eliminazioneMLSSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, scheda.codiceScheda);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 		}
