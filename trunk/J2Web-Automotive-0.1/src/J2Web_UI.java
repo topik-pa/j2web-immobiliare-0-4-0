@@ -3637,7 +3637,7 @@ public class J2Web_UI implements parametriGenerali {
         		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
         		panel_1.add(lblNewLabel_1, BorderLayout.NORTH);
         		
-        		JLabel lblNewLabel_2 = new JLabel("<html>J2Web è ideato e scritto da Marco Pavan, tutti i diritti sono riservati.<br/>Per contatare l'autore mandare una mail all'indirizzo:<br/><a href=\"mailto:marcopavan.mp@gmail.com\">marcopavan.mp@gmail.com</a></html>");
+        		JLabel lblNewLabel_2 = new JLabel("<html>J2Web è ideato e scritto da Marco Pavan, tutti i diritti sono riservati.<br/>Per contattare l'autore mandare una mail all'indirizzo:<br/><a href=\"mailto:marcopavan.mp@gmail.com\">marcopavan.mp@gmail.com</a></html>");
         		lblNewLabel_2.setHorizontalAlignment(SwingConstants.LEFT);
         		panel_1.add(lblNewLabel_2, BorderLayout.CENTER);
                 
