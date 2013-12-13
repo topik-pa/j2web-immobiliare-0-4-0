@@ -225,7 +225,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				matrix[row][3] = J2Web_UI.listSchedeClientiMatch.get(row).telefono1Cliente;
 				matrix[row][4] = J2Web_UI.listSchedeClientiMatch.get(row).telefono2Cliente;
 				matrix[row][5] = J2Web_UI.listSchedeClientiMatch.get(row).viaCliente;
-				matrix[row][6] = J2Web_UI.listSchedeClientiMatch.get(row).nomeCliente;
+				matrix[row][6] = J2Web_UI.listSchedeClientiMatch.get(row).numeroCivicoCliente;
 				matrix[row][7] = J2Web_UI.listSchedeClientiMatch.get(row).CAPCliente;
 				matrix[row][8] = J2Web_UI.listSchedeClientiMatch.get(row).cittaCliente;
 			}	
