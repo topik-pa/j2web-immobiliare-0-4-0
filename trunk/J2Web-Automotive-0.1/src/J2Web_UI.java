@@ -646,7 +646,7 @@ public class J2Web_UI implements parametriGenerali {
 		comboBox_PostiASedere.setModel(new DefaultComboBoxModel<String>(comboboxModelPostiASedere));
 		panel_20.add(comboBox_PostiASedere, "10, 14, fill, default");
 
-		JLabel lblPotenzaKw = new JLabel("Potenza (KW/CV)");
+		JLabel lblPotenzaKw = new JLabel("Potenza (KW/CV)*");
 		panel_20.add(lblPotenzaKw, "2, 16");
 
 		txtFieldKw = new JTextField();
@@ -2670,7 +2670,7 @@ public class J2Web_UI implements parametriGenerali {
 			annoFabbricazione = currentJson.getString("model_year");
 			nomeVersione = currentJson.getString("model_trim");
 			nomeModello = currentJson.getString("model_name");
-			currentComboboxVersione.addItem(nomeModello + " - " +  nomeVersione + " - " + annoFabbricazione);
+			currentComboboxVersione.addItem(nomeVersione + " - " + annoFabbricazione);
 
 			//Inserisco un id del modello attuale nella lista 
 			listVersioniVeicoli.add(currentJson.getString("model_id"));
@@ -3094,6 +3094,8 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormVeicoloObbligatori.add(getTextFieldEmailReferente());
 		listCampiFormVeicoloObbligatori.add(getTextFieldRagioneSociale());
 		listCampiFormVeicoloObbligatori.add(getTextFieldReferente());
+		listCampiFormVeicoloObbligatori.add(getTextField_Cv());
+		listCampiFormVeicoloObbligatori.add(getTextField_Kw());
 
 		listCampiFormVeicoloObbligatori.add(getTextPane_Descrizione());
 

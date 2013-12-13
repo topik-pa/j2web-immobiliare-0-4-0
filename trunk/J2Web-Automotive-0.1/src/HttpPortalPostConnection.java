@@ -269,14 +269,16 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 		httppost = new HttpPost(url);
 
 		//Add request headers
-		BasicHeader newHeader;
-		BasicNameValuePair currentHeaderListItem;
-		Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
-		while(headersIterator.hasNext()) {
-			currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
-			newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
-			httppost.addHeader(newHeader);
-		}
+		if(requestHeaders!=null) {
+			BasicHeader newHeader;
+			BasicNameValuePair currentHeaderListItem;
+			Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
+			while(headersIterator.hasNext()) {
+				currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
+				newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
+				httppost.addHeader(newHeader);
+			}
+		}		
 
 		//Add request parameters
 		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
@@ -311,7 +313,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 
 		//Get the response headers
 		responseHeaders = response.getAllHeaders();
-		
+
 		//Get the response cookies
 		if(requestCookies!=null) {
 			responseCookies = cookieStore.getCookies();
@@ -346,12 +348,14 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 		//Add request headers (comprende i cookies)
 		BasicHeader newHeader;
 		BasicNameValuePair currentHeaderListItem;
-		Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
-		while(headersIterator.hasNext()) {
-			currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
-			newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
-			httppost.addHeader(newHeader);
-		}    
+		if(requestHeaders!=null) {
+			Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
+			while(headersIterator.hasNext()) {
+				currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
+				newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
+				httppost.addHeader(newHeader);
+			}
+		}
 
 		//Add request parameters
 		httppost.setEntity(reqEntity);
@@ -385,7 +389,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 
 		//Get the response headers
 		responseHeaders = response.getAllHeaders();
-		
+
 		//Get the response cookies
 		if(requestCookies!=null) {
 			responseCookies = cookieStore.getCookies();

@@ -120,6 +120,7 @@ public class _portaleMLS extends PortaleWeb {
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException, UnsupportedEncodingException {
 		System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
 
+		//Inserimento delle immagini sul server remoto
 		for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null) {
 				HttpPortalPostConnection connessione_inserimentoImmagineInDB = new HttpPortalPostConnection();
@@ -134,14 +135,13 @@ public class _portaleMLS extends PortaleWeb {
 
 				//Il nome del file sul server remoto
 				String fileName = scheda.codiceScheda + "_img_" + i + currentFileType;
-				System.out.println("test: " + fileName);
 
 				FileBody bin = new FileBody(scheda.arrayImages[i]);
 				reqEntity.addPart("file", bin);
 				reqEntity.addPart("fileName", new StringBody(fileName));
 
 				try {
-					connessione_inserimentoImmagineInDB.post("Connessioni per l'inserimento della scheda immobile nel portale immobiliare - inserimento immagine " + i, urlInserimentoImmaginiInRemoto, reqEntity, true);
+					connessione_inserimentoImmagineInDB.post("Connessioni per l'inserimento della scheda immobile nel portale immobiliare - inserimento immagine " + i + " - " + fileName, urlInserimentoImmaginiInRemoto, reqEntity, null, null, true);
 				} catch (IOException e) {
 					throw new HttpCommunicationException(e);
 				}
@@ -262,10 +262,10 @@ public class _portaleMLS extends PortaleWeb {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		//Invio la richiesta al server remoto
+		//Invio la richiesta al server remoto per l'inserzione dei dati veicolo nel DB
 		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 		try {
-			getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, true);
+			getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, null, null, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -287,10 +287,10 @@ public class _portaleMLS extends PortaleWeb {
 			e1.printStackTrace();
 		}
 
-		//Invio la richiesta al server remoto
+		//Invio la richiesta al server remoto per la verifica dell'inserimento
 		HttpPortalGetConnection verificaInserimentoVeicolo = new HttpPortalGetConnection();
 		try {
-			Object[] response = verificaInserimentoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQLVerifica, true);
+			Object[] response = verificaInserimentoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQLVerifica, null, null, true);
 			String responseBody = (String)response[1];
 			JSONObject json = null;
 			try {
@@ -384,7 +384,7 @@ public class _portaleMLS extends PortaleWeb {
 		//Invio la richiesta al server remoto
 		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 		try {
-			getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, true);
+			getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, null, null, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -410,7 +410,7 @@ public class _portaleMLS extends PortaleWeb {
 		//Invio la richiesta al server remoto
 		HttpPortalGetConnection verificaInserimentoVeicolo = new HttpPortalGetConnection();
 		try {
-			Object[] response = verificaInserimentoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQLVerifica, true);
+			Object[] response = verificaInserimentoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQLVerifica, null, null, true);
 			String responseBody = (String)response[1];
 			JSONObject json = null;
 			try {

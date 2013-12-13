@@ -258,6 +258,8 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 
 		//Textpane
 		descrizioneVeicolo = J2Web_UI.getTextPane_Descrizione().getText().trim();
+		String descrizioneVeicoloLinkFree = descrizioneVeicolo.replace("http://", "").replace("www.", "");
+		descrizioneVeicolo = descrizioneVeicoloLinkFree;
 		if(descrizioneVeicolo.length()>maxCaratteri.get("textPane_Descrizione")) {descrizioneVeicolo = descrizioneVeicolo.substring(0, maxCaratteri.get("textPane_Descrizione")-1);}
 
 		//Immagini
@@ -320,28 +322,36 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				e.printStackTrace();
 			}
 
-			if(json.has(Integer.toString(2))) {codiceScheda = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(2))));}
-			if(json.has(Integer.toString(3))) {marcaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(3))));} 
-			if(json.has(Integer.toString(4))) {modelloVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(4))));} 
-			if(json.has(Integer.toString(5))) {versioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(5))));} 
-			if(json.has(Integer.toString(6))) {meseImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(6))));} 
-			if(json.has(Integer.toString(7))) {annoImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(7))));} 
-			if(json.has(Integer.toString(8))) {carburanteVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(8))));} 
-			if(json.has(Integer.toString(9))) {tipologiaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(9))));} 
-			if(json.has(Integer.toString(10))) {carrozzeriaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(10))));} 
-			if(json.has(Integer.toString(11))) {postiASedereVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(11))));} 
-			if(json.has(Integer.toString(12))) {KWVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(12))));}
-			if(json.has(Integer.toString(13))) {CVVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(13))));} 
+			if(json.has("2")) {codiceScheda = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("2")));}
+			if(json.has("3")) {marcaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("3")));} 
+			if(json.has("4")) {modelloVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("4")));} 
+			if(json.has("5")) {versioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("5")));} 
+			if(json.has("6")) {meseImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("6")));} 
+			if(json.has("7")) {annoImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("7")));} 
+			if(json.has("8")) {carburanteVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("8")));} 
+			if(json.has("9")) {tipologiaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("9")));} 
+			if(json.has("10")) {carrozzeriaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("10")));} 
+			if(json.has("11")) {postiASedereVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("11")));} 
+			if(json.has("12")) {KWVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("12")));}
+			if(json.has("13")) {CVVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("13")));} 
+			
+			if(json.has("14")) {coloreEsternoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("14")));}
+			if(json.has("18")) {prezzoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("18")));}
+			if(json.has("62")) {ragioneSociale = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("62")));}
+			if(json.has("65")) {nomeReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("65")));}
+			
+			if(json.has("17")) {nomeReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("17")));}
 
 			if(json.has("50") && !json.getString("50").equals("\u0000")) {
 
 				URL dbUrl;
-				arrayImages[1] = new File("image1.jpg");
-
+				
 				try {
 					dbUrl = new URL(urlLocationImmaginiInRemoto + StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("50"))));
 					URLConnection connection = dbUrl.openConnection();
 					InputStream in = connection.getInputStream();
+					
+					arrayImages[1] = new File("imagePreviewMLS.jpg");
 					FileOutputStream fos = new FileOutputStream(arrayImages[1]);
 
 					byte[] buf = new byte[1024];

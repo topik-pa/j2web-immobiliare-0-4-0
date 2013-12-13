@@ -34,14 +34,16 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 		httpget = new HttpGet(url);
 
 		//Add request headers
-		BasicHeader newHeader;
-		BasicNameValuePair currentHeaderListItem;
-		Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
-		while(headersIterator.hasNext()) {
-			currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
-			newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
-			httpget.addHeader(newHeader);
-		}
+		if(requestHeaders!=null) {
+			BasicHeader newHeader;
+			BasicNameValuePair currentHeaderListItem;
+			Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
+			while(headersIterator.hasNext()) {
+				currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
+				newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
+				httpget.addHeader(newHeader);
+			}
+		}		
 
 		//Set the cookies
 		if(requestCookies!=null) {
