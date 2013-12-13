@@ -262,7 +262,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	//POST URLENCODED VALUES (3)
 	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, List<NameValuePair> requestHeaders, List<BasicClientCookie> requestCookies, boolean debugMode) throws IOException {
 
-		//La risposta che verrÃ  restituita
+		//La risposta che verrà  restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
 
 		//Inizializza la connessione
@@ -337,7 +337,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	//POST MULTIPART/FORM-DATA (2)
 	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, List<NameValuePair> requestHeaders, List<BasicClientCookie> requestCookies, boolean debugMode) throws IOException {
 
-		//La risposta che verrÃ  restituita
+		//La risposta che verrà  restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
 
 		//Inizializza la connessione

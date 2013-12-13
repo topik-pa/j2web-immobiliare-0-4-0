@@ -144,9 +144,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 
 	//Funzione di matching tra clienti e veicoli salvati in locale
 	private void  matchClienteVeicolo(SchedaCliente schedaCliente) {
-		
-		
-
+			
 		JPanel pannelloMatchClienteVeicolo = J2Web_UI.getPanel_6();
 
 		J2Web_UI.listSchedeVeicoliMatch.clear();
@@ -242,9 +240,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 			J2Web_UI.formCliente_getRdbtnSignora().setSelected(false);
 		}
 
-
 		J2Web_UI.nonUserSelection = false;
 	}
-
 
 }

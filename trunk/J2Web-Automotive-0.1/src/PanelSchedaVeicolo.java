@@ -538,6 +538,5 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 
 		J2Web_UI.nonUserSelection = false;
 	}
-
 	
 }

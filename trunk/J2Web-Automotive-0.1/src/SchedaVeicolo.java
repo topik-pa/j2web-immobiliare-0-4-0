@@ -19,7 +19,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
@@ -83,7 +82,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	int carburanteVeicoloIndex;
 	String tipologiaContrattoVeicolo;
 	int tipologiaContrattoVeicoloIndex;
-	
+
 	boolean disponibilitaCupolino;
 	boolean disponibilitaAllestimentoHandicap;
 	boolean disponibilitaServoSterzo;
@@ -130,7 +129,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 
 	//File
 	File imgFile1;	File imgFile2;	File imgFile3;	File imgFile4;	File imgFile5;	File imgFile6;	File imgFile7;	File imgFile8;	File imgFile9;	File imgFile10; 	
-	File[] arrayImages = new File[11]; //Attenzione: lascierò volutamente libera la prima posizione [0]
+	File[] arrayImages = new File[11]; //Attenzione: lascerò volutamente libera la prima posizione [0]
 
 	//Una scheda veicolo può essere ospitata in diversi portali, la seguente tabella hash contiene i codici dei portali(key) e il codice di inserimento(value) in cui la scheda è attualmente inserita
 	Map<String,String> mappaPortaliOspitanti = new Hashtable<String,String>();
@@ -141,7 +140,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 
 		//Attributi della scheda veicolo	
 		idScheda = new Date().getTime();	//id univoco riferito alla scheda
-		codiceScheda= intestazioneCodiceSchedaVeicolo + UUID.randomUUID().toString(); //codice scheda univoco
+		codiceScheda= intestazioneCodiceSchedaVeicolo + UUID.randomUUID().toString().substring(24); //codice scheda univoco
 
 		//Inizializzo il path per il file hash di questa scheda
 		singolaSchedaDatPath = pathSchede + codiceScheda + ".dat";
@@ -187,7 +186,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		carburanteVeicoloIndex = J2Web_UI.getComboBox_Carburante().getSelectedIndex();
 		tipologiaContrattoVeicolo = (String) J2Web_UI.getCombobox_Contratto().getSelectedItem();
 		tipologiaContrattoVeicoloIndex = J2Web_UI.getCombobox_Contratto().getSelectedIndex();
-		
+
 
 		//Checkbox
 		disponibilitaCupolino = J2Web_UI.getChckbxCupolino().isSelected()?true:false;
@@ -316,13 +315,11 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			JSONObject json = null;
 			try {
 				json = new JSONObject(jsonArray.getString(h));
-			} catch (NoSuchElementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ParseException e) {
+			} catch (NoSuchElementException | ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
 			if(json.has(Integer.toString(2))) {codiceScheda = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(2))));}
 			if(json.has(Integer.toString(3))) {marcaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(3))));} 
 			if(json.has(Integer.toString(4))) {modelloVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString(Integer.toString(4))));} 
@@ -359,21 +356,15 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					fos.flush();
 					fos.close();
 
-				} catch (MalformedURLException e1) {
+				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} catch (NoSuchElementException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-
 			}
 		}
 
 	}
+
 
 
 	//Metodi
@@ -486,8 +477,6 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 
 
 
-
-
 //Classi Comparator per l'ordinamento delle schede secondo specifici criteri
 class IdComparator implements Comparator<SchedaVeicolo> {
 
@@ -503,40 +492,40 @@ class IdComparator implements Comparator<SchedaVeicolo> {
 }
 
 class marcaComparator implements Comparator<SchedaVeicolo>	{
-	
-    public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {    	
-    	int i = s1.marcaVeicolo.compareTo(s2.marcaVeicolo); 
-        if (i > 0)
-            return 1;
-        else if (i < 0)
-            return -1;
-        else
-            return 0;
-    }
+
+	public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {    	
+		int i = s1.marcaVeicolo.compareTo(s2.marcaVeicolo); 
+		if (i > 0)
+			return 1;
+		else if (i < 0)
+			return -1;
+		else
+			return 0;
+	}
 }
 
 class tipologiaComparator implements Comparator<SchedaVeicolo>	{
-	
-    public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {    	
-    	int i = s1.tipologiaVeicolo.compareTo(s2.tipologiaVeicolo); 
-        if (i > 0)
-            return 1;
-        else if (i < 0)
-            return -1;
-        else
-            return 0;
-    }
+
+	public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {    	
+		int i = s1.tipologiaVeicolo.compareTo(s2.tipologiaVeicolo); 
+		if (i > 0)
+			return 1;
+		else if (i < 0)
+			return -1;
+		else
+			return 0;
+	}
 }
 
 class prezzoComparator implements Comparator<SchedaVeicolo>	{
-	
-    public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {    	
-    	int i = s1.prezzoVeicolo.compareTo(s2.prezzoVeicolo); 
-        if (i > 0)
-            return 1;
-        else if (i < 0)
-            return -1;
-        else
-            return 0;
-    }
+
+	public int compare(SchedaVeicolo s1, SchedaVeicolo s2) {    	
+		int i = s1.prezzoVeicolo.compareTo(s2.prezzoVeicolo); 
+		if (i > 0)
+			return 1;
+		else if (i < 0)
+			return -1;
+		else
+			return 0;
+	}
 }
