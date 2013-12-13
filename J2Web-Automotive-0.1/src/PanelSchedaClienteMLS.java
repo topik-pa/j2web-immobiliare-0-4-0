@@ -171,7 +171,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		//Invio la richiesta al server remoto
 		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 		try {
-			Object[] response = getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, true);
+			Object[] response = getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, null, null, true);
 			String responseBody = (String)response[1];
 			JSONObject json = null;
 			try {
@@ -221,7 +221,6 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		System.out.print(" fatto." + "\n");
 
 	}
-
 	
 	public static void  sincronizzaRisultati(final LinkedList<SchedaCliente> listaSchedeCliente) {
 		
@@ -286,7 +285,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 			//Invio la richiesta al server remoto
 			HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 			try {
-				Object[] response = getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, true);
+				Object[] response = getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, null, null, true);
 				String responseBody = (String)response[1];
 				JSONObject json = null;
 				try {
@@ -309,8 +308,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 			
 		}
 		
-		J2Web_UI.aggiornaPannelloListaSchedeCliente();
-		
+		J2Web_UI.aggiornaPannelloListaSchedeCliente();		
 	}
 	
 }

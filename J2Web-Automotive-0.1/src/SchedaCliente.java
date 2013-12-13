@@ -21,7 +21,7 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 
 	//Attributi della scheda veicolo	
 	long idSchedaCliente = new Date().getTime();	//id univoco riferito alla scheda
-	String codiceSchedaCliente= intestazioneCodiceSchedaCliente + UUID.randomUUID().toString(); //codice scheda univoco
+	String codiceSchedaCliente= intestazioneCodiceSchedaCliente + UUID.randomUUID().toString().substring(24); //codice scheda univoco
 
 	String numResultsMLS = "ND";
 
@@ -119,27 +119,27 @@ class IdComparatorCliente implements Comparator<SchedaCliente> {
 }
 
 class cognomeComparator implements Comparator<SchedaCliente>	{
-	
-  public int compare(SchedaCliente s1, SchedaCliente s2) {    	
-  	int i = s1.cognomeCliente.compareTo(s2.cognomeCliente); 
-      if (i > 0)
-          return 1;
-      else if (i < 0)
-          return -1;
-      else
-          return 0;
-  }
+
+	public int compare(SchedaCliente s1, SchedaCliente s2) {    	
+		int i = s1.cognomeCliente.compareTo(s2.cognomeCliente); 
+		if (i > 0)
+			return 1;
+		else if (i < 0)
+			return -1;
+		else
+			return 0;
+	}
 }
 
 class cittaComparator implements Comparator<SchedaCliente>	{
-	
-  public int compare(SchedaCliente s1, SchedaCliente s2) {    	
-  	int i = s1.cittaCliente.compareTo(s2.cittaCliente); 
-      if (i > 0)
-          return 1;
-      else if (i < 0)
-          return -1;
-      else
-          return 0;
-  }
+
+	public int compare(SchedaCliente s1, SchedaCliente s2) {    	
+		int i = s1.cittaCliente.compareTo(s2.cittaCliente); 
+		if (i > 0)
+			return 1;
+		else if (i < 0)
+			return -1;
+		else
+			return 0;
+	}
 }
