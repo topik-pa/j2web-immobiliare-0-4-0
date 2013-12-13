@@ -244,7 +244,7 @@ public class j2web implements parametriGenerali {
 
 		HttpPortalGetConnection trackEvent = new HttpPortalGetConnection();
 		try {
-			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + eventAction + "&eventLabel=" + eventLabel, false);
+			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + eventAction + "&eventLabel=" + eventLabel, null, null, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw(new IOException(e));

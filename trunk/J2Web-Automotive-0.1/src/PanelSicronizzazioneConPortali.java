@@ -21,7 +21,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.ListIterator;
 import javax.mail.Address;
 import javax.mail.Message;
@@ -72,8 +71,8 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 		JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
 
 		//Rimuovo tutti i portali dalle liste sequenziali
-		listPortaliInserimentoSequenziale.clear();
-		listPortaliCancellazioneSequenziale.clear();
+		//listPortaliInserimentoSequenziale.clear();
+		//listPortaliCancellazioneSequenziale.clear();
 
 		pannelloListaPortali.removeAll();
 
@@ -565,7 +564,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 		checkboxSelezionaPortale = new JCheckBox(labelCheckboxSelezionaPortale);
 		checkboxSelezionaPortale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Checkbox: seleziona il portale"); 
+				/*System.out.println("Checkbox: seleziona il portale"); 
 				//Aggiungo il portale alla lista dei portali ad inserimento o cancellazione sequenziale
 				//checkbox spuntata
 				if(checkboxSelezionaPortale.isSelected()) {
@@ -620,12 +619,12 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 						System.out.println("/listPortaliCancellazioneSequenziale");
 
 					}
-				}
+				}*/
 			}
 		});
 
 		//Se è stata selezionata la checkbox select all
-		if(selectAllSelected) {
+		/*if(selectAllSelected) {
 			checkboxSelezionaPortale.setSelected(true);
 			if(isOnThisPortal) {
 				listPortaliCancellazioneSequenziale.add(portale);
@@ -678,7 +677,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 				System.out.println("/listPortaliInserimentoSequenziale");
 
 			}
-		}
+		}*/
 		checkboxSelezionaPortale.setVisible(false);
 		add(checkboxSelezionaPortale);      		
 		add(btnInserisci);
