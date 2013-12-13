@@ -234,7 +234,7 @@ public class J2Web_UI implements parametriGenerali {
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -3613,6 +3613,7 @@ public class J2Web_UI implements parametriGenerali {
             
             	JFrame infoFrame = new JFrame("J2Web info");
             	infoFrame.setVisible(true);
+            	infoFrame.setResizable(false);
 				
             	infoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             	infoFrame.setBounds(100, 100, 450, 300);

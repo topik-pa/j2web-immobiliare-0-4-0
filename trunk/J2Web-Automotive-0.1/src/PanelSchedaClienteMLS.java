@@ -77,8 +77,8 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		//La label delle schede
 		String labelScheda = scheda.nomeCliente + " " + scheda.cognomeCliente + " - " + scheda.telefono1Cliente + " - " + scheda.telefono2Cliente + " - " + scheda.emailCliente + " - " + scheda.viaCliente + " " + scheda.numeroCivicoCliente + " "  + scheda.cittaCliente;
 		String tooltipScheda = labelScheda;
-		if(labelScheda.length()>60) {	//è molto probabile che lo sia... :)
-			labelScheda = labelScheda.substring(0, 60); 
+		if(labelScheda.length()>65) {	//è molto probabile che lo sia... :)
+			labelScheda = labelScheda.substring(0, 65); 
 		}		 
 		labelScheda+="...";
 		JLabel label = new JLabel(labelScheda);
