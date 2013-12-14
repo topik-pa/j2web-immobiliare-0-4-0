@@ -70,12 +70,13 @@ class PanelSchedaVeicoloMLS extends JPanel {
 		add(schedaRadio, BorderLayout.NORTH);
 
 		//La label delle schede
-		String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.tipologiaVeicolo + " " + scheda.coloreEsternoVeicolo + " " + scheda.prezzoVeicolo + " - " + scheda.ragioneSociale + " " + scheda.nomeReferente;
+		//String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.tipologiaVeicolo + " " + scheda.coloreEsternoVeicolo + " " + scheda.prezzoVeicolo + " - " + scheda.ragioneSociale + " " + scheda.nomeReferente;
+		String linea1 = scheda.marcaVeicolo + " " + scheda.modelloVeicolo;	
+		String linea2 = scheda.versioneVeicolo;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
+		String linea3 = scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}		
+		String labelScheda = "<html><p style='width:351px; padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i><br/>" + linea3 + "</p></html>";	
 		String tooltipScheda = labelScheda;
-		if(labelScheda.length()>60) {	//è molto probabile che lo sia... :)
-			labelScheda = labelScheda.substring(0, 60); 
-		}		 
-		labelScheda+="...";
+
 		JLabel label = new JLabel(labelScheda);
 		Font font = new Font("Monospaced", Font.PLAIN, 11);
 		label.setFont(font);

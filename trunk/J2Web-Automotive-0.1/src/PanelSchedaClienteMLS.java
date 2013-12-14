@@ -44,7 +44,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
-		setMaximumSize(new Dimension(600, 130));
+		setMaximumSize(new Dimension(500, 150));
 
 		//Radio button dei sottopannelli
 		schedaRadio = new JRadioButton("Seleziona scheda");
@@ -75,12 +75,16 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		add(schedaRadio, BorderLayout.NORTH);
 
 		//La label delle schede
-		String labelScheda = scheda.nomeCliente + " " + scheda.cognomeCliente + " - " + scheda.telefono1Cliente + " - " + scheda.telefono2Cliente + " - " + scheda.emailCliente + " - " + scheda.viaCliente + " " + scheda.numeroCivicoCliente + " "  + scheda.cittaCliente;
+		//String labelScheda = scheda.nomeCliente + " " + scheda.cognomeCliente + " - " + scheda.telefono1Cliente + " - " + scheda.telefono2Cliente + " - " + scheda.emailCliente + " - " + scheda.viaCliente + " " + scheda.numeroCivicoCliente + " "  + scheda.cittaCliente;
+		String linea1 = scheda.nomeCliente + " " + scheda.cognomeCliente;	
+		String linea2 = scheda.telefono1Cliente + " " + scheda.emailCliente;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
+		String labelScheda = "<html><p style='width:320px; padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i></p></html>";
+		
 		String tooltipScheda = labelScheda;
-		if(labelScheda.length()>65) {	//è molto probabile che lo sia... :)
+		/*if(labelScheda.length()>65) {	//è molto probabile che lo sia... :)
 			labelScheda = labelScheda.substring(0, 65); 
 		}		 
-		labelScheda+="...";
+		labelScheda+="...";*/
 		JLabel label = new JLabel(labelScheda);
 		Font font = new Font("Monospaced", Font.PLAIN, 11);
 		label.setFont(font);

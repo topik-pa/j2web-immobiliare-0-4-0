@@ -54,7 +54,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
-		setMaximumSize(new Dimension(400, 130));
+		setMaximumSize(new Dimension(350, 150));
 
 		//Radio button dei sottopannelli
 		schedaRadio = new JRadioButton("Seleziona scheda veicolo");
@@ -92,13 +92,14 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		add(schedaRadio, BorderLayout.NORTH);
 
 		//La label delle schede
-		String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;
+		//String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;
+		
+		String linea1 = scheda.marcaVeicolo + " " + scheda.modelloVeicolo;	
+		String linea2 = scheda.versioneVeicolo;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
+		String linea3 = scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}
+		
+		String labelScheda = "<html><p style='width:160px;padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i><br/>" + linea3 + "</p></html>";
 		String tooltipScheda = labelScheda;
-		labelScheda+="                              "; //Aggiungo 30 caratteri spazio
-		if(labelScheda.length()>28) {	//è molto probabile che lo sia... :)
-			labelScheda = labelScheda.substring(0, 27); 
-		}		 
-		labelScheda+="...";
 
 		JLabel label = new JLabel(labelScheda);
 		Font font = new Font("Monospaced", Font.PLAIN, 11);
