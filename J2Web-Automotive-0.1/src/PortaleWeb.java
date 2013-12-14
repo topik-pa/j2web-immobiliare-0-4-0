@@ -91,7 +91,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		final String USERNAME = BACKEND_EMAIL;
 		final String PASSWORD = BACKEND_EMAIL_PSW;
 		final String RECIPENTS = BACKEND_EMAIL + "," + EMAIL_UTENTE;
-		final String SUBJECT = "Scheda inserita: " + scheda.codiceScheda + " " + scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo ;
+		final String SUBJECT = "Scheda inserita: " + scheda.codiceScheda + " -- " + scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo;
 
 		final String SMTP_HOST = BACKEND_EMAIL_SMTP_HOST;
 		final int SMTP_PORT = BACKEND_EMAIL_SMTP_PORT;
@@ -100,8 +100,12 @@ public abstract class PortaleWeb implements parametriGenerali {
 		final String senderEmail = USERNAME.contains("@") ? USERNAME : (USERNAME + BACKEND_EMAIL_DOMAIN);
 
 		String textBody = "";	  	
-		textBody += "E' stata inserita una scheda nel portale: " + nomePortale + ".";
-		textBody += "Il codice della scheda Ã¨: \n" + scheda.codiceScheda + "/n" + "Il codice di inserimento Ã¨: /n" + codInserzione;
+		textBody +="E' stata inserita una scheda nel portale: " + nomePortale + ".\n";
+		textBody +="\n\nDati scheda:\n";
+		textBody +="Codice scheda: " + scheda.codiceScheda;
+		textBody +="\nCodice di inserimento nel portale: " + codInserzione;
+		textBody +="\nVeicolo: " + scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo;
+		textBody +="\nPortale di inserimento: " + nomePortale;
 
 
 		try {
@@ -112,7 +116,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 			msg.setSentDate(new Date());
 			msg.setSubject(SUBJECT);
 
-			msg.setText("Dati scheda: \n\n " + textBody);
+			msg.setText(textBody);
 
 			final Transport transport = session.getTransport("smtps");
 			transport.connect(SMTP_HOST, SMTP_PORT, USERNAME, PASSWORD);

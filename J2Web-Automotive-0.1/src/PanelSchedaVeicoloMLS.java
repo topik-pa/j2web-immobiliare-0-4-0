@@ -111,7 +111,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
 
 		System.out.println("Info veicolo selezionato...");
 
-		String[][] matrix = new String[1][5];
+		String[][] matrix = new String[1][11];
 
 		for (int row = 0; row < matrix.length; row++) {
 			// for (int column = 0; column < matrix[row].length; column++)
@@ -120,13 +120,19 @@ class PanelSchedaVeicoloMLS extends JPanel {
 			matrix[row][2] = schedaVeicolo.versioneVeicolo;
 			matrix[row][3] = schedaVeicolo.coloreEsternoVeicolo;
 			matrix[row][4] = schedaVeicolo.chilometraggioVeicolo;
+			matrix[row][5] = schedaVeicolo.prezzoVeicolo;
+			matrix[row][6] = schedaVeicolo.tipologiaContrattoVeicolo;
+			matrix[row][7] = schedaVeicolo.ragioneSociale;
+			matrix[row][8] = schedaVeicolo.Indirizzo;
+			matrix[row][9] = schedaVeicolo.TelefonoReferente;
+			matrix[row][10] = schedaVeicolo.nomeReferente;
 		}
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(
 				matrix,
 				new String[] {
-						"Marca", "Modello", "Versione", "Colore", "Chilometri"
+						"Marca", "Modello", "Versione", "Colore", "Chilometri", "Prezzo", "Contratto", "Concessionario", "Indirizzo", "Telefono", "Referente" 
 				}
 				));
 
