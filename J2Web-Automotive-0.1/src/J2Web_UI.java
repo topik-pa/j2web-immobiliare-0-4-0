@@ -3615,7 +3615,7 @@ public class J2Web_UI implements parametriGenerali {
             	infoFrame.setVisible(true);
             	infoFrame.setResizable(false);
 				
-            	infoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            	infoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             	infoFrame.setBounds(100, 100, 450, 300);
         		
         		JPanel contentPane = new JPanel();
