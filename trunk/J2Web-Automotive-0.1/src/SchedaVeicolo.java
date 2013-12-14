@@ -336,11 +336,18 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			if(json.has("13")) {CVVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("13")));} 
 			
 			if(json.has("14")) {coloreEsternoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("14")));}
-			if(json.has("18")) {prezzoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("18")));}
+			//if(json.has("18")) {prezzoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("18")));}
+			if(json.has("18")) {prezzoVeicolo = Integer.toString(json.getInt("18"));}
 			if(json.has("62")) {ragioneSociale = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("62")));}
 			if(json.has("65")) {nomeReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("65")));}
 			
-			if(json.has("17")) {nomeReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("17")));}
+			if(json.has("17")) {chilometraggioVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("17")));}
+			
+			if(json.has("20")) {tipologiaContrattoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("20")));}
+			
+			if(json.has("63")) {Indirizzo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("63")));}
+			if(json.has("66")) {TelefonoReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("66")));}
+			if(json.has("67")) {emailReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("67")));}
 
 			if(json.has("50") && !json.getString("50").equals("\u0000")) {
 
