@@ -33,7 +33,7 @@ public interface parametriGenerali {
 	final String nomeGUI = "J2Web - Automotive" + " " + j2web_version;
 
 	//Dimensioni di default della GUI 
-	final int[] GUI_bounds = {120, 60, 1120, 660};
+	final int[] GUI_bounds = {120, 60, 1140, 625};
 
 	//Request headers utilizzati per le connessioni
 	final String USER_AGENT_VALUE = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)";

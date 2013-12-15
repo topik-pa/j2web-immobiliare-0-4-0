@@ -54,7 +54,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
-		setMaximumSize(new Dimension(350, 150));
+		setMaximumSize(new Dimension(400, 150));
 
 		//Radio button dei sottopannelli
 		schedaRadio = new JRadioButton("Seleziona scheda veicolo");
@@ -98,7 +98,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		String linea2 = scheda.versioneVeicolo;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
 		String linea3 = scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}
 		
-		String labelScheda = "<html><p style='width:160px;padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i><br/>" + linea3 + "</p></html>";
+		String labelScheda = "<html><p style='padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i><br/>" + linea3 + "</p></html>";
 		String tooltipScheda = labelScheda;
 
 		JLabel label = new JLabel(labelScheda);
@@ -107,6 +107,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 
 		//L'immagine di preview del pannello veicolo
+		Image resizedimg = null;
 		BufferedImage imgPreview = null;
 		if(scheda.arrayImages[1]!=null) {
 			try {
@@ -115,11 +116,15 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			Image resizedimg = imgPreview.getScaledInstance(70, 50, Image.SCALE_FAST);
-			label.setIcon(new ImageIcon(resizedimg));
+			resizedimg = imgPreview.getScaledInstance(70, 50, Image.SCALE_FAST);
+			//label.setIcon(new ImageIcon(resizedimg));
+		}
+		else {
+			resizedimg = new BufferedImage(70,50,BufferedImage.TYPE_INT_ARGB_PRE);
 		}
 
 		add(label, BorderLayout.CENTER);
+		add(new JLabel(" ", new ImageIcon(resizedimg), JLabel.RIGHT),BorderLayout.EAST);
 
 		//Aggiungo una tooltip
 		setToolTipText(tooltipScheda);
