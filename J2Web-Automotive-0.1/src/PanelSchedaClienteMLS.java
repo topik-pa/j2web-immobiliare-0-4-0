@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -44,7 +45,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
-		setMaximumSize(new Dimension(500, 150));
+		setMaximumSize(new Dimension(700, 150));
 
 		//Radio button dei sottopannelli
 		schedaRadio = new JRadioButton("Seleziona scheda");
@@ -54,6 +55,9 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		schedaRadio.addActionListener(new ActionListener() {			 
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Scheda selezionata: " + scheda.codiceSchedaCliente + " per MLS..."); 
+				
+				//Il cursone viene messo in modalità attesa
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				
 				JPanel pannelloListaEstrazioneMLS = J2Web_UI.getPanel_15();
 				pannelloListaEstrazioneMLS.removeAll();
@@ -69,6 +73,9 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 				setBorder(new LineBorder(Color.ORANGE));
 
 				matchClienteVeicoloMLS(scheda);
+				
+				//Il cursone viene messo in modalità standard
+				setCursor(Cursor.getDefaultCursor());
 
 			}
 		});
@@ -78,13 +85,10 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 		//String labelScheda = scheda.nomeCliente + " " + scheda.cognomeCliente + " - " + scheda.telefono1Cliente + " - " + scheda.telefono2Cliente + " - " + scheda.emailCliente + " - " + scheda.viaCliente + " " + scheda.numeroCivicoCliente + " "  + scheda.cittaCliente;
 		String linea1 = scheda.nomeCliente + " " + scheda.cognomeCliente;	
 		String linea2 = scheda.telefono1Cliente + " " + scheda.emailCliente;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
-		String labelScheda = "<html><p style='width:320px; padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i></p></html>";
+		String labelScheda = "<html><p style='padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i></p></html>";
 		
 		String tooltipScheda = labelScheda;
-		/*if(labelScheda.length()>65) {	//è molto probabile che lo sia... :)
-			labelScheda = labelScheda.substring(0, 65); 
-		}		 
-		labelScheda+="...";*/
+
 		JLabel label = new JLabel(labelScheda);
 		Font font = new Font("Monospaced", Font.PLAIN, 11);
 		label.setFont(font);
@@ -97,16 +101,18 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 		// Get current classloader
 		ClassLoader cl = this.getClass().getClassLoader();
+		ImageIcon humanIcon = null;
 		if(scheda.titoloCliente.equals("signora")) {
-			ImageIcon womanIcon  = new ImageIcon(cl.getResource("images/icon_woman.png"));
-			label.setIcon(womanIcon);
+			humanIcon  = new ImageIcon(cl.getResource("images/icon_woman.png"));
+			//label.setIcon(womanIcon);
 		}
 		else {
-			ImageIcon manIcon  = new ImageIcon(cl.getResource("images/icon_man.png"));
-			label.setIcon(manIcon);
+			humanIcon  = new ImageIcon(cl.getResource("images/icon_man.png"));
+			//label.setIcon(manIcon);
 		}
 
 		add(label, BorderLayout.CENTER);
+		add(new JLabel(" ", humanIcon, JLabel.LEFT),BorderLayout.WEST);
 		add(labelNumeroRisultati2, BorderLayout.SOUTH);
 
 		//Aggiungo una tooltip

@@ -77,7 +77,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		//La label delle schede		
 		String linea1 = scheda.nomeCliente + " " + scheda.cognomeCliente;	
 		String linea2 = scheda.telefono1Cliente + " " + scheda.emailCliente;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
-		String labelScheda = "<html><p style='width:225px; padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i></p></html>";
+		String labelScheda = "<html><p style='padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i></p></html>";
 		String tooltipScheda = labelScheda;
 
 		JLabel label = new JLabel(labelScheda);
@@ -87,16 +87,18 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 
 		// Get current classloader
 		ClassLoader cl = this.getClass().getClassLoader();
+		ImageIcon humanIcon = null;
 		if(scheda.titoloCliente.equals("signora")) {
-			ImageIcon womanIcon  = new ImageIcon(cl.getResource("images/icon_woman.png"));
-			label.setIcon(womanIcon);
+			humanIcon  = new ImageIcon(cl.getResource("images/icon_woman.png"));
+			//label.setIcon(womanIcon);
 		}
 		else {
-			ImageIcon manIcon  = new ImageIcon(cl.getResource("images/icon_man.png"));
-			label.setIcon(manIcon);
+			humanIcon  = new ImageIcon(cl.getResource("images/icon_man.png"));
+			//label.setIcon(manIcon);
 		}
 
 		add(label, BorderLayout.CENTER);
+		add(new JLabel(" ", humanIcon, JLabel.RIGHT),BorderLayout.EAST);
 
 		//Aggiungo una tooltip
 		setToolTipText(tooltipScheda);

@@ -2640,7 +2640,6 @@ public class J2Web_UI implements parametriGenerali {
 		//La versione veicolo è il risultato della concatenazione di differenti dati
 		String annoFabbricazione = null;
 		String nomeVersione = null;
-		String nomeModello = null;
 
 		currentComboboxVersione.removeAllItems();
 
@@ -2669,7 +2668,6 @@ public class J2Web_UI implements parametriGenerali {
 			JSONObject currentJson = jsonResults.getJSONObject(i);     	
 			annoFabbricazione = currentJson.getString("model_year");
 			nomeVersione = currentJson.getString("model_trim");
-			nomeModello = currentJson.getString("model_name");
 			currentComboboxVersione.addItem(nomeVersione + " - " + annoFabbricazione);
 
 			//Inserisco un id del modello attuale nella lista 
