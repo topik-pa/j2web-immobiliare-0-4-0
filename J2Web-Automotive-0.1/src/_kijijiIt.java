@@ -10,15 +10,9 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.message.BasicNameValuePair;
-import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
+
+
 
 /**
  *
@@ -31,12 +25,12 @@ public class _kijijiIt extends PortaleWeb {
     //Variabili generali
 	private final String NOMEPORTALE = "casab.it";
 	private final String URLROOT = "http://casab.it";
-	private final String USERNAME = "hsttdjjh@sharklasers.com";
-    private final String PASSWORD = "password";
+	//private final String USERNAME = "hsttdjjh@sharklasers.com";
+    //private final String PASSWORD = "password";
 	
     //private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();   
-    private boolean inserimentoOK = false;
-    private boolean debugMode = true;
+    //private boolean inserimentoOK = false;
+    //private boolean debugMode = true;
 
     //Mappa dei parametri da inviare
     Map<String,String> mappaDeiParamerti;
@@ -391,26 +385,26 @@ public class _kijijiIt extends PortaleWeb {
 		
 	
 		//Connessione 0 - GET della home page - Opzionale
-    	HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
+    	/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
     	try {
 			connessione_0.get("Connessione 0 - GET della home page", URLROOT, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
     	
     	
     	//Connessione 1 - GET della pagina di login
-    	HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
+    	/*HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
     	try {
     		connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/page/14/login_agenzie.html", debugMode);
     		
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
     	
     	
     	//Connessione 2 - POST dei parametri di accesso (1)
-    	HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();   	
+    	/*HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();   	
     	postParameters = new ArrayList<NameValuePair>();          
         postParameters.add(new BasicNameValuePair("email", USERNAME));
         postParameters.add(new BasicNameValuePair("password", PASSWORD));
@@ -427,11 +421,11 @@ public class _kijijiIt extends PortaleWeb {
 		}
     	finally {
     		postParameters.clear();
-    	}
+    	}*/
         
         
         //Connessione 2b - POST dei parametri di accesso (2)
-    	HttpPortalPostConnection connessione_2b = new HttpPortalPostConnection();   	
+    	/*HttpPortalPostConnection connessione_2b = new HttpPortalPostConnection();   	
         try {
         	MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
         	reqEntity.addPart("email", new StringBody(USERNAME));
@@ -451,16 +445,16 @@ public class _kijijiIt extends PortaleWeb {
 		}
     	finally {
     		postParameters.clear();
-    	}
+    	}*/
         
     	
     	//Connessione 3 - GET della pagina "Elimina immobile"
-    	HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
+    	/*HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
     	try {
 			connessione_3.get("Connessione 3 - GET della pagina \"Elimina immobile\"", URLROOT + "/moduli/agenzie/elimina_immobile.php?idImmobile=" + codiceInserzione, requestHeaders, debugMode);
     	} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
     	
         
         //Aggiorno la lista dei portali in cui è presenta la scheda corrente

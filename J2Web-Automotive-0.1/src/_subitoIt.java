@@ -12,10 +12,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.entity.mime.HttpMultipartMode;
+/*import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.entity.mime.content.StringBody;*/
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
@@ -49,7 +49,7 @@ public class _subitoIt extends PortaleWeb {
 	private String codiceInserzione = Integer.toString(random);
 	private String location;
 	private String responseBody;
-	private BasicNameValuePair sessionCookie;
+	//private BasicNameValuePair sessionCookie;
 	private boolean inserimentoOK = false;
 	private boolean debugMode = true;
 

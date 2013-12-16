@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
@@ -29,7 +34,7 @@ import org.jsoup.select.Elements;
  */
 
 //La classe principale
-public class _autoscout24It extends PortaleWeb {     
+public class _automobileIt extends PortaleWeb {     
 
 	//Variabili portale
 	private final String NOMEPORTALE = "www.autoscout24.it";
@@ -41,11 +46,18 @@ public class _autoscout24It extends PortaleWeb {
 	private final String HOST2 = "secure.autoscout24.it";
 	private final String HOST3 = "offerta.autoscout24.it";
 
+	private final String SECONDCOOKIENAME = "__RequestVerificationToken_Lw__";
+	private final String SECONDCOOKIEDOMAIN = "secure.autoscout24.it";
+	private final String SECONDCOOKIEHEADER = "";
+	private final String SECONDCOOKIEVALUE = "";
+
+
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
 	private String codiceInserzione;
 	private String location;
 	private String responseBody;
+	private BasicNameValuePair sessionCookie;
 	private boolean inserimentoOK = false;
 	private boolean debugMode = true;
 
@@ -74,7 +86,7 @@ public class _autoscout24It extends PortaleWeb {
 	String Equipment_EquipmentIds="";
 
 	//Costruttore
-	public _autoscout24It (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
+	public _automobileIt (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
 
 		super(icon, valoreLabel, idPortale, isActive);
 
