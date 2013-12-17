@@ -36,7 +36,7 @@ public interface parametriGenerali {
 	final int[] GUI_bounds = {120, 60, 1160, 625};
 
 	//Request headers utilizzati per le connessioni
-	final String USER_AGENT_VALUE = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)";
+	final String USER_AGENT_VALUE = "Mozilla/5.0 (Windows NT 5.1; rv:26.0) Gecko/20100101 Firefox/26.0";
 	final String CONNECTION = "keep-alive";
 	final String CACHE_CONTROL = "max-age=0";
 	final String ACCEPT_LANGUAGE = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
