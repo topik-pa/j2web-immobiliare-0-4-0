@@ -43,7 +43,7 @@ public class _autosupermarketIt extends PortaleWeb {
 	//private final String SECUREURLROOT = "https://secure.autoscout24.it";
 	private final String USERNAME = "c2775833@drdrb.com";
 	private final String PASSWORD = "topik123";
-	private final String HOST = "	www.autosupermarket.it";
+	private final String HOST = "www.autosupermarket.it";
 	//private final String HOST2 = "secure.autoscout24.it";
 	//private final String HOST3 = "offerta.autoscout24.it";
 
@@ -311,7 +311,12 @@ public class _autosupermarketIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 
-
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
 		tabellaDiDipendenza.put("car[carana001_carlst001_listing_type_cod]", scheda.tipologiaVeicolo); //da fare sotto
@@ -332,7 +337,15 @@ public class _autosupermarketIt extends PortaleWeb {
 		tabellaDiDipendenza.put("car[carana001_carlst017_emission_cod]", scheda.classeEmissioniVeicolo);
 		tabellaDiDipendenza.put("car[carana001_carlst019_price_type_cod]", "***site***");
 		tabellaDiDipendenza.put("car[carana001_carlst021_guarantee_type_cod]", "Scegli...");
-		tabellaDiDipendenza.put("car[carana001_cv_num]", scheda.CVVeicolo);
+		
+		//tabellaDiDipendenza.put("car[carana001_cv_num]", scheda.CVVeicolo);
+		if(scheda.CVVeicolo.equals("")) {
+			tabellaDiDipendenza.put("car[carana001_cv_num]", "***site***");
+		}
+		else {
+			tabellaDiDipendenza.put("car[carana001_cv_num]", scheda.CVVeicolo);
+		}
+		
 		tabellaDiDipendenza.put("car[carana001_door_num]", "Scegli...");
 		tabellaDiDipendenza.put("car[carana001_engine_des]", scheda.cilindrataVeicolo);
 		if(scheda.prezzoTrattabile)  {
@@ -341,9 +354,25 @@ public class _autosupermarketIt extends PortaleWeb {
 		else {
 			tabellaDiDipendenza.put("car[carana001_glblst001_condition_cod]", "Non Trattabili");
 		}
+		
 		tabellaDiDipendenza.put("car[carana001_glblst002_color_cod]", scheda.coloreEsternoVeicolo);
-		tabellaDiDipendenza.put("car[carana001_km_num]", scheda.chilometraggioVeicolo);
-		tabellaDiDipendenza.put("car[carana001_kw_num]", scheda.KWVeicolo);
+		
+		
+		if(scheda.chilometraggioVeicolo.equals("")) {
+			tabellaDiDipendenza.put("car[carana001_km_num]", "***site***");
+		}
+		else {
+			tabellaDiDipendenza.put("car[carana001_km_num]", scheda.chilometraggioVeicolo);
+		}
+		
+		//tabellaDiDipendenza.put("car[carana001_kw_num]", scheda.KWVeicolo);
+		if(scheda.KWVeicolo.equals("")) {
+			tabellaDiDipendenza.put("car[carana001_kw_num]", "***site***");
+		}
+		else {
+			tabellaDiDipendenza.put("car[carana001_kw_num]", scheda.KWVeicolo);
+		}
+		
 		tabellaDiDipendenza.put("car[carana001_last_review_num]", "Scegli...");
 		tabellaDiDipendenza.put("car[carana001_month_num]", "0"+scheda.meseImmatricolazioneVeicoloIndex);
 		tabellaDiDipendenza.put("car[carana001_notes_des]", scheda.descrizioneVeicolo);
@@ -366,6 +395,38 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		//Questi parametri li devo valorizzare qui
 		postParameters.add(new BasicNameValuePair("car[model_id]", idModello));
+		/*postParameters.add(new BasicNameValuePair("car[carana001_carlst001_listing_type_cod]", "1"));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst002_interior_cod]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst004_auto_body_cod]", "4"));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst005_auto_body_status_cod]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst006_fuel_cod]", "4"));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst008_color_type_cod]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst009_drive_type_cod]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst010_trasmission_cod]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst015_version_des]", ""));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst017_emission_cod]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst019_price_type_cod]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_carlst021_guarantee_type_cod]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_cv_num]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_door_num]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_engine_des]", ""));
+		postParameters.add(new BasicNameValuePair("car[carana001_glblst001_condition_cod]", "1"));
+		postParameters.add(new BasicNameValuePair("car[carana001_glblst002_color_cod]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_km_num]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_kw_num]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_last_review_num]", ""));
+		postParameters.add(new BasicNameValuePair("car[carana001_month_num]", "2"));
+		postParameters.add(new BasicNameValuePair("car[carana001_notes_des]", ""));
+		postParameters.add(new BasicNameValuePair("car[carana001_owner_num]", ""));
+		postParameters.add(new BasicNameValuePair("car[carana001_public_price_num]", "12500"));
+		postParameters.add(new BasicNameValuePair("car[carana001_seat_num]", ""));
+		postParameters.add(new BasicNameValuePair("car[carana001_status_flg]", "1"));
+		postParameters.add(new BasicNameValuePair("car[carana001_vat_deductible_flg]", "0"));
+		postParameters.add(new BasicNameValuePair("car[carana001_year_num]", "2011"));
+		postParameters.add(new BasicNameValuePair("car[id]", ""));
+		postParameters.add(new BasicNameValuePair("car[make_id]", "1"));
+		postParameters.add(new BasicNameValuePair("car[model_id]", "1711"));
+		postParameters.add(new BasicNameValuePair("car[trattativa_riservata]", "0"));*/
 
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
