@@ -84,8 +84,6 @@ public class HttpPortalConnection implements parametriGenerali {
 
 		//Show request cookies
 		if(requestCookies!=null) {
-			//requestCookiesList = new ArrayList<Cookie>();
-			//requestCookiesList = requestCookies.getCookies(); 
 			System.out.println("Request cookies: " + requestCookies.size() + "\n");
 			for(int i=0; i<requestCookies.size(); i++) {
 				System.out.println(requestCookies.get(i));
@@ -111,6 +109,8 @@ public class HttpPortalConnection implements parametriGenerali {
 			//Show post parameters
 			System.out.println("Multipart POST parameters: " + "\n");
 			System.out.println(multipartPostParameters.toString());
+			System.out.println(multipartPostParameters.getContentLength());
+			System.out.println(multipartPostParameters.getContentType());			
 			System.out.println("----------------------------------------");
 		}
 
