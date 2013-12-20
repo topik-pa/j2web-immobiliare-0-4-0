@@ -480,21 +480,48 @@ public class _autosupermarketIt extends PortaleWeb {
 
 
 		//Connessione 8 - Invio delle foto (passo 1)
-		for(int i=1; i<9; i++) { //max 8 foto
-			if(scheda.arrayImages[i]!=null) {
+		//for(int i=1; i<9; i++) { //max 8 foto
+			//if(scheda.arrayImages[i]!=null) {
+				
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();        
 				try {
 
 					MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-					FileBody bin = new FileBody(scheda.arrayImages[i]);
-					reqEntity.addPart("name", new StringBody("o_" + codiceInserzione + "_" + i + ".jpg") );
-					reqEntity.addPart("file", bin );
+					//reqEntity.generateBoundary();
+					
+					
+					for(int i=1; i<=8; i++) { //max 8 foto
+						if(scheda.arrayImages[i]!=null) {
+							FileBody bin = new FileBody(scheda.arrayImages[i]);
+							reqEntity.addPart("photos[photo_" + i + "][photo]", bin );														
+						}						
+						else {
+							reqEntity.addPart("photos[photo_" + i + "][photo]", new StringBody("") );	
+						}
+					}
+					reqEntity.addPart("submit", new StringBody("photos") );
+					//FileBody bin = new FileBody(scheda.arrayImages[i]);
+					//reqEntity.addPart("name", new StringBody("o_" + codiceInserzione + "_" + i + ".jpg") );
+					//reqEntity.addPart("file", bin );
+					
+					/*Header x = reqEntity.getContentType();
+					int beginIndex = x.getValue().indexOf("boundary=")+9;
+					String y = x.getValue().substring(beginIndex);*/
+					
+					//requestHeaders.add(new BasicNameValuePair("Content-Type", "multipart/form-data; boundary="+y));
 
-					Object[] response = connessione_8.post("Connessione 8 - Invio delle foto (passo 1)" + "Immagine: " + i, URLROOT + "/mycar/plupload/id/" + codiceInserzione + ".html?position=" + i, reqEntity, requestHeaders, requestCookies, debugMode);			
+					Object[] response = connessione_8.post("Connessione 8 - Invio delle foto (passo 1)", URLROOT + "/mycar/manage_photo/id/" + codiceInserzione + ".html", reqEntity, requestHeaders, requestCookies, debugMode);			
 
 					//Controllo il response status
 					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-					if( (responseStatus.getStatusCode()!=200)) {
+					if( (responseStatus.getStatusCode()!=302)) {
 						throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 					}    	
 
@@ -506,46 +533,9 @@ public class _autosupermarketIt extends PortaleWeb {
 					mappaDeiParamerti.clear();
 					postParameters.clear();
 				}
-			}			
-		}
+			//}			
+		//}
 
-
-		//Connessione 9 - POST delle immagini (passo 2)
-		postParameters.add(new BasicNameValuePair("photos[photo_1][photo]", ""));
-		postParameters.add(new BasicNameValuePair("photos[photo_2][photo]", ""));
-		postParameters.add(new BasicNameValuePair("photos[photo_3][photo]", ""));
-		postParameters.add(new BasicNameValuePair("photos[photo_4][photo]", ""));
-		postParameters.add(new BasicNameValuePair("photos[photo_5][photo]", ""));
-		postParameters.add(new BasicNameValuePair("photos[photo_6][photo]", ""));
-		postParameters.add(new BasicNameValuePair("photos[photo_7][photo]", ""));
-		postParameters.add(new BasicNameValuePair("photos[photo_8][photo]", ""));
-
-		HttpPortalPostConnection connessione_9 = new HttpPortalPostConnection();
-		try {        	
-			Object[] response = connessione_9.post("Connessione 9 - POST delle immagini (passo 2)", URLROOT + location, postParameters, requestHeaders, requestCookies, debugMode);			
-
-			//Controllo il response status
-			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
-				//Trovo la location
-				location = getHeaderValueByName(responseHeaders, "Location");
-				if(!location.contains("manage_photo/id/" + codiceInserzione)) {
-					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Location non corretta"));
-				}
-			}
-			else {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-			}    	
-
-		} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}
-		finally {
-			postParameters.clear();
-			mappaDeiParamerti.clear();
-			tabellaDiDipendenza.clear();
-		}
 
 
 		//Connessione 10 - POST delle immagini (passo 3)
@@ -574,7 +564,7 @@ public class _autosupermarketIt extends PortaleWeb {
 					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Location non corretta"));
 				}
 				else {
-					inserimentoOK = true; //da togliere!
+					inserimentoOK = false; //da togliere!
 					responseBody = (String)response[1];
 				}
 			}

@@ -345,7 +345,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 		//Inizializza la connessione
 		httppost = new HttpPost(url);
 
-		//Add request headers (comprende i cookies)
+		//Add request headers
 		BasicHeader newHeader;
 		BasicNameValuePair currentHeaderListItem;
 		if(requestHeaders!=null) {
@@ -355,7 +355,19 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 				newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
 				httppost.addHeader(newHeader);
 			}
+			if(!httppost.containsHeader("Content-Type")) {
+				httppost.addHeader(reqEntity.getContentType());
+			}
+			
+			//httppost.addHeader(reqEntity.getContentEncoding());
+			//httppost.addHeader("Content-Type", "multipart/form-data; boundary=----pluploadboundaryp18c3flp4v1q941ef91u0clsfcmq5");
+			//httppost.addHeader("Content-Length", "333606");
+			//httppost.getContentType();
+			
+			
 		}
+		
+		//reqEntity.getContentType();
 
 		//Add request parameters
 		httppost.setEntity(reqEntity);
