@@ -43,7 +43,7 @@ public class _automobileIt extends PortaleWeb {
 	private final String USERNAME = "c3059932@drdrb.com";
 	private final String PASSWORD = "topik123";
 	private final String HOST = "www.automobile.it";
-	//private final String HOST2 = "secure.autoscout24.it";
+	private final String HOST2 = "login.automobile.it";
 	//private final String HOST3 = "offerta.autoscout24.it";
 
 	/*private final String SECONDCOOKIENAME = "__RequestVerificationToken_Lw__";
@@ -57,7 +57,7 @@ public class _automobileIt extends PortaleWeb {
 	private String codiceInserzione;
 	private String location;
 	private String responseBody;
-	private BasicNameValuePair sessionCookie;
+	//private BasicNameValuePair sessionCookie;
 	private boolean inserimentoOK = false;
 	private boolean debugMode = true;
 
@@ -116,16 +116,16 @@ public class _automobileIt extends PortaleWeb {
 		/*if(scheda.tipologiaVeicolo.equals("Veicolo nuovo")) {
 			JOptionPane.showMessageDialog(null, "Non è possibile inserire veicoli nuovi nel portale: " + NOMEPORTALE);
 			return false;
-		}*/
+		}*/		
 
 		//Inizializzazione scheda
 		this.scheda=scheda;
 
 		//Imposto le variabili per il session cookie
-		SESSIONCOOKIENAME = "GUID";
-		SESSIONCOOKIEDOMAIN = ".autoscout24.it";
+		/*SESSIONCOOKIENAME = "JSESSIONID";
+		SESSIONCOOKIEDOMAIN = "www.automobile.it";
 		SESSIONCOOKIEHEADER = "";
-		SESSIONCOOKIEVALUE = "";
+		SESSIONCOOKIEVALUE = "";*/
 
 		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
 		requestHeaders.clear();
@@ -149,14 +149,14 @@ public class _automobileIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 
-/*
+
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
-		//requestHeaders.remove(0);
-		//requestHeaders.add(new BasicNameValuePair("Host", HOST2));
+		requestHeaders.remove(0);
+		requestHeaders.add(new BasicNameValuePair("Host", HOST2));
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/Login.aspx", requestHeaders, null, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", "https://login.automobile.it/mycas/login?requestLogin=true&lang=it&service=http%3A%2F%2Fwww.automobile.it%2Fhome%2Findex.html", requestHeaders, null, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -167,8 +167,8 @@ public class _automobileIt extends PortaleWeb {
 
 				Header[] responseHeaders = (Header[])response[0];				
 				//Gestione dei cookie
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_1.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
+				//findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
+				//connessione_1.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
 				setCookies(responseHeaders, requestCookies);
 			}
 		} catch (IOException | RuntimeException e) {
@@ -178,22 +178,23 @@ public class _automobileIt extends PortaleWeb {
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("__EVENTARGUMENT","***site***");
-		tabellaDiDipendenza.put("__EVENTTARGET","ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$weviLoginButton");
-		tabellaDiDipendenza.put("__INFOMESSAGEPRESENT","***site***");
-		tabellaDiDipendenza.put("__RequestVerificationToken","***site***");
-		tabellaDiDipendenza.put("__VIEWSTATE","***site***");
-		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$passwordForgotten$usernameTextbox","***site***");
-		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$passwordTextbox",PASSWORD);
-		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$passwordTextboxTxt","");
-		tabellaDiDipendenza.put("ctl00$ctl00$decoratedArea$contentArea$weviUserLogin$usernameTextbox",USERNAME);
+		/*tabellaDiDipendenza.put("AjaxUrl","***site***");
+		tabellaDiDipendenza.put("_eventId","***site***");
+		tabellaDiDipendenza.put("lt","***site***");
+		tabellaDiDipendenza.put("password",PASSWORD);
+		tabellaDiDipendenza.put("username",USERNAME);*/
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#aspnetForm input", tabellaDiDipendenza, mappaDeiParamerti);	
+		//valutaParametri(responseBody, ".bckg250 form", tabellaDiDipendenza, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
-		setPostParameters(mappaDeiParamerti, postParameters);
+		//setPostParameters(mappaDeiParamerti, postParameters);
+		postParameters.add(new BasicNameValuePair("username", USERNAME));
+		postParameters.add(new BasicNameValuePair("password", PASSWORD));
+		postParameters.add(new BasicNameValuePair("AjaxUrl", "https://login.automobile.it/mycas/request-password?emailAddress="));
+		postParameters.add(new BasicNameValuePair("lt", "e3s1"));
+		postParameters.add(new BasicNameValuePair("_eventId", "submit"));
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", SECUREURLROOT + "/Login.aspx", postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", "https://login.automobile.it/mycas/login?requestLogin=true&lang=it&service=http%3A%2F%2Fwww.automobile.it%2Fhome%2Fmymobile%2Foverview.html%3Flang%3Dit", postParameters, requestHeaders, requestCookies, debugMode);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -201,12 +202,6 @@ public class _automobileIt extends PortaleWeb {
 				Header[] responseHeaders = (Header[])response[0];
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
-				if(location.contains("MyPrivateArea")) {
-					responseBody = (String)response[1];
-				}
-				else {
-					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Location non corretta"));
-				}	
 			}
 			else {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
@@ -220,15 +215,15 @@ public class _automobileIt extends PortaleWeb {
 			mappaDeiParamerti.clear();
 			postParameters.clear();
 		}
-
-
-		//Connessione 3 - GET della pagina di inserzione annuncio semplificata
+		
+/*
+		//Connessione 3 - GET della pagina Il mio automobile.it
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
 		requestHeaders.remove(requestHeaders.size()-1);
-		requestHeaders.add(new BasicNameValuePair("Host", HOST3));
+		requestHeaders.add(new BasicNameValuePair("Host", HOST));
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di inserzione annuncio semplificata", "https://offerta.autoscout24.it/classified", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina Il mio automobile.it", location, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {

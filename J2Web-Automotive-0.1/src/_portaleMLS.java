@@ -151,34 +151,68 @@ public class _portaleMLS extends PortaleWeb {
 					Immagine1 = "'" + fileName + "'";
 					break;
 				case 2:
-					Immagine2 = "'" + fileName + "'";;
+					Immagine2 = "'" + fileName + "'";
 					break;
 				case 3:
-					Immagine3 = "'" + fileName + "'";;
+					Immagine3 = "'" + fileName + "'";
 					break;
 				case 4:
-					Immagine4 = "'" + fileName + "'";;
+					Immagine4 = "'" + fileName + "'";
 					break;
 				case 5:
-					Immagine5 = "'" + fileName + "'";;
+					Immagine5 = "'" + fileName + "'";
 					break;
 				case 6:
-					Immagine6 = "'" + fileName + "'";;
+					Immagine6 = "'" + fileName + "'";
 					break;
 				case 7:
-					Immagine7 = "'" + fileName + "'";;
+					Immagine7 = "'" + fileName + "'";
 					break;
 				case 8:
-					Immagine8 = "'" + fileName + "'";;
+					Immagine8 = "'" + fileName + "'";
 					break;
 				case 9:
-					Immagine9 = "'" + fileName + "'";;
+					Immagine9 = "'" + fileName + "'";
 					break;			
 				default:
-					Immagine10 = "'" + fileName + "'";;
+					Immagine10 = "'" + fileName + "'";
 					break;
 				}
 
+			}
+			else {
+				switch (i) {
+				case 1:
+					Immagine1 = "NULL";
+					break;
+				case 2:
+					Immagine2 = "NULL";
+					break;
+				case 3:
+					Immagine3 = "NULL";
+					break;
+				case 4:
+					Immagine4 = "NULL";
+					break;
+				case 5:
+					Immagine5 = "NULL";
+					break;
+				case 6:
+					Immagine6 = "NULL";
+					break;
+				case 7:
+					Immagine7 = "NULL";
+					break;
+				case 8:
+					Immagine8 = "NULL";
+					break;
+				case 9:
+					Immagine9 = "NULL";
+					break;			
+				default:
+					Immagine10 = "NULL";
+					break;
+				}
 			}
 
 		}
@@ -190,8 +224,8 @@ public class _portaleMLS extends PortaleWeb {
 		Versione = "'" + scheda.versioneVeicolo + "'";
 		MeseImmatricolazione = scheda.meseImmatricolazioneVeicoloIndex;
 		AnnoImmatricolazione = scheda.annoImmatricolazioneVeicoloIndex;
-		Carburante = "'" + scheda.carburanteVeicolo + "'";
-		Tipologia = "'" + scheda.tipologiaVeicolo + "'";
+		Carburante = "'" + scheda.carburanteVeicolo + "'";		
+		Tipologia = "'" + scheda.tipologiaVeicolo.replace("'", "''") + "'";
 		Carrozzeria = "'" + scheda.carrozzeriaVeicolo + "'";
 		PostiASedere = scheda.postiASedereVeicoloIndex;
 		PotenzaKW = Integer.parseInt(scheda.KWVeicolo);
@@ -293,12 +327,7 @@ public class _portaleMLS extends PortaleWeb {
 			Object[] response = verificaInserimentoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQLVerifica, null, null, true);
 			String responseBody = (String)response[1];
 			JSONObject json = null;
-			try {
-				json = new JSONObject(responseBody);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			json = new JSONObject(responseBody);
 
 
 			if(!json.get("affectedrows").equals("0")) {
@@ -317,7 +346,7 @@ public class _portaleMLS extends PortaleWeb {
 				sendConfirmationMail(scheda, "PORTALE MLS", scheda.codiceScheda);
 
 				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + "PORTALE MLS", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Scheda veicolo inserita in: " + "PORTALE MLS", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
 
 			}
 			else {
@@ -328,7 +357,7 @@ public class _portaleMLS extends PortaleWeb {
 			}
 
 
-		} catch (IOException e) {
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 
@@ -431,7 +460,7 @@ public class _portaleMLS extends PortaleWeb {
 				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
 				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + "PORTALE MLS", "Scheda eliminata", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Scheda veicolo eliminata da: " + "PORTALE MLS", "Scheda eliminata", JOptionPane.INFORMATION_MESSAGE);
 
 			}
 			else {
