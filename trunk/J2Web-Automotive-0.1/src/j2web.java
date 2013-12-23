@@ -203,9 +203,9 @@ public class j2web implements parametriGenerali {
 		PortaleWeb _autosupermarketIt = new _autosupermarketIt(_autosupermarketIcon, "4 - autosupermarket.it", "004", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_autosupermarketIt);
 		
-		ImageIcon _automobileIcon  = new ImageIcon(cl.getResource("images/automobileIt.png"));
+		/*ImageIcon _automobileIcon  = new ImageIcon(cl.getResource("images/automobileIt.png"));
 		PortaleWeb _automobileIt = new _automobileIt(_automobileIcon, "5 - automobile.it", "005", true);
-		J2Web_UI.listPortaliSincronizzazione.add(_automobileIt);
+		J2Web_UI.listPortaliSincronizzazione.add(_automobileIt);*/
 		
 		ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
 		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "6 - subito.it", "006", true);

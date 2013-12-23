@@ -2950,6 +2950,20 @@ public class J2Web_UI implements parametriGenerali {
 
 			//Controllo su quale form opero e resetto la form ai valori predefiniti
 			if(listCampiForm.contains(rdbtnAutoveicolo)) {
+				
+				//Prima però resetto anche i valori immagine veicolo
+				imgFile1 = null;
+				imgFile2 = null;
+				imgFile3 = null;
+				imgFile4 = null;
+				imgFile5 = null;
+				imgFile6 = null;
+				imgFile7 = null;
+				imgFile8 = null;
+				imgFile9 = null;
+				imgFile10 = null;
+				
+				
 				getComboBox_Modello().removeAllItems();
 				getComboBox_Versione().removeAllItems();
 				getComboBox_MeseImmatricolazione().setModel(new DefaultComboBoxModel<String>(comboboxModelMesi));
