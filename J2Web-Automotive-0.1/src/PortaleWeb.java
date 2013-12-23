@@ -333,20 +333,23 @@ public abstract class PortaleWeb implements parametriGenerali {
 		String returnValue = "";
 
 		switch (domElement.nodeName()) {
-		case "select":		
+		case "select":	
+			String nameElemento = domElement.attr("name");
 			Elements childrens = domElement.children();
 			if(childrens.isEmpty()) {
 				return "Nessun elemento option";
 			}
 
 			Iterator<Element> iterator = childrens.iterator();
-			List<char[]> stringaScheda = bigram(valueScheda.toLowerCase());
+			String valueSchedaMinuscolo = valueScheda.toLowerCase();
+			List<char[]> stringaScheda = bigram(valueSchedaMinuscolo);
 			double resultComparation = 0;
 			while(iterator.hasNext()) {
 				Element currentElement = iterator.next();
-				List<char[]> stringaPortale = bigram(currentElement.text().toLowerCase());        		
+				String valueCurrentElemMinuscolo = currentElement.text().toLowerCase();
+				List<char[]> stringaPortale = bigram(valueCurrentElemMinuscolo);        		
 				double actualResultComparation = dice(stringaPortale, stringaScheda);
-				System.out.println("comp: " + actualResultComparation);
+				System.out.println("Comparazione " + nameElemento + " " + valueSchedaMinuscolo + "/" + valueCurrentElemMinuscolo + ": " + actualResultComparation);
 				if(actualResultComparation>=resultComparation) {
 					resultComparation = actualResultComparation;
 					returnValue = currentElement.attr("value");            		

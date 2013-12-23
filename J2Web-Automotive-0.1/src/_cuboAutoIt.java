@@ -103,6 +103,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		this.scheda=scheda;
 
 		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
+		requestHeaders.clear();
 		requestHeaders.add(new BasicNameValuePair("Host", HOST));
 		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
 		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
@@ -241,7 +242,12 @@ public class _cuboAutoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("CV",scheda.CVVeicolo);
 		tabellaDiDipendenza.put("KW",scheda.KWVeicolo);
 		tabellaDiDipendenza.put("Submit","Salva Annuncio"); 
-		tabellaDiDipendenza.put("annoimmatricolazione",scheda.annoImmatricolazioneVeicolo);
+		if(scheda.annoImmatricolazioneVeicolo.equals("Anno")) {
+			tabellaDiDipendenza.put("annoimmatricolazione","vuoto");
+		}
+		else {
+			tabellaDiDipendenza.put("annoimmatricolazione",scheda.annoImmatricolazioneVeicolo);
+		}
 		tabellaDiDipendenza.put("annoprossimarevisione","vuoto");
 		tabellaDiDipendenza.put("cambio",scheda.tipologiaCambioVeicolo);
 		tabellaDiDipendenza.put("chilometri",scheda.chilometraggioVeicolo);
@@ -250,8 +256,13 @@ public class _cuboAutoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("codice",(scheda.marcaVeicolo+"-"+scheda.modelloVeicolo+"-"+scheda.coloreEsternoVeicolo+"-"+scheda.tipologiaContrattoVeicolo).replace(" " , ""));
 		tabellaDiDipendenza.put("coloredett","");
 		tabellaDiDipendenza.put("coloreesterno",scheda.coloreEsternoVeicolo);
-		if(scheda.coloreMetalizzato){tabellaDiDipendenza.put("metallizzato","1");}
-		tabellaDiDipendenza.put("coloreinterni",scheda.coloreInterniVeicolo);
+		if(scheda.coloreMetalizzato){tabellaDiDipendenza.put("metallizzato","1");}	
+		if(scheda.coloreInterniVeicolo.equals("Seleziona")) {
+			tabellaDiDipendenza.put("coloreinterni","vuoto");
+		}
+		else {
+			tabellaDiDipendenza.put("coloreinterni",scheda.coloreInterniVeicolo);
+		}	
 		tabellaDiDipendenza.put("contratto",scheda.tipologiaContrattoVeicolo);
 		tabellaDiDipendenza.put("descrizione",scheda.descrizioneVeicolo);
 		tabellaDiDipendenza.put("idAlimentazione",scheda.carburanteVeicolo);
@@ -260,20 +271,47 @@ public class _cuboAutoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("idMarca2",var_idMarca);
 		tabellaDiDipendenza.put("idModello",scheda.modelloVeicolo);
 		tabellaDiDipendenza.put("idTipologia",scheda.tipologiaVeicolo);
-		tabellaDiDipendenza.put("meseimmatricolazione","0"+scheda.meseImmatricolazioneVeicoloIndex);
+		if(scheda.meseImmatricolazioneVeicolo.equals("Mese")) {
+			tabellaDiDipendenza.put("meseimmatricolazione","vuoto");
+		}
+		else {
+			tabellaDiDipendenza.put("meseimmatricolazione","0"+scheda.meseImmatricolazioneVeicoloIndex);
+		}
 		tabellaDiDipendenza.put("meseprossimarevisione","vuoto");
-		tabellaDiDipendenza.put("normativa",scheda.classeEmissioniVeicolo);
+		
+		if(scheda.classeEmissioniVeicolo.equals("Seleziona")) {
+			tabellaDiDipendenza.put("normativa","vuoto");
+		}
+		else {
+			tabellaDiDipendenza.put("normativa",scheda.classeEmissioniVeicolo);
+		}
 		tabellaDiDipendenza.put("peso","");
 		tabellaDiDipendenza.put("porte","");
 		tabellaDiDipendenza.put("prezzo",scheda.prezzoVeicolo);
 		tabellaDiDipendenza.put("provimmatricolazione","vuoto");
-		tabellaDiDipendenza.put("rapporti",scheda.numeroRapportiVeicolo);
-		tabellaDiDipendenza.put("sedili",""+scheda.postiASedereVeicoloIndex);
+		if(scheda.numeroRapportiVeicolo.equals("Seleziona")) {
+			tabellaDiDipendenza.put("rapporti","vuoto");
+		}
+		else {
+			tabellaDiDipendenza.put("rapporti",scheda.numeroRapportiVeicolo);
+		}	
+		if(scheda.postiASedereVeicolo.equals("Seleziona")) {
+			tabellaDiDipendenza.put("sedili","vuoto");
+		}
+		else {
+			tabellaDiDipendenza.put("sedili",scheda.postiASedereVeicolo);
+		}
 		tabellaDiDipendenza.put("versione",scheda.versioneVeicolo);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
 		valutaParametri(responseBody, "#centrale form input, #centrale form select, #centrale form textarea", tabellaDiDipendenza, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
+		
+		if(mappaDeiParamerti.get("idModello").equals("")) {
+			JOptionPane.showMessageDialog(null, "Non è possibile inserire la scheda: verificare che la combinazione marca/modello veicolo sia presente nel portale specificato", "Scheda non inserita", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
 		//Aggiungo qui questi parametri perchè se li aggiungessi nella tabellaDiDipendenza si sovrascriverebbero (hanno lo stesso nome)
 		if(scheda.disponibilitaABS){ postParameters.add(new BasicNameValuePair("sicurezza[]", "1")); }
 		if(scheda.disponibilitaAirBag){ postParameters.add(new BasicNameValuePair("sicurezza[]", "2")); postParameters.add(new BasicNameValuePair("sicurezza[]", "4"));}
@@ -292,6 +330,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		if(scheda.disponibilitaCerchiInLega){ postParameters.add(new BasicNameValuePair("linea[]", "2")); }
 		if(scheda.disponibilitaGancioTraino){ postParameters.add(new BasicNameValuePair("varie[]", "16")); }
 		if(scheda.disponibilitaPortaPacchi){ postParameters.add(new BasicNameValuePair("varie[]", "8")); }
+		
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
 			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", URLROOT + "/concessionari/_inserisci-annuncio.php", postParameters, requestHeaders, requestCookies, debugMode);			

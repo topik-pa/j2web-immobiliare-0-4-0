@@ -109,7 +109,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		panel_26.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		//Pulsante "Cancella"
-		btnCancellaScheda = new JButton("Cancella");
+		btnCancellaScheda = new JButton("Elimina scheda");
 		btnCancellaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Cancella scheda cliente: " + scheda.codiceSchedaCliente);
