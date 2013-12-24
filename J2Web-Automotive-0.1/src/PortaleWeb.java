@@ -429,7 +429,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 	
 	//Messaggio inserimento annuncio KO
 	public void messageInserimentoKO(String nomePortale) {
-		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + nomePortale + ".\nVerificare che:\nLa combinazione marca/modello sia prevista nel portale di inserimento\nNon si sia raggiunto il limite di annunci pubblicabili\nSi stiano rispettando i vincoli di inserimento del portale (per esempio: numero minimo e dimensioni delle immagini da pubblicare)", "Errore", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + nomePortale + ".\n\nVerificare che:\nLa combinazione marca/modello sia prevista nel portale di inserimento\nNon si sia raggiunto il limite di annunci pubblicabili\nSi stiano rispettando i vincoli di inserimento del portale (per esempio: numero minimo e dimensioni delle immagini da pubblicare)", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	//Messaggio eliminazione annuncio OK
@@ -439,7 +439,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 	
 	//Messaggio eliminazione annuncio KO
 	public void messageEliminazioneKO(String nomePortale) {
-		JOptionPane.showMessageDialog(null, "Problemi nell'eliminazione scheda in: " + nomePortale + ".\n Verificare l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Problemi nell'eliminazione scheda in: " + nomePortale + ".\n\n Verificare l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	
