@@ -601,7 +601,7 @@ public class J2Web_UI implements parametriGenerali {
 		comboBox_Versione.setEditable(true);
 		panel_20.add(comboBox_Versione, "10, 6, fill, default");
 
-		JLabel lblDataPrimaImmatricolazione = new JLabel("Prima immatricolazione");
+		JLabel lblDataPrimaImmatricolazione = new JLabel("Prima immatricolazione*");
 		panel_20.add(lblDataPrimaImmatricolazione, "2, 8");
 
 		JLabel lblCarburante = new JLabel("Carburante");
@@ -698,7 +698,7 @@ public class J2Web_UI implements parametriGenerali {
 		JLabel lblPrecedentiProprietari = new JLabel("Precedenti proprietari");
 		panel_20.add(lblPrecedentiProprietari, "2, 24");
 
-		JLabel lblChilometraggio = new JLabel("Chilometraggio");
+		JLabel lblChilometraggio = new JLabel("Chilometraggio*");
 		panel_20.add(lblChilometraggio, "6, 24");
 
 		comboBox_PrecedentiProprietari = new JComboBox<String>();
@@ -3098,6 +3098,8 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormVeicoloObbligatori.add(getComboBox_ColoreEsterno());
 		listCampiFormVeicoloObbligatori.add(getCombobox_Contratto());
 		listCampiFormVeicoloObbligatori.add(getComboBox_Carrozzeria());
+		listCampiFormVeicoloObbligatori.add(getComboBox_MeseImmatricolazione());
+		listCampiFormVeicoloObbligatori.add(getComboBox_AnnoImmatricolazione());
 
 		listCampiFormVeicoloObbligatori.add(getTextField_Prezzo());			
 		listCampiFormVeicoloObbligatori.add(getTextFieldIndirizzo());
@@ -3108,6 +3110,7 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormVeicoloObbligatori.add(getTextFieldReferente());
 		listCampiFormVeicoloObbligatori.add(getTextField_Cv());
 		listCampiFormVeicoloObbligatori.add(getTextField_Kw());
+		listCampiFormVeicoloObbligatori.add(getTextField_Chilometraggio());
 
 		listCampiFormVeicoloObbligatori.add(getTextPane_Descrizione());
 
