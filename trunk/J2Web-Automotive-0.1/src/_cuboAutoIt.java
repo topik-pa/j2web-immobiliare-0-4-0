@@ -308,7 +308,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		setPostParameters(mappaDeiParamerti, postParameters);
 		
 		if(mappaDeiParamerti.get("idModello").equals("")) {
-			JOptionPane.showMessageDialog(null, "Non è possibile inserire la scheda: verificare che la combinazione marca/modello veicolo sia presente nel portale specificato", "Scheda non inserita", JOptionPane.ERROR_MESSAGE);
+			messageInserimentoKO(NOMEPORTALE);
 			return false;
 		}
 		
@@ -443,7 +443,8 @@ public class _cuboAutoIt extends PortaleWeb {
 				sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
 
 				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+				//JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+				messageInserimentoOK(NOMEPORTALE);
 			}
 
 			return inserimentoOK;        	
@@ -452,7 +453,8 @@ public class _cuboAutoIt extends PortaleWeb {
 
 			if(!isSequential) {
 				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
+				//JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
+				messageInserimentoKO(NOMEPORTALE);
 			}
 
 			return inserimentoOK;
@@ -567,7 +569,8 @@ public class _cuboAutoIt extends PortaleWeb {
 			System.out.println("Eliminata da: " + NOMEPORTALE);
 
 			//Stampo a video un messaggio informativo
-			JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + NOMEPORTALE);
+			//JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + NOMEPORTALE);
+			messageEliminazioneOK(NOMEPORTALE);
 		}
 
 		return true;

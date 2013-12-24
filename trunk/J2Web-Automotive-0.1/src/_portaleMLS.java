@@ -346,14 +346,16 @@ public class _portaleMLS extends PortaleWeb {
 				sendConfirmationMail(scheda, "PORTALE MLS", scheda.codiceScheda);
 
 				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Scheda veicolo inserita in: " + "PORTALE MLS", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+				//JOptionPane.showMessageDialog(null, "Scheda veicolo inserita in: " + "PORTALE MLS", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+				messageInserimentoOK("PORTALE MLS");
 
 			}
 			else {
 				inserimentoOK = false;
 
 				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + "PORTALE MLS" + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
+				//JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + "PORTALE MLS" + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
+				messageInserimentoKO("PORTALE MLS");
 			}
 
 
@@ -460,14 +462,15 @@ public class _portaleMLS extends PortaleWeb {
 				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
 				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Scheda veicolo eliminata da: " + "PORTALE MLS", "Scheda eliminata", JOptionPane.INFORMATION_MESSAGE);
-
+				//JOptionPane.showMessageDialog(null, "Scheda veicolo eliminata da: " + "PORTALE MLS", "Scheda eliminata", JOptionPane.INFORMATION_MESSAGE);
+				messageEliminazioneOK("PORTALE MLS");
 			}
 			else {
 				eliminazioneOK = false;
 
 				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Problemi nell'eliminazione scheda in: " + "PORTALE MLS" + ".\n Verificare l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
+				//JOptionPane.showMessageDialog(null, "Problemi nell'eliminazione scheda in: " + "PORTALE MLS" + ".\n Verificare l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
+				messageEliminazioneKO("PORTALE MLS");
 			}
 
 
