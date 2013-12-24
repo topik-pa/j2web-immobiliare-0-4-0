@@ -13,9 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -425,7 +423,15 @@ public class _autoscout24It extends PortaleWeb {
 		//if(Equipment_EquipmentIds.endsWith(",")){Equipment_EquipmentIds.substring(0, Equipment_EquipmentIds.length()-1);}
 		//tabellaDiDipendenza.put("Equipment.EquipmentIds","Equipment_EquipmentIds");
 		//tabellaDiDipendenza.put("Equipment.EquipmentIds","***site***");
-		tabellaDiDipendenza.put("Equipment.InteriorColorId",scheda.coloreInterniVeicolo);
+		
+		
+		if(scheda.coloreInterniVeicolo.equals("Seleziona")) {
+			tabellaDiDipendenza.put("Equipment.InteriorColorId","colore");
+		}
+		else {
+			tabellaDiDipendenza.put("Equipment.InteriorColorId",scheda.coloreInterniVeicolo);
+		}
+		
 		if(scheda.postiASedereVeicolo.equals("Seleziona")) {
 			tabellaDiDipendenza.put("Equipment.Seats","***site***");
 		}
@@ -433,7 +439,13 @@ public class _autoscout24It extends PortaleWeb {
 			tabellaDiDipendenza.put("Equipment.Seats",scheda.postiASedereVeicolo);
 		}
 		
-		tabellaDiDipendenza.put("Equipment.UpholsteryId",scheda.finitureInterneVeicolo);
+		if(scheda.finitureInterneVeicolo.equals("Seleziona")) {
+			tabellaDiDipendenza.put("Equipment.UpholsteryId", "Materiale");
+		}
+		else {
+			tabellaDiDipendenza.put("Equipment.UpholsteryId",scheda.finitureInterneVeicolo);
+		}
+		
 		tabellaDiDipendenza.put("Moto.Co2Emission","***site***");
 		tabellaDiDipendenza.put("Moto.ConsumptionCity","***site***");
 		tabellaDiDipendenza.put("Moto.ConsumptionHighway","***site***");

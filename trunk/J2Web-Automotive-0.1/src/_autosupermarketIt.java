@@ -3,15 +3,16 @@
  * and open the template in the editor.
  */ 
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.http.Header;
@@ -115,16 +116,30 @@ public class _autosupermarketIt extends PortaleWeb {
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
 
 		//autosupermarket accetto minimo due foto per annuncio
-		int numeroFoto=0;
-		for(int i=1; i<9; i++) { //max 8 foto
-			if(scheda.arrayImages[i]!=null) {
-				numeroFoto ++;
+		try {
+			int numeroFoto=0;
+			boolean dimensioneCorretta=true;
+			for(int i=1; i<9; i++) { //max 8 foto
+				if(scheda.arrayImages[i]!=null) {
+					numeroFoto ++;
+					File currentFile = scheda.arrayImages[i];
+					BufferedImage currentImage = ImageIO.read(currentFile);
+					
+					if(currentImage.getWidth()<640 || currentImage.getHeight()<480) {
+						dimensioneCorretta=false;
+					}
+				} 
+			}
+			if(numeroFoto<2 || !dimensioneCorretta) {
+				messageInserimentoKO(NOMEPORTALE);
+				return false;
 			}
 		}
-		if(numeroFoto<2) {
-			JOptionPane.showMessageDialog(null, NOMEPORTALE + "Accetta solo annunci con minimo 2 immagini");
-			return false;
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 
 		//Inizializzazione scheda
 		this.scheda=scheda;
@@ -255,7 +270,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		}
 
 
-		//Connessione 5 - GET per ottenere il modella dell'auto
+		//Connessione 5 - GET per ottenere il modello dell'auto
 		//Raccolgo i parametri nella tabella di dipendenza
 		tabellaDiDipendenza.put("car[make_id]",scheda.marcaVeicolo);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
@@ -337,7 +352,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		tabellaDiDipendenza.put("car[carana001_carlst017_emission_cod]", scheda.classeEmissioniVeicolo);
 		tabellaDiDipendenza.put("car[carana001_carlst019_price_type_cod]", "***site***");
 		tabellaDiDipendenza.put("car[carana001_carlst021_guarantee_type_cod]", "Scegli...");
-		
+
 		//tabellaDiDipendenza.put("car[carana001_cv_num]", scheda.CVVeicolo);
 		if(scheda.CVVeicolo.equals("")) {
 			tabellaDiDipendenza.put("car[carana001_cv_num]", "***site***");
@@ -345,7 +360,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		else {
 			tabellaDiDipendenza.put("car[carana001_cv_num]", scheda.CVVeicolo);
 		}
-		
+
 		tabellaDiDipendenza.put("car[carana001_door_num]", "Scegli...");
 		tabellaDiDipendenza.put("car[carana001_engine_des]", scheda.cilindrataVeicolo);
 		if(scheda.prezzoTrattabile)  {
@@ -354,17 +369,17 @@ public class _autosupermarketIt extends PortaleWeb {
 		else {
 			tabellaDiDipendenza.put("car[carana001_glblst001_condition_cod]", "Non Trattabili");
 		}
-		
+
 		tabellaDiDipendenza.put("car[carana001_glblst002_color_cod]", scheda.coloreEsternoVeicolo);
-		
-		
+
+
 		if(scheda.chilometraggioVeicolo.equals("")) {
 			tabellaDiDipendenza.put("car[carana001_km_num]", "***site***");
 		}
 		else {
 			tabellaDiDipendenza.put("car[carana001_km_num]", scheda.chilometraggioVeicolo);
 		}
-		
+
 		//tabellaDiDipendenza.put("car[carana001_kw_num]", scheda.KWVeicolo);
 		if(scheda.KWVeicolo.equals("")) {
 			tabellaDiDipendenza.put("car[carana001_kw_num]", "***site***");
@@ -372,21 +387,21 @@ public class _autosupermarketIt extends PortaleWeb {
 		else {
 			tabellaDiDipendenza.put("car[carana001_kw_num]", scheda.KWVeicolo);
 		}
-		
+
 		tabellaDiDipendenza.put("car[carana001_last_review_num]", "Scegli...");
 		tabellaDiDipendenza.put("car[carana001_month_num]", "0"+scheda.meseImmatricolazioneVeicoloIndex);
 		tabellaDiDipendenza.put("car[carana001_notes_des]", scheda.descrizioneVeicolo);
 		tabellaDiDipendenza.put("car[carana001_owner_num]", scheda.numeroPrecedentiProprietariVeicolo);
 		tabellaDiDipendenza.put("car[carana001_public_price_num]", scheda.prezzoVeicolo);
 		tabellaDiDipendenza.put("car[carana001_seat_num]", "0"+scheda.postiASedereVeicoloIndex);
-		tabellaDiDipendenza.put("car[carana001_year_num]", "0"+scheda.annoImmatricolazioneVeicoloIndex);
+		tabellaDiDipendenza.put("car[carana001_year_num]", "0"+scheda.annoImmatricolazioneVeicolo);
 		tabellaDiDipendenza.put("car[id]", ""); //non ha value nel DOM
 		tabellaDiDipendenza.put("car[make_id]", scheda.marcaVeicolo);
 		tabellaDiDipendenza.put("car[trattativa_riservata]", "***site***");
 		tabellaDiDipendenza.put("car[carana001_status_flg]", "***site***");
 		tabellaDiDipendenza.put("car[carana001_vat_deductible_flg]", "***site***");
-		
-		
+
+
 
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
 		valutaParametri(responseBody, "form#adv-form input, form#adv-form select, form#adv-form textarea", tabellaDiDipendenza, mappaDeiParamerti);
@@ -481,59 +496,62 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		//Connessione 8 - Invio delle foto (passo 1)
 		//for(int i=1; i<9; i++) { //max 8 foto
-			//if(scheda.arrayImages[i]!=null) {
-				
+		//if(scheda.arrayImages[i]!=null) {
+
+
+
+		HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();        
+		try {
+
+			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+			//reqEntity.generateBoundary();
+
+
+			for(int i=1; i<=8; i++) { //max 8 foto
+
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();        
-				try {
 
-					MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-					//reqEntity.generateBoundary();
-					
-					
-					for(int i=1; i<=8; i++) { //max 8 foto
-						if(scheda.arrayImages[i]!=null) {
-							FileBody bin = new FileBody(scheda.arrayImages[i]);
-							reqEntity.addPart("photos[photo_" + i + "][photo]", bin );														
-						}						
-						else {
-							reqEntity.addPart("photos[photo_" + i + "][photo]", new StringBody("") );	
-						}
-					}
-					reqEntity.addPart("submit", new StringBody("photos") );
-					//FileBody bin = new FileBody(scheda.arrayImages[i]);
-					//reqEntity.addPart("name", new StringBody("o_" + codiceInserzione + "_" + i + ".jpg") );
-					//reqEntity.addPart("file", bin );
-					
-					/*Header x = reqEntity.getContentType();
+				if(scheda.arrayImages[i]!=null) {
+					FileBody bin = new FileBody(scheda.arrayImages[i]);
+					reqEntity.addPart("photos[photo_" + i + "][photo]", bin );														
+				}						
+				else {
+					reqEntity.addPart("photos[photo_" + i + "][photo]", new StringBody("") );	
+				}
+			}
+			reqEntity.addPart("submit", new StringBody("photos") );
+			//FileBody bin = new FileBody(scheda.arrayImages[i]);
+			//reqEntity.addPart("name", new StringBody("o_" + codiceInserzione + "_" + i + ".jpg") );
+			//reqEntity.addPart("file", bin );
+
+			/*Header x = reqEntity.getContentType();
 					int beginIndex = x.getValue().indexOf("boundary=")+9;
 					String y = x.getValue().substring(beginIndex);*/
-					
-					//requestHeaders.add(new BasicNameValuePair("Content-Type", "multipart/form-data; boundary="+y));
 
-					Object[] response = connessione_8.post("Connessione 8 - Invio delle foto (passo 1)", URLROOT + "/mycar/manage_photo/id/" + codiceInserzione + ".html", reqEntity, requestHeaders, requestCookies, debugMode);			
+			//requestHeaders.add(new BasicNameValuePair("Content-Type", "multipart/form-data; boundary="+y));
 
-					//Controllo il response status
-					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-					if( (responseStatus.getStatusCode()!=302)) {
-						throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-					}    	
+			Object[] response = connessione_8.post("Connessione 8 - Invio delle foto (passo 1)", URLROOT + "/mycar/manage_photo/id/" + codiceInserzione + ".html", reqEntity, requestHeaders, requestCookies, debugMode);			
 
-				} catch (IOException | RuntimeException e) {
-					throw new HttpCommunicationException(e);
-				}
-				finally {
-					tabellaDiDipendenza.clear();
-					mappaDeiParamerti.clear();
-					postParameters.clear();
-				}
-			//}			
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=302)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}    	
+
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+		finally {
+			tabellaDiDipendenza.clear();
+			mappaDeiParamerti.clear();
+			postParameters.clear();
+		}
+		//}			
 		//}
 
 
