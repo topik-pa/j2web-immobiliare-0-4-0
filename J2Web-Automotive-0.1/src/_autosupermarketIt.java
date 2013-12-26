@@ -41,25 +41,15 @@ public class _autosupermarketIt extends PortaleWeb {
 	//Variabili portale
 	private final String NOMEPORTALE = "www.autosupermarket.it";
 	private final String URLROOT = "http://www.autosupermarket.it";
-	//private final String SECUREURLROOT = "https://secure.autoscout24.it";
 	private final String USERNAME = "c2775833@drdrb.com";
 	private final String PASSWORD = "topik123";
 	private final String HOST = "www.autosupermarket.it";
-	//private final String HOST2 = "secure.autoscout24.it";
-	//private final String HOST3 = "offerta.autoscout24.it";
-
-	//private final String SECONDCOOKIENAME = "__RequestVerificationToken_Lw__";
-	//private final String SECONDCOOKIEDOMAIN = "secure.autoscout24.it";
-	//private final String SECONDCOOKIEHEADER = "";
-	//private final String SECONDCOOKIEVALUE = "";
-
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
 	private String codiceInserzione;
 	private String location;
 	private String responseBody;
-	//private BasicNameValuePair sessionCookie;
 	private boolean inserimentoOK = false;
 	private boolean debugMode = true;
 
@@ -84,9 +74,6 @@ public class _autosupermarketIt extends PortaleWeb {
 
 	//Altre variabili di supporto a livello globale
 	String idModello;
-	//String articleId;
-	//String BaseData_ModelId;
-	//String Equipment_EquipmentIds="";
 
 	//Costruttore
 	public _autosupermarketIt (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
@@ -115,7 +102,7 @@ public class _autosupermarketIt extends PortaleWeb {
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
 
-		//autosupermarket accetto minimo due foto per annuncio
+		//autosupermarket accetta minimo due foto per annuncio di dimensioni prefissate
 		try {
 			int numeroFoto=0;
 			boolean dimensioneCorretta=true;
@@ -124,7 +111,7 @@ public class _autosupermarketIt extends PortaleWeb {
 					numeroFoto ++;
 					File currentFile = scheda.arrayImages[i];
 					BufferedImage currentImage = ImageIO.read(currentFile);
-					
+
 					if(currentImage.getWidth()<640 || currentImage.getHeight()<480) {
 						dimensioneCorretta=false;
 					}
@@ -326,12 +313,15 @@ public class _autosupermarketIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 
+
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+
+
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
 		tabellaDiDipendenza.put("car[carana001_carlst001_listing_type_cod]", scheda.tipologiaVeicolo); //da fare sotto
@@ -380,7 +370,6 @@ public class _autosupermarketIt extends PortaleWeb {
 			tabellaDiDipendenza.put("car[carana001_km_num]", scheda.chilometraggioVeicolo);
 		}
 
-		//tabellaDiDipendenza.put("car[carana001_kw_num]", scheda.KWVeicolo);
 		if(scheda.KWVeicolo.equals("")) {
 			tabellaDiDipendenza.put("car[carana001_kw_num]", "***site***");
 		}
@@ -390,18 +379,17 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		tabellaDiDipendenza.put("car[carana001_last_review_num]", "Scegli...");
 		tabellaDiDipendenza.put("car[carana001_month_num]", "0"+scheda.meseImmatricolazioneVeicoloIndex);
-		tabellaDiDipendenza.put("car[carana001_notes_des]", scheda.descrizioneVeicolo);
+		String escapedDescription = scheda.descrizioneVeicolo.replaceAll("&", "&amp;").replaceAll("'", "&quot;").replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
+		tabellaDiDipendenza.put("car[carana001_notes_des]", escapedDescription);
 		tabellaDiDipendenza.put("car[carana001_owner_num]", scheda.numeroPrecedentiProprietariVeicolo);
 		tabellaDiDipendenza.put("car[carana001_public_price_num]", scheda.prezzoVeicolo);
 		tabellaDiDipendenza.put("car[carana001_seat_num]", "0"+scheda.postiASedereVeicoloIndex);
 		tabellaDiDipendenza.put("car[carana001_year_num]", "0"+scheda.annoImmatricolazioneVeicolo);
 		tabellaDiDipendenza.put("car[id]", ""); //non ha value nel DOM
 		tabellaDiDipendenza.put("car[make_id]", scheda.marcaVeicolo);
-		tabellaDiDipendenza.put("car[trattativa_riservata]", "***site***");
+		tabellaDiDipendenza.put("car[trattativa_riservata]", "0");
 		tabellaDiDipendenza.put("car[carana001_status_flg]", "***site***");
-		tabellaDiDipendenza.put("car[carana001_vat_deductible_flg]", "***site***");
-
-
+		tabellaDiDipendenza.put("car[carana001_vat_deductible_flg]", "***site***");	
 
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
 		valutaParametri(responseBody, "form#adv-form input, form#adv-form select, form#adv-form textarea", tabellaDiDipendenza, mappaDeiParamerti);
@@ -410,38 +398,55 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		//Questi parametri li devo valorizzare qui
 		postParameters.add(new BasicNameValuePair("car[model_id]", idModello));
-		/*postParameters.add(new BasicNameValuePair("car[carana001_carlst001_listing_type_cod]", "1"));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst002_interior_cod]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst004_auto_body_cod]", "4"));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst005_auto_body_status_cod]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst006_fuel_cod]", "4"));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst008_color_type_cod]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst009_drive_type_cod]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst010_trasmission_cod]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst015_version_des]", ""));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst017_emission_cod]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst019_price_type_cod]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_carlst021_guarantee_type_cod]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_cv_num]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_door_num]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_engine_des]", ""));
-		postParameters.add(new BasicNameValuePair("car[carana001_glblst001_condition_cod]", "1"));
-		postParameters.add(new BasicNameValuePair("car[carana001_glblst002_color_cod]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_km_num]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_kw_num]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_last_review_num]", ""));
-		postParameters.add(new BasicNameValuePair("car[carana001_month_num]", "2"));
-		postParameters.add(new BasicNameValuePair("car[carana001_notes_des]", ""));
-		postParameters.add(new BasicNameValuePair("car[carana001_owner_num]", ""));
-		postParameters.add(new BasicNameValuePair("car[carana001_public_price_num]", "12500"));
-		postParameters.add(new BasicNameValuePair("car[carana001_seat_num]", ""));
-		postParameters.add(new BasicNameValuePair("car[carana001_status_flg]", "1"));
-		postParameters.add(new BasicNameValuePair("car[carana001_vat_deductible_flg]", "0"));
-		postParameters.add(new BasicNameValuePair("car[carana001_year_num]", "2011"));
-		postParameters.add(new BasicNameValuePair("car[id]", ""));
-		postParameters.add(new BasicNameValuePair("car[make_id]", "1"));
-		postParameters.add(new BasicNameValuePair("car[model_id]", "1711"));
-		postParameters.add(new BasicNameValuePair("car[trattativa_riservata]", "0"));*/
+		if(scheda.disponibilitaABS){
+			postParameters.add(new BasicNameValuePair("car[carana001_security_flg][]", "83"));
+		}
+		if(scheda.disponibilitaAirBag){
+			postParameters.add(new BasicNameValuePair("car[carana001_security_flg][]", "39"));
+		}
+		if(scheda.disponibilitaAntifurto){
+			postParameters.add(new BasicNameValuePair("car[carana001_security_flg][]", "44"));
+		}
+		if(scheda.disponibilitaChiusuraCentralizzata){
+			postParameters.add(new BasicNameValuePair("car[carana001_security_flg][]", "85"));
+		}
+		if(scheda.disponibilitaESP){
+			postParameters.add(new BasicNameValuePair("car[carana001_security_flg][]", "84"));
+		}
+		if(scheda.disponibilitaNavigatoreSattelitare){
+			postParameters.add(new BasicNameValuePair("car[carana001_comfort_flg][]", "73"));
+		}
+		if(scheda.disponibilitaRadioOLettoreCD){
+			postParameters.add(new BasicNameValuePair("car[carana001_comfort_flg][]", "21"));
+		}
+		if(scheda.disponibilitaParkDistControl){
+			postParameters.add(new BasicNameValuePair("car[carana001_comfort_flg][]", "76"));
+		}
+		if(scheda.disponibilitaSediliRiscaldati){
+			postParameters.add(new BasicNameValuePair("car[carana001_comfort_flg][]", "35"));
+		}
+		if(scheda.disponibilitaSediliSportivi){
+			postParameters.add(new BasicNameValuePair("car[carana001_comfort_flg][]", "78"));
+		}	
+		if(scheda.disponibilitaCerchiInLega){
+			postParameters.add(new BasicNameValuePair("car[carana001_car_flg][]", "51"));
+		}
+		if(scheda.disponibilitaPortaPacchi){
+			postParameters.add(new BasicNameValuePair("car[carana001_car_flg][]", "97"));
+		}
+		if(scheda.disponibilitaServoSterzo){
+			postParameters.add(new BasicNameValuePair("car[carana001_car_flg][]", "98"));
+		}
+		if(scheda.disponibilitaVolanteMultifunzione){
+			postParameters.add(new BasicNameValuePair("car[carana001_car_flg][]", "64"));
+		}
+		if(scheda.disponibilitaAlzacristalliElettrici){
+			postParameters.add(new BasicNameValuePair("car[carana001_car_flg][]", "60"));
+		}
+		if(scheda.disponibilitaGancioTraino){
+			postParameters.add(new BasicNameValuePair("car[carana001_car_flg][]", "94"));
+		}
+
 
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
@@ -454,7 +459,6 @@ public class _autosupermarketIt extends PortaleWeb {
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(location.contains("/manage_photo/id/")) {
-					//responseBody = (String)response[1];
 					int start = location.indexOf("/id/")+4;
 					int end = location.indexOf(".html");
 					codiceInserzione = location.substring(start, end);
@@ -494,18 +498,9 @@ public class _autosupermarketIt extends PortaleWeb {
 		}
 
 
-		//Connessione 8 - Invio delle foto (passo 1)
-		//for(int i=1; i<9; i++) { //max 8 foto
-		//if(scheda.arrayImages[i]!=null) {
-
-
-
 		HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();        
 		try {
-
 			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-			//reqEntity.generateBoundary();
-
 
 			for(int i=1; i<=8; i++) { //max 8 foto
 
@@ -525,15 +520,6 @@ public class _autosupermarketIt extends PortaleWeb {
 				}
 			}
 			reqEntity.addPart("submit", new StringBody("photos") );
-			//FileBody bin = new FileBody(scheda.arrayImages[i]);
-			//reqEntity.addPart("name", new StringBody("o_" + codiceInserzione + "_" + i + ".jpg") );
-			//reqEntity.addPart("file", bin );
-
-			/*Header x = reqEntity.getContentType();
-					int beginIndex = x.getValue().indexOf("boundary=")+9;
-					String y = x.getValue().substring(beginIndex);*/
-
-			//requestHeaders.add(new BasicNameValuePair("Content-Type", "multipart/form-data; boundary="+y));
 
 			Object[] response = connessione_8.post("Connessione 8 - Invio delle foto (passo 1)", URLROOT + "/mycar/manage_photo/id/" + codiceInserzione + ".html", reqEntity, requestHeaders, requestCookies, debugMode);			
 
@@ -551,9 +537,6 @@ public class _autosupermarketIt extends PortaleWeb {
 			mappaDeiParamerti.clear();
 			postParameters.clear();
 		}
-		//}			
-		//}
-
 
 
 		//Connessione 10 - POST delle immagini (passo 3)
@@ -582,7 +565,7 @@ public class _autosupermarketIt extends PortaleWeb {
 					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Location non corretta"));
 				}
 				else {
-					inserimentoOK = false; //da togliere!
+					//inserimentoOK = true; //da togliere!
 					responseBody = (String)response[1];
 				}
 			}
