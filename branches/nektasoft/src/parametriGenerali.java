@@ -7,7 +7,7 @@ import javax.swing.JComponent;
 
 public interface parametriGenerali {
 
-	//Versione di J2Web
+	//Versione di J2Web eintestazioni codice schede
 	final String  j2web_version = "0.5";
 	final String  intestazioneCodiceSchedaVeicolo = "j2w05_V_";
 	final String  intestazioneCodiceSchedaCliente = "j2w05_C_";
@@ -17,6 +17,7 @@ public interface parametriGenerali {
 	final String EMAIL_UTENTE ="n.morsillo@nektasoft.it";
 	final String RAGIONESOCIALE_UTENTE ="NektaSoft srl";
 	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
+	final String PROVINCIA_UTENTE ="Udine";
 	final String CITTA_UTENTE ="Udine";
 	final String INDIRIZZO_UTENTE ="via Buttrio, 667 - 33100 Udine";
 	final String TELEFONO_UTENTE ="3295698985";
@@ -32,17 +33,17 @@ public interface parametriGenerali {
 	final String nomeGUI = "J2Web - Automotive" + " " + j2web_version + " - Nektasoft";
 
 	//Dimensioni di default della GUI 
-	final int[] GUI_bounds = {20, 20, 1152, 640};
+	final int[] GUI_bounds = {120, 60, 1160, 625};
 
 	//Request headers utilizzati per le connessioni
-	final String USER_AGENT_VALUE = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0";
+	final String USER_AGENT_VALUE = "Mozilla/5.0 (Windows NT 5.1; rv:26.0) Gecko/20100101 Firefox/26.0";
 	final String CONNECTION = "keep-alive";
 	final String CACHE_CONTROL = "max-age=0";
 	final String ACCEPT_LANGUAGE = "it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4";
-	//final String ACCEPT_ENCODING = "gzip,deflate,sdch";
+	//final String ACCEPT_ENCODING = "gzip,deflate,sdch"; //spacca tutto!!!
 	final String ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
 
-	//Messaggi delle finestre modali: inizializzo la mappa che conterrà la ntipologia di evento e il relativo messaggio. L'inizializzazione è nel file: j2web.java
+	//Messaggi delle finestre modali: inizializzo la mappa che conterrà la tipologia di evento e il relativo messaggio. L'inizializzazione è nel file: j2web.java
 	final Map<String,String> MapModalWindowsDialogs = new Hashtable<String,String>();
 
 	//Dimensioni massime delle immagini
@@ -95,10 +96,10 @@ public interface parametriGenerali {
 	LinkedList<JComponent> listCampiFormClienteObbligatori = new LinkedList<JComponent>();
 
 	//La struttura dati che contiene i portali selezionati per l'inserimento sequenziale
-	public static LinkedList<PortaleWeb> listPortaliInserimentoSequenziale = new LinkedList<PortaleWeb>();
+	//public static LinkedList<PortaleWeb> listPortaliInserimentoSequenziale = new LinkedList<PortaleWeb>();
 
 	//La struttura dati che contiene i portali selezionati per l'eliminazione sequenziale
-	public static LinkedList<PortaleWeb> listPortaliCancellazioneSequenziale = new LinkedList<PortaleWeb>();
+	//public static LinkedList<PortaleWeb> listPortaliCancellazioneSequenziale = new LinkedList<PortaleWeb>();
 
 	//La struttura dati che contiene le schede cliente che fanno match con la scheda veicolo eventualmente selezionata
 	public static LinkedList<SchedaCliente> listSchedeClientiMatch = new LinkedList<SchedaCliente>();

@@ -54,7 +54,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
-		setMaximumSize(new Dimension(400, 130));
+		setMaximumSize(new Dimension(400, 150));
 
 		//Radio button dei sottopannelli
 		schedaRadio = new JRadioButton("Seleziona scheda veicolo");
@@ -92,13 +92,14 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		add(schedaRadio, BorderLayout.NORTH);
 
 		//La label delle schede
-		String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;
+		//String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;
+		
+		String linea1 = scheda.marcaVeicolo + " " + scheda.modelloVeicolo;	
+		String linea2 = scheda.versioneVeicolo;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
+		String linea3 = scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}
+		
+		String labelScheda = "<html><p style='padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i><br/>" + linea3 + "</p></html>";
 		String tooltipScheda = labelScheda;
-		labelScheda+="                              "; //Aggiungo 30 caratteri spazio
-		if(labelScheda.length()>28) {	//è molto probabile che lo sia... :)
-			labelScheda = labelScheda.substring(0, 27); 
-		}		 
-		labelScheda+="...";
 
 		JLabel label = new JLabel(labelScheda);
 		Font font = new Font("Monospaced", Font.PLAIN, 11);
@@ -106,6 +107,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 
 		//L'immagine di preview del pannello veicolo
+		Image resizedimg = null;
 		BufferedImage imgPreview = null;
 		if(scheda.arrayImages[1]!=null) {
 			try {
@@ -114,11 +116,15 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			Image resizedimg = imgPreview.getScaledInstance(70, 50, Image.SCALE_FAST);
-			label.setIcon(new ImageIcon(resizedimg));
+			resizedimg = imgPreview.getScaledInstance(70, 50, Image.SCALE_FAST);
+			//label.setIcon(new ImageIcon(resizedimg));
+		}
+		else {
+			resizedimg = new BufferedImage(70,50,BufferedImage.TYPE_INT_ARGB_PRE);
 		}
 
 		add(label, BorderLayout.CENTER);
+		add(new JLabel(" ", new ImageIcon(resizedimg), JLabel.RIGHT),BorderLayout.EAST);
 
 		//Aggiungo una tooltip
 		setToolTipText(tooltipScheda);
@@ -129,7 +135,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		panel_26.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		//Pulsante "Cancella"
-		btnCancellaScheda = new JButton("Cancella");
+		btnCancellaScheda = new JButton("Elimina scheda");
 		btnCancellaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Cancella scheda veicolo: " + scheda.idScheda);
@@ -225,7 +231,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				matrix[row][3] = J2Web_UI.listSchedeClientiMatch.get(row).telefono1Cliente;
 				matrix[row][4] = J2Web_UI.listSchedeClientiMatch.get(row).telefono2Cliente;
 				matrix[row][5] = J2Web_UI.listSchedeClientiMatch.get(row).viaCliente;
-				matrix[row][6] = J2Web_UI.listSchedeClientiMatch.get(row).nomeCliente;
+				matrix[row][6] = J2Web_UI.listSchedeClientiMatch.get(row).numeroCivicoCliente;
 				matrix[row][7] = J2Web_UI.listSchedeClientiMatch.get(row).CAPCliente;
 				matrix[row][8] = J2Web_UI.listSchedeClientiMatch.get(row).cittaCliente;
 			}	
@@ -538,6 +544,5 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 
 		J2Web_UI.nonUserSelection = false;
 	}
-
 	
 }

@@ -175,6 +175,9 @@ public class j2web implements parametriGenerali {
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseHeaderException", "Errore HTTP Response Header. ");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseBodyException", "Errore HTTP Response Body. ");
 		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_Generic", "Errore Generico. ");
+		
+		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeVeicolo", "Questa azione eliminerà tutte le schede veicolo. Confermi? ");
+		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeCliente", "Questa azione eliminerà tutte le schede cliente. Confermi? ");
 
 	}
 
@@ -196,8 +199,16 @@ public class j2web implements parametriGenerali {
 		PortaleWeb _cuboAutoIt = new _cuboAutoIt(_cuboAutoIcon, "3 - cuboauto.it", "003", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_cuboAutoIt);
 		
+		ImageIcon _autosupermarketIcon  = new ImageIcon(cl.getResource("images/_autosupermarketIt.png"));
+		PortaleWeb _autosupermarketIt = new _autosupermarketIt(_autosupermarketIcon, "4 - autosupermarket.it", "004", true);
+		J2Web_UI.listPortaliSincronizzazione.add(_autosupermarketIt);
+		
+		/*ImageIcon _automobileIcon  = new ImageIcon(cl.getResource("images/automobileIt.png"));
+		PortaleWeb _automobileIt = new _automobileIt(_automobileIcon, "5 - automobile.it", "005", true);
+		J2Web_UI.listPortaliSincronizzazione.add(_automobileIt);*/
+		
 		ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
-		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "4 - subito.it", "004", true);
+		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "6 - subito.it", "006", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_subitoIt);
 		
 		/*ImageIcon _kijijiItIcon  = new ImageIcon(cl.getResource("images/_kijijiIt.png"));
@@ -241,7 +252,7 @@ public class j2web implements parametriGenerali {
 
 		HttpPortalGetConnection trackEvent = new HttpPortalGetConnection();
 		try {
-			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + eventAction + "&eventLabel=" + eventLabel, false);
+			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + eventAction + "&eventLabel=" + eventLabel, null, null, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw(new IOException(e));

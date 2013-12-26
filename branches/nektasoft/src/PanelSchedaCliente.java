@@ -45,7 +45,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
-		setMaximumSize(new Dimension(600, 130));
+		setMaximumSize(new Dimension(500, 150));
 
 		//Radio button dei sottopannelli
 		schedaRadio = new JRadioButton("Seleziona scheda");
@@ -74,14 +74,11 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		});
 		add(schedaRadio, BorderLayout.NORTH);
 
-		//La label delle schede
-		String labelScheda = scheda.nomeCliente + " " + scheda.cognomeCliente + " - " + scheda.telefono1Cliente + " - " + scheda.emailCliente;
+		//La label delle schede		
+		String linea1 = scheda.nomeCliente + " " + scheda.cognomeCliente;	
+		String linea2 = scheda.telefono1Cliente + " " + scheda.emailCliente;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
+		String labelScheda = "<html><p style='padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i></p></html>";
 		String tooltipScheda = labelScheda;
-		labelScheda+="                                        "; //Aggiungo 40 caratteri spazio
-		if(labelScheda.length()>38) {	//è molto probabile che lo sia... :)
-			labelScheda = labelScheda.substring(0, 38); 
-		}		 
-		labelScheda+="...";
 
 		JLabel label = new JLabel(labelScheda);
 		Font font = new Font("Monospaced", Font.PLAIN, 11);
@@ -90,16 +87,18 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 
 		// Get current classloader
 		ClassLoader cl = this.getClass().getClassLoader();
+		ImageIcon humanIcon = null;
 		if(scheda.titoloCliente.equals("signora")) {
-			ImageIcon womanIcon  = new ImageIcon(cl.getResource("images/icon_woman.png"));
-			label.setIcon(womanIcon);
+			humanIcon  = new ImageIcon(cl.getResource("images/icon_woman.png"));
+			//label.setIcon(womanIcon);
 		}
 		else {
-			ImageIcon manIcon  = new ImageIcon(cl.getResource("images/icon_man.png"));
-			label.setIcon(manIcon);
+			humanIcon  = new ImageIcon(cl.getResource("images/icon_man.png"));
+			//label.setIcon(manIcon);
 		}
 
 		add(label, BorderLayout.CENTER);
+		add(new JLabel(" ", humanIcon, JLabel.RIGHT),BorderLayout.EAST);
 
 		//Aggiungo una tooltip
 		setToolTipText(tooltipScheda);
@@ -110,7 +109,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		panel_26.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		//Pulsante "Cancella"
-		btnCancellaScheda = new JButton("Cancella");
+		btnCancellaScheda = new JButton("Elimina scheda");
 		btnCancellaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Cancella scheda cliente: " + scheda.codiceSchedaCliente);
@@ -144,9 +143,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 
 	//Funzione di matching tra clienti e veicoli salvati in locale
 	private void  matchClienteVeicolo(SchedaCliente schedaCliente) {
-		
-		
-
+			
 		JPanel pannelloMatchClienteVeicolo = J2Web_UI.getPanel_6();
 
 		J2Web_UI.listSchedeVeicoliMatch.clear();
@@ -242,9 +239,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 			J2Web_UI.formCliente_getRdbtnSignora().setSelected(false);
 		}
 
-
 		J2Web_UI.nonUserSelection = false;
 	}
-
 
 }

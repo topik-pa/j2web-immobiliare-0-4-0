@@ -91,7 +91,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		final String USERNAME = BACKEND_EMAIL;
 		final String PASSWORD = BACKEND_EMAIL_PSW;
 		final String RECIPENTS = BACKEND_EMAIL + "," + EMAIL_UTENTE;
-		final String SUBJECT = "Scheda inserita: " + scheda.codiceScheda + " " + scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo ;
+		final String SUBJECT = "Scheda inserita: " + scheda.codiceScheda + " -- " + scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo;
 
 		final String SMTP_HOST = BACKEND_EMAIL_SMTP_HOST;
 		final int SMTP_PORT = BACKEND_EMAIL_SMTP_PORT;
@@ -100,8 +100,12 @@ public abstract class PortaleWeb implements parametriGenerali {
 		final String senderEmail = USERNAME.contains("@") ? USERNAME : (USERNAME + BACKEND_EMAIL_DOMAIN);
 
 		String textBody = "";	  	
-		textBody += "E' stata inserita una scheda nel portale: " + nomePortale + ".";
-		textBody += "Il codice della scheda Ã¨: \n" + scheda.codiceScheda + "/n" + "Il codice di inserimento Ã¨: /n" + codInserzione;
+		textBody +="E' stata inserita una scheda nel portale: " + nomePortale + ".\n";
+		textBody +="\n\nDati scheda:\n";
+		textBody +="Codice scheda: " + scheda.codiceScheda;
+		textBody +="\nCodice di inserimento nel portale: " + codInserzione;
+		textBody +="\nVeicolo: " + scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo;
+		textBody +="\nPortale di inserimento: " + nomePortale;
 
 
 		try {
@@ -112,7 +116,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 			msg.setSentDate(new Date());
 			msg.setSubject(SUBJECT);
 
-			msg.setText("Dati scheda: \n\n " + textBody);
+			msg.setText(textBody);
 
 			final Transport transport = session.getTransport("smtps");
 			transport.connect(SMTP_HOST, SMTP_PORT, USERNAME, PASSWORD);
@@ -128,7 +132,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		}
 	}
 
-	//Valutazione similaritÃ  tra stringhe
+	//Valutazione similarità  tra stringhe
 	public static List<char[]> bigram(String input)
 	{
 		ArrayList<char[]> bigram = new ArrayList<char[]>();
@@ -191,7 +195,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 					SESSIONCOOKIEDOMAIN = cookieDomain;
 					SESSIONCOOKIEHEADER = cookie_header;
 					SESSIONCOOKIEVALUE = cookie_value;
-					
+
 					//Stampo i valori trovati
 					System.out.println("Method: findSessionCookie \n" + "cookie_header-->"+cookie_header + "\ncookieName-->"+cookieName + "\ncookie_value-->"+cookie_value + "\ncookieDomain-->"+cookieDomain);
 				}   
@@ -202,29 +206,29 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return cookieHeaderFound?true:false;
 	}
 
-	
+
 	public boolean setCookies(Header[] inputHeaders, List<BasicClientCookie> outputHeaders) {
-		
+
 		boolean cookiesFound = false;
-		
+
 		String current_cookie_header;
 		String current_cookie_name;
 		String current_cookie_value;
 		BasicClientCookie currentCookie;
-		
+
 		for(int i=0; i<inputHeaders.length; i++) {       	
 			Header currentHeader = inputHeaders[i];
 			//Get cookie
 			if(currentHeader.getName().contains("Set-Cookie")) {
 				cookiesFound = true;
-				
+
 				current_cookie_header = currentHeader.getValue();
 				int end = current_cookie_header.indexOf("=");
 				current_cookie_name = current_cookie_header.substring(0, end);                   
 				int start = end + 1;
 				end = current_cookie_header.indexOf(";");
 				current_cookie_value = current_cookie_header.substring(start, end);
-				
+
 				//Stampo i valori trovati
 				System.out.println("Method: setCookies \n" + "cookie_header-->"+current_cookie_header + "\ncookieName-->"+current_cookie_name + "\ncookie_value-->"+current_cookie_value);
 
@@ -232,11 +236,11 @@ public abstract class PortaleWeb implements parametriGenerali {
 				outputHeaders.add(currentCookie);
 			}       	
 		}
-		
+
 		return cookiesFound;
-		
+
 	}
-	
+
 	//Ritorna il valore di una header dato il nome dell'header stesso
 	public String getHeaderValueByName(Header[] headers, String headerName) {
 
@@ -324,32 +328,35 @@ public abstract class PortaleWeb implements parametriGenerali {
 	}
 
 	//Ritorna il valore di un input dato il valore nella scheda e l'elemento input del DOM
-  	public String getParamValue(String valueScheda, Element domElement) {
-  		
-  		String returnValue = "";
-  		
-  		switch (domElement.nodeName()) {
-		case "select":		
+	public String getParamValue(String valueScheda, Element domElement) {
+
+		String returnValue = "";
+
+		switch (domElement.nodeName()) {
+		case "select":	
+			String nameElemento = domElement.attr("name");
 			Elements childrens = domElement.children();
 			if(childrens.isEmpty()) {
-            	return "Nessun elemento option";
-            }
-			
+				return "Nessun elemento option";
+			}
+
 			Iterator<Element> iterator = childrens.iterator();
-			List<char[]> stringaScheda = bigram(valueScheda.toLowerCase());
-        	double resultComparation = 0;
-        	while(iterator.hasNext()) {
-            	Element currentElement = iterator.next();
-            	List<char[]> stringaPortale = bigram(currentElement.text().toLowerCase());        		
-        		double actualResultComparation = dice(stringaPortale, stringaScheda);
-        		System.out.println("comp: " + actualResultComparation);
-        		if(actualResultComparation>=resultComparation) {
-        			resultComparation = actualResultComparation;
-        			returnValue = currentElement.attr("value");            		
-        		}       		
-        	}
+			String valueSchedaMinuscolo = valueScheda.toLowerCase();
+			List<char[]> stringaScheda = bigram(valueSchedaMinuscolo);
+			double resultComparation = 0;
+			while(iterator.hasNext()) {
+				Element currentElement = iterator.next();
+				String valueCurrentElemMinuscolo = currentElement.text().toLowerCase();
+				List<char[]> stringaPortale = bigram(valueCurrentElemMinuscolo);        		
+				double actualResultComparation = dice(stringaPortale, stringaScheda);
+				System.out.println("Comparazione " + nameElemento + " " + valueSchedaMinuscolo + "/" + valueCurrentElemMinuscolo + ": " + actualResultComparation);
+				if(actualResultComparation>resultComparation) {
+					resultComparation = actualResultComparation;
+					returnValue = currentElement.attr("value");            		
+				}       		
+			}
 			break;
-			
+
 		case "input":
 			if(valueScheda.equals("***site***")) {
 				returnValue = domElement.val();
@@ -358,33 +365,33 @@ public abstract class PortaleWeb implements parametriGenerali {
 				returnValue = valueScheda;
 			}
 			break;
-			
+
 		case "textarea":
 			returnValue = valueScheda;
 			break;
-			
+
 		case "button":
 			returnValue = valueScheda;
 			break;
-			
+
 		default:
 			System.out.println("Method getParamValue: " +  "input non elaborato-->" + domElement.nodeName());
-			
-		}
-  		
-  		return returnValue;
-  	}
 
-  	//Valuta i parametri presenti nella tabella di dipendenza
-  	public void valutaParametri(String dom, String selettore, Map<String,String> inputMap, Map<String,String> outputMap) {
-		
+		}
+
+		return returnValue;
+	}
+
+	//Valuta i parametri presenti nella tabella di dipendenza
+	public void valutaParametri(String dom, String selettore, Map<String,String> inputMap, Map<String,String> outputMap) {
+
 		String paramName;
 		String paramValue;
 		String dipendenza;
-		
+
 		org.jsoup.nodes.Document doc = Jsoup.parse(dom);
 		Elements inputElements = doc.select(selettore);
-		
+
 		if(inputElements!=null) {
 			Iterator<Element> iterator = inputElements.iterator();
 			while(iterator.hasNext()) {
@@ -402,17 +409,39 @@ public abstract class PortaleWeb implements parametriGenerali {
 		}
 		System.out.println("Method valutaParametri : " +  "mappaDeiParametri-->" + outputMap.toString());
 	}
-  	
-  	//Prepara i parametri POST da inviare nella connessione corrente
-  	public void setPostParameters(Map<String,String> inputMap, List<NameValuePair> outputList) {
-  		if(!inputMap.isEmpty()) {
+
+	//Prepara i parametri POST da inviare nella connessione corrente
+	public void setPostParameters(Map<String,String> inputMap, List<NameValuePair> outputList) {
+		if(!inputMap.isEmpty()) {
 			Iterator<Entry<String, String>> iterator = inputMap.entrySet().iterator();
 			while(iterator.hasNext()) {
 				Map.Entry<String,String> currentParam = (Map.Entry<String,String>)iterator.next();
 				outputList.add(new BasicNameValuePair((String)currentParam.getKey(), (String)currentParam.getValue()));			
 			}	
 		}
-  	}
-  	
-  	
+	}
+
+
+	//Messaggio inserimento annuncio OK
+	public void messageInserimentoOK(String nomePortale) {
+		JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + nomePortale, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	//Messaggio inserimento annuncio KO
+	public void messageInserimentoKO(String nomePortale) {
+		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + nomePortale + ".\n\nVerificare che:\nLa combinazione marca/modello sia prevista nel portale di inserimento\nNon si sia raggiunto il limite di annunci pubblicabili\nSi stiano rispettando i vincoli di inserimento del portale (per esempio: numero minimo e dimensioni delle immagini da pubblicare)", "Errore", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	//Messaggio eliminazione annuncio OK
+	public void messageEliminazioneOK(String nomePortale) {
+		JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + nomePortale);
+	}
+	
+	//Messaggio eliminazione annuncio KO
+	public void messageEliminazioneKO(String nomePortale) {
+		JOptionPane.showMessageDialog(null, "Problemi nell'eliminazione scheda in: " + nomePortale + ".\n\n Verificare l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	
+	
 }

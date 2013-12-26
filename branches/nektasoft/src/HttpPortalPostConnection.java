@@ -262,21 +262,23 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	//POST URLENCODED VALUES (3)
 	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, List<NameValuePair> requestHeaders, List<BasicClientCookie> requestCookies, boolean debugMode) throws IOException {
 
-		//La risposta che verrÃ  restituita
+		//La risposta che verrà  restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
 
 		//Inizializza la connessione
 		httppost = new HttpPost(url);
 
 		//Add request headers
-		BasicHeader newHeader;
-		BasicNameValuePair currentHeaderListItem;
-		Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
-		while(headersIterator.hasNext()) {
-			currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
-			newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
-			httppost.addHeader(newHeader);
-		}
+		if(requestHeaders!=null) {
+			BasicHeader newHeader;
+			BasicNameValuePair currentHeaderListItem;
+			Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
+			while(headersIterator.hasNext()) {
+				currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
+				newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
+				httppost.addHeader(newHeader);
+			}
+		}		
 
 		//Add request parameters
 		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
@@ -311,7 +313,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 
 		//Get the response headers
 		responseHeaders = response.getAllHeaders();
-		
+
 		//Get the response cookies
 		if(requestCookies!=null) {
 			responseCookies = cookieStore.getCookies();
@@ -337,21 +339,35 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	//POST MULTIPART/FORM-DATA (2)
 	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, List<NameValuePair> requestHeaders, List<BasicClientCookie> requestCookies, boolean debugMode) throws IOException {
 
-		//La risposta che verrÃ  restituita
+		//La risposta che verrà  restituita
 		Object[] headersAndBodyResponseAndStatus = new Object[3];
 
 		//Inizializza la connessione
 		httppost = new HttpPost(url);
 
-		//Add request headers (comprende i cookies)
+		//Add request headers
 		BasicHeader newHeader;
 		BasicNameValuePair currentHeaderListItem;
-		Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
-		while(headersIterator.hasNext()) {
-			currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
-			newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
-			httppost.addHeader(newHeader);
-		}    
+		if(requestHeaders!=null) {
+			Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
+			while(headersIterator.hasNext()) {
+				currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
+				newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
+				httppost.addHeader(newHeader);
+			}
+			if(!httppost.containsHeader("Content-Type")) {
+				httppost.addHeader(reqEntity.getContentType());
+			}
+			
+			//httppost.addHeader(reqEntity.getContentEncoding());
+			//httppost.addHeader("Content-Type", "multipart/form-data; boundary=----pluploadboundaryp18c3flp4v1q941ef91u0clsfcmq5");
+			//httppost.addHeader("Content-Length", "333606");
+			//httppost.getContentType();
+			
+			
+		}
+		
+		//reqEntity.getContentType();
 
 		//Add request parameters
 		httppost.setEntity(reqEntity);
@@ -385,7 +401,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 
 		//Get the response headers
 		responseHeaders = response.getAllHeaders();
-		
+
 		//Get the response cookies
 		if(requestCookies!=null) {
 			responseCookies = cookieStore.getCookies();

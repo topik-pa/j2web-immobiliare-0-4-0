@@ -24,6 +24,79 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 		responseHandler = new BasicResponseHandler();
 	}
 
+	//GET di una risorsa
+	public Object[] get(String connectionDescription, String url, List<NameValuePair> requestHeaders, List<BasicClientCookie> requestCookies, boolean debugMode) throws IOException {
+
+		//La risposta che verrà  restituita
+		Object[] headersAndBodyResponseAndStatus = new Object[3];
+
+		//Inizializza la connessione
+		httpget = new HttpGet(url);
+
+		//Add request headers
+		if(requestHeaders!=null) {
+			BasicHeader newHeader;
+			BasicNameValuePair currentHeaderListItem;
+			Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
+			while(headersIterator.hasNext()) {
+				currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
+				newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
+				httpget.addHeader(newHeader);
+			}
+		}		
+
+		//Set the cookies
+		if(requestCookies!=null) {
+			cookieStore = new BasicCookieStore();
+
+			//BasicHeader newHeader;
+			BasicClientCookie currentCookie;
+			Iterator<BasicClientCookie> cookiesIterator = requestCookies.iterator();
+			while(cookiesIterator.hasNext()) {
+				currentCookie = (BasicClientCookie) cookiesIterator.next();
+				currentCookie.setDomain(SESSIONCOOKIE_DOMAIN);
+				currentCookie.setPath("/"); 
+				cookieStore.addCookie(currentCookie);
+
+			}			
+			((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
+		}
+
+
+		//Send the request
+		response = httpclient.execute(httpget);
+
+		//Get the response body
+		HttpEntity responseEntity = response.getEntity();
+		String responseBody = "";
+		if(responseEntity!=null) {
+			responseBody = EntityUtils.toString(responseEntity);
+		}
+
+
+		//Get the response headers
+		responseHeaders = response.getAllHeaders();
+
+		//Get the response cookies
+		if(requestCookies!=null) {
+			responseCookies = cookieStore.getCookies();
+		}
+
+		if(debugMode) {
+			//Print connection properties
+			printConnectionProperties(connectionDescription, httpget, responseCookies, null, null, responseHeaders, responseBody);
+		}        
+
+		//Close the request
+		httpclient.getConnectionManager().shutdown();
+
+		//Return the headers and response body
+		headersAndBodyResponseAndStatus[0] = responseHeaders;
+		headersAndBodyResponseAndStatus[1] = responseBody;
+		headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
+		return headersAndBodyResponseAndStatus;     
+
+	}
 
 	//GET di una risorsa
 	@Deprecated
@@ -77,7 +150,6 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 		return headersAndBodyResponseAndStatus;     
 
 	}
-
 
 	//GET di una risorsa
 	@Deprecated
@@ -155,77 +227,5 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 
 	}
 
-
-	//GET di una risorsa
-	public Object[] get(String connectionDescription, String url, List<NameValuePair> requestHeaders, List<BasicClientCookie> requestCookies, boolean debugMode) throws IOException {
-
-		//La risposta che verrÃ  restituita
-		Object[] headersAndBodyResponseAndStatus = new Object[3];
-
-		//Inizializza la connessione
-		httpget = new HttpGet(url);
-
-		//Add request headers
-		BasicHeader newHeader;
-		BasicNameValuePair currentHeaderListItem;
-		Iterator<NameValuePair> headersIterator = requestHeaders.iterator();
-		while(headersIterator.hasNext()) {
-			currentHeaderListItem = (BasicNameValuePair) headersIterator.next();
-			newHeader = new BasicHeader(currentHeaderListItem.getName(), currentHeaderListItem.getValue());
-			httpget.addHeader(newHeader);
-		}
-
-		//Set the cookies
-		if(requestCookies!=null) {
-			cookieStore = new BasicCookieStore();
-
-			//BasicHeader newHeader;
-			BasicClientCookie currentCookie;
-			Iterator<BasicClientCookie> cookiesIterator = requestCookies.iterator();
-			while(cookiesIterator.hasNext()) {
-				currentCookie = (BasicClientCookie) cookiesIterator.next();
-				currentCookie.setDomain(SESSIONCOOKIE_DOMAIN);
-				currentCookie.setPath("/"); 
-				cookieStore.addCookie(currentCookie);
-								
-			}			
-			((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
-		}
-
-
-		//Send the request
-		response = httpclient.execute(httpget);
-
-		//Get the response body
-		HttpEntity responseEntity = response.getEntity();
-		String responseBody = "";
-		if(responseEntity!=null) {
-			responseBody = EntityUtils.toString(responseEntity);
-		}
-		
-		
-		//Get the response headers
-		responseHeaders = response.getAllHeaders();
-		
-		//Get the response cookies
-		if(requestCookies!=null) {
-			responseCookies = cookieStore.getCookies();
-		}
-
-		if(debugMode) {
-			//Print connection properties
-			printConnectionProperties(connectionDescription, httpget, responseCookies, null, null, responseHeaders, responseBody);
-		}        
-
-		//Close the request
-		httpclient.getConnectionManager().shutdown();
-
-		//Return the headers and response body
-		headersAndBodyResponseAndStatus[0] = responseHeaders;
-		headersAndBodyResponseAndStatus[1] = responseBody;
-		headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
-		return headersAndBodyResponseAndStatus;     
-
-	}
 
 }
