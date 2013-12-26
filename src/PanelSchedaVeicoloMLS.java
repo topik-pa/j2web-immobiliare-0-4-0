@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.JComponent;
 import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,6 +28,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
 	JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
 
 	private static final long serialVersionUID = 1L;
+	static ButtonGroup buttonGroupSchedeVeicoloMLS = new ButtonGroup(); 
 
 	SchedaVeicolo scheda;
 	Long idScheda;
@@ -34,7 +36,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
 	JButton btnCancellaScheda;
 	JButton btnEsportaScheda;
 	JRadioButton schedaRadio;
-
+	
 	String labelSpaziatore = "   "; 
 
 	public PanelSchedaVeicoloMLS(final SchedaVeicolo scheda) {
@@ -44,12 +46,12 @@ class PanelSchedaVeicoloMLS extends JPanel {
 
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
-		setMaximumSize(new Dimension(600, 130));
+		setMaximumSize(new Dimension(700, 130));
 
 		//Radio button dei sottopannelli
 		schedaRadio = new JRadioButton("Seleziona scheda");
 		//Le radio button devono appartenere allo stesso gruppo per funzionare correttamente
-		//radioGrpSchede.add(schedaRadio); 
+		buttonGroupSchedeVeicoloMLS.add(schedaRadio); 
 		//Clicco su una radio button di una scheda
 		schedaRadio.addActionListener(new ActionListener() {			 
 			public void actionPerformed(ActionEvent e) {
@@ -70,18 +72,20 @@ class PanelSchedaVeicoloMLS extends JPanel {
 		add(schedaRadio, BorderLayout.NORTH);
 
 		//La label delle schede
-		String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.tipologiaVeicolo + " " + scheda.coloreEsternoVeicolo + " " + scheda.prezzoVeicolo + " - " + scheda.ragioneSociale + " " + scheda.nomeReferente;
+		//String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.tipologiaVeicolo + " " + scheda.coloreEsternoVeicolo + " " + scheda.prezzoVeicolo + " - " + scheda.ragioneSociale + " " + scheda.nomeReferente;
+		String linea1 = scheda.marcaVeicolo + " " + scheda.modelloVeicolo;	
+		String linea2 = scheda.versioneVeicolo;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
+		String linea3 = scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}		
+		String labelScheda = "<html><p style='padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i><br/>" + linea3 + "</p></html>";	
 		String tooltipScheda = labelScheda;
-		if(labelScheda.length()>60) {	//è molto probabile che lo sia... :)
-			labelScheda = labelScheda.substring(0, 60); 
-		}		 
-		labelScheda+="...";
+
 		JLabel label = new JLabel(labelScheda);
 		Font font = new Font("Monospaced", Font.PLAIN, 11);
 		label.setFont(font);
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 
 		BufferedImage imgtest = null;
+		Image resizedimg = null;
 		if(scheda.arrayImages[1]!=null) {
 			try {
 				imgtest = ImageIO.read(scheda.arrayImages[1]);
@@ -90,12 +94,15 @@ class PanelSchedaVeicoloMLS extends JPanel {
 				e1.printStackTrace();
 			}
 
-			Image resizedimg = imgtest.getScaledInstance(70, 50, Image.SCALE_FAST);          
-
-			label.setIcon(new ImageIcon(resizedimg));
+			resizedimg = imgtest.getScaledInstance(70, 50, Image.SCALE_FAST);          
+			//label.setIcon(new ImageIcon(resizedimg));
+		}
+		else {
+			resizedimg = new BufferedImage(70,50,BufferedImage.TYPE_INT_ARGB_PRE);
 		}
 
 		add(label, BorderLayout.CENTER);
+		add(new JLabel(" ", new ImageIcon(resizedimg), JLabel.RIGHT),BorderLayout.EAST);
 
 		//Aggiungo una tooltip
 		setToolTipText(tooltipScheda);		 
@@ -110,7 +117,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
 
 		System.out.println("Info veicolo selezionato...");
 
-		String[][] matrix = new String[1][5];
+		String[][] matrix = new String[1][11];
 
 		for (int row = 0; row < matrix.length; row++) {
 			// for (int column = 0; column < matrix[row].length; column++)
@@ -119,19 +126,25 @@ class PanelSchedaVeicoloMLS extends JPanel {
 			matrix[row][2] = schedaVeicolo.versioneVeicolo;
 			matrix[row][3] = schedaVeicolo.coloreEsternoVeicolo;
 			matrix[row][4] = schedaVeicolo.chilometraggioVeicolo;
+			matrix[row][5] = schedaVeicolo.prezzoVeicolo;
+			matrix[row][6] = schedaVeicolo.tipologiaContrattoVeicolo;
+			matrix[row][7] = schedaVeicolo.ragioneSociale;
+			matrix[row][8] = schedaVeicolo.Indirizzo;
+			matrix[row][9] = schedaVeicolo.TelefonoReferente;
+			matrix[row][10] = schedaVeicolo.nomeReferente;
 		}
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(
 				matrix,
 				new String[] {
-						"Marca", "Modello", "Versione", "Colore", "Chilometri"
+						"Marca", "Modello", "Versione", "Colore", "Chilometri", "Prezzo", "Contratto", "Concessionario", "Indirizzo", "Telefono", "Referente" 
 				}
 				));
-		
+
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table.setFillsViewportHeight(true);
-		
+
 		pannelloInfoVeicoloMLS.add(table.getTableHeader(), BorderLayout.PAGE_START);
 		pannelloInfoVeicoloMLS.add(table, BorderLayout.CENTER);
 	}
