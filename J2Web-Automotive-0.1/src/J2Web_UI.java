@@ -604,7 +604,7 @@ public class J2Web_UI implements parametriGenerali {
 		JLabel lblDataPrimaImmatricolazione = new JLabel("Prima immatricolazione*");
 		panel_20.add(lblDataPrimaImmatricolazione, "2, 8");
 
-		JLabel lblCarburante = new JLabel("Carburante");
+		JLabel lblCarburante = new JLabel("Carburante*");
 		panel_20.add(lblCarburante, "10, 8");
 
 		comboBox_MeseImmatricolazione = new JComboBox<String>();
@@ -3100,6 +3100,7 @@ public class J2Web_UI implements parametriGenerali {
 		listCampiFormVeicoloObbligatori.add(getComboBox_Carrozzeria());
 		listCampiFormVeicoloObbligatori.add(getComboBox_MeseImmatricolazione());
 		listCampiFormVeicoloObbligatori.add(getComboBox_AnnoImmatricolazione());
+		listCampiFormVeicoloObbligatori.add(getComboBox_Carburante());
 
 		listCampiFormVeicoloObbligatori.add(getTextField_Prezzo());			
 		listCampiFormVeicoloObbligatori.add(getTextFieldIndirizzo());

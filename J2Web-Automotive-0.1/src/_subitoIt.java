@@ -107,6 +107,7 @@ public class _subitoIt extends PortaleWeb {
 		this.scheda=scheda;
 
 		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
+		requestHeaders.clear();
 		requestHeaders.add(new BasicNameValuePair("Host", HOST));
 		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
 		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));

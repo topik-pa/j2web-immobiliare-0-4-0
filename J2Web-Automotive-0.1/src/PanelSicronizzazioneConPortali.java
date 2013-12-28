@@ -177,11 +177,14 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 
 	//Invio a me la mail in caso di errori runtime
 	static void sendErrorMail(String stackTrace, String errorCode)   {
+		
+		final String CLIENTNAME = EMAIL_UTENTE;
+		final String TELCLIENTE = TELEFONO_UTENTE;
 
 		final String USERNAME = BACKEND_EMAIL;
 		final String PASSWORD = BACKEND_EMAIL_PSW;
 		final String RECIPENTS = BACKEND_EMAIL;
-		final String SUBJECT = "Runtime error in imagination. Code: " + errorCode;
+		final String SUBJECT = "Runtime error in imagination. Code: " + errorCode + "  --  " + CLIENTNAME + " " + TELCLIENTE;
 
 		final String SMTP_HOST = BACKEND_EMAIL_SMTP_HOST;
 		final int SMTP_PORT = BACKEND_EMAIL_SMTP_PORT;
