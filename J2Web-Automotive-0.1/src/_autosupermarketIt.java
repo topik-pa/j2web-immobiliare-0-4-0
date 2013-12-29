@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -27,6 +28,7 @@ import org.apache.http.message.BasicStatusLine;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -100,6 +102,7 @@ public class _autosupermarketIt extends PortaleWeb {
 
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
+		
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
 
 		//autosupermarket accetta minimo due foto per annuncio di dimensioni prefissate
@@ -127,7 +130,6 @@ public class _autosupermarketIt extends PortaleWeb {
 			e.printStackTrace();
 		}
 
-
 		//Inizializzazione scheda
 		this.scheda=scheda;
 
@@ -147,7 +149,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
 
 		//Connessione 0 - GET della home page - Opzionale
-		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, debugMode);
 			//Controllo il response status
@@ -157,7 +159,7 @@ public class _autosupermarketIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		//Connessione 1 - GET della pagina di login
@@ -181,7 +183,14 @@ public class _autosupermarketIt extends PortaleWeb {
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-
+		
+		//Il server remoto è lento...
+		try {
+			Thread.sleep(700);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
@@ -223,8 +232,8 @@ public class _autosupermarketIt extends PortaleWeb {
 		}
 
 
-		//Connessione 3 - GET della pagina di I miei annunci
-		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
+		//Connessione 3 - GET della pagina I miei annunci - Opzionale
+		/*HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_3.get("Connessione 3 - GET della pagina I miei annunci", URLROOT + location, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
@@ -237,8 +246,16 @@ public class _autosupermarketIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
+		}*/
+		
+		
+		//Il server remoto è lento...
+		try {
+			Thread.sleep(700);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-
 
 		//Connessione 4 - GET della pagina di inserzione annuncio
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
@@ -313,19 +330,43 @@ public class _autosupermarketIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 
-
+		
+		//Il server remoto è lento...
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		
+		Document doc = Jsoup.parse(responseBody);
+		List<NameValuePair> lista = new LinkedList<NameValuePair>();
+		lista.add(new BasicNameValuePair("0", "Seleziona"));
+		lista.add(new BasicNameValuePair("4", "Alcantara"));
+		lista.add(new BasicNameValuePair("5", "Pelle parziale"));
+		lista.add(new BasicNameValuePair("6", "Pelle scamosciata"));
+		lista.add(new BasicNameValuePair("2", "Pelle totale"));
+		lista.add(new BasicNameValuePair("1", "Stoffa"));
+		lista.add(new BasicNameValuePair("0", "Altro"));
+		responseBody=adattaSelect(doc, "#car_carana001_carlst002_interior_cod", lista).toString();
+		
+		List<NameValuePair> lista2 = new LinkedList<NameValuePair>();
+		lista2.add(new BasicNameValuePair("0", "Seleziona"));
+		lista2.add(new BasicNameValuePair("1", "Euro 0"));
+		lista2.add(new BasicNameValuePair("2", "Euro 1"));
+		lista2.add(new BasicNameValuePair("3", "Euro 2"));
+		lista2.add(new BasicNameValuePair("4", "Euro 3"));
+		lista2.add(new BasicNameValuePair("5", "Euro 4"));
+		lista2.add(new BasicNameValuePair("6", "Euro 5"));
+		lista2.add(new BasicNameValuePair("7", "Euro 6"));
+		responseBody=adattaSelect(doc, "#car_carana001_carlst017_emission_cod", lista2).toString();
 
 
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
 		tabellaDiDipendenza.put("car[carana001_carlst001_listing_type_cod]", scheda.tipologiaVeicolo); //da fare sotto
-		tabellaDiDipendenza.put("car[carana001_carlst002_interior_cod]", scheda.finitureInterneVeicolo);//da fare sotto
+		tabellaDiDipendenza.put("car[carana001_carlst002_interior_cod]", scheda.finitureInterneVeicolo);
 		tabellaDiDipendenza.put("car[carana001_carlst004_auto_body_cod]", scheda.carrozzeriaVeicolo);
 		tabellaDiDipendenza.put("car[carana001_carlst005_auto_body_status_cod]", "Scegli...");
 		tabellaDiDipendenza.put("car[carana001_carlst006_fuel_cod]", scheda.carburanteVeicolo);
@@ -378,7 +419,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		}
 
 		tabellaDiDipendenza.put("car[carana001_last_review_num]", "Scegli...");
-		tabellaDiDipendenza.put("car[carana001_month_num]", "0"+scheda.meseImmatricolazioneVeicoloIndex);
+		tabellaDiDipendenza.put("car[carana001_month_num]", "0" + Integer.toString(scheda.meseImmatricolazioneVeicoloIndex-1));
 		String escapedDescription = scheda.descrizioneVeicolo.replaceAll("&", "&amp;").replaceAll("'", "&quot;").replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
 		tabellaDiDipendenza.put("car[carana001_notes_des]", escapedDescription);
 		tabellaDiDipendenza.put("car[carana001_owner_num]", scheda.numeroPrecedentiProprietariVeicolo);
@@ -447,7 +488,6 @@ public class _autosupermarketIt extends PortaleWeb {
 			postParameters.add(new BasicNameValuePair("car[carana001_car_flg][]", "94"));
 		}
 
-
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
 			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri di annuncio", URLROOT + "/mycar/new.html", postParameters, requestHeaders, requestCookies, debugMode);			
@@ -481,8 +521,8 @@ public class _autosupermarketIt extends PortaleWeb {
 		}
 
 
-		//Connessione 7 - GET della pagina di inserzione immagini
-		HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
+		//Connessione 7 - GET della pagina di inserzione immagini - Opzionale
+		/*HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_7.get("Connessione 7 - GET della pagina di inserzione immagini",  URLROOT + location, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
@@ -495,7 +535,7 @@ public class _autosupermarketIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();        
@@ -505,7 +545,7 @@ public class _autosupermarketIt extends PortaleWeb {
 			for(int i=1; i<=8; i++) { //max 8 foto
 
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -565,8 +605,8 @@ public class _autosupermarketIt extends PortaleWeb {
 					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Location non corretta"));
 				}
 				else {
-					//inserimentoOK = true; //da togliere!
 					responseBody = (String)response[1];
+					inserimentoOK = true; //da togliere
 				}
 			}
 			else {
@@ -620,8 +660,6 @@ public class _autosupermarketIt extends PortaleWeb {
 		}*/
 
 
-
-
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
 		if(inserimentoOK) {
 
@@ -663,7 +701,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT + "/mycar/index.html";
+			String url = URLROOT;
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			System.out.println("Visualizzata in: " + NOMEPORTALE);
 
@@ -697,7 +735,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
 
 		//Connessione 0 - GET della home page - Opzionale
-		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, debugMode);
 			//Controllo il response status
@@ -707,7 +745,7 @@ public class _autosupermarketIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		//Connessione 1 - GET della pagina di login
@@ -773,8 +811,8 @@ public class _autosupermarketIt extends PortaleWeb {
 		}
 
 
-		//Connessione 3 - GET della pagina di I miei annunci
-		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
+		//Connessione 3 - GET della pagina di I miei annunci - Opzionale
+		/*HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_3.get("Connessione 3 - GET della pagina I miei annunci", URLROOT + location, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
@@ -787,7 +825,7 @@ public class _autosupermarketIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		//Connessione 4 - POST di eliminazione annuncio
