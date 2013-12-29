@@ -16,6 +16,10 @@ import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;*/
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
@@ -49,7 +53,6 @@ public class _subitoIt extends PortaleWeb {
 	private String codiceInserzione = Integer.toString(random);
 	private String location;
 	private String responseBody;
-	//private BasicNameValuePair sessionCookie;
 	private boolean inserimentoOK = false;
 	private boolean debugMode = true;
 
@@ -102,6 +105,8 @@ public class _subitoIt extends PortaleWeb {
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
+		
+		//String test = getCarmodel("Atom", "002345");
 
 		//Inizializzazione scheda
 		this.scheda=scheda;
@@ -116,7 +121,7 @@ public class _subitoIt extends PortaleWeb {
 		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
 
 		//Connessione 0 - GET della home page - Opzionale
-		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, debugMode);
 			//Controllo il response status
@@ -126,10 +131,10 @@ public class _subitoIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
-		//Connessione 1 - GET della pagina di login - Opzionale
+		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/account/login_form/", requestHeaders, null, debugMode);
@@ -187,7 +192,7 @@ public class _subitoIt extends PortaleWeb {
 
 
 		//Connessione 3 - GET della pagina di redirect dopo inserimento parametri login - (Opzionale)
-		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + location, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
@@ -202,13 +207,13 @@ public class _subitoIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		//Connessione 4 - GET della pagina di redirect dopo inserimento parametri login - la connessione precedente non mi ritorna la location (Opzionale)
-		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_4.get("Connessione 4 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + "/account/manageads/", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina di redirect dopo inserimento parametri login - la connessione precedente non mi ritorna la location", SECUREURLROOT + "/account/manageads/", requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -216,10 +221,10 @@ public class _subitoIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
-		//Connessione 5 - GET della pagina "Inserisci il tuo annuncio" - Opzionale
+		//Connessione 5 - GET della pagina "Inserisci il tuo annuncio"
 		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci il tuo annuncio\"", SECUREURLROOT + "/ai/form/0", requestHeaders, requestCookies, debugMode);
@@ -237,7 +242,7 @@ public class _subitoIt extends PortaleWeb {
 
 
 		//Connessione5b - POST delle immagini
-		/*for(int i=1; i<scheda.arrayImages.length; i++) {
+		for(int i=1; i<=scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null && i<=6) {
 
 				//Raccolgo i parametri nella tabella di dipendenza
@@ -269,10 +274,11 @@ public class _subitoIt extends PortaleWeb {
 					reqEntity.addPart("clothing_gender", new StringBody("") );
 					reqEntity.addPart("region", new StringBody("0") );
 					reqEntity.addPart("city", new StringBody("0") );
-					reqEntity.addPart("town", new StringBody("0") );
+					reqEntity.addPart("town", new StringBody("") );
 					reqEntity.addPart("zone", new StringBody("") );
-					reqEntity.addPart("company_ad", new StringBody("1") );
+					reqEntity.addPart("company_ad", new StringBody("0") );
 					reqEntity.addPart("name", new StringBody("") );
+					reqEntity.addPart("email", new StringBody("") );
 					reqEntity.addPart("phone", new StringBody("") );
 					reqEntity.addPart("type", new StringBody("s") );
 					reqEntity.addPart("carbrand", new StringBody("") );
@@ -282,8 +288,8 @@ public class _subitoIt extends PortaleWeb {
 					reqEntity.addPart("car_type", new StringBody("") );
 					reqEntity.addPart("gearbox", new StringBody("") );
 					reqEntity.addPart("pollution", new StringBody("") );
-					reqEntity.addPart("seats", new StringBody("") );
-					reqEntity.addPart("doors", new StringBody("") );
+					reqEntity.addPart("seats", new StringBody("0") );
+					reqEntity.addPart("doors", new StringBody("0") );
 					reqEntity.addPart("color", new StringBody("") );
 					reqEntity.addPart("subject", new StringBody("") );
 					reqEntity.addPart("price", new StringBody("") );
@@ -300,7 +306,7 @@ public class _subitoIt extends PortaleWeb {
 					reqEntity.addPart("validate", new StringBody("continua") );
 					reqEntity.addPart("extra_images", new StringBody("Carica") );
 
-					Object[] response = connessione_6.post("Connessione5b - POST delle immagini", SECUREURLROOT + "/ai/verify/1", reqEntity, requestHeaders, requestCookies, debugMode);			
+					Object[] response = connessione_6.post("Connessione5b - POST delle immagini", SECUREURLROOT + "/ai/verify/0", reqEntity, requestHeaders, requestCookies, debugMode);			
 
 					//Controllo il response status
 					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -308,9 +314,9 @@ public class _subitoIt extends PortaleWeb {
 						Header[] responseHeaders = (Header[])response[0];
 						//Trovo la location
 						location = getHeaderValueByName(responseHeaders, "Location");
-						if(!location.contains("/ai/form/1")) {
-							//throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
-						}
+						/*if(!location.contains("/ai/form/1")) {
+							throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
+						}*/
 					}
 					else {
 						throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
@@ -322,7 +328,7 @@ public class _subitoIt extends PortaleWeb {
 				finally {
 				}
 			}
-		}*/
+		}
 
 
 		//Connessione 6 - POST dei parametri di annuncio
@@ -352,8 +358,6 @@ public class _subitoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("clothing_gender","Scegli"); 
 		tabellaDiDipendenza.put("clothing_number","Scegli");
 		tabellaDiDipendenza.put("region", REGIONE_UTENTE); //Friuli-Venezia Giulia
-		//tabellaDiDipendenza.put("city",CITTA_UTENTE); //Udine - devo valutarla dopo
-		//tabellaDiDipendenza.put("town",CITTA_UTENTE); //Udine - devo valutarla dopo
 		tabellaDiDipendenza.put("zone","");
 		tabellaDiDipendenza.put("company_ad", "1"); //pubblica come Azienda
 		tabellaDiDipendenza.put("name",RAGIONESOCIALE_UTENTE); //autoeauto
@@ -362,10 +366,15 @@ public class _subitoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("phone_hidden","***site***");
 		tabellaDiDipendenza.put("type","s"); //Vendita 
 		tabellaDiDipendenza.put("carbrand",scheda.marcaVeicolo);
-		//tabellaDiDipendenza.put("carmodel","003854"); //da fare - calcolato sotto
-		tabellaDiDipendenza.put("regdate",scheda.annoImmatricolazioneVeicolo);
-		tabellaDiDipendenza.put("carversion", "099565"); //da fare
-		tabellaDiDipendenza.put("mileage","25.000 - 29.999"); // da gestire sotto
+		
+		if(scheda.annoImmatricolazioneVeicolo.equals("Da immatricolare")) {
+			tabellaDiDipendenza.put("regdate","2013");
+		}
+		else {
+			tabellaDiDipendenza.put("regdate",scheda.annoImmatricolazioneVeicolo);
+		}
+		
+		tabellaDiDipendenza.put("carversion", "");
 		tabellaDiDipendenza.put("fuel",scheda.carburanteVeicolo);
 		tabellaDiDipendenza.put("country","Seleziona");
 		tabellaDiDipendenza.put("car_type",scheda.carrozzeriaVeicolo);
@@ -428,34 +437,50 @@ public class _subitoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("accept_term_of_use","1"); //accetto i termini d'uso
 		tabellaDiDipendenza.put("validate","continua");
 
-		/*if(!scheda.chilometraggioVeicolo.equals("")) {
+		if(!scheda.chilometraggioVeicolo.equals("")) {
+			String mileage = "";
 			int chilometraggio = Integer.parseInt(scheda.chilometraggioVeicolo);
-			if(chilometraggio<=139999) {postParameters.add(new BasicNameValuePair("mileage", "24"));}
-			if(chilometraggio<=129999) {postParameters.add(new BasicNameValuePair("mileage", "23"));}
-			if(chilometraggio<=119999) {postParameters.add(new BasicNameValuePair("mileage", "22"));}
-			if(chilometraggio<=109999) {postParameters.add(new BasicNameValuePair("mileage", "21"));}
-			if(chilometraggio<=99999) {postParameters.add(new BasicNameValuePair("mileage", "20"));}
-			if(chilometraggio<=94999) {postParameters.add(new BasicNameValuePair("mileage", "19"));}
-			if(chilometraggio<=89999) {postParameters.add(new BasicNameValuePair("mileage", "18"));}
-			if(chilometraggio<=84999) {postParameters.add(new BasicNameValuePair("mileage", "17"));}
-			if(chilometraggio<=79999) {postParameters.add(new BasicNameValuePair("mileage", "16"));}
-			if(chilometraggio<=74999) {postParameters.add(new BasicNameValuePair("mileage", "15"));}
-			if(chilometraggio<=69999) {postParameters.add(new BasicNameValuePair("mileage", "14"));}
-			if(chilometraggio<=64999) {postParameters.add(new BasicNameValuePair("mileage", "13"));}
-			if(chilometraggio<=59999) {postParameters.add(new BasicNameValuePair("mileage", "12"));}
-			if(chilometraggio<=54999) {postParameters.add(new BasicNameValuePair("mileage", "11"));}
-			if(chilometraggio<=49999) {postParameters.add(new BasicNameValuePair("mileage", "10"));}
-			if(chilometraggio<=44999) {postParameters.add(new BasicNameValuePair("mileage", "9"));}
-			if(chilometraggio<=39999) {postParameters.add(new BasicNameValuePair("mileage", "8"));}
-			if(chilometraggio<=34999) {postParameters.add(new BasicNameValuePair("mileage", "7"));}
-			if(chilometraggio<=29999) {postParameters.add(new BasicNameValuePair("mileage", "6"));}
-			if(chilometraggio<=24999) {postParameters.add(new BasicNameValuePair("mileage", "5"));}
-			if(chilometraggio<=19999) {postParameters.add(new BasicNameValuePair("mileage", "4"));}
-			if(chilometraggio<=14999) {postParameters.add(new BasicNameValuePair("mileage", "3"));}
-			if(chilometraggio<=9999) {postParameters.add(new BasicNameValuePair("mileage", "2"));}
-			if(chilometraggio<=4999) {postParameters.add(new BasicNameValuePair("mileage", "1"));}
-			if(chilometraggio==0) {postParameters.add(new BasicNameValuePair("mileage", "0"));}
-		}*/
+			if(chilometraggio==0) {mileage="0";}
+			if(chilometraggio>0) {mileage="1";}
+			if(chilometraggio>5000) {mileage="2";}
+			if(chilometraggio>10000) {mileage="3";}
+			if(chilometraggio>15000) {mileage="4";}
+			if(chilometraggio>20000) {mileage="5";}
+			if(chilometraggio>25000) {mileage="6";}
+			if(chilometraggio>30000) {mileage="7";}
+			if(chilometraggio>35000) {mileage="8";}
+			if(chilometraggio>40000) {mileage="9";}
+			if(chilometraggio>45000) {mileage="10";}
+			if(chilometraggio>50000) {mileage="11";}
+			if(chilometraggio>55000) {mileage="12";}
+			if(chilometraggio>60000) {mileage="13";}
+			if(chilometraggio>65000) {mileage="14";}
+			if(chilometraggio>70000) {mileage="15";}
+			if(chilometraggio>75000) {mileage="16";}
+			if(chilometraggio>80000) {mileage="17";}
+			if(chilometraggio>85000) {mileage="18";}
+			if(chilometraggio>90000) {mileage="19";}
+			if(chilometraggio>95000) {mileage="20";}
+			if(chilometraggio>100000) {mileage="21";}
+			if(chilometraggio>110000) {mileage="22";}
+			if(chilometraggio>120000) {mileage="23";}
+			if(chilometraggio>130000) {mileage="24";}
+			if(chilometraggio>140000) {mileage="25";}
+			if(chilometraggio>150000) {mileage="26";}
+			if(chilometraggio>160000) {mileage="27";}
+			if(chilometraggio>170000) {mileage="28";}
+			if(chilometraggio>180000) {mileage="29";}
+			if(chilometraggio>190000) {mileage="30";}
+			if(chilometraggio>200000) {mileage="31";}
+			if(chilometraggio>250000) {mileage="32";}
+			if(chilometraggio>300000) {mileage="33";}
+			if(chilometraggio>350000) {mileage="34";}
+			if(chilometraggio>400000) {mileage="35";}
+			if(chilometraggio>450000) {mileage="36";}
+			if(chilometraggio>500000) {mileage="37";}
+			
+			postParameters.add(new BasicNameValuePair("mileage", mileage));
+		}
 
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
 		valutaParametri(responseBody, "#content form input, #content form select, #content form textarea", tabellaDiDipendenza, mappaDeiParamerti);
@@ -465,7 +490,11 @@ public class _subitoIt extends PortaleWeb {
 		//Questi parametri li devo valorizzare qui
 		postParameters.add(new BasicNameValuePair("city", "4")); //Udine
 		postParameters.add(new BasicNameValuePair("town", "030129"));  //Udine
-		postParameters.add(new BasicNameValuePair("carmodel", "004142")); //da fare
+		
+		var_idMarca = mappaDeiParamerti.get("carbrand");
+		String carmodel = getCarmodel(scheda.modelloVeicolo, var_idMarca);
+		
+		postParameters.add(new BasicNameValuePair("carmodel", carmodel));
 		
 		
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
@@ -564,7 +593,7 @@ public class _subitoIt extends PortaleWeb {
 				sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
 
 				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\n\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
 			}
 
 			return inserimentoOK;        	
@@ -582,22 +611,51 @@ public class _subitoIt extends PortaleWeb {
 	}
 
 
+	private String getCarmodel(String modelloVeicolo, String idMarca) throws HttpCommunicationException {
+		
+		String idModello = null;
+		
+		HttpPortalGetConnection connessione_a = new HttpPortalGetConnection();
+		try {
+			Object[] response =  connessione_a.get("Connessione a - GET per ottenere l'idModello", SECUREURLROOT + "/templates/common/carmodels.html?cb=" + idMarca, requestHeaders, requestCookies, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				responseBody = (String)response[1];
+			}
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+				
+		String[] parts = responseBody.split("~");
+		for(int i = 0; i<parts.length; i++) {
+			if(parts[i].contains(modelloVeicolo)) {
+				int start = parts[i].indexOf("|")+1;
+				idModello = parts[i].substring(start);
+				return idModello;
+			}
+		}
+		
+		return idModello;
+	}
+
+
 	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceScheda + "...");
 		
-		JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
-
-		/*codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = SECUREURLROOT + "/account/manageads/";
+			String url = URLROOT;
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			System.out.println("Visualizzata in: " + NOMEPORTALE);
 
 		} catch (IOException e ) {
 			//
-		}*/
+		}
 
 		return true;
 	}
@@ -610,7 +668,7 @@ public class _subitoIt extends PortaleWeb {
 
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		
-		JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Non è prevista l'eliminazione automatica della scheda da: " + NOMEPORTALE + "\n\nPer elimibare la scheda, procedere direttamente attraverso il portale Web.", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
 		
 		
 		return true;
