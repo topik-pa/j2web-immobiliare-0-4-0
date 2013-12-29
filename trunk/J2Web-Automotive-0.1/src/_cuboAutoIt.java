@@ -111,7 +111,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
 
 		//Connessione 0 - GET della home page - Opzionale
-		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/index.php", requestHeaders, null, debugMode);
 			//Controllo il response status
@@ -121,7 +121,7 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		//Connessione 1 - GET della pagina di login
@@ -180,7 +180,7 @@ public class _cuboAutoIt extends PortaleWeb {
 
 
 		//Connessione 3 - GET della pagina "Area concessionario" - Opzionale
-		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area concessionario\"", URLROOT + "/" + location, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
@@ -190,10 +190,10 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
-		//Connessione 4 - GET della pagina "Inserisci un nuovo annuncio" - Opzionale
+		//Connessione 4 - GET della pagina "Inserisci un nuovo annuncio"
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, requestCookies, debugMode);
@@ -368,7 +368,7 @@ public class _cuboAutoIt extends PortaleWeb {
 
 
 		//Connessione 7 - GET della pagina "Dettaglio annuncio" - Opzionale
-		HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
 		try {
 			Object[] response =  connessione_7.get("Connessione 7 - GET della pagina \"Dettaglio annuncio\"", URLROOT + "/" + location, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
@@ -378,7 +378,7 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		//Connessione 8 - GET della pagina "Inserisci una nuova foto" - Opzionale
@@ -452,7 +452,6 @@ public class _cuboAutoIt extends PortaleWeb {
 
 			if(!isSequential) {
 				//Stampo a video un messaggio informativo
-				//JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
 				messageInserimentoKO(NOMEPORTALE);
 			}
 
@@ -470,7 +469,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT + "/concessionari/dett-annuncio.php?id=" + codiceInserzione;
+			String url = URLROOT;
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			System.out.println("Visualizzata in: " + NOMEPORTALE);
 
