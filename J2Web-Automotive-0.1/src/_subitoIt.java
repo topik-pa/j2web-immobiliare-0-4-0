@@ -105,7 +105,7 @@ public class _subitoIt extends PortaleWeb {
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
-		
+
 		//String test = getCarmodel("Atom", "002345");
 
 		//Inizializzazione scheda
@@ -366,14 +366,14 @@ public class _subitoIt extends PortaleWeb {
 		tabellaDiDipendenza.put("phone_hidden","***site***");
 		tabellaDiDipendenza.put("type","s"); //Vendita 
 		tabellaDiDipendenza.put("carbrand",scheda.marcaVeicolo);
-		
+
 		if(scheda.annoImmatricolazioneVeicolo.equals("Da immatricolare")) {
 			tabellaDiDipendenza.put("regdate","2013");
 		}
 		else {
 			tabellaDiDipendenza.put("regdate",scheda.annoImmatricolazioneVeicolo);
 		}
-		
+
 		tabellaDiDipendenza.put("carversion", "");
 		tabellaDiDipendenza.put("fuel",scheda.carburanteVeicolo);
 		tabellaDiDipendenza.put("country","Seleziona");
@@ -478,7 +478,7 @@ public class _subitoIt extends PortaleWeb {
 			if(chilometraggio>400000) {mileage="35";}
 			if(chilometraggio>450000) {mileage="36";}
 			if(chilometraggio>500000) {mileage="37";}
-			
+
 			postParameters.add(new BasicNameValuePair("mileage", mileage));
 		}
 
@@ -486,17 +486,17 @@ public class _subitoIt extends PortaleWeb {
 		valutaParametri(responseBody, "#content form input, #content form select, #content form textarea", tabellaDiDipendenza, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
-		
+
 		//Questi parametri li devo valorizzare qui
 		postParameters.add(new BasicNameValuePair("city", "4")); //Udine
 		postParameters.add(new BasicNameValuePair("town", "030129"));  //Udine
-		
+
 		var_idMarca = mappaDeiParamerti.get("carbrand");
 		String carmodel = getCarmodel(scheda.modelloVeicolo, var_idMarca);
-		
+
 		postParameters.add(new BasicNameValuePair("carmodel", carmodel));
-		
-		
+
+
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
 			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", SECUREURLROOT + "/ai/verify/0", postParameters, requestHeaders, requestCookies, debugMode);			
@@ -612,9 +612,9 @@ public class _subitoIt extends PortaleWeb {
 
 
 	private String getCarmodel(String modelloVeicolo, String idMarca) throws HttpCommunicationException {
-		
+
 		String idModello = null;
-		
+
 		HttpPortalGetConnection connessione_a = new HttpPortalGetConnection();
 		try {
 			Object[] response =  connessione_a.get("Connessione a - GET per ottenere l'idModello", SECUREURLROOT + "/templates/common/carmodels.html?cb=" + idMarca, requestHeaders, requestCookies, debugMode);
@@ -629,7 +629,7 @@ public class _subitoIt extends PortaleWeb {
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-				
+
 		String[] parts = responseBody.split("~");
 		for(int i = 0; i<parts.length; i++) {
 			if(parts[i].contains(modelloVeicolo)) {
@@ -638,7 +638,7 @@ public class _subitoIt extends PortaleWeb {
 				return idModello;
 			}
 		}
-		
+
 		return idModello;
 	}
 
@@ -646,7 +646,7 @@ public class _subitoIt extends PortaleWeb {
 	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
 		System.out.println("Visualizzazione scheda: " + scheda.codiceScheda + "...");
-		
+
 		//Apro il browser e inserisco credenziali		
 		try {
 			String url = URLROOT;
@@ -663,17 +663,17 @@ public class _subitoIt extends PortaleWeb {
 
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
-		
+
 		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
 
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
-		
+
 		JOptionPane.showMessageDialog(null, "Non è prevista l'eliminazione automatica della scheda da: " + NOMEPORTALE + "\n\nPer elimibare la scheda, procedere direttamente attraverso il portale Web.", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
-		
-		
+
+
 		return true;
 
-		
+
 
 	}
 

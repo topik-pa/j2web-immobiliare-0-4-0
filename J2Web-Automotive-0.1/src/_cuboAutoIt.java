@@ -277,7 +277,7 @@ public class _cuboAutoIt extends PortaleWeb {
 			tabellaDiDipendenza.put("meseimmatricolazione","0"+scheda.meseImmatricolazioneVeicoloIndex);
 		}
 		tabellaDiDipendenza.put("meseprossimarevisione","vuoto");
-		
+
 		if(scheda.classeEmissioniVeicolo.equals("Seleziona")) {
 			tabellaDiDipendenza.put("normativa","vuoto");
 		}
@@ -305,12 +305,12 @@ public class _cuboAutoIt extends PortaleWeb {
 		valutaParametri(responseBody, "#centrale form input, #centrale form select, #centrale form textarea", tabellaDiDipendenza, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
-		
+
 		if(mappaDeiParamerti.get("idModello").equals("")) {
 			messageInserimentoKO(NOMEPORTALE);
 			return false;
 		}
-		
+
 		//Aggiungo qui questi parametri perchè se li aggiungessi nella tabellaDiDipendenza si sovrascriverebbero (hanno lo stesso nome)
 		if(scheda.disponibilitaABS){ postParameters.add(new BasicNameValuePair("sicurezza[]", "1")); }
 		if(scheda.disponibilitaAirBag){ postParameters.add(new BasicNameValuePair("sicurezza[]", "2")); postParameters.add(new BasicNameValuePair("sicurezza[]", "4"));}
@@ -329,7 +329,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		if(scheda.disponibilitaCerchiInLega){ postParameters.add(new BasicNameValuePair("linea[]", "2")); }
 		if(scheda.disponibilitaGancioTraino){ postParameters.add(new BasicNameValuePair("varie[]", "16")); }
 		if(scheda.disponibilitaPortaPacchi){ postParameters.add(new BasicNameValuePair("varie[]", "8")); }
-		
+
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
 			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", URLROOT + "/concessionari/_inserisci-annuncio.php", postParameters, requestHeaders, requestCookies, debugMode);			

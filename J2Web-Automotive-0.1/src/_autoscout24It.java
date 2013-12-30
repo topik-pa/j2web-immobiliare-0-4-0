@@ -268,7 +268,7 @@ public class _autoscout24It extends PortaleWeb {
 
 		//Connessione 4c - Invio delle foto
 		String codiceCasualeUpload = UUID.randomUUID().toString();
-			
+
 		int numeroImmagini = 0;
 		for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null) {
@@ -276,7 +276,7 @@ public class _autoscout24It extends PortaleWeb {
 			}
 		}
 		String quanteImmagini = Integer.toString(numeroImmagini);
-		
+
 		for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null) {
 				String codiceCasualeFile = UUID.randomUUID().toString();
@@ -330,7 +330,7 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("BaseData.BodyColorId",scheda.coloreEsternoVeicolo); 
 		tabellaDiDipendenza.put("BaseData.BodyTypeId",scheda.carrozzeriaVeicolo); 
 		tabellaDiDipendenza.put("BaseData.Doors","***site***"); //bho 
-		
+
 		if(scheda.meseImmatricolazioneVeicoloIndex==0) {
 			tabellaDiDipendenza.put("BaseData.FirstRegistrationMonth","Mese"); 
 		}
@@ -374,7 +374,7 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("Equipment.ComfortRight.50","***site***");
 		tabellaDiDipendenza.put("Equipment.ComfortRight.52","***site***");
 		tabellaDiDipendenza.put("Equipment.ComfortRight.113","***site***");
-		
+
 		tabellaDiDipendenza.put("Equipment.ComfortLeft.52","***site***");
 		tabellaDiDipendenza.put("Equipment.ExtrasLeft.112","***site***");
 		tabellaDiDipendenza.put("Equipment.ExtrasLeft.15","***site***");
@@ -397,28 +397,28 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("Equipment.SecurityRight.19","***site***");
 		tabellaDiDipendenza.put("Equipment.SecurityRight.26","***site***");
 		tabellaDiDipendenza.put("Equipment.SecurityRight.42","***site***");
-			
+
 		if(scheda.coloreInterniVeicolo.equals("Seleziona")) {
 			tabellaDiDipendenza.put("Equipment.InteriorColorId","colore");
 		}
 		else {
 			tabellaDiDipendenza.put("Equipment.InteriorColorId",scheda.coloreInterniVeicolo);
 		}
-		
+
 		if(scheda.postiASedereVeicolo.equals("Seleziona")) {
 			tabellaDiDipendenza.put("Equipment.Seats","***site***");
 		}
 		else {
 			tabellaDiDipendenza.put("Equipment.Seats",scheda.postiASedereVeicolo);
 		}
-		
+
 		if(scheda.finitureInterneVeicolo.equals("Seleziona")) {
 			tabellaDiDipendenza.put("Equipment.UpholsteryId", "Materiale");
 		}
 		else {
 			tabellaDiDipendenza.put("Equipment.UpholsteryId",scheda.finitureInterneVeicolo);
 		}
-		
+
 		tabellaDiDipendenza.put("Moto.Co2Emission","***site***");
 		tabellaDiDipendenza.put("Moto.ConsumptionCity","***site***");
 		tabellaDiDipendenza.put("Moto.ConsumptionHighway","***site***");
@@ -428,14 +428,14 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("Moto.EmissionClassId",scheda.classeEmissioniVeicolo);
 		tabellaDiDipendenza.put("Moto.EnvironmentalStickerId","Seleziona");
 		tabellaDiDipendenza.put("Moto.GearingId",scheda.tipologiaCambioVeicolo);
-		
+
 		if(scheda.numeroRapportiVeicolo.equals("Seleziona")) {
 			tabellaDiDipendenza.put("Moto.Gears","***site***");
 		}
 		else {
 			tabellaDiDipendenza.put("Moto.Gears",scheda.numeroRapportiVeicolo);
 		}
-		
+
 		tabellaDiDipendenza.put("Moto.TransmissionId",scheda.tipologiaMotoreVeicolo);
 		tabellaDiDipendenza.put("Moto.Weight","***site***");
 		tabellaDiDipendenza.put("State.FullService","***site***");
@@ -546,7 +546,7 @@ public class _autoscout24It extends PortaleWeb {
 			Equipment_EquipmentIds.substring(0, Equipment_EquipmentIds.lastIndexOf(",")-1);
 			postParameters.add(new BasicNameValuePair("Equipment.EquipmentIds", Equipment_EquipmentIds));
 		}	
-		
+
 		switch (scheda.tipologiaVeicolo) {
 		case "Veicolo d'epoca":
 			postParameters.add(new BasicNameValuePair("BaseData.ArticleOfferTypeId", "O"));
@@ -743,8 +743,8 @@ public class _autoscout24It extends PortaleWeb {
 			mappaDeiParamerti.clear();
 			postParameters.clear();
 		}
-		
-		
+
+
 		//Connessione 3 - GET della pagina MyAccount
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
@@ -763,8 +763,8 @@ public class _autoscout24It extends PortaleWeb {
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-		
-		
+
+
 		//Connessione 4 - POST di eliminazione annuncio
 		//Raccolgo i parametri nella tabella di dipendennza
 		tabellaDiDipendenza.put("__EVENTARGUMENT","***site***");
@@ -793,7 +793,7 @@ public class _autoscout24It extends PortaleWeb {
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
-			
+
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
