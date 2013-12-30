@@ -183,7 +183,12 @@ public abstract class PortaleWeb implements parametriGenerali {
 				int end = cookie_header.indexOf("=");
 				String cookie_name = cookie_header.substring(0, end);                   
 				int start = end + 1;
-				end = cookie_header.indexOf(";");
+				if(cookie_header.contains(";")) {
+					end = cookie_header.indexOf(";");
+				}
+				else {
+					end = cookie_header.length();
+				}
 				cookie_value = cookie_header.substring(start, end);
 
 				if(cookie_name.equals(cookieName)) {
@@ -226,7 +231,14 @@ public abstract class PortaleWeb implements parametriGenerali {
 				int end = current_cookie_header.indexOf("=");
 				current_cookie_name = current_cookie_header.substring(0, end);                   
 				int start = end + 1;
-				end = current_cookie_header.indexOf(";");
+				
+				if(current_cookie_header.contains(";")) {
+					end = current_cookie_header.indexOf(";");
+				}
+				else {
+					end = current_cookie_header.length();
+				}
+				
 				current_cookie_value = current_cookie_header.substring(start, end);
 
 				//Stampo i valori trovati
@@ -421,6 +433,36 @@ public abstract class PortaleWeb implements parametriGenerali {
 		}
 	}
 
+	//Adatta le select del DOM originario
+	public org.jsoup.nodes.Document adattaSelect(org.jsoup.nodes.Document doc, String selettore, List<NameValuePair> listaAssociativa) {
+		
+		Element select = null;
+		//String selectName = null;
+		//Element selectParent = null;
+		Elements options = null;
+
+		select = ((Element) doc).select(selettore).first();
+		//selectName = select.attr("name");
+		//selectParent = select.parent();
+		options = select.children();
+		
+		Iterator<Element> iterator = options.iterator();
+		while(iterator.hasNext()) {
+			iterator.next().remove();
+		}
+		
+		Iterator<NameValuePair> iterator2 = listaAssociativa.iterator();
+		while(iterator2.hasNext()) {
+			
+			NameValuePair currentListElement = iterator2.next();
+			
+			String newOptionElement = "<option value=\"" + currentListElement.getName() + "\">" + currentListElement.getValue() + "</option>"; 
+			select.append(newOptionElement);
+		}
+		
+		return doc;
+
+	}
 
 	//Messaggio inserimento annuncio OK
 	public void messageInserimentoOK(String nomePortale) {
@@ -429,7 +471,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 	
 	//Messaggio inserimento annuncio KO
 	public void messageInserimentoKO(String nomePortale) {
-		JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + nomePortale + ".\n\nVerificare che:\nLa combinazione marca/modello sia prevista nel portale di inserimento\nNon si sia raggiunto il limite di annunci pubblicabili\nSi stiano rispettando i vincoli di inserimento del portale (per esempio: numero minimo e dimensioni delle immagini da pubblicare)", "Errore", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Annuncio non compatibile con il portale: " + nomePortale + ".\n\nVerificare che:\nLa combinazione marca/modello sia prevista nel portale di inserimento\nNon si sia raggiunto il limite di annunci pubblicabili\nSi stiano rispettando i vincoli di inserimento del portale (per esempio: numero minimo e dimensioni delle immagini da pubblicare)", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	//Messaggio eliminazione annuncio OK
@@ -439,7 +481,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 	
 	//Messaggio eliminazione annuncio KO
 	public void messageEliminazioneKO(String nomePortale) {
-		JOptionPane.showMessageDialog(null, "Problemi nell'eliminazione scheda in: " + nomePortale + ".\n\n Verificare l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Problemi nell\'eliminazione scheda in: " + nomePortale + ".\n\n Verificare l\'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	

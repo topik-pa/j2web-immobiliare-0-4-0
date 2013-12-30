@@ -130,7 +130,7 @@ public class _autoscout24It extends PortaleWeb {
 		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
 
 		//Connessione 0 - GET della home page - Opzionale
-		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, debugMode);
 			//Controllo il response status
@@ -140,7 +140,7 @@ public class _autoscout24It extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		//Connessione 1 - GET della pagina di login
@@ -268,7 +268,7 @@ public class _autoscout24It extends PortaleWeb {
 
 		//Connessione 4c - Invio delle foto
 		String codiceCasualeUpload = UUID.randomUUID().toString();
-			
+
 		int numeroImmagini = 0;
 		for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null) {
@@ -276,7 +276,7 @@ public class _autoscout24It extends PortaleWeb {
 			}
 		}
 		String quanteImmagini = Integer.toString(numeroImmagini);
-		
+
 		for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null) {
 				String codiceCasualeFile = UUID.randomUUID().toString();
@@ -326,12 +326,11 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("ArticleId", articleId);
 		tabellaDiDipendenza.put("ArticleType", "***site***"); //Automobile
 		tabellaDiDipendenza.put("BaseData.Accident","***site***");
-		//tabellaDiDipendenza.put("BaseData.ArticleOfferTypeId",scheda.tipologiaVeicolo);  //calcolato sotto
 		if(scheda.prezzoTrattabile){tabellaDiDipendenza.put("BaseData.AskingPrice","true");}
 		tabellaDiDipendenza.put("BaseData.BodyColorId",scheda.coloreEsternoVeicolo); 
 		tabellaDiDipendenza.put("BaseData.BodyTypeId",scheda.carrozzeriaVeicolo); 
 		tabellaDiDipendenza.put("BaseData.Doors","***site***"); //bho 
-		
+
 		if(scheda.meseImmatricolazioneVeicoloIndex==0) {
 			tabellaDiDipendenza.put("BaseData.FirstRegistrationMonth","Mese"); 
 		}
@@ -346,7 +345,6 @@ public class _autoscout24It extends PortaleWeb {
 		//if(scheda.coloreMetalizzato){tabellaDiDipendenza.put("BaseData.MetallicColor","true");}
 		tabellaDiDipendenza.put("BaseData.MetallicColor","***site***");
 		tabellaDiDipendenza.put("BaseData.Mileage", df.format(new Integer(scheda.chilometraggioVeicolo)));
-		//tabellaDiDipendenza.put("BaseData.ModelId",""); //calcolato sotto
 		tabellaDiDipendenza.put("BaseData.ParticulateFilter","***site***");
 		tabellaDiDipendenza.put("BaseData.Power",scheda.KWVeicolo); 
 		tabellaDiDipendenza.put("BaseData.PowerHp",scheda.CVVeicolo);
@@ -358,25 +356,6 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("Description.Description",scheda.descrizioneVeicolo);
 		tabellaDiDipendenza.put("Equipment.AlloyWheelInches", "Altezza"); 	
 
-		/*if(scheda.disponibilitaABS){tabellaDiDipendenza.put("Equipment.SecurityLeft.1","1"); Equipment_EquipmentIds+="1,";}
-		if(scheda.disponibilitaAirBag){tabellaDiDipendenza.put("Equipment.SecurityLeft.-1","-1");}
-		if(scheda.disponibilitaAntifurto){tabellaDiDipendenza.put("Equipment.SecurityLeft.18","18");Equipment_EquipmentIds+="18,";}
-		if(scheda.disponibilitaChiusuraCentralizzata){tabellaDiDipendenza.put("Equipment.SecurityLeft.17","17");Equipment_EquipmentIds+="17,";}
-		if(scheda.disponibilitaContrlAutomTrazione){tabellaDiDipendenza.put("Equipment.SecurityLeft.31","31");Equipment_EquipmentIds+="31,";}
-		if(scheda.disponibilitaESP){tabellaDiDipendenza.put("Equipment.SecurityRight.42","42");Equipment_EquipmentIds+="42,";}
-		if(scheda.disponibilitaRadioOLettoreCD){tabellaDiDipendenza.put("Equipment.ComfortLeft.10","10");Equipment_EquipmentIds+="10,";}
-		if(scheda.disponibilitaAlzacristalliElettrici){tabellaDiDipendenza.put("Equipment.ComfortLeft.13","13");Equipment_EquipmentIds+="13,";}
-		if(scheda.disponibilitaClima){tabellaDiDipendenza.put("Equipment.ComfortLeft.5","5");Equipment_EquipmentIds+="5,";}
-		if(scheda.disponibilitaParkDistControl){tabellaDiDipendenza.put("Equipment.ComfortLeft.40","40");Equipment_EquipmentIds+="40,";}
-		if(scheda.disponibilitaServoSterzo){tabellaDiDipendenza.put("Equipment.ComfortRight.12","12");Equipment_EquipmentIds+="12,";}
-		if(scheda.disponibilitaNavigatoreSattelitare){tabellaDiDipendenza.put("Equipment.ComfortRight.23","23");Equipment_EquipmentIds+="23,";}
-		if(scheda.disponibilitaVolanteMultifunzione){tabellaDiDipendenza.put("Equipment.ComfortRight.114","114");Equipment_EquipmentIds+="114,";}
-		if(scheda.disponibilitaAllestimentoHandicap){tabellaDiDipendenza.put("Equipment.ExtrasLeft.36","36");Equipment_EquipmentIds+="36,";}
-		if(scheda.disponibilitaCerchiInLega){tabellaDiDipendenza.put("Equipment.ExtrasLeft.15","15");Equipment_EquipmentIds+="15,";}
-		if(scheda.disponibilitaGancioTraino){tabellaDiDipendenza.put("Equipment.ExtrasLeft.20","20");Equipment_EquipmentIds+="20,";}
-		if(scheda.disponibilitaPortaPacchi){tabellaDiDipendenza.put("Equipment.ExtrasRight.27","27");Equipment_EquipmentIds+="27,";}
-		if(scheda.disponibilitaSediliSportivi){tabellaDiDipendenza.put("Equipment.ExtrasRight.117","117");Equipment_EquipmentIds+="117,";}
-		if(scheda.disponibilitaSediliRiscaldati){tabellaDiDipendenza.put("Equipment.ComfortRight.34","34");Equipment_EquipmentIds+="34,";}*/
 		tabellaDiDipendenza.put("Equipment.ComfortLeft.10","***site***");
 		tabellaDiDipendenza.put("Equipment.ComfortLeft.13","***site***");
 		tabellaDiDipendenza.put("Equipment.ComfortLeft.16","***site***");
@@ -395,7 +374,7 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("Equipment.ComfortRight.50","***site***");
 		tabellaDiDipendenza.put("Equipment.ComfortRight.52","***site***");
 		tabellaDiDipendenza.put("Equipment.ComfortRight.113","***site***");
-		
+
 		tabellaDiDipendenza.put("Equipment.ComfortLeft.52","***site***");
 		tabellaDiDipendenza.put("Equipment.ExtrasLeft.112","***site***");
 		tabellaDiDipendenza.put("Equipment.ExtrasLeft.15","***site***");
@@ -419,33 +398,27 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("Equipment.SecurityRight.26","***site***");
 		tabellaDiDipendenza.put("Equipment.SecurityRight.42","***site***");
 
-
-		//if(Equipment_EquipmentIds.endsWith(",")){Equipment_EquipmentIds.substring(0, Equipment_EquipmentIds.length()-1);}
-		//tabellaDiDipendenza.put("Equipment.EquipmentIds","Equipment_EquipmentIds");
-		//tabellaDiDipendenza.put("Equipment.EquipmentIds","***site***");
-		
-		
 		if(scheda.coloreInterniVeicolo.equals("Seleziona")) {
 			tabellaDiDipendenza.put("Equipment.InteriorColorId","colore");
 		}
 		else {
 			tabellaDiDipendenza.put("Equipment.InteriorColorId",scheda.coloreInterniVeicolo);
 		}
-		
+
 		if(scheda.postiASedereVeicolo.equals("Seleziona")) {
 			tabellaDiDipendenza.put("Equipment.Seats","***site***");
 		}
 		else {
 			tabellaDiDipendenza.put("Equipment.Seats",scheda.postiASedereVeicolo);
 		}
-		
+
 		if(scheda.finitureInterneVeicolo.equals("Seleziona")) {
 			tabellaDiDipendenza.put("Equipment.UpholsteryId", "Materiale");
 		}
 		else {
 			tabellaDiDipendenza.put("Equipment.UpholsteryId",scheda.finitureInterneVeicolo);
 		}
-		
+
 		tabellaDiDipendenza.put("Moto.Co2Emission","***site***");
 		tabellaDiDipendenza.put("Moto.ConsumptionCity","***site***");
 		tabellaDiDipendenza.put("Moto.ConsumptionHighway","***site***");
@@ -455,14 +428,14 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("Moto.EmissionClassId",scheda.classeEmissioniVeicolo);
 		tabellaDiDipendenza.put("Moto.EnvironmentalStickerId","Seleziona");
 		tabellaDiDipendenza.put("Moto.GearingId",scheda.tipologiaCambioVeicolo);
-		
+
 		if(scheda.numeroRapportiVeicolo.equals("Seleziona")) {
 			tabellaDiDipendenza.put("Moto.Gears","***site***");
 		}
 		else {
 			tabellaDiDipendenza.put("Moto.Gears",scheda.numeroRapportiVeicolo);
 		}
-		
+
 		tabellaDiDipendenza.put("Moto.TransmissionId",scheda.tipologiaMotoreVeicolo);
 		tabellaDiDipendenza.put("Moto.Weight","***site***");
 		tabellaDiDipendenza.put("State.FullService","***site***");
@@ -475,7 +448,6 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("State.NonSmokingVehicle","***site***");
 		tabellaDiDipendenza.put("Tracking.Pagename","***site***");
 		tabellaDiDipendenza.put("Tracking.TrackingAttribute","***site***");
-		//tabellaDiDipendenza.put("__RequestVerificationToken",""); //calcolato più sotto
 		tabellaDiDipendenza.put("validate","continua");
 
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
@@ -567,16 +539,14 @@ public class _autoscout24It extends PortaleWeb {
 			postParameters.add(new BasicNameValuePair("Equipment.ComfortRight.34", "34"));
 			Equipment_EquipmentIds += "34,";
 		}
-
 		if(Equipment_EquipmentIds.equals("")) {
 			postParameters.add(new BasicNameValuePair("Equipment.EquipmentIds", ""));
 		}
 		else {
 			Equipment_EquipmentIds.substring(0, Equipment_EquipmentIds.lastIndexOf(",")-1);
 			postParameters.add(new BasicNameValuePair("Equipment.EquipmentIds", Equipment_EquipmentIds));
-		}
-		
-		
+		}	
+
 		switch (scheda.tipologiaVeicolo) {
 		case "Veicolo d'epoca":
 			postParameters.add(new BasicNameValuePair("BaseData.ArticleOfferTypeId", "O"));
@@ -647,7 +617,6 @@ public class _autoscout24It extends PortaleWeb {
 				sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
 
 				//Stampo a video un messaggio informativo
-				//JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
 				messageInserimentoOK(NOMEPORTALE);
 			}
 
@@ -674,7 +643,7 @@ public class _autoscout24It extends PortaleWeb {
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT + "/MyPrivateArea.aspx";
+			String url = URLROOT;
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			System.out.println("Visualizzata in: " + NOMEPORTALE);
 
@@ -774,8 +743,8 @@ public class _autoscout24It extends PortaleWeb {
 			mappaDeiParamerti.clear();
 			postParameters.clear();
 		}
-		
-		
+
+
 		//Connessione 3 - GET della pagina MyAccount
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
@@ -794,8 +763,8 @@ public class _autoscout24It extends PortaleWeb {
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-		
-		
+
+
 		//Connessione 4 - POST di eliminazione annuncio
 		//Raccolgo i parametri nella tabella di dipendennza
 		tabellaDiDipendenza.put("__EVENTARGUMENT","***site***");
@@ -824,7 +793,7 @@ public class _autoscout24It extends PortaleWeb {
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
-			
+
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -844,7 +813,6 @@ public class _autoscout24It extends PortaleWeb {
 			System.out.println("Eliminata da: " + NOMEPORTALE);
 
 			//Stampo a video un messaggio informativo
-			//JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + NOMEPORTALE);
 			messageEliminazioneOK(NOMEPORTALE);
 		}
 
