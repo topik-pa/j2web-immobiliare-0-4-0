@@ -102,7 +102,7 @@ public class _autosupermarketIt extends PortaleWeb {
 
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
-		
+
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
 
 		//autosupermarket accetta minimo due foto per annuncio di dimensioni prefissate
@@ -183,7 +183,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-		
+
 		//Il server remoto è lento...
 		try {
 			Thread.sleep(700);
@@ -247,8 +247,8 @@ public class _autosupermarketIt extends PortaleWeb {
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}*/
-		
-		
+
+
 		//Il server remoto è lento...
 		try {
 			Thread.sleep(700);
@@ -330,7 +330,7 @@ public class _autosupermarketIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 
-		
+
 		//Il server remoto è lento...
 		try {
 			Thread.sleep(2000);
@@ -338,8 +338,8 @@ public class _autosupermarketIt extends PortaleWeb {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		
+
+
 		Document doc = Jsoup.parse(responseBody);
 		List<NameValuePair> lista = new LinkedList<NameValuePair>();
 		lista.add(new BasicNameValuePair("0", "Seleziona"));
@@ -350,7 +350,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		lista.add(new BasicNameValuePair("1", "Stoffa"));
 		lista.add(new BasicNameValuePair("0", "Altro"));
 		responseBody=adattaSelect(doc, "#car_carana001_carlst002_interior_cod", lista).toString();
-		
+
 		List<NameValuePair> lista2 = new LinkedList<NameValuePair>();
 		lista2.add(new BasicNameValuePair("0", "Seleziona"));
 		lista2.add(new BasicNameValuePair("1", "Euro 0"));
