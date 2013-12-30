@@ -330,18 +330,18 @@ public class J2Web_UI implements parametriGenerali {
 		System.out.print(" fatto." + "\n");
 
 		//Tracking dell'evento avvio di j2web
-		/*System.out.print("Tracking dell'evento avvio di j2web...");
+		System.out.print("Tracking dell'evento avvio di j2web...");
 		long start = System.currentTimeMillis();
 		long end = start + 10*1000; // 60 seconds * 1000 ms/sec
 		while (System.currentTimeMillis() < end)
 		{
 			try {
-				j2web.trackEvent("avvio_j2web_" + j2web_version + "_" + EMAIL_UTENTE);
+				j2web.trackEvent("avvio_j2web_" + j2web_version + "_" + EMAIL_UTENTE, EMAIL_UTENTE);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("primoTrackingFallito"), "Problemi di connessione", JOptionPane.WARNING_MESSAGE);
 			}
 		}
-		System.out.print(" fatto." + "\n");	*/
+		System.out.print(" fatto." + "\n");
 
 	}
 
