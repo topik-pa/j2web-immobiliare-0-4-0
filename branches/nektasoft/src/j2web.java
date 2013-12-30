@@ -169,13 +169,13 @@ public class j2web implements parametriGenerali {
 		MapModalWindowsDialogs.put("creazioneDellaSchedaCliente", "Attenzione: alcuni campi obbligatori non sono stati compilati. ");
 		MapModalWindowsDialogs.put("primoTrackingFallito", "Verificare la connessione ad Internet, senza connessione alcune funzionalità di J2Web sono inibite. ");
 		MapModalWindowsDialogs.put("sincronizzazioneImpossibile", "La sincronizzazione della scheda corrente non è possibile per il portale selezionato. ");
-		
-		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_IOException", "Errore I/O. ");
-		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseStatusCodeException", "Errore HTTP Response Status Code. ");
-		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseHeaderException", "Errore HTTP Response Header. ");
-		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseBodyException", "Errore HTTP Response Body. ");
-		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_Generic", "Errore Generico. ");
-		
+
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_IOException", "Errore I/O. \n\nE\' stata inviata una segnalazione per risolvere il problema.");
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseStatusCodeException", "Errore HTTP Response Status Code. \n\nE\' stata inviata una segnalazione per risolvere il problema.");
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseHeaderException", "Errore HTTP Response Header. \n\nE\' stata inviata una segnalazione per risolvere il problema.");
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_HttpWrongResponseBodyException", "Errore HTTP Response Body. \n\nE\' stata inviata una segnalazione per risolvere il problema.");
+		MapModalWindowsDialogs.put("manageErrorsOnPortalSubmission_Generic", "Errore Generico. \n\nE\' stata inviata una segnalazione per risolvere il problema.");
+
 		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeVeicolo", "Questa azione eliminerà tutte le schede veicolo. Confermi? ");
 		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeCliente", "Questa azione eliminerà tutte le schede cliente. Confermi? ");
 
@@ -194,23 +194,28 @@ public class j2web implements parametriGenerali {
 		ImageIcon _autoscout24ItIcon  = new ImageIcon(cl.getResource("images/_autoscout24It.png"));
 		PortaleWeb _autoscout24It = new _autoscout24It(_autoscout24ItIcon, "2 - autoscout24.it", "002", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_autoscout24It);
-		
+
 		ImageIcon _cuboAutoIcon  = new ImageIcon(cl.getResource("images/_cuboAutoIt.png"));
 		PortaleWeb _cuboAutoIt = new _cuboAutoIt(_cuboAutoIcon, "3 - cuboauto.it", "003", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_cuboAutoIt);
-		
+
 		ImageIcon _autosupermarketIcon  = new ImageIcon(cl.getResource("images/_autosupermarketIt.png"));
 		PortaleWeb _autosupermarketIt = new _autosupermarketIt(_autosupermarketIcon, "4 - autosupermarket.it", "004", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_autosupermarketIt);
-		
+
 		/*ImageIcon _automobileIcon  = new ImageIcon(cl.getResource("images/automobileIt.png"));
 		PortaleWeb _automobileIt = new _automobileIt(_automobileIcon, "5 - automobile.it", "005", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_automobileIt);*/
-		
+
+
+		ImageIcon _vendiautoComIcon  = new ImageIcon(cl.getResource("images/_vendiautoCom.png"));
+		PortaleWeb _vendiautoCom = new _vendiautoCom(_vendiautoComIcon, "5 - vendiauto.com", "005", true);
+		J2Web_UI.listPortaliSincronizzazione.add(_vendiautoCom);
+
 		ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
 		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "6 - subito.it", "006", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_subitoIt);
-		
+
 		/*ImageIcon _kijijiItIcon  = new ImageIcon(cl.getResource("images/_kijijiIt.png"));
 		PortaleWeb _kijijiIt = new _kijijiIt(_kijijiItIcon, "5 - kijiji.it", "005", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_kijijiIt);*/

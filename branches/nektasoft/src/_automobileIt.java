@@ -215,8 +215,8 @@ public class _automobileIt extends PortaleWeb {
 			mappaDeiParamerti.clear();
 			postParameters.clear();
 		}
-		
-/*
+
+		/*
 		//Connessione 3 - GET della pagina Il mio automobile.it
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
@@ -394,7 +394,7 @@ public class _automobileIt extends PortaleWeb {
 		case "Veicolo aziendale":
 			postParameters.add(new BasicNameValuePair("BaseData.ArticleOfferTypeId", "J"));
 			break;
-			
+
 		default:
 			postParameters.add(new BasicNameValuePair("BaseData.ArticleOfferTypeId", "U"));
 			break;
@@ -437,7 +437,7 @@ public class _automobileIt extends PortaleWeb {
 			mappaDeiParamerti.clear();
 			tabellaDiDipendenza.clear();
 		}
-*/
+		 */
 
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
 		if(inserimentoOK) {
@@ -512,7 +512,7 @@ public class _automobileIt extends PortaleWeb {
 		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
 		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
 		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
-/*
+		/*
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
@@ -580,8 +580,8 @@ public class _automobileIt extends PortaleWeb {
 			mappaDeiParamerti.clear();
 			postParameters.clear();
 		}
-		
-		
+
+
 		//Connessione 3 - GET della pagina MyAccount
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
@@ -600,8 +600,8 @@ public class _automobileIt extends PortaleWeb {
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
-		
-		
+
+
 		//Connessione 4 - POST di eliminazione annuncio
 		//Raccolgo i parametri nella tabella di dipendennza
 		tabellaDiDipendenza.put("__EVENTARGUMENT","***site***");
@@ -630,7 +630,7 @@ public class _automobileIt extends PortaleWeb {
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
-			
+
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -639,7 +639,7 @@ public class _automobileIt extends PortaleWeb {
 			mappaDeiParamerti.clear();
 			postParameters.clear();
 		}
-*/
+		 */
 		//Aggiorno la lista dei portali in cui è presenta la scheda corrente
 		scheda.eliminaInserimentoPortale(idPortale);			
 
