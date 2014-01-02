@@ -4,10 +4,10 @@
  */ 
 
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.ParseException;
+//import java.text.DecimalFormat;
+//import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -16,14 +16,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.entity.mime.HttpMultipartMode;
+/*import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.entity.mime.content.StringBody;*/
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
-import org.json.JSONObject;
+//import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -55,7 +55,7 @@ public class _automobileIt extends PortaleWeb {
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
 	private String codiceInserzione;
-	private String location;
+	//private String location;
 	private String responseBody;
 	//private BasicNameValuePair sessionCookie;
 	private boolean inserimentoOK = false;
@@ -199,9 +199,9 @@ public class _automobileIt extends PortaleWeb {
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				//Header[] responseHeaders = (Header[])response[0];
 				//Trovo la location
-				location = getHeaderValueByName(responseHeaders, "Location");
+				//location = getHeaderValueByName(responseHeaders, "Location");
 			}
 			else {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
