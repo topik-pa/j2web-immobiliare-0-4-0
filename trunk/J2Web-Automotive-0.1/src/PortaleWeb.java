@@ -466,17 +466,17 @@ public abstract class PortaleWeb implements parametriGenerali {
 
 	//Messaggio inserimento annuncio OK
 	public void messageInserimentoOK(String nomePortale) {
-		JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + nomePortale, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Scheda veicolo inserita in: " + nomePortale, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	//Messaggio inserimento annuncio KO
 	public void messageInserimentoKO(String nomePortale) {
-		JOptionPane.showMessageDialog(null, "Annuncio non compatibile con il portale: " + nomePortale + ".\n\nVerificare che:\nLa combinazione marca/modello sia prevista nel portale di inserimento\nNon si sia raggiunto il limite di annunci pubblicabili\nSi stiano rispettando i vincoli di inserimento del portale (per esempio: numero minimo e dimensioni delle immagini da pubblicare)", "Errore", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Impossibile sincronizzare l'annuncio o annuncio non compatibile con il portale: " + nomePortale + ".\n\nVerificare che:\nLa combinazione marca/modello sia prevista nel portale di inserimento\nNon si sia raggiunto il limite di annunci pubblicabili\nSi stiano rispettando i vincoli di inserimento del portale (per esempio: numero minimo e dimensioni delle immagini da pubblicare)", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	//Messaggio eliminazione annuncio OK
 	public void messageEliminazioneOK(String nomePortale) {
-		JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + nomePortale);
+		JOptionPane.showMessageDialog(null, "Scheda veicolo eliminata da: " + nomePortale);
 	}
 	
 	//Messaggio eliminazione annuncio KO
