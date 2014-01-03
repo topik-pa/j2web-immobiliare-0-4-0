@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URLEncoder;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -262,7 +263,7 @@ public class j2web implements parametriGenerali {
 
 		HttpPortalGetConnection trackEvent = new HttpPortalGetConnection();
 		try {
-			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + eventAction + "&eventLabel=" + eventLabel, null, null, false);
+			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + URLEncoder.encode(eventAction, "UTF-8") + "&eventLabel=" + URLEncoder.encode(eventLabel, "UTF-8"), null, null, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw(new IOException(e));
