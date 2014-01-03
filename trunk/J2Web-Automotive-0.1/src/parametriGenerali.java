@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 public interface parametriGenerali {
 
 	//Versione di J2Web eintestazioni codice schede
-	final String  j2web_version = "0.5";
+	final String  j2web_version = "1.0 \u03B2";
 	final String  intestazioneCodiceSchedaVeicolo = "j2w05_V_";
 	final String  intestazioneCodiceSchedaCliente = "j2w05_C_";
 
