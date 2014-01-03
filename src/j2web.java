@@ -178,6 +178,8 @@ public class j2web implements parametriGenerali {
 
 		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeVeicolo", "Questa azione eliminerà tutte le schede veicolo. Confermi? ");
 		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeCliente", "Questa azione eliminerà tutte le schede cliente. Confermi? ");
+		
+		MapModalWindowsDialogs.put("caricaSchedeVeicolo_ImmaginiNonDisponibili", "Attenzione: non è stato possibile recuperare alcune immagini delle schede veicolo. ");
 
 	}
 
@@ -207,7 +209,6 @@ public class j2web implements parametriGenerali {
 		PortaleWeb _automobileIt = new _automobileIt(_automobileIcon, "5 - automobile.it", "005", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_automobileIt);*/
 
-
 		ImageIcon _vendiautoComIcon  = new ImageIcon(cl.getResource("images/_vendiautoCom.png"));
 		PortaleWeb _vendiautoCom = new _vendiautoCom(_vendiautoComIcon, "5 - vendiauto.com", "005", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_vendiautoCom);
@@ -215,6 +216,10 @@ public class j2web implements parametriGenerali {
 		ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
 		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "6 - subito.it", "006", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_subitoIt);
+		
+		ImageIcon _autoprontaconsegnaComIcon  = new ImageIcon(cl.getResource("images/_autoprontaconsegnaCom.png"));
+		PortaleWeb _autoprontaconsegnaCom = new _autoprontaconsegnaCom(_autoprontaconsegnaComIcon, "7 - autoprontaconsegna.com", "005", true);
+		J2Web_UI.listPortaliSincronizzazione.add(_autoprontaconsegnaCom);
 
 		/*ImageIcon _kijijiItIcon  = new ImageIcon(cl.getResource("images/_kijijiIt.png"));
 		PortaleWeb _kijijiIt = new _kijijiIt(_kijijiItIcon, "5 - kijiji.it", "005", true);
