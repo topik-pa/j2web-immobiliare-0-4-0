@@ -21,6 +21,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
@@ -107,20 +108,16 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 
 		//L'immagine di preview del pannello veicolo
-		Image resizedimg = null;
+		Image resizedimg = new BufferedImage(70,50,BufferedImage.TYPE_INT_ARGB_PRE);
 		BufferedImage imgPreview = null;
 		if(scheda.arrayImages[1]!=null) {
 			try {
 				imgPreview = ImageIO.read(scheda.arrayImages[1]);
+				resizedimg = imgPreview.getScaledInstance(70, 50, Image.SCALE_FAST);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("caricaSchedeVeicolo_ImmaginiNonDisponibili"), "Impossibile recuperare le immagini delle schede veicolo", JOptionPane.WARNING_MESSAGE);
 				e1.printStackTrace();
 			}
-			resizedimg = imgPreview.getScaledInstance(70, 50, Image.SCALE_FAST);
-			//label.setIcon(new ImageIcon(resizedimg));
-		}
-		else {
-			resizedimg = new BufferedImage(70,50,BufferedImage.TYPE_INT_ARGB_PRE);
 		}
 
 		add(label, BorderLayout.CENTER);
