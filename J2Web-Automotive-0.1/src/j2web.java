@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URLEncoder;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -194,7 +195,7 @@ public class j2web implements parametriGenerali {
 		J2Web_UI.listPortaliSincronizzazione.add(_portaleMLS);
 
 		ImageIcon _autoscout24ItIcon  = new ImageIcon(cl.getResource("images/_autoscout24It.png"));
-		PortaleWeb _autoscout24It = new _autoscout24It(_autoscout24ItIcon, "2 - autoscout24.it", "002", true);
+		PortaleWeb _autoscout24It = new _autoscout24It(_autoscout24ItIcon, "2 - autoscout24.it", "002", false);
 		J2Web_UI.listPortaliSincronizzazione.add(_autoscout24It);
 
 		ImageIcon _cuboAutoIcon  = new ImageIcon(cl.getResource("images/_cuboAutoIt.png"));
@@ -202,7 +203,7 @@ public class j2web implements parametriGenerali {
 		J2Web_UI.listPortaliSincronizzazione.add(_cuboAutoIt);
 
 		ImageIcon _autosupermarketIcon  = new ImageIcon(cl.getResource("images/_autosupermarketIt.png"));
-		PortaleWeb _autosupermarketIt = new _autosupermarketIt(_autosupermarketIcon, "4 - autosupermarket.it", "004", true);
+		PortaleWeb _autosupermarketIt = new _autosupermarketIt(_autosupermarketIcon, "4 - autosupermarket.it", "004", false);
 		J2Web_UI.listPortaliSincronizzazione.add(_autosupermarketIt);
 
 		/*ImageIcon _automobileIcon  = new ImageIcon(cl.getResource("images/automobileIt.png"));
@@ -262,7 +263,7 @@ public class j2web implements parametriGenerali {
 
 		HttpPortalGetConnection trackEvent = new HttpPortalGetConnection();
 		try {
-			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + eventAction + "&eventLabel=" + eventLabel, null, null, false);
+			trackEvent.get("GET alla risorsa di tracking", urlTrackingRemoto + "?eventAction=" + URLEncoder.encode(eventAction, "UTF-8") + "&eventLabel=" + URLEncoder.encode(eventLabel, "UTF-8"), null, null, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw(new IOException(e));
