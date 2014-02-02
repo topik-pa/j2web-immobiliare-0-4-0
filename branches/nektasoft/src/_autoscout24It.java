@@ -34,7 +34,8 @@ import org.jsoup.select.Elements;
  */
 
 //La classe principale
-public class _autoscout24It extends PortaleWeb {     
+public class _autoscout24It extends PortaleWeb {
+	
 
 	//Variabili portale
 	private final String NOMEPORTALE = "www.autoscout24.it";
@@ -267,7 +268,7 @@ public class _autoscout24It extends PortaleWeb {
 
 
 		//Connessione 4c - Invio delle foto
-		String codiceCasualeUpload = UUID.randomUUID().toString();
+		/*String codiceCasualeUpload = UUID.randomUUID().toString();
 
 		int numeroImmagini = 0;
 		for(int i=1; i<scheda.arrayImages.length; i++) {
@@ -317,7 +318,7 @@ public class _autoscout24It extends PortaleWeb {
 					postParameters.clear();
 				}
 			}
-		}
+		}*/
 
 
 		//Connessione 5 - POST dei parametri di annuncio

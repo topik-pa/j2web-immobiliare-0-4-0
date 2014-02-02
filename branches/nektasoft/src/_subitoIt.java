@@ -242,7 +242,7 @@ public class _subitoIt extends PortaleWeb {
 
 
 		//Connessione5b - POST delle immagini
-		for(int i=1; i<=scheda.arrayImages.length; i++) {
+		for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null && i<=6) {
 
 				//Raccolgo i parametri nella tabella di dipendenza

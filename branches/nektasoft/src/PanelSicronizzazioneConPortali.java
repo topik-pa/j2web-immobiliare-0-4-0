@@ -399,9 +399,10 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 
 		setLayout(new GridLayout(2,3,5,5));
 		setMaximumSize(new Dimension(400, 90));
-
+		String etichetta = portale.valoreLabel;
+		
 		loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-		title = BorderFactory.createTitledBorder(loweredetched, portale.valoreLabel);
+		title = BorderFactory.createTitledBorder(loweredetched, etichetta);
 		title.setTitleJustification(TitledBorder.RIGHT);
 		title.setTitleColor(new Color(0, 0, 0));
 		title.setTitleFont(new Font(Font.SANS_SERIF, Font.ITALIC, 11));
@@ -429,11 +430,16 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 
 		checkboxSelezionaPortale.setEnabled(false);
 		checkboxSelezionaPortale.setVisible(false);
-		add(checkboxSelezionaPortale);      		
-
-		add(btnInserisci);
-		add(btnVisualizza);
-		add(btnCancella);
+		add(checkboxSelezionaPortale);   
+		
+		if(portale.isActive) {
+			add(btnInserisci);
+			add(btnVisualizza);
+			add(btnCancella);
+		}
+		else {
+			add(new JLabel("Portale in manutenzione"));
+		}
 
 	}
 
@@ -444,9 +450,10 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 		final boolean isOnThisPortal = scheda.isOnThisPortal(portale.idPortale);
 		setLayout(new GridLayout(2,3,5,5));
 		setMaximumSize(new Dimension(400, 90));
+		String etichetta = portale.valoreLabel;
 
 		loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-		title = BorderFactory.createTitledBorder(loweredetched, portale.valoreLabel);
+		title = BorderFactory.createTitledBorder(loweredetched, etichetta);
 		title.setTitleJustification(TitledBorder.RIGHT);
 		title.setTitleColor(new Color(0, 0, 0));
 		title.setTitleFont(new Font(Font.SANS_SERIF, Font.ITALIC, 11));
@@ -682,10 +689,17 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 			}
 		}*/
 		checkboxSelezionaPortale.setVisible(false);
-		add(checkboxSelezionaPortale);      		
-		add(btnInserisci);
-		add(btnVisualizza);
-		add(btnCancella);
+		add(checkboxSelezionaPortale);    
+		
+		if(portale.isActive) {
+			add(btnInserisci);
+			add(btnVisualizza);
+			add(btnCancella);
+		}
+		else {
+			add(new JLabel("Portale in manutenzione"));
+		}
+
 	}
 
 }   //Fine PannelloInserimento

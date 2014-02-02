@@ -12,5 +12,5 @@ Specification-Vendor: J2Web Studio
 Implementation-Title: J2Web - Automotive
 Implementation-Vendor: J2Web Studio
 Permissions: all-permissions
-Codebase: *
+Codebase: www.j2webstudio.it
 Application-Name: J2Web - Automotive
