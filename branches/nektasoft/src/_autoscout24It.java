@@ -41,7 +41,7 @@ public class _autoscout24It extends PortaleWeb {
 	private final String NOMEPORTALE = "www.autoscout24.it";
 	private final String URLROOT = "http://www.autoscout24.it";
 	private final String SECUREURLROOT = "https://secure.autoscout24.it";
-	private final String USERNAME = "c1917245@drdrb.com";
+	private final String USERNAME = "e138281@drdrb.com";
 	private final String PASSWORD = "topik123";
 	private final String HOST = "www.autoscout24.it";
 	private final String HOST2 = "secure.autoscout24.it";
