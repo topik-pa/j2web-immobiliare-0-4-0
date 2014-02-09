@@ -43,7 +43,7 @@ public class _autosupermarketIt extends PortaleWeb {
 	//Variabili portale
 	private final String NOMEPORTALE = "www.autosupermarket.it";
 	private final String URLROOT = "http://www.autosupermarket.it";
-	private final String USERNAME = "c2775833@drdrb.com";
+	private final String USERNAME = "e136467@drdrb.com";
 	private final String PASSWORD = "topik123";
 	private final String HOST = "www.autosupermarket.it";
 

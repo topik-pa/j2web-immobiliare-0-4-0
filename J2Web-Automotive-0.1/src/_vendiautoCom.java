@@ -312,9 +312,9 @@ public class _vendiautoCom extends PortaleWeb {
 		}
 
 
-		Date date = new Date();
+		/*Date date = new Date();
 		long param1 = date.getTime();
-		int param2 = 12345;
+		int param2 = 13936;
 		for(int i=1; i<=8; i++) {
 			if(scheda.arrayImages[i]!=null) {
 				HttpPortalPostConnection connessione_9 = new HttpPortalPostConnection();        
@@ -326,7 +326,7 @@ public class _vendiautoCom extends PortaleWeb {
 					reqEntity.addPart("Filename", new StringBody(bin.getFilename()) );
 					reqEntity.addPart("Upload", new StringBody("Submit Query") );
 
-					Object[] response = connessione_9.post("Connessione 9 - Invio delle foto", URLROOT + "/rivenditori/upload.php?salva=" + param2 + param1, reqEntity, requestHeaders, requestCookies, debugMode);			
+					Object[] response = connessione_9.post("Connessione 9 - Invio delle foto " + "-immagine " + i + "-", URLROOT + "/rivenditori/upload.php?salva=" + param2 + "-" + param1, reqEntity, requestHeaders, requestCookies, debugMode);			
 
 					//Controllo il response status
 					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -343,7 +343,7 @@ public class _vendiautoCom extends PortaleWeb {
 					postParameters.clear();
 				}
 			}
-		}
+		}*/
 
 
 		//Connessione 5 - GET della pagina "Admin" per ottenere il codice inserzione
