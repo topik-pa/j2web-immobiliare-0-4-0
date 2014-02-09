@@ -538,6 +538,7 @@ public class _subitoIt extends PortaleWeb {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
 			else {
+				//Lasciare solo per test
 				inserimentoOK=true;
 			}
 		} catch (IOException | RuntimeException e) {
