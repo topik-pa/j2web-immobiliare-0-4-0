@@ -7,19 +7,16 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import javax.swing.ImageIcon;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
@@ -268,40 +265,18 @@ public class _autoscout24It extends PortaleWeb {
 
 
 		//Connessione 4c - Invio delle foto
-		/*String codiceCasualeUpload = UUID.randomUUID().toString();
-
-		int numeroImmagini = 0;
 		for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null) {
-				numeroImmagini ++;
-			}
-		}
-		String quanteImmagini = Integer.toString(numeroImmagini);
-
-		for(int i=1; i<scheda.arrayImages.length; i++) {
-			if(scheda.arrayImages[i]!=null) {
-				String codiceCasualeFile = UUID.randomUUID().toString();
 				HttpPortalPostConnection connessione_4c = new HttpPortalPostConnection();        
 				try {
 					MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 					FileBody bin = new FileBody(scheda.arrayImages[i]);
-					reqEntity.addPart("thumbnailWidth", new StringBody("640") );
-					reqEntity.addPart("MultiPowUploadId", new StringBody(codiceCasualeUpload) );
-					reqEntity.addPart("fileSize", new StringBody(Long.toString(bin.getContentLength())) );					
-					reqEntity.addPart("thumbnailHeight", new StringBody("480") );
-					reqEntity.addPart("fileModificationDate", new StringBody(Long.toString(new Date().getTime())) );
-					reqEntity.addPart("rotateAngleBeforeCrop", new StringBody("0") );
-					reqEntity.addPart("imageWidth", new StringBody("800") );
-					reqEntity.addPart("MultiPowUpload_browserCookie", new StringBody("") ); //sarebbero tutti i cookie...
-					reqEntity.addPart("filesCount", new StringBody(quanteImmagini) );
-					reqEntity.addPart("fileCreationdate", new StringBody(Long.toString(new Date().getTime()+999)) );
-					reqEntity.addPart("currentFileIndex", new StringBody(Integer.toString(i-1)) );
-					reqEntity.addPart("rotateAngle", new StringBody("0") );
-					reqEntity.addPart("fileId", new StringBody(codiceCasualeFile) );
-					reqEntity.addPart("imageHeight", new StringBody("600") );
-					reqEntity.addPart("Filedata", bin );
+					
+					reqEntity.addPart("file1", bin );
+					
+					String articleGuid = returnCookieValue(requestCookies, "GUID");					
 
-					Object[] response = connessione_4c.post("Connessione 9 - Invio delle foto", "https://offerta.autoscout24.it/classified/image/upload/" + articleId, reqEntity, requestHeaders, requestCookies, debugMode);			
+					Object[] response = connessione_4c.post("Connessione 4c - Invio delle foto", "https://offerta.autoscout24.it/classified/image/UploadHTML5/?articleId=" + articleId + "&articleGuid=" + articleGuid, reqEntity, requestHeaders, requestCookies, debugMode);			
 
 					//Controllo il response status
 					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -318,7 +293,7 @@ public class _autoscout24It extends PortaleWeb {
 					postParameters.clear();
 				}
 			}
-		}*/
+		}
 
 
 		//Connessione 5 - POST dei parametri di annuncio
