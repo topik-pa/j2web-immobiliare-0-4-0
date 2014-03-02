@@ -272,7 +272,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return headerValue;
 	}
 
-	//Metodo per ottenere le coordinate della cittÃ 
+	//Metodo per ottenere le coordinate della città
 	public Map<String,String> getLatLonCoord(String indirizzo, String comune, String provincia, String regione) throws ParserConfigurationException, SAXException, IOException {
 		Map<String,String> mappaLatLon = new Hashtable<String,String>();
 		String url;
@@ -462,6 +462,25 @@ public abstract class PortaleWeb implements parametriGenerali {
 		
 		return doc;
 
+	}
+	
+	//Ritorna il valore di un cookie data una lista di cookie e il nome del cookie stesso
+	public String returnCookieValue(List<BasicClientCookie> cookieList, String cookieName) {
+		
+		String cookieValue = "";
+		
+		Iterator<BasicClientCookie> iterator = cookieList.iterator();
+		while(iterator.hasNext()) {
+			
+			BasicClientCookie currentCookie = iterator.next();
+			
+			if(currentCookie.getName().equals(cookieName)) {
+				cookieValue = currentCookie.getValue();
+			}
+		}
+		
+		return cookieValue;
+		
 	}
 
 	//Messaggio inserimento annuncio OK
