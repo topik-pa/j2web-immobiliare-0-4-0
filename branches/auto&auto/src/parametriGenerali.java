@@ -8,9 +8,9 @@ import javax.swing.JComponent;
 public interface parametriGenerali {
 
 	//Versione di J2Web eintestazioni codice schede
-	final String  j2web_version = "1.0 \u03B2";
-	final String  intestazioneCodiceSchedaVeicolo = "j2w05_V_";
-	final String  intestazioneCodiceSchedaCliente = "j2w05_C_";
+	final String  j2web_version = "1.0 \u03B2 - Demo di prova per Auto&Auto";
+	final String  intestazioneCodiceSchedaVeicolo = "j2w1_V_";
+	final String  intestazioneCodiceSchedaCliente = "j2w1_C_";
 
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
@@ -19,7 +19,7 @@ public interface parametriGenerali {
 	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
 	final String PROVINCIA_UTENTE ="Udine";
 	final String CITTA_UTENTE ="Udine";
-	final String INDIRIZZO_UTENTE ="via Buttrio, 667 - 33100 Udine";
+	final String INDIRIZZO_UTENTE ="via Buttrio, 267 - 33100 Udine";
 	final String TELEFONO_UTENTE ="3295698985";
 
 	//Mail del back end
