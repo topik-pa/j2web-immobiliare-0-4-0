@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Created-By: 1.7.0_06 (Oracle Corporation)
+Rsrc-Class-Path: ./ miglayout15-swing.jar httpcore-4.1.4.jar httpmime-4.1.3.jar json-rpc-1.0.jar jsoup-1.6.2.jar httpclient-4.1.3.jar commons-codec-1.4.jar forms-1.3.0.jar mail.jar httpclient-cache-4.1.3.jar commons-logging-1.1.1.jar
+Class-Path: .
+Rsrc-Main-Class: J2Web_UI
+Main-Class: J2Web_UI
+Name: j2web
+Sealed: true
+Specification-Title: Java automotive software
+Specification-Version: 0.5
+Specification-Vendor: J2Web Studio
+Implementation-Title: J2Web - Automotive
+Implementation-Vendor: J2Web Studio
+Permissions: all-permissions
+Codebase: www.j2webstudio.it
+Application-Name: J2Web - Automotive
