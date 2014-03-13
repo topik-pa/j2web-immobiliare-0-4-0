@@ -1,0 +1,199 @@
+CuboAuto: 
+usr-topik123
+psw-topik123
+
+subito.it
+usr-c1669723@drdrb.com
+pwd-topik123
+tel verificato: 3295698985
+
+autoscout24
+usr-c1917245@drdrb.com
+pwd-topik123
+
+autosupermarket
+Username: e136467@drdrb.com
+Password: topik123 
+
+vendiauto.com
+user - c3339097@drdrb.com
+passwd - topik123
+
+automobile.it
+user - c3059932@drdrb.com
+passwd - topik123
+
+Autoprontaconsegna
+email:HeadyElf@mailinator.com
+password:topik123
+
+
+
+Stringa test: [ршьЄ∙-г$А-?!@#]
+
+
+
+Server: sql.j2webstudio.it via TCP/IP
+User: j2webstu85037@217.64.195.219
+
+String host = "sql.j2webstudio.it";
+	String port = "3306";
+	String charset = "latin1";
+	String dbname = "j2webstu85037";
+	String username = "j2webstu85037";
+	String password = "j2we20858";
+	String query;
+	
+	
+	
+
+Salve Marco,
+
+Ti confermiamo l'attivazione di un prodotto TOPWEB per il dominio www.j2webstudio.it.
+
+Di seguito troverai tutti i parametri di attivazione e le note introduttive sull'uso del prodotto attivato.
+
+
+#######################################################################
+Indirizzo completo del sito web:
+http://www.j2webstudio.it
+
+
+#######################################################################
+Pannello di controllo del sito web:
+https://cp.tophost.it/
+oppure:
+http://www.j2webstudio.it/cpanel/
+
+Username: j2webstudio.it
+Password: deiquivu
+
+Nota che per accedere al pannello di controllo il firewall deve permettere l'accesso alla porta 443 (https).
+
+Dal pannello di controllo e' possibile gestire e controllare tutte le funzionalita' del prodotto attivato:
+- Creare e gestire caselle e-mail
+- Impostare o meno la redirezione del sito web
+- Gestire il DNS
+- Cambiare la password dell'account FTP
+- Leggere la posta direttamente via web
+- Gestire i file pubblicati attraverso il web file-manager
+- Controllare lo stato dei servizi e la distribuzione dello spazio
+- Impostare ed utilizzare nuovi database MySQL
+- Visualizzare le configurazioni PHP e CGI del prodotto
+
+
+#######################################################################
+Impostazioni per il client FTP:
+
+Indirizzo server FTP: ftp.j2webstudio.it
+Username: j2webstudio.it
+Password: deiquivu
+Porta: 21
+
+
+#######################################################################
+Note per la pubblicazione e variabili di sistema:
+
+Sistema operativo: Linux
+Webserver utilizzato: Apache
+
+Cartella inziale remota per la pubblicazione file:
+	/htdocs/
+
+Cartella remota per la pubblicazione script CGI:
+	/cgi-bin/
+
+Percorso assoluto della cartella del sito:
+	/home/mhd/www.j2webstudio.it/htdocs/
+
+Percorso assoluto della cartella per gli script CGI:
+	/home/mhd/www.j2webstudio.it/cgi-bin/
+
+Indirizzo sendmail:
+	/usr/sbin/sendmail
+
+Indirizzo interprete perl:
+	/usr/bin/perl
+
+
+#######################################################################
+#                         A T T E N Z I O N E                         #
+#                                                                     #
+# Il nostro sistema e' configurato in modo da garantire la massima    #
+# sicurezza contro le intrusioni, presta quindi attenzione:           #
+#                                                                     #
+# Se un intruso impostasse i permessi (CHMOD) di cartelle a 777 entra #
+# in funzione un meccanismo di blocco che IMPEDISCE il funzionamento  #
+# del PHP o dello script CGI su tale cartella.                        #
+#                                                                     #
+# Nei nostri server l'interprete PHP gira con gli stessi permessi     #
+# dell'utente FTP, quindi non e' MAI necessario cambiare i permessi   #
+# di esecuzione a file o a cartelle. Questo sistema e' stato adottato #
+# per facilitare l'installazione di qualsiasi script e rendere piu'   #
+# sicuro il prodotto.                                                 #
+#                                                                     #
+# Per le ragioni di cui sopra sconsigliamo di utilizzare il comando   #
+# CHMOD anche sui file. Ribadiamo comunque che la nostra              #
+# configurazione permette a PHP di scrivere e agire sui vari file     #
+# anche senza utilizzare CHMOD, e solitamente non serve fare nulla    #
+# anche quando una data applicazione chiede di impostare i permessi.  #
+#                                                                     #
+# In caso di problemi o blocchi per settaggi CHMOD errati ti sara'    # 
+# possibile ripristinare il corretto funzionamento del sito web       #
+# utilizzando la funzione 'RIPRISTINA SITO WEB' presente nel proprio  #
+# pannello di controllo.                                              #
+#                                                                     #
+# Nel caso di script CGI/PERL valgono le stesse note di cui sopra, ad #
+# eccezione del file eseguibile CGI che puo' essere impostato a 750   #
+# (NON 755) cosi' da avere il permesso di esecuzione.                 #
+#                                                                     #
+#######################################################################
+
+I normali file HTML devono avere estensione .html o .htm.
+
+L'home page del sito deve essere chiamata in uno dei seguenti modi: index.html, index.htm, index.shtml oppure index.php (SEMPRE E TUTTO IN LETTERE MINUSCOLE).
+
+Gli script PHP devono avere estensione .php e possono essere messi in qualsiasi cartella esclusa la 'cgi-bin'. Il nostro sistema PHP non supporta l'authentication header.
+
+Le pagine html contenenti codice SSI devono avere estensione .shtml.
+
+Nella cartella speciale 'cgi-bin' vanno trasferiti tutti gli script CGI in perl. Gli script CGI all'interno possono avere qualsiasi estensione l'importante e' che abbiano i permessi impostati a 750 altrimenti non vengono eseguiti (nemmeno con i permessi a 777).
+
+
+#######################################################################
+Parametri per il client di posta elettronica:
+
+Nome casella principale: info@j2webstudio.it
+
+Nome account: j2webstudio.it
+Password:     deiquivu
+Server posta in uscita (SMTP):   mail.j2webstudio.it
+Server posta in ingresso (POP3/IMAP): pop.j2webstudio.it
+
+Alias alla casella principale:
+j2webstudio.it@j2webstudio.it e postmaster@j2webstudio.it
+
+Nota che il server SMTP funziona attraverso username e password, si dovra' quindi impostare il client di posta elettronica per l'autenticazione SMTP.
+
+Ad esempio con Outlook Express si deve andare su: Strumenti -> Account -> Proprieta' -> Server e selezionare la casella 'Autenticazione del server necessaria'.
+
+Accedendo al pannello di controllo si potranno configurare ulteriori account di posta elettronica ed infiniti alias.
+
+
+#######################################################################
+La guida completa all'uso del prodotto si trova al seguente indirizzo: http://www.tophost.it/aiuto/
+
+Per assistenza, informazioni o chiarimenti riguardo ai nostri servizi potrai utilizzare il servizio di supporto tecnico tramite ticket all'indirizzo: http://www.tophost.it/aiuto/ticket/ 
+
+Al fine di poter ottimizzare l'uso di questo strumento e di agevolare il lavoro del nostro staff, ti invitiamo prima di inviarci qualsiasi richiesta, di verificare che il tuo quesito non sia gia' presente nell'area di aiuto.
+
+
+
+Infine ti rammentiamo che dalla tua area cliente Tophost puoi controllare lo stato di tutti i prodotti attivati e andare ai relativi pannelli di controllo. Puoi inoltre aprire nuovi ticket, nonche' visualizzare le risposte ai ticket aperti. Per accedere all'area cliente Tophost utilizza il Nome Utente e la Password gia' in suo possesso.
+
+
+
+Grazie per la fiducia accordataci e buon lavoro. Per favore non rispondere a questo messaggio poiche' e' stato generato automaticamente solo a scopo informativo.
+
+-- Tophost
+

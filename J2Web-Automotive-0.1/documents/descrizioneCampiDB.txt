@@ -1,0 +1,67 @@
+ 	Id	semplice id numerico autoincrementante
+	IdScheda	id della scheda veicolo
+	Marca		
+	Modello 
+	Versione 
+	MeseImmatricolazione 	
+	AnnoImmatricolazione 	
+	Carburante	tipologia di carburante
+	Tipologia 	tipologia di veicolo (nuovo, usato...)
+	Carrozzeria 
+	PostiASedere 
+	PotenzaKW
+	PotenzaCV
+	ColoreEsterno 
+	Metallizzato	il colore è metallizzato?
+	PrecedentiProprietari	numero dei proprietari precedenti 
+	Chilometraggio
+	Prezzo 	
+	Trattabile	il prezzo è trattabile?
+	Contratto 	tipologia di contratto (acquisto o vendita)
+	FinitureInterni 
+	ColoreInterni
+	ABS 
+	Airbag 	
+	Antifurto 
+	ChiusuraCentralizzata 
+	ControlloAutomTrazione
+	ESP
+	Immobilizer 
+	FreniADisco 
+	AlzacristalliElettrici
+	Clima
+	NavigatoreSatellitare 
+	RadioCD
+	ParkDistControl 
+	SediliRiscaldati
+	Servosterzo
+	VolanteMultifunzione
+	Handicap
+	CerchiInLega
+	GancioTraino
+	Portapacchi 
+	SediliSportivi
+	Motore
+	Cambio
+	NumRapporti
+	Cilindrata
+	ClasseEmissione
+	ConsumoMedio
+	Immagine1	la url dell'immagine salvata sul server j2webstudio (così come le altre)
+	Immagine2
+	Immagine3
+	Immagine4
+	Immagine5
+	Immagine6
+	Immagine7
+	Immagine8
+	Immagine9
+	Immagine10
+	UrlYT	la url del video YouTube (se esiste)
+	Descrizione		descrizione libera del veicolo
+	RagioneSociale	ragione sociuale concessionario che genera la scheda veicolo
+	Indirizzo		(del concessionario)
+	TelefonoGenerico 	(del concessionario)
+	NomeReferente		nome referente dell'annuncio (la persona di riferimento all'interno del concessionario per la sceda attuale)
+	TelefonoReferente	telefono referente
+	EmailReferente		email referente
