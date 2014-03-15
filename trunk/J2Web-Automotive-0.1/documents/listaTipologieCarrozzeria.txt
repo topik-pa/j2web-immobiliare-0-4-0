@@ -1,9 +1,0 @@
-City car
-Cabrio
-Coupé
-SUV/Fuoristrada
-Station wagon
-Berlina
-Altro
-Monovolume
-Furgoni/Van
