@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -104,7 +106,7 @@ public class _autoscout24It extends PortaleWeb {
 		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
 
 		//autoscout24 è un portale che accetta solo veicoli usati
-		if(scheda.tipologiaVeicolo.equals("Veicolo nuovo")) {
+		if(scheda.tipologiaVeicolo.equals("Veicolo nuovo") || scheda.meseImmatricolazioneVeicolo.equals("Da immatricolare") || scheda.annoImmatricolazioneVeicolo.equals("Da immatricolare")) {
 			messageInserimentoKO(NOMEPORTALE);
 			return false;
 		}
@@ -307,12 +309,9 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("BaseData.BodyTypeId",scheda.carrozzeriaVeicolo); 
 		tabellaDiDipendenza.put("BaseData.Doors","***site***"); //bho 
 
-		if(scheda.meseImmatricolazioneVeicoloIndex==0) {
-			tabellaDiDipendenza.put("BaseData.FirstRegistrationMonth","Mese"); 
-		}
-		else {
-			tabellaDiDipendenza.put("BaseData.FirstRegistrationMonth",""+scheda.meseImmatricolazioneVeicoloIndex); 
-		}
+
+		tabellaDiDipendenza.put("BaseData.FirstRegistrationMonth", "0" + Integer.toString(scheda.meseImmatricolazioneVeicoloIndex-1)); 
+		
 		tabellaDiDipendenza.put("BaseData.FirstRegistrationYear",scheda.annoImmatricolazioneVeicolo); 
 		tabellaDiDipendenza.put("BaseData.FuelId",scheda.carburanteVeicolo); 
 		tabellaDiDipendenza.put("BaseData.HSN","***site***"); 
@@ -636,6 +635,10 @@ public class _autoscout24It extends PortaleWeb {
 		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
 
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
+		String articleGUID = "";
+		
+		Date date = new Date();
+		long timeStamp = date.getTime();
 
 		//Imposto le variabili per il session cookie
 		SESSIONCOOKIENAME = "GUID";
@@ -721,13 +724,13 @@ public class _autoscout24It extends PortaleWeb {
 		}
 
 
-		//Connessione 3 - GET della pagina MyAccount
+		//Connessione 3 - GET della pagina PrivateArea
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
 		requestHeaders.remove(0);
-		requestHeaders.add(new BasicNameValuePair("Host", HOST));
+		requestHeaders.add(new BasicNameValuePair("Host", HOST3));
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina MyAccount", URLROOT + "/MyPrivateArea.aspx", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina PrivateArea", "https://offerta.autoscout24.it/PrivateArea", requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -735,14 +738,31 @@ public class _autoscout24It extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Document dom = Jsoup.parse(responseBody);
+				Element link = dom.select("a[data-name=deleteLink][data-article-id=" + codiceInserzione + "]").first();
+				articleGUID = link.attr("data-article-guid");
+
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
 
 
-		//Connessione 4 - POST di eliminazione annuncio
-		//Raccolgo i parametri nella tabella di dipendennza
+		//Connessione 4 - GET di eliminazione annuncio
+		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
+		try {
+			Object[] response = connessione_4.get("Connessione 4 - GET di eliminazione annuncio", "https://offerta.autoscout24.it/privatearea/deletearticlewithsurvey?articleId=" + codiceInserzione + "&articleGuid=" + articleGUID + "&_=" + timeStamp, requestHeaders, requestCookies, debugMode);
+			//Controllo il response status
+			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+			if( (responseStatus.getStatusCode()!=200)) {
+				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+		} catch (IOException | RuntimeException e) {
+			throw new HttpCommunicationException(e);
+		}
+		
+		/*//Raccolgo i parametri nella tabella di dipendennza
 		tabellaDiDipendenza.put("__EVENTARGUMENT","***site***");
 		tabellaDiDipendenza.put("__EVENTTARGET","***site***");
 		tabellaDiDipendenza.put("__VIEWSTATE","***site***");
@@ -777,7 +797,7 @@ public class _autoscout24It extends PortaleWeb {
 			tabellaDiDipendenza.clear();
 			mappaDeiParamerti.clear();
 			postParameters.clear();
-		}
+		}*/
 
 		//Aggiorno la lista dei portali in cui è presenta la scheda corrente
 		scheda.eliminaInserimentoPortale(idPortale);			
