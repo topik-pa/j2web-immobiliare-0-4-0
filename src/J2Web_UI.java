@@ -700,6 +700,7 @@ public class J2Web_UI implements parametriGenerali {
 		panel_20.add(lblPrecedentiProprietari, "2, 24");
 
 		JLabel lblChilometraggio = new JLabel("Chilometraggio*");
+		lblChilometraggio.setToolTipText("");
 		panel_20.add(lblChilometraggio, "6, 24");
 
 		comboBox_PrecedentiProprietari = new JComboBox<String>();
@@ -708,7 +709,7 @@ public class J2Web_UI implements parametriGenerali {
 		panel_20.add(comboBox_PrecedentiProprietari, "2, 26, fill, default");
 
 		textField_Chilometraggio = new JTextField();
-		textField_Chilometraggio.setToolTipText("Inserimento chilometri percorsi dal veicolo");
+		textField_Chilometraggio.setToolTipText("Inserimento chilometri percorsi dal veicolo (inserire \"0\" se il veicolo è nuovo)");
 		textField_Chilometraggio.addKeyListener(new KeyAdapter() {
 			@Override
 			//Controllo i tipo e numero dei caratteri immessi

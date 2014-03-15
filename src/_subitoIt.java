@@ -549,7 +549,7 @@ public class _subitoIt extends PortaleWeb {
 		try {    
 			postParameters.add(new BasicNameValuePair("payment_type", "cc"));
 
-			Object[] response = connessione_8.post("Connessione 8 - POST della conferma alla pubblicazione", SECUREURLROOT + "/ai/create/0", postParameters, requestHeaders, null, debugMode);			
+			Object[] response = connessione_8.post("Connessione 8 - POST della conferma alla pubblicazione", SECUREURLROOT + "/ai/create/0", postParameters, requestHeaders, requestCookies, debugMode);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -669,9 +669,7 @@ public class _subitoIt extends PortaleWeb {
 
 		JOptionPane.showMessageDialog(null, "Non è prevista l'eliminazione automatica della scheda da: " + NOMEPORTALE + "\n\nPer elimibare la scheda, procedere direttamente attraverso il portale Web.", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
 
-
 		return true;
-
 
 
 	}
