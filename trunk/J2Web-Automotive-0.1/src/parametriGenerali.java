@@ -7,13 +7,12 @@ import javax.swing.JComponent;
 
 public interface parametriGenerali {
 
-	//Versione di J2Web eintestazioni codice schede
+	//Versione di J2Web
 	final String  j2web_version = "1.0 \u03B2";
-	final String  intestazioneCodiceSchedaVeicolo = "j2w1_V_";
-	final String  intestazioneCodiceSchedaCliente = "j2w1_C_";
-
+	
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
+	final int IDUTENTE = 19; //l'ID corrisponde al valore idUtente del DB
 	final String EMAIL_UTENTE ="marco--pavan@libero.it";
 	final String RAGIONESOCIALE_UTENTE ="Auto&Auto srl";
 	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
@@ -21,6 +20,10 @@ public interface parametriGenerali {
 	final String CITTA_UTENTE ="Udine";
 	final String INDIRIZZO_UTENTE ="via Buttrio, 267 - 33100 Udine";
 	final String TELEFONO_UTENTE ="3295698985";
+	
+	//Intestazioni codice scheda
+	final String  intestazioneCodiceSchedaVeicolo = "j2w1_V_" + IDUTENTE + "_";
+	final String  intestazioneCodiceSchedaCliente = "j2w1_C_" + IDUTENTE + "_";
 
 	//Mail del back end
 	final String BACKEND_EMAIL ="marcopavan.mp@gmail.com";
@@ -70,9 +73,12 @@ public interface parametriGenerali {
 	String pathTemp = pathJ2web + "temp\\";
 	String pathFileDatSchedeVeicolo = pathSchede + "schedeVeicolo.dat";
 	String pathFileDatSchedeCliente = pathSchede + "schedeClienti.dat";
+	
+	//Dati accesso DB auto-nuove-usate
+	String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/httpTunnel/mysqltunnel.php";
 
 	//Url http tunneling
-	String urlHTTPTunnel = "http://www.j2webstudio.it/httptunneling/mysqltunnel.php";
+	//String urlHTTPTunnel = "http://www.j2webstudio.it/httptunneling/mysqltunnel.php";
 
 	//Url tracking remoto
 	String urlTrackingRemoto = "http://www.j2webstudio.it/tracking/tracking.php";
