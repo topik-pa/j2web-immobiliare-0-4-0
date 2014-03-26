@@ -1,3 +1,9 @@
+/*
+ * 
+ * La UI principale di J2Web
+ * 
+ */
+
 import java.awt.EventQueue;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -26,7 +32,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
@@ -68,11 +73,15 @@ import java.awt.Dimension;
 
 public class J2Web_UI implements parametriGenerali {
 
+	/**
+	 * Variabili generali della UI
+	 */
+
 	//Nome della GUI
 	private static JFrame imagination_05;
 
 	//Campi della GUI
-	
+
 	//Form veicolo
 	//Combobox
 	private static JComboBox<String> comboBox_Versione;
@@ -153,7 +162,20 @@ public class J2Web_UI implements parametriGenerali {
 	private static JLabel label_Immagine10;
 	//Textpane
 	private static JTextPane textPane_Descrizione;
-	
+	//Pulsanti
+	private static JButton btnImmagine1;
+	private static JButton btnImmagine2;
+	private static JButton btnImmagine3;
+	private static JButton btnImmagine4;
+	private static JButton btnImmagine5;
+	private static JButton btnImmagine6;
+	private static JButton btnImmagine7;
+	private static JButton btnImmagine8;
+	private static JButton btnImmagine9;
+	private static JButton btnImmagine10;
+	private static JButton btnInserisci;
+	private static JButton btnResetta;
+
 	//Form cliente
 	//Combobox
 	private static JComboBox<String> comboBox_Marca_Cliente;
@@ -212,32 +234,22 @@ public class J2Web_UI implements parametriGenerali {
 	//Serve per bloccare temporaneamente l'ascoltatore di alcune combobox
 	public static boolean nonUserSelection = false;
 
-	private static JButton btnImmagine1;
-	private static JButton btnImmagine2;
-	private static JButton btnImmagine3;
-	private static JButton btnImmagine4;
-	private static JButton btnImmagine5;
-	private static JButton btnImmagine6;
-	private static JButton btnImmagine7;
-	private static JButton btnImmagine8;
-	private static JButton btnImmagine9;
-	private static JButton btnImmagine10;
-	private static JButton btnInserisci;
-	private static JButton btnResetta;
-
 	//Classloader per il recupero delle risorse esterne
 	ClassLoader cl;
 
 
 	/**
-	 * Launch the application.
+	 * Lancia l'applicazione
 	 */
 	public static void main(String[] args) {
+		//Look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+
+		//Crea l'istanza della finestra principale
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -252,9 +264,8 @@ public class J2Web_UI implements parametriGenerali {
 	}
 
 
-
 	/**
-	 * Create the application.
+	 * Inizializza l'applicazione
 	 */
 	public J2Web_UI() {
 
@@ -331,17 +342,11 @@ public class J2Web_UI implements parametriGenerali {
 
 		//Tracking dell'evento avvio di j2web
 		System.out.print("Tracking dell'evento avvio di j2web...");
-		//long start = System.currentTimeMillis();
-		//long end = start + 10*1000; // 60 seconds * 1000 ms/sec
-		//boolean stop = false;
-		//while (System.currentTimeMillis() < end && !stop)
-		//{
-			try {
-				j2web.trackEvent("avvio_j2web_" + j2web_version + "_" + EMAIL_UTENTE, EMAIL_UTENTE);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("primoTrackingFallito"), "Problemi di connessione", JOptionPane.WARNING_MESSAGE);
-			}
-		//}
+		try {
+			j2web.trackEvent("avvio_j2web_" + j2web_version + "_" + EMAIL_UTENTE + "_" + IDUTENTE, EMAIL_UTENTE);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("primoTrackingFallito"), "Problemi di connessione", JOptionPane.WARNING_MESSAGE);
+		}
 		System.out.print(" fatto." + "\n");
 
 	}
@@ -349,16 +354,16 @@ public class J2Web_UI implements parametriGenerali {
 
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Inizializza il contenuto della UI
 	 */
 	private void initialize() {
 
-		/*Il JFrame principale*/
+		//Il JFrame principale
 		imagination_05 = new JFrame();
 
+		//Messaggio di chiusura applicazione
 		imagination_05.addWindowListener(new WindowAdapter() {
-			@Override
-			//Messaggio di chiusura applicazione
+			@Override			
 			public void windowClosing(WindowEvent e) {
 				System.out.println("Ciao ciao...");
 			}
@@ -366,8 +371,8 @@ public class J2Web_UI implements parametriGenerali {
 
 		//Caratteristiche principali della GUI
 		imagination_05.setTitle(nomeGUI);
-		Image frameIconImage  = new ImageIcon(cl.getResource(frameIcon)).getImage();
-		imagination_05.setIconImage(frameIconImage);
+		//Image frameIconImage  = new ImageIcon(cl.getResource(frameIcon)).getImage();
+		//imagination_05.setIconImage(frameIconImage);
 		imagination_05.setBounds(GUI_bounds[0], GUI_bounds[1], GUI_bounds[2], GUI_bounds[3]);
 		imagination_05.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		imagination_05.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -740,7 +745,7 @@ public class J2Web_UI implements parametriGenerali {
 				}
 			}
 		});
-		
+
 		JLabel lblTipologiaDiContratto = new JLabel("Tipologia di contratto*");
 		panel_20.add(lblTipologiaDiContratto, "10, 28");
 		panel_20.add(textField_Prezzo, "2, 30, fill, default");
@@ -1431,7 +1436,7 @@ public class J2Web_UI implements parametriGenerali {
 					try {
 						j2web.trackEvent("creazioneSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, schedaVeicolo.codiceScheda);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						//
 					}
 					System.out.print(" fatto." + "\n");	
 
@@ -1856,9 +1861,7 @@ public class J2Web_UI implements parametriGenerali {
 
 						popolaModelloVeicolo(marcaVeicolo, comboboxModello, comboboxVersione);
 					}	
-
 				}	
-
 			}
 		});
 		comboBox_Marca_Cliente.setModel(new DefaultComboBoxModel<String>(marcheAutoveicoli));
@@ -1893,19 +1896,10 @@ public class J2Web_UI implements parametriGenerali {
 		comboBox_Versione_Cliente = new JComboBox<String>();
 		comboBox_Versione_Cliente.setToolTipText("Selezionare la versione dell'automobile ricercata");
 		comboBox_Versione_Cliente.setEditable(true);
-		comboBox_Versione_Cliente.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				//Non faccio alcunchè...
-			}
-		});
 		panel_30.add(comboBox_Versione_Cliente, "6, 4, fill, default");
 
 		comboBox_TipologiaCarburante_Cliente = new JComboBox<String>();
 		comboBox_TipologiaCarburante_Cliente.setToolTipText("Selezionare la tipologia di carburante dell'automobile ricercata");
-		comboBox_TipologiaCarburante_Cliente.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-			}
-		});
 
 		JLabel lblTipologiaCarburante = new JLabel("Tipologia carburante");
 		panel_30.add(lblTipologiaCarburante, "2, 6");
@@ -1987,7 +1981,7 @@ public class J2Web_UI implements parametriGenerali {
 					try {
 						j2web.trackEvent("creazioneSchedaCliente_j2web_" + j2web_version + "_" + EMAIL_UTENTE, schedaCliente.codiceSchedaCliente);
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
+						//
 					}
 					System.out.print(" fatto." + "\n");	
 
@@ -2199,6 +2193,9 @@ public class J2Web_UI implements parametriGenerali {
 
 
 
+
+
+
 		//Menu top window
 		JMenuBar menuBar = new JMenuBar();
 		imagination_05.getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -2213,7 +2210,7 @@ public class J2Web_UI implements parametriGenerali {
 			}
 		});
 		menu1.add(menuItem_1);
-		
+
 		JMenuItem menuItem_2 = new JMenuItem("Esci");
 		menuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -2224,10 +2221,10 @@ public class J2Web_UI implements parametriGenerali {
 
 		JMenu menu2 = new JMenu("Schede veicolo");
 		menuBar.add(menu2);
-		
+
 		JMenuItem menuItem_3 = new JMenu("Ordina per");
 		menu2.add(menuItem_3);
-		
+
 		JMenuItem mntmDatInserimento = new JMenuItem("Data inserimento");
 		mntmDatInserimento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -2237,7 +2234,7 @@ public class J2Web_UI implements parametriGenerali {
 			}
 		});
 		menuItem_3.add(mntmDatInserimento);
-		
+
 		JMenuItem mntmMarca = new JMenuItem("Marca");
 		mntmMarca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -2247,7 +2244,7 @@ public class J2Web_UI implements parametriGenerali {
 			}
 		});
 		menuItem_3.add(mntmMarca);
-		
+
 		JMenuItem mntmTipolologia = new JMenuItem("Tipologia");
 		mntmTipolologia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -2257,7 +2254,7 @@ public class J2Web_UI implements parametriGenerali {
 			}
 		});
 		menuItem_3.add(mntmTipolologia);
-		
+
 		JMenuItem mntmPrezzo = new JMenuItem("Prezzo");
 		mntmPrezzo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -2267,30 +2264,30 @@ public class J2Web_UI implements parametriGenerali {
 			}
 		});
 		menuItem_3.add(mntmPrezzo);
-		
+
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Elimina tutte");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Elimino tutte le schede...");				
 				int response = JOptionPane.showConfirmDialog(null, MapModalWindowsDialogs.get("menu_ConfermaEliminaTutteLeSchedeVeicolo"), "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (response == JOptionPane.NO_OPTION) {
-				    } else if (response == JOptionPane.YES_OPTION) {
-				    	//Elimino tutte le schede e salvo su dat
-				    	listSchedeVeicolo.clear();
-				    	j2web.salvaListaSchedeVeicoloCreate();
-				    	J2Web_UI.aggiornaPannelloListaSchedeVeicolo();					
-				    } else if (response == JOptionPane.CLOSED_OPTION) {				    	
+				} else if (response == JOptionPane.YES_OPTION) {
+					//Elimino tutte le schede e salvo su dat
+					listSchedeVeicolo.clear();
+					j2web.salvaListaSchedeVeicoloCreate();
+					J2Web_UI.aggiornaPannelloListaSchedeVeicolo();					
+				} else if (response == JOptionPane.CLOSED_OPTION) {				    	
 				}
 			}
 		});
 		menu2.add(mntmNewMenuItem_1);
-		
+
 		JMenu menu3 = new JMenu("Schede cliente");
 		menuBar.add(menu3);
-		
+
 		JMenu menuItem_4 = new JMenu("Ordina per");
 		menu3.add(menuItem_4);
-		
+
 		JMenuItem mntmDataInserimento = new JMenuItem("Data inserimento");
 		mntmDataInserimento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -2300,7 +2297,7 @@ public class J2Web_UI implements parametriGenerali {
 			}
 		});
 		menuItem_4.add(mntmDataInserimento);
-		
+
 		JMenuItem mntmCognome = new JMenuItem("Cognome");
 		mntmCognome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -2310,7 +2307,7 @@ public class J2Web_UI implements parametriGenerali {
 			}
 		});
 		menuItem_4.add(mntmCognome);
-		
+
 		JMenuItem mntmCitt = new JMenuItem("Città");
 		mntmCitt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -2320,19 +2317,19 @@ public class J2Web_UI implements parametriGenerali {
 			}
 		});
 		menuItem_4.add(mntmCitt);
-		
+
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Elimina tutte");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Elimino tutte le schede...");				
 				int response = JOptionPane.showConfirmDialog(null, MapModalWindowsDialogs.get("menu_ConfermaEliminaTutteLeSchedeCliente"), "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (response == JOptionPane.NO_OPTION) {
-				    } else if (response == JOptionPane.YES_OPTION) {
-				    	//Elimino tutte le schede e salvo su dat
-				    	listSchedeCliente.clear();
-				    	j2web.salvaListaSchedeClienteCreate();
-				    	J2Web_UI.aggiornaPannelloListaSchedeCliente();					
-				    } else if (response == JOptionPane.CLOSED_OPTION) {				    	
+				} else if (response == JOptionPane.YES_OPTION) {
+					//Elimino tutte le schede e salvo su dat
+					listSchedeCliente.clear();
+					j2web.salvaListaSchedeClienteCreate();
+					J2Web_UI.aggiornaPannelloListaSchedeCliente();					
+				} else if (response == JOptionPane.CLOSED_OPTION) {				    	
 				}
 			}
 		});
@@ -2345,7 +2342,9 @@ public class J2Web_UI implements parametriGenerali {
 
 
 
-	//Lista dei metodi specifici della GUI
+	/**
+	 * Metodi utilizzati dalla UI
+	 */
 
 	//Metodo per aggiornare la UI del pannello schede veicolo
 	protected static void aggiornaPannelloListaSchedeVeicolo() {
@@ -2376,7 +2375,6 @@ public class J2Web_UI implements parametriGenerali {
 				pannelloListaSchedeVeicolo.add(Box.createVerticalStrut(6));
 			}
 		}
-
 	}
 
 
@@ -2428,7 +2426,6 @@ public class J2Web_UI implements parametriGenerali {
 				pannelloListaSchedeClienteMLS.add(Box.createVerticalStrut(6));
 			}
 		}
-
 	}
 
 
@@ -2442,7 +2439,6 @@ public class J2Web_UI implements parametriGenerali {
 				campoCorrente.setEnabled(false);
 			}		
 		}	
-
 	}
 
 
@@ -2584,8 +2580,9 @@ public class J2Web_UI implements parametriGenerali {
 
 		marcaVeicolo = marcaVeicolo.toLowerCase().trim().replace(" ", "-");
 
-		Date now = new Date(); 
-		String queryUrl = "http://www.carqueryapi.com/api/0.3/?cmd=getModels&make=" + marcaVeicolo + "&sold_in_us=&_=" + now.getTime();
+		Date now = new Date();
+		String queryString = "?cmd=getModels&make=" + marcaVeicolo + "&sold_in_us=&_=" + now.getTime();
+		String queryUrl = urlCarQuery + queryString;
 		Object[] response = null;
 		JSONObject json = null;
 
@@ -2635,7 +2632,8 @@ public class J2Web_UI implements parametriGenerali {
 
 		Date now = new Date(); 
 
-		String queryUrl = "http://www.carqueryapi.com/api/0.3/?cmd=getTrims&make=" + marcaVeicolo + "&year=-1&model=" + modelloVeicolo + "&sold_in_us=&full_results=0&_=" + "&sold_in_us=&_=" + now.getTime();
+		String queryString = "?cmd=getTrims&make=" + marcaVeicolo + "&year=-1&model=" + modelloVeicolo + "&sold_in_us=&full_results=0&_=" + "&sold_in_us=&_=" + now.getTime();
+		String queryUrl = urlCarQuery + queryString;
 		Object[] response = null;
 		JSONObject json = null;
 
@@ -2707,11 +2705,14 @@ public class J2Web_UI implements parametriGenerali {
 		String consumoMedio;
 		String carrozzeria;
 		String trazione;
+		
+		String queryString = "?cmd=getModel&model=" + IdModelloVeicolo + "&_=" + now.getTime();
+		String queryUrl = urlCarQuery + queryString;
 
 		//Invio la richiesta al server remoto
 		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 		try {
-			response = getInfoVeicolo.get("GET delle informazioni veicolo", "http://www.carqueryapi.com/api/0.3/?cmd=getModel&model=" + IdModelloVeicolo + "&_=" + now.getTime(), null, null, false);
+			response = getInfoVeicolo.get("GET delle informazioni veicolo", queryUrl, null, null, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -2742,6 +2743,7 @@ public class J2Web_UI implements parametriGenerali {
 		carrozzeria = json.getString("model_body")!="null"?json.getString("model_body"):"";
 		trazione = json.getString("model_drive")!="null"?json.getString("model_drive"):"";
 
+		//Popolo alcuni campi con le informazioni ottenute dalla interrogazione al DB carquery
 		switch (tipologiaCarburante)
 		{
 		case "Gasoline": 
@@ -2909,7 +2911,7 @@ public class J2Web_UI implements parametriGenerali {
 	@SuppressWarnings("unchecked")
 	private void resettaForm(LinkedList<JComponent> listCampiForm) {
 
-		Color white = new Color(255,255,255);
+		Color defaultColor = new Color(255,255,255);
 
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 		while(iteratorListCampiForm.hasNext()) {
@@ -2920,19 +2922,19 @@ public class J2Web_UI implements parametriGenerali {
 			case "javax.swing.JTextField": //Campo testuale
 				((JTextComponent) campoCorrente).setText("");
 				campoCorrente.setEnabled(true);
-				campoCorrente.setBackground(white);
+				campoCorrente.setBackground(defaultColor);
 				break;
 			case "javax.swing.JTextPane": //TextPane
 				((JTextComponent) campoCorrente).setText("");
 				((JTextComponent) campoCorrente).setEnabled(true);
-				campoCorrente.setBackground(white);
+				campoCorrente.setBackground(defaultColor);
 				break;
 			case "javax.swing.JComboBox": //Select
 				if(((JComboBox<String>) campoCorrente).getItemCount()>0) {	//se la checkbox è popolata...
 					((JComboBox<String>) campoCorrente).setSelectedIndex(0);
 				}
 				((JComboBox<String>) campoCorrente).setEnabled(true);
-				campoCorrente.setBackground(white);
+				campoCorrente.setBackground(defaultColor);
 				break;
 			case "javax.swing.JButton": //Pulsante
 				((JButton) campoCorrente).setEnabled(true);
@@ -2952,7 +2954,7 @@ public class J2Web_UI implements parametriGenerali {
 
 			//Controllo su quale form opero e resetto la form ai valori predefiniti
 			if(listCampiForm.contains(rdbtnAutoveicolo)) {
-				
+
 				//Prima però resetto anche i valori immagine veicolo
 				imgFile1 = null;
 				imgFile2 = null;
@@ -2964,8 +2966,7 @@ public class J2Web_UI implements parametriGenerali {
 				imgFile8 = null;
 				imgFile9 = null;
 				imgFile10 = null;
-				
-				
+
 				getComboBox_Modello().removeAllItems();
 				getComboBox_Versione().removeAllItems();
 				getComboBox_MeseImmatricolazione().setModel(new DefaultComboBoxModel<String>(comboboxModelMesi));
@@ -2989,7 +2990,7 @@ public class J2Web_UI implements parametriGenerali {
 				formCliente_getColoreVeicolo().setModel(new DefaultComboBoxModel<String>(comboboxModelColoreEsterno));
 				formCliente_getTipologiaCarburanteVeicolo().setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
 			}
-			
+
 			rdbtnMotoScooter.setEnabled(false); //disattivato per il momento
 
 		}	
@@ -2997,7 +2998,7 @@ public class J2Web_UI implements parametriGenerali {
 	}	
 
 
-	//Popola la lista con tutti i campi della form
+	//Popola la lista con tutti i campi della form veicolo
 	private void popolaListaCampiFormVeicolo() {
 
 		listCampiFormVeicolo.add(getRdbtnAutoveicolo());
@@ -3120,7 +3121,7 @@ public class J2Web_UI implements parametriGenerali {
 	}
 
 
-	//Popola la lista con tutti i campi della form
+	//Popola la lista con tutti i campi della form cliente
 	private void popolaListaCampiFormCliente() {
 
 		listCampiFormCliente.add(formCliente_getRdbtnSignore());
@@ -3164,6 +3165,7 @@ public class J2Web_UI implements parametriGenerali {
 
 		boolean isValid = true;
 		Color defaultColor = new Color(255,255,255);
+		Color defaultColorCombobox = new Color(0,0,0);
 		Color errorColor = new Color(255, 200, 0);
 
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
@@ -3192,19 +3194,18 @@ public class J2Web_UI implements parametriGenerali {
 					}
 					break;
 				case "javax.swing.JComboBox": //Select
-					if(((JComboBox<String>) campoCorrente).getSelectedIndex()==0) {	//se la checkbox non è popolata...
-						campoCorrente.setBackground(errorColor);
+					if(((JComboBox<String>) campoCorrente).getSelectedIndex()==0) {
+						campoCorrente.setForeground(errorColor);
 						isValid=false;
 					}
 					else {
-						campoCorrente.setBackground(defaultColor);
+						campoCorrente.setForeground(defaultColorCombobox);
 					}
 
 					break;
 				default://
 				}
 			}
-
 		}
 
 		return isValid;
@@ -3245,7 +3246,9 @@ public class J2Web_UI implements parametriGenerali {
 
 	}
 
+	
 	//I metodi che espongono elementi della GUI
+	
 	//Combobox
 	protected static JComboBox<String> getComboBox_Tipologia() {
 		return comboBox_Tipologia;
@@ -3319,7 +3322,7 @@ public class J2Web_UI implements parametriGenerali {
 	protected static JComboBox<String> getCombobox_Contratto() {
 		return comboBox_Contratto;
 	}
-
+	
 	//Textfield
 	protected static JTextField getTextField_YouTubeUrl() {
 		return txtField_YouTubeUrl;
@@ -3617,62 +3620,61 @@ public class J2Web_UI implements parametriGenerali {
 	protected static JButton getBtnResettaFormVeicolo() {
 		return btnResetta;
 	}
-	
-	
+
+
+	//Info frame
 	public static void createInfoFrame()
-    {
-        EventQueue.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-            	
-            	ClassLoader cl = this.getClass().getClassLoader();
-            
-            	JFrame infoFrame = new JFrame("J2Web info");
-            	infoFrame.setVisible(true);
-            	infoFrame.setResizable(false);
-				
-            	infoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            	infoFrame.setBounds(100, 100, 450, 300);
-        		
-        		JPanel contentPane = new JPanel();
-        		contentPane.setLayout(new BorderLayout(0, 0));
-        		infoFrame.setContentPane(contentPane);
-        		
-        		JPanel panel = new JPanel();
-        		contentPane.add(panel, BorderLayout.WEST);
-        		panel.setLayout(new BorderLayout(0, 0));
-        		
-        		JLabel lblNewLabel = new JLabel("");
-        		Image frameIconImage  = new ImageIcon(cl.getResource(frameIcon)).getImage();
-        		lblNewLabel.setIcon(new ImageIcon(frameIconImage));
-        		panel.add(lblNewLabel);
-        		
-        		JPanel panel_1 = new JPanel();
-        		contentPane.add(panel_1, BorderLayout.CENTER);
-        		panel_1.setLayout(new BorderLayout(0, 0));
-        		
-        		JLabel lblNewLabel_1 = new JLabel(nomeGUI);
-        		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
-        		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
-        		panel_1.add(lblNewLabel_1, BorderLayout.NORTH);
-        		
-        		JLabel lblNewLabel_2 = new JLabel("<html>J2Web è ideato e scritto da Marco Pavan, tutti i diritti sono riservati.<br/>Per contattare l'autore mandare una mail all'indirizzo:<br/><a href=\"mailto:marcopavan.mp@gmail.com\">marcopavan.mp@gmail.com</a></html>");
-        		lblNewLabel_2.setHorizontalAlignment(SwingConstants.LEFT);
-        		panel_1.add(lblNewLabel_2, BorderLayout.CENTER);
-                
-                try 
-                {
-                   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception e) {
-                   e.printStackTrace();
-                }
-                
-           
-            }
-        });
-    }
-	
-	
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				ClassLoader cl = this.getClass().getClassLoader();
+
+				JFrame infoFrame = new JFrame("J2Web info");
+				infoFrame.setVisible(true);
+				infoFrame.setResizable(false);
+
+				infoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				infoFrame.setBounds(100, 100, 450, 300);
+
+				JPanel contentPane = new JPanel();
+				contentPane.setLayout(new BorderLayout(0, 0));
+				infoFrame.setContentPane(contentPane);
+
+				JPanel panel = new JPanel();
+				contentPane.add(panel, BorderLayout.WEST);
+				panel.setLayout(new BorderLayout(0, 0));
+
+				JLabel lblNewLabel = new JLabel("");
+				Image frameIconImage  = new ImageIcon(cl.getResource(frameIcon)).getImage();
+				lblNewLabel.setIcon(new ImageIcon(frameIconImage));
+				panel.add(lblNewLabel);
+
+				JPanel panel_1 = new JPanel();
+				contentPane.add(panel_1, BorderLayout.CENTER);
+				panel_1.setLayout(new BorderLayout(0, 0));
+
+				JLabel lblNewLabel_1 = new JLabel(nomeGUI);
+				lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
+				lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
+				panel_1.add(lblNewLabel_1, BorderLayout.NORTH);
+
+				JLabel lblNewLabel_2 = new JLabel("<html>J2Web è ideato e scritto da Marco Pavan, tutti i diritti sono riservati.<br/>Per contattare l'autore mandare una mail all'indirizzo:<br/><a href=\"mailto:marcopavan.mp@gmail.com\">marcopavan.mp@gmail.com</a></html>");
+				lblNewLabel_2.setHorizontalAlignment(SwingConstants.LEFT);
+				panel_1.add(lblNewLabel_2, BorderLayout.CENTER);
+
+				try 
+				{
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		});
+	}
+
+
 }
