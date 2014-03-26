@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 public interface parametriGenerali {
 
 	//Versione di J2Web
-	final String  j2web_version = "1.0 \u03B2";
+	final String  j2web_version = "1.0.7 \u03B2";
 	
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
@@ -74,8 +74,11 @@ public interface parametriGenerali {
 	String pathFileDatSchedeVeicolo = pathSchede + "schedeVeicolo.dat";
 	String pathFileDatSchedeCliente = pathSchede + "schedeClienti.dat";
 	
-	//Dati accesso DB auto-nuove-usate
+	//Url tunneling DB auto-nuove-usate
 	String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/httpTunnel/mysqltunnel.php";
+	
+	//Url carqueryapi
+	String urlCarQuery = "http://www.carqueryapi.com/api/0.3/";
 
 	//Url http tunneling
 	//String urlHTTPTunnel = "http://www.j2webstudio.it/httptunneling/mysqltunnel.php";
