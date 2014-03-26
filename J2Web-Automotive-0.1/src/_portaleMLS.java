@@ -27,364 +27,372 @@ public class _portaleMLS extends PortaleWeb {
 	private boolean inserimentoOK = false;
 	private boolean eliminazioneOK = false;
 
-	/*Dati di accesso al DB MLS remoto*/
-String host = "sql.j2webstudio.it";
-String port = "3306";
-String charset = "latin1";
-String dbname = "j2webstu85037";
-String username = "j2webstu85037";
-String password = "j2we20858";
+	//Costruttore
+	public _portaleMLS (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
 
-//La query di inserimento
-String query;
+		super(icon, valoreLabel, idPortale, isActive);
 
-//Inizializzo i dati della da inviare con dei parametri di default
-String IdScheda = "";
-String Marca = "";
-String Modello = "";
-String Versione = "";
-int MeseImmatricolazione = 0;
-int AnnoImmatricolazione = 0;
-String Carburante = "";
-String Tipologia = "";
-String Carrozzeria = "";
-int PostiASedere = 0;
-int PotenzaKW = 0;
-int PotenzaCV = 0;
-String ColoreEsterno = "";
-int Metallizzato = 0;
-int PrecedentiProprietari = 0;
-int Chilometraggio = 0;
-int Prezzo = 0;
-int Trattabile = 0;
-//int IVADeducibile = 0;
-String FinitureInterni = "";
-String ColoreInterni = "";
-int ABS = 0;
-int Airbag = 0;
-int Antifurto = 0;
-int ChiusuraCentralizzata = 0;
-int ControlloAutomTrazione = 0;
-int ESP = 0;
-int Immobilizer = 0;
-int FreniADisco = 0;
-int AlzacristalliElettrici = 0;
-int Clima = 0;
-int NavigatoreSatellitare = 0;
-int RadioCD = 0;
-int ParkDistControl = 0;
-int SediliRiscaldati = 0;
-int Servosterzo = 0;
-int VolanteMultifunzione = 0;
-int Handicap = 0;
-int CerchiInLega = 0;
-int GancioTraino = 0;
-int Portapacchi = 0;
-int SediliSportivi = 0;
-String Motore = "";
-String Cambio = "";
-int NumRapporti = 0;
-int Cilindrata = 0;
-String ClasseEmissione = "";
-float ConsumoMedio = 0.0f;
-String Immagine1;
-String Immagine2;
-String Immagine3;
-String Immagine4;
-String Immagine5;
-String Immagine6;
-String Immagine7;
-String Immagine8;
-String Immagine9;
-String Immagine10;
-String UrlYT = "";
-String Descrizione = "";
-String RagioneSociale = "";
-String Indirizzo = "";
-String TelefonoGenerico = "";
-String NomeReferente = "";
-String TelefonoReferente = "";
-String EmailReferente = "";
-String Contratto = "";
+	}
 
 
-//Costruttore
-public _portaleMLS (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
+	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
+	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException, UnsupportedEncodingException {
+		System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
 
-	super(icon, valoreLabel, idPortale, isActive);
+		String Immagine1, Immagine2, Immagine3, Immagine4, Immagine5, Immagine6, Immagine7, Immagine8, Immagine9, Immagine10;
+		Immagine1 = Immagine2 = Immagine3 = Immagine4 = Immagine5 = Immagine6 = Immagine7 = Immagine8 = Immagine9 = Immagine10 = "NULL";
+		String queryString = "";
 
-}
+		//Inserimento delle immagini sul server remoto
+		for(int i=1; i<scheda.arrayImages.length; i++) {
+			if(scheda.arrayImages[i]!=null) {
+				HttpPortalPostConnection connessione_inserimentoImmagineInDB = new HttpPortalPostConnection();
+				MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 
+				//Trovo l'estensione del file
+				String currentFileType = "";
+				int x = scheda.arrayImages[i].getName().lastIndexOf('.');
+				if (x > 0) {
+					currentFileType = scheda.arrayImages[i].getName().substring(x);
+				}
 
-//Metodo per l'inserimento della scheda immobile nel portale immobiliare
-public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException, UnsupportedEncodingException {
-	System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
+				//Il nome del file sul server remoto
+				String fileName = scheda.codiceScheda + "_img_" + i + currentFileType;
 
-	//Inserimento delle immagini sul server remoto
-	for(int i=1; i<scheda.arrayImages.length; i++) {
-		if(scheda.arrayImages[i]!=null) {
-			HttpPortalPostConnection connessione_inserimentoImmagineInDB = new HttpPortalPostConnection();
-			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+				FileBody bin = new FileBody(scheda.arrayImages[i]);
+				reqEntity.addPart("file", bin);
+				reqEntity.addPart("fileName", new StringBody(fileName));
 
-			//Trovo l'estensione del file
-			String currentFileType = "";
-			int x = scheda.arrayImages[i].getName().lastIndexOf('.');
-			if (x > 0) {
-				currentFileType = scheda.arrayImages[i].getName().substring(x);
-			}
+				try {
+					connessione_inserimentoImmagineInDB.post("Connessioni per l'inserimento della scheda immobile nel portale immobiliare - inserimento immagine " + i + " - " + fileName, urlInserimentoImmaginiInRemoto, reqEntity, null, null, true);
+				} catch (IOException e) {
+					throw new HttpCommunicationException(e);
+				}
 
-			//Il nome del file sul server remoto
-			String fileName = scheda.codiceScheda + "_img_" + i + currentFileType;
-
-			FileBody bin = new FileBody(scheda.arrayImages[i]);
-			reqEntity.addPart("file", bin);
-			reqEntity.addPart("fileName", new StringBody(fileName));
-
-			try {
-				connessione_inserimentoImmagineInDB.post("Connessioni per l'inserimento della scheda immobile nel portale immobiliare - inserimento immagine " + i + " - " + fileName, urlInserimentoImmaginiInRemoto, reqEntity, null, null, true);
-			} catch (IOException e) {
-				throw new HttpCommunicationException(e);
-			}
-
-			switch (i) {
-			case 1:
-				Immagine1 = "'" + fileName + "'";
-				break;
-			case 2:
-				Immagine2 = "'" + fileName + "'";
-				break;
-			case 3:
-				Immagine3 = "'" + fileName + "'";
-				break;
-			case 4:
-				Immagine4 = "'" + fileName + "'";
-				break;
-			case 5:
-				Immagine5 = "'" + fileName + "'";
-				break;
-			case 6:
-				Immagine6 = "'" + fileName + "'";
-				break;
-			case 7:
-				Immagine7 = "'" + fileName + "'";
-				break;
-			case 8:
-				Immagine8 = "'" + fileName + "'";
-				break;
-			case 9:
-				Immagine9 = "'" + fileName + "'";
-				break;			
-			default:
-				Immagine10 = "'" + fileName + "'";
-				break;
-			}
-
-		}
-		else {
-			switch (i) {
-			case 1:
-				Immagine1 = "NULL";
-				break;
-			case 2:
-				Immagine2 = "NULL";
-				break;
-			case 3:
-				Immagine3 = "NULL";
-				break;
-			case 4:
-				Immagine4 = "NULL";
-				break;
-			case 5:
-				Immagine5 = "NULL";
-				break;
-			case 6:
-				Immagine6 = "NULL";
-				break;
-			case 7:
-				Immagine7 = "NULL";
-				break;
-			case 8:
-				Immagine8 = "NULL";
-				break;
-			case 9:
-				Immagine9 = "NULL";
-				break;			
-			default:
-				Immagine10 = "NULL";
-				break;
+				switch (i) {
+				case 1:
+					Immagine1 = fileName;
+					break;
+				case 2:
+					Immagine2 = fileName;
+					break;
+				case 3:
+					Immagine3 = fileName;
+					break;
+				case 4:
+					Immagine4 = fileName;
+					break;
+				case 5:
+					Immagine5 = fileName;
+					break;
+				case 6:
+					Immagine6 = fileName;
+					break;
+				case 7:
+					Immagine7 = fileName;
+					break;
+				case 8:
+					Immagine8 = fileName;
+					break;
+				case 9:
+					Immagine9 = fileName;
+					break;			
+				default:
+					Immagine10 = fileName;
+					break;
+				}
 			}
 		}
 
-	}
-
-	//I dati da inviare sono valorizzati con i dati presi dalla scheda
-	IdScheda = "'" + scheda.codiceScheda + "'";
-	Marca = "'" + scheda.marcaVeicolo + "'";
-	Modello ="'" +  scheda.modelloVeicolo + "'";
-	Versione = "'" + scheda.versioneVeicolo + "'";
-	MeseImmatricolazione = scheda.meseImmatricolazioneVeicoloIndex;
-	AnnoImmatricolazione = scheda.annoImmatricolazioneVeicoloIndex;
-	Carburante = "'" + scheda.carburanteVeicolo + "'";		
-	Tipologia = "'" + scheda.tipologiaVeicolo.replace("'", "''") + "'";
-	Carrozzeria = "'" + scheda.carrozzeriaVeicolo + "'";
-	PostiASedere = scheda.postiASedereVeicoloIndex;
-	PotenzaKW = Integer.parseInt(scheda.KWVeicolo);
-	PotenzaCV = Integer.parseInt(scheda.CVVeicolo);
-	ColoreEsterno = "'" + scheda.coloreEsternoVeicolo + "'";
-	Metallizzato = scheda.coloreMetalizzato?1:0;
-	PrecedentiProprietari = scheda.numeroPrecedentiProprietariVeicoloIndex;
-	if(!scheda.chilometraggioVeicolo.equals("")){
-		Chilometraggio = Integer.parseInt(scheda.chilometraggioVeicolo);
-	}          	
-	Prezzo = Integer.parseInt(scheda.prezzoVeicolo);
-	Trattabile = scheda.prezzoTrattabile?1:0;
-	//IVADeducibile = scheda.ivaDeducibile?1:0;
-	FinitureInterni = "'" + scheda.finitureInterneVeicolo + "'";
-	ColoreInterni = "'" + scheda.coloreInterniVeicolo + "'";
-	ABS = scheda.disponibilitaABS?1:0;
-	Airbag = scheda.disponibilitaAirBag?1:0;
-	Antifurto = scheda.disponibilitaAntifurto?1:0;
-	ChiusuraCentralizzata = scheda.disponibilitaChiusuraCentralizzata?1:0;
-	ControlloAutomTrazione = scheda.disponibilitaContrlAutomTrazione?1:0;
-	ESP  = scheda.disponibilitaESP?1:0;
-	Immobilizer = scheda.disponibilitaImmobilizer?1:0;
-	FreniADisco = scheda.disponibilitaFreniADisco?1:0;
-	AlzacristalliElettrici = scheda.disponibilitaAlzacristalliElettrici?1:0;
-	Clima = scheda.disponibilitaClima?1:0;
-	NavigatoreSatellitare = scheda.disponibilitaNavigatoreSattelitare?1:0;
-	RadioCD = scheda.disponibilitaRadioOLettoreCD?1:0;
-	ParkDistControl = scheda.disponibilitaParkDistControl?1:0;
-	SediliRiscaldati = scheda.disponibilitaSediliRiscaldati?1:0;
-	Servosterzo = scheda.disponibilitaServoSterzo?1:0;
-	VolanteMultifunzione = scheda.disponibilitaVolanteMultifunzione?1:0;
-	Handicap = scheda.disponibilitaAllestimentoHandicap?1:0;
-	CerchiInLega = scheda.disponibilitaCerchiInLega?1:0;
-	GancioTraino = scheda.disponibilitaGancioTraino?1:0;
-	Portapacchi = scheda.disponibilitaPortaPacchi?1:0;
-	SediliSportivi = scheda.disponibilitaSediliSportivi?1:0;
-	Motore = "'" + scheda.tipologiaMotoreVeicolo + "'";
-	Cambio = "'" + scheda.tipologiaCambioVeicolo + "'";
-	if(!scheda.numeroRapportiVeicolo.equals("Seleziona")){NumRapporti = Integer.parseInt(scheda.numeroRapportiVeicolo);}
-	Cilindrata = Integer.parseInt(scheda.cilindrataVeicolo);
-	ClasseEmissione = "'" + scheda.classeEmissioniVeicolo + "'";
-	if(!scheda.comsumeMedioVeicolo.equals("")){ConsumoMedio = Float.parseFloat(scheda.comsumeMedioVeicolo);}
-	UrlYT = "'" + scheda.urlVideoYouTube + "'";
-	Descrizione = "'" + scheda.descrizioneVeicolo.replace("'", "''") + "'";
-	RagioneSociale = "'" + scheda.ragioneSociale + "'";
-	Indirizzo = "'" + scheda.Indirizzo.replace("'", "''") + "'";
-	TelefonoGenerico = "'" + scheda.Telefono + "'";
-	NomeReferente = "'" + scheda.nomeReferente + "'";
-	TelefonoReferente = "'" + scheda.TelefonoReferente + "'";
-	EmailReferente = "'" + scheda.emailReferente + "'";
-	Contratto = "'" + scheda.tipologiaContrattoVeicolo + "'";
-
-	//Costruisco la query sql
-	String querySQL_1 = "INSERT INTO autoveicoli(";
-	String querySQL_2 = "IdScheda,        Marca,        Modello,        Versione,        MeseImmatricolazione,        AnnoImmatricolazione,        Carburante,        Tipologia,        Carrozzeria,        PostiASedere,        PotenzaKW,        PotenzaCV,        ColoreEsterno,        Metallizzato,        PrecedentiProprietari,        Chilometraggio,        Prezzo,        Trattabile,        Contratto,        FinitureInterni,        ColoreInterni,        ABS,        Airbag,        Antifurto,        ChiusuraCentralizzata,        ControlloAutomTrazione,        ESP,        Immobilizer,        FreniADisco,        AlzacristalliElettrici,        Clima,        NavigatoreSatellitare,        RadioCD,        ParkDistControl,        SediliRiscaldati,        Servosterzo,        VolanteMultifunzione,        Handicap,        CerchiInLega,        GancioTraino,        Portapacchi,        SediliSportivi,        Motore,        Cambio,        NumRapporti,        Cilindrata,        ClasseEmissione,        ConsumoMedio,        Immagine1,        Immagine2,        Immagine3,        Immagine4,        Immagine5,        Immagine6,        Immagine7,        Immagine8,        Immagine9,        Immagine10,        UrlYT,        Descrizione,        RagioneSociale,        Indirizzo,        TelefonoGenerico,        NomeReferente,        TelefonoReferente,        EmailReferente";
-	String querySQL_4 =  IdScheda + "," + Marca + "," + Modello + "," + Versione + "," + MeseImmatricolazione + "," + AnnoImmatricolazione + "," + Carburante + "," + Tipologia + "," + Carrozzeria + "," + PostiASedere + "," + PotenzaKW + "," + PotenzaCV + "," + ColoreEsterno + "," + Metallizzato + "," + PrecedentiProprietari + "," + Chilometraggio + "," + Prezzo + "," + Trattabile + "," + Contratto + "," + FinitureInterni + "," + ColoreInterni + "," + ABS + "," + Airbag + "," + Antifurto + "," + ChiusuraCentralizzata + "," + ControlloAutomTrazione + "," + ESP + "," + Immobilizer + "," + FreniADisco + "," + AlzacristalliElettrici + "," + Clima + "," + NavigatoreSatellitare + "," + RadioCD + "," + ParkDistControl + "," + SediliRiscaldati + "," + Servosterzo + "," + VolanteMultifunzione + "," + Handicap + "," + CerchiInLega + "," + GancioTraino + "," + Portapacchi + "," + SediliSportivi + "," + Motore + "," + Cambio + "," + NumRapporti + "," + Cilindrata + "," + ClasseEmissione + "," + ConsumoMedio + "," + Immagine1 + "," + Immagine2 + "," + Immagine3 + "," + Immagine4 + "," + Immagine5 + "," + Immagine6 + "," + Immagine7 + "," + Immagine8 + "," + Immagine9 + "," + Immagine10 + "," + UrlYT + "," + Descrizione + "," + RagioneSociale + "," + Indirizzo + "," + TelefonoGenerico + "," + NomeReferente + "," + TelefonoReferente + "," + EmailReferente;
-	String querySQL_3 = ") VALUES(";
-	String querySQL_5 = ")";
-
-	String querySQL_2_normalized = querySQL_2.replace(" ", "");
-	//String querySQL_4_escaped = querySQL_4.replace("'", "''");
-	String querySQL = querySQL_1 + querySQL_2_normalized + querySQL_3 + querySQL_4 + querySQL_5;
-	String encodedQuerySQL = "";
-	
-	try {
-		encodedQuerySQL = URLEncoder.encode(querySQL, "UTF-8");
-	} catch (UnsupportedEncodingException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-	//Invio la richiesta al server remoto per l'inserzione dei dati veicolo nel DB
-	HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
-	try {
-		getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, null, null, true);
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-	System.out.println("Query inviata: " + querySQL);
-
-	//Costruisco la query sql di verifica inserimento
-	String querySQL_A = "SELECT * FROM autoveicoli WHERE ";
-	String querySQL_B = "(IdScheda = ";
-	String querySQL_C =  "'" + scheda.codiceScheda + "')";
-
-	String querySQLVerifica = querySQL_A + querySQL_B + querySQL_C;
-	String encodedQuerySQLVerifica = "";
-
-	//Encoding della query
-	try {
-		encodedQuerySQLVerifica = URLEncoder.encode(querySQLVerifica, "UTF-8");
-	} catch (UnsupportedEncodingException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-
-	//Invio la richiesta al server remoto per la verifica dell'inserimento
-	HttpPortalGetConnection verificaInserimentoVeicolo = new HttpPortalGetConnection();
-	try {
-		Object[] response = verificaInserimentoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQLVerifica, null, null, true);
-		String responseBody = (String)response[1];
-		JSONObject json = null;
-		json = new JSONObject(responseBody);
-
-
-		if(!json.get("affectedrows").equals("0")) {
-
-			System.out.println("Inserita in: " + "PORTALE MLS");  
-
-			inserimentoOK = true;
-
-			//Aggiorna la lista dei portali in cui è inserita la scheda
-			scheda.aggiungiInserimentoPortale(idPortale, scheda.codiceScheda);
-
-			//Aggiorna i pulsanti del pannello sincronizzazione
-			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
-
-			//Invio mail di conferma inserimento 
-			sendConfirmationMail(scheda, "PORTALE MLS", scheda.codiceScheda);
-
-			//Stampo a video un messaggio informativo
-			//JOptionPane.showMessageDialog(null, "Scheda veicolo inserita in: " + "PORTALE MLS", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
-			messageInserimentoOK("PORTALE MLS");
-
-		}
-		else {
-			inserimentoOK = false;
-
-			//Stampo a video un messaggio informativo
-			//JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + "PORTALE MLS" + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-			messageInserimentoKO("PORTALE MLS");
+		String thisCarburante;
+		switch (scheda.carburanteVeicolo) {
+		case "Benzina":
+			thisCarburante = "1";
+			break;
+		case "Diesel":
+			thisCarburante = "2";
+			break;
+		case "Gas":
+			thisCarburante = "3";
+			break;
+		case "Gpl":
+			thisCarburante = "4";
+			break;
+		case "Metano":
+			thisCarburante = "5";
+			break;
+		case "Ibrida":
+			thisCarburante = "6";
+			break;
+		case "Etanolo":
+			thisCarburante = "7";
+			break;
+		case "Elettrica":
+			thisCarburante = "8";
+			break;
+		case "Idrogeno":
+			thisCarburante = "9";
+			break;
+		case "Elettrica/Benzina":
+			thisCarburante = "6";
+			break;
+		case "Elettrica/Diesel":
+			thisCarburante = "6";
+			break;
+		default:
+			thisCarburante = "1";
+			break;
 		}
 
+		String thisTipologia;
+		switch (scheda.tipologiaVeicolo) {
+		case "Veicolo d'epoca":
+			thisTipologia = "4";
+			break;
+		case "Veicolo km 0":
+			thisTipologia = "1";
+			break;
+		case "Veicolo nuovo":
+			thisTipologia = "2";
+			break;
+		case "Veicolo usato":
+			thisTipologia = "3";
+			break;
+		case "Veicolo aziendale":
+			thisTipologia = "3";
+			break;
+		default:
+			thisTipologia = "3";
+			break;
+		}
 
-	} catch (IOException | ParseException e) {
-		e.printStackTrace();
+		String thisCarrozzeria;
+		switch (scheda.carrozzeriaVeicolo) {
+		case "City car":
+			thisCarrozzeria = "1";
+			break;
+		case "Cabrio":
+			thisCarrozzeria = "7";
+			break;
+		case "Coupé":
+			thisCarrozzeria = "6";
+			break;
+		case "SUV/Fuoristrada":
+			thisCarrozzeria = "5";
+			break;
+		case "Station wagon":
+			thisCarrozzeria = "3";
+			break;
+		case "Berlina":
+			thisCarrozzeria = "2";
+			break;
+		case "Monovolume":
+			thisCarrozzeria = "4";
+			break;
+		case "Furgoni/Van":
+			thisCarrozzeria = "8";
+			break;
+		case "Altro":
+			thisCarrozzeria = "1";
+			break;
+		default:
+			thisCarrozzeria = "1";
+			break;
+		}
+
+		String thisColoreEsterno;
+		switch (scheda.coloreEsternoVeicolo) {
+		case "Arancione":
+			thisColoreEsterno = "1";
+			break;
+		case "Argento":
+			thisColoreEsterno = "2";
+			break;
+		case "Beige":
+			thisColoreEsterno = "3";
+			break;
+		case "Bianco":
+			thisColoreEsterno = "4";
+			break;
+		case "Blu/Azzurro":
+			thisColoreEsterno = "5";
+			break;
+		case "Bronzo":
+			thisColoreEsterno = "6";
+			break;
+		case "Giallo":
+			thisColoreEsterno = "7";
+			break;
+		case "Grigio":
+			thisColoreEsterno = "8";
+			break;
+		case "Lilla":
+			thisColoreEsterno = "9";
+			break;
+		case "Marrone":
+			thisColoreEsterno = "10";
+			break;
+		case "Nero":
+			thisColoreEsterno = "11";
+			break;
+		case "Oro":
+			thisColoreEsterno = "12";
+			break;
+		case "Rosso":
+			thisColoreEsterno = "13";
+			break;
+		case "Verde":
+			thisColoreEsterno = "14";
+			break;
+		default:
+			thisColoreEsterno = "5";
+			break;
+		}
+
+		queryString = "?v=101";
+		queryString += "&idutente=" + IDUTENTE;
+		queryString += "&Marca=" + URLEncoder.encode(scheda.marcaVeicolo, "UTF-8");
+		queryString += "&Modello=" + URLEncoder.encode(scheda.modelloVeicolo, "UTF-8");
+		queryString += "&Versione=" + URLEncoder.encode(scheda.versioneVeicolo, "UTF-8");
+		queryString += "&Descrizione=" + URLEncoder.encode(scheda.descrizioneVeicolo, "UTF-8");
+		queryString += "&MeseImmatricolazione=" + (scheda.meseImmatricolazioneVeicoloIndex-1);
+		queryString += "&AnnoImmatricolazione=" + (scheda.annoImmatricolazioneVeicoloIndex==1?"0":scheda.annoImmatricolazioneVeicolo);
+		queryString += "&idCarburante=" + thisCarburante;
+		queryString += "&idTipologia=" + thisTipologia;
+		queryString += "&idCarrozzeria=" + thisCarrozzeria;
+		queryString += "&PostiASedere=" + (scheda.postiASedereVeicoloIndex==0?"NULL":scheda.postiASedereVeicoloIndex);
+		queryString += "&PotenzaKW=" + scheda.KWVeicolo;
+		queryString += "&PotenzaCV=" + scheda.CVVeicolo;
+		queryString += "&idColoreEsterno=" + thisColoreEsterno;
+		queryString += "&Metallizzato=" + (scheda.coloreMetalizzato?"1":"0");
+		queryString += "&PrecedentiProprietari=" + (scheda.numeroPrecedentiProprietariVeicoloIndex==0?"NULL":scheda.postiASedereVeicoloIndex);
+		queryString += "&Chilometraggio=" + URLEncoder.encode(scheda.chilometraggioVeicolo, "UTF-8");
+		queryString += "&Prezzo=" + URLEncoder.encode(scheda.prezzoVeicolo, "UTF-8");
+		queryString += "&PrezzoConcessionari=" + URLEncoder.encode(scheda.prezzoVeicolo, "UTF-8"); //!!!
+		queryString += "&condividiveicolo=" + "1"; //Se lo inserisce tramite j2web, lo vuole condividere...
+		queryString += "&Trattabile=" + (scheda.prezzoTrattabile?"1":"0");
+		queryString += "&Contratto=" + scheda.tipologiaContrattoVeicolo;
+		queryString += "&FinitureInterni=" + (scheda.finitureInterneVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.finitureInterneVeicolo, "UTF-8"));
+		queryString += "&ColoreInterni=" + (scheda.coloreInterniVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.coloreInterniVeicolo, "UTF-8"));
+		queryString += "&ABS=" + (scheda.disponibilitaABS?"1":"0");
+		queryString += "&Airbag=" + (scheda.disponibilitaAirBag?"1":"0");
+		queryString += "&Antifurto=" + (scheda.disponibilitaAntifurto?"1":"0");
+		queryString += "&ChiusuraCentralizzata=" + (scheda.disponibilitaChiusuraCentralizzata?"1":"0");
+		queryString += "&ControlloAutomTrazione=" + (scheda.disponibilitaContrlAutomTrazione?"1":"0");
+		queryString += "&ESP=" + (scheda.disponibilitaESP?"1":"0");
+		queryString += "&Immobilizer=" + (scheda.disponibilitaImmobilizer?"1":"0");
+		queryString += "&FreniADisco=" + (scheda.disponibilitaFreniADisco?"1":"0");
+		queryString += "&AlzacristalliElettrici=" + (scheda.disponibilitaAlzacristalliElettrici?"1":"0");
+		queryString += "&Clima=" + (scheda.disponibilitaClima?"1":"0");
+		queryString += "&NavigatoreSatellitare=" + (scheda.disponibilitaNavigatoreSattelitare?"1":"0");
+		queryString += "&RadioCD=" + (scheda.disponibilitaRadioOLettoreCD?"1":"0");
+		queryString += "&ParkDistControl=" + (scheda.disponibilitaParkDistControl?"1":"0");
+		queryString += "&SediliRiscaldati=" + (scheda.disponibilitaSediliRiscaldati?"1":"0");
+		queryString += "&Servosterzo=" + (scheda.disponibilitaServoSterzo?"1":"0");
+		queryString += "&VolanteMultifunzione=" + (scheda.disponibilitaVolanteMultifunzione?"1":"0");
+		queryString += "&Handicap=" + (scheda.disponibilitaAllestimentoHandicap?"1":"0");
+		queryString += "&CerchiInLega=" + (scheda.disponibilitaCerchiInLega?"1":"0");
+		queryString += "&GancioTraino=" + (scheda.disponibilitaGancioTraino?"1":"0");
+		queryString += "&Portapacchi=" + (scheda.disponibilitaPortaPacchi?"1":"0");
+		queryString += "&SediliSportivi=" + (scheda.disponibilitaSediliSportivi?"1":"0");
+		queryString += "&Motore=" + (scheda.tipologiaMotoreVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.tipologiaMotoreVeicolo, "UTF-8"));
+		queryString += "&Cambio=" + (scheda.tipologiaCambioVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.tipologiaCambioVeicolo, "UTF-8"));
+		queryString += "&NumRapporti=" + (scheda.numeroRapportiVeicoloIndex==0?"0":scheda.numeroRapportiVeicoloIndex-2);
+		queryString += "&Cilindrata=" + (scheda.cilindrataVeicolo==""?"NULL":scheda.cilindrataVeicolo);
+		queryString += "&ClasseEmissione=" + (scheda.classeEmissioniVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.classeEmissioniVeicolo, "UTF-8"));
+		queryString += "&ConsumoMedio=" + (scheda.comsumeMedioVeicolo==""?"0.0":URLEncoder.encode(scheda.comsumeMedioVeicolo, "UTF-8"));
+		queryString += "&Immagine1=" + Immagine1;
+		queryString += "&Immagine2=" + Immagine2;
+		queryString += "&Immagine3=" + Immagine3;
+		queryString += "&Immagine4=" + Immagine4;
+		queryString += "&Immagine5=" + Immagine5;
+		queryString += "&Immagine6=" + Immagine6;
+		queryString += "&Immagine7=" + Immagine7;
+		queryString += "&Immagine8=" + Immagine8;
+		queryString += "&Immagine9=" + Immagine9;
+		queryString += "&Immagine10=" + Immagine10;
+		queryString += "&UrlYT=" + (scheda.urlVideoYouTube==""?"NULL":URLEncoder.encode(scheda.urlVideoYouTube, "UTF-8"));
+		queryString += "&RagioneSociale=" + URLEncoder.encode(scheda.ragioneSociale, "UTF-8");
+		queryString += "&Indirizzo=" + URLEncoder.encode(scheda.Indirizzo, "UTF-8");
+		queryString += "&TelefonoGenerico=" + URLEncoder.encode(scheda.Telefono, "UTF-8");
+		queryString += "&NomeReferente=" + URLEncoder.encode(scheda.nomeReferente, "UTF-8");
+		queryString += "&TelefonoReferente=" + URLEncoder.encode(scheda.TelefonoReferente, "UTF-8");
+		queryString += "&EmailReferente=" + URLEncoder.encode(scheda.emailReferente, "UTF-8");
+		queryString += "&IdScheda=" + scheda.codiceScheda;
+
+		//Invio la richiesta al server remoto per l'inserzione dei dati veicolo nel DB
+		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
+		try {
+			getInfoVeicolo.get("GET", urlTunnelDBNekta + queryString, null, null, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Query inviata: " + queryString);
+
+		queryString = "?v=203";
+		queryString += "&codiceScheda=" + scheda.codiceScheda;
+		
+		//Invio la richiesta al server remoto per la verifica dell'inserimento
+		HttpPortalGetConnection verificaInserimentoVeicolo = new HttpPortalGetConnection();
+		try {
+			Object[] response = verificaInserimentoVeicolo.get("GET", urlTunnelDBNekta + queryString, null, null, true);
+			String responseBody = (String)response[1];
+			JSONObject json = null;
+			json = new JSONObject(responseBody);
+
+			if(!json.get("affectedrows").equals("0")) {
+
+				System.out.println("Inserita in: " + "PORTALE MLS");  
+
+				inserimentoOK = true;
+
+				//Aggiorna la lista dei portali in cui è inserita la scheda
+				scheda.aggiungiInserimentoPortale(idPortale, scheda.codiceScheda);
+
+				//Aggiorna i pulsanti del pannello sincronizzazione
+				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
+
+				//Invio mail di conferma inserimento 
+				sendConfirmationMail(scheda, "PORTALE MLS", scheda.codiceScheda);
+
+				//Stampo a video un messaggio informativo
+				messageInserimentoOK("PORTALE MLS");
+
+			}
+			else {
+				inserimentoOK = false;
+
+				//Stampo a video un messaggio informativo
+				messageInserimentoKO("PORTALE MLS");
+			}
+
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Query inviata: " + queryString);
+
+
+		//Tracking dell'evento inserzione di una scheda veicolo in MLS
+		System.out.print("Tracking dell'evento inserzione di una scheda veicolo in MLS...");
+		try {
+			j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, scheda.codiceScheda);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+		}
+		System.out.print(" fatto." + "\n");
+
+
+		return inserimentoOK;    
 	}
 
 
-	//Tracking dell'evento inserzione di una scheda veicolo in MLS
-	System.out.print("Tracking dell'evento inserzione di una scheda veicolo in MLS...");
-	try {
-		j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, scheda.codiceScheda);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-	}
-	System.out.print(" fatto." + "\n");
+	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
+	public boolean visualizzaScheda(SchedaVeicolo scheda) {
+		System.out.println("Visualizzazione scheda: " + scheda.idScheda + "...");
 
-
-	return inserimentoOK;    
-}
-
-
-//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
-public boolean visualizzaScheda(SchedaVeicolo scheda) {
-	System.out.println("Visualizzazione scheda: " + scheda.idScheda + "...");
-
-	JOptionPane.showMessageDialog(null, "Attualmente il portale non supporta questa funzionalità", "Richiesta non eseguibile", JOptionPane.INFORMATION_MESSAGE);
-	//Apro il browser e inserisco credenziali		
-	/*try {
+		JOptionPane.showMessageDialog(null, "Attualmente il portale non supporta questa funzionalità", "Richiesta non eseguibile", JOptionPane.INFORMATION_MESSAGE);
+		//Apro il browser e inserisco credenziali		
+		/*try {
 		String url = URLROOT;
 		java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 		System.out.println("Visualizzata in: " + NOMEPORTALE);
@@ -393,101 +401,76 @@ public boolean visualizzaScheda(SchedaVeicolo scheda) {
 		//Eventualità non gestita
 	}*/
 
-	return true;
-}
-
-
-//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
-public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {		
-	System.out.println("Eliminazione scheda: " + scheda.idScheda + "...");
-
-	//Costruisco la query sql
-	String query = "DELETE FROM autoveicoli WHERE IdScheda = " + "'" + scheda.codiceScheda + "'";
-	String encodedQuerySQL = "";
-
-	try {
-		encodedQuerySQL = URLEncoder.encode(query, "UTF-8");
-	} catch (UnsupportedEncodingException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
+		return true;
 	}
 
-	//Invio la richiesta al server remoto
-	HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
-	try {
-		getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, null, null, true);
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
 
-	System.out.println("Query inviata: " + query);
+	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
+	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {		
+		System.out.println("Eliminazione scheda: " + scheda.idScheda + "...");
 
-	//Costruisco la query sql di verifica inserimento
-	String querySQL_A = "SELECT * FROM autoveicoli WHERE ";
-	String querySQL_B = "(IdScheda = ";
-	String querySQL_C =  "'" + scheda.codiceScheda + "')";
+		String queryString = "";
+		
+		queryString = "?v=305";
+		queryString += "&codiceScheda=" + scheda.codiceScheda;
 
-	String querySQLVerifica = querySQL_A + querySQL_B + querySQL_C;
-	String encodedQuerySQLVerifica = "";
-
-	//Encoding della query
-	try {
-		encodedQuerySQLVerifica = URLEncoder.encode(querySQLVerifica, "UTF-8");
-	} catch (UnsupportedEncodingException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-
-	//Invio la richiesta al server remoto
-	HttpPortalGetConnection verificaInserimentoVeicolo = new HttpPortalGetConnection();
-	try {
-		Object[] response = verificaInserimentoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQLVerifica, null, null, true);
-		String responseBody = (String)response[1];
-		JSONObject json = null;
+		//Invio la richiesta al server remoto
+		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 		try {
-			json = new JSONObject(responseBody);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			getInfoVeicolo.get("GET", urlTunnelDBNekta + queryString, null, null, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Query inviata: " + queryString);
+
+		//Invio la richiesta al server remoto per la verifica dell'eliminazione
+		queryString = "?v=203";
+		queryString += "&codiceScheda=" + scheda.codiceScheda;
+
+		HttpPortalGetConnection verificaEliminazioneVeicolo = new HttpPortalGetConnection();
+		try {
+			Object[] response = verificaEliminazioneVeicolo.get("GET", urlTunnelDBNekta + queryString, null, null, true);
+			String responseBody = (String)response[1];
+			JSONObject json = null;
+			try {
+				json = new JSONObject(responseBody);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			if(json.get("affectedrows").equals("0")) {
+				eliminazioneOK = true;
+
+				//Aggiorno la lista dei portali in cui è presenta la scheda corrente
+				scheda.eliminaInserimentoPortale(idPortale);
+
+				//Aggiorna i pulsanti del pannello sincronizzazione
+				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
+
+				//Stampo a video un messaggio informativo
+				messageEliminazioneOK("PORTALE MLS");
+			}
+			else {
+				eliminazioneOK = false;
+
+				//Stampo a video un messaggio informativo
+				messageEliminazioneKO("PORTALE MLS");
+			}
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 
-		if(json.get("affectedrows").equals("0")) {
-			eliminazioneOK = true;
-
-			//Aggiorno la lista dei portali in cui è presenta la scheda corrente
-			scheda.eliminaInserimentoPortale(idPortale);
-
-			//Aggiorna i pulsanti del pannello sincronizzazione
-			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
-
-			//Stampo a video un messaggio informativo
-			//JOptionPane.showMessageDialog(null, "Scheda veicolo eliminata da: " + "PORTALE MLS", "Scheda eliminata", JOptionPane.INFORMATION_MESSAGE);
-			messageEliminazioneOK("PORTALE MLS");
+		//Tracking dell'evento eliminazione di una scheda veicolo in MLS
+		System.out.print("Tracking dell'evento eliminazione di una scheda veicolo in MLS...");
+		try {
+			j2web.trackEvent("eliminazioneMLSSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, scheda.codiceScheda);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 		}
-		else {
-			eliminazioneOK = false;
-
-			//Stampo a video un messaggio informativo
-			//JOptionPane.showMessageDialog(null, "Problemi nell'eliminazione scheda in: " + "PORTALE MLS" + ".\n Verificare l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
-			messageEliminazioneKO("PORTALE MLS");
-		}
-
-
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-
-
-	//Tracking dell'evento eliminazione di una scheda veicolo in MLS
-	System.out.print("Tracking dell'evento eliminazione di una scheda veicolo in MLS...");
-	try {
-		j2web.trackEvent("eliminazioneMLSSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, scheda.codiceScheda);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-	}
-	System.out.print(" fatto." + "\n");
-
+		System.out.print(" fatto." + "\n");
 
 		return eliminazioneOK;
 

@@ -121,20 +121,32 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 	}
 
 	private void  matchClienteVeicoloMLS(SchedaCliente schedaCliente) {
+		
+		String queryString = "";
 
 		JPanel pannelloMatchClienteVeicoloMLS = J2Web_UI.getPanel_15();
 
 		pannelloMatchClienteVeicoloMLS.add(Box.createVerticalStrut(6));
 
-		String host = "sql.j2webstudio.it";
+		/*String host = "sql.j2webstudio.it";
 		String port = "3306";
 		String charset = "latin1";
 		String dbname = "j2webstu85037";
 		String username = "j2webstu85037";
-		String password = "j2we20858";
+		String password = "j2we20858";*/
 
 		//Costruisco la query sql
-		String querySQL_1 = "SELECT * FROM autoveicoli WHERE ";
+		queryString = "?v=407";
+		try {
+			queryString += "&marcaVeicoloCliente=" + URLEncoder.encode(scheda.marcaVeicoloCliente, "UTF-8");
+			queryString += "&modelloVeicoloCliente=" + URLEncoder.encode(scheda.modelloVeicoloCliente, "UTF-8");
+			queryString += "&versioneVeicoloCliente=" + URLEncoder.encode(scheda.versioneVeicoloCliente, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		/*String querySQL_1 = "SELECT * FROM autoveicoli WHERE ";
 		String querySQL_2 = "(Marca = ";
 		String querySQL_3 =  "'" + scheda.marcaVeicoloCliente + "'";
 		String querySQL_4 = " AND ";
@@ -166,22 +178,22 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 
 		String querySQL = querySQL_1 + querySQL_2 + querySQL_3 + querySQL_4 + querySQL_5 + querySQL_6 + querySQL_7 + querySQL_8 + querySQL_9 + querySQL_10 + querySQL_11 + querySQL_12 + querySQL_13 + querySQL_14 + querySQL_15 + querySQL_16 + querySQL_17 + querySQL_18 + querySQL_19 + querySQL_20 + querySQL_21 + querySQL_22 + querySQL_23 + querySQL_24 + querySQL_25 + querySQL_26 + querySQL_27;
-		String encodedQuerySQL = "";
+		String encodedQuerySQL = "";*/
 
-		System.out.println("query: " + querySQL);
+		System.out.println("query: " + queryString);
 
 		//Encoding della query
-		try {
+		/*try {
 			encodedQuerySQL = URLEncoder.encode(querySQL, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}*/
 
 		//Invio la richiesta al server remoto
 		HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 		try {
-			Object[] response = getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, null, null, true);
+			Object[] response = getInfoVeicolo.get("GET", urlTunnelDBNekta + queryString, null, null, true);
 			String responseBody = (String)response[1];
 			JSONObject json = null;
 			try {
@@ -190,7 +202,6 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 
 			if(!json.get("affectedrows").equals("0")) {
 				JSONArray jsonResults = json.getJSONArray("rows"); 
@@ -295,7 +306,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 			//Invio la richiesta al server remoto
 			HttpPortalGetConnection getInfoVeicolo = new HttpPortalGetConnection();
 			try {
-				Object[] response = getInfoVeicolo.get("GET", urlHTTPTunnel + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, null, null, true);
+				Object[] response = getInfoVeicolo.get("GET", urlTunnelDBNekta + "?host=" + host + "&port=" + port + "&charset=" + charset + "&dbname=" + dbname + "&username=" + username + "&password=" + password + "&query=" + encodedQuerySQL, null, null, true);
 				String responseBody = (String)response[1];
 				JSONObject json = null;
 				try {
