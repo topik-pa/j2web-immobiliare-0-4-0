@@ -1,3 +1,9 @@
+/*
+ * 
+ * Funzioni generali e di inizializzazione del programma
+ * 
+ */
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -179,7 +185,7 @@ public class j2web implements parametriGenerali {
 
 		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeVeicolo", "Questa azione eliminerà tutte le schede veicolo. Confermi? ");
 		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeCliente", "Questa azione eliminerà tutte le schede cliente. Confermi? ");
-		
+
 		MapModalWindowsDialogs.put("caricaSchedeVeicolo_ImmaginiNonDisponibili", "Attenzione: non è stato possibile recuperare alcune immagini delle schede veicolo. ");
 
 	}
@@ -217,7 +223,7 @@ public class j2web implements parametriGenerali {
 		ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
 		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "6 - subito.it", "006", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_subitoIt);
-		
+
 		ImageIcon _autoprontaconsegnaComIcon  = new ImageIcon(cl.getResource("images/_autoprontaconsegnaCom.png"));
 		PortaleWeb _autoprontaconsegnaCom = new _autoprontaconsegnaCom(_autoprontaconsegnaComIcon, "7 - autoprontaconsegna.com", "005", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_autoprontaconsegnaCom);
@@ -240,7 +246,7 @@ public class j2web implements parametriGenerali {
 			boolean result = dirJ2web.mkdir();  
 
 			if(result) {    
-				System.out.println("/n...DIR j2web created...");  
+				System.out.println("/n...folder j2web created...");  
 			}
 		}
 
@@ -250,7 +256,7 @@ public class j2web implements parametriGenerali {
 			boolean result = dirSchede.mkdir();  
 
 			if(result) {    
-				System.out.println("/n...DIR schede created...");  
+				System.out.println("/n...folder schede created...");  
 			}
 		}
 
