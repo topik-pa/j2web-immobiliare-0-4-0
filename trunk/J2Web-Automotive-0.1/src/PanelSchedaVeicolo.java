@@ -274,7 +274,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		J2Web_UI.getTextField_Chilometraggio().setText(schedaVeicolo.chilometraggioVeicolo);
 		J2Web_UI.getTextField_Prezzo().setText(schedaVeicolo.prezzoVeicolo);
 		J2Web_UI.getTextField_Cilindrata().setText(schedaVeicolo.cilindrataVeicolo);
-		J2Web_UI.getTextField_ConsumoMedio().setText(schedaVeicolo.comsumeMedioVeicolo);
+		J2Web_UI.getTextField_ConsumoMedio().setText(schedaVeicolo.consumoMedioVeicolo);
 		J2Web_UI.getTextField_YouTubeUrl().setText(schedaVeicolo.urlVideoYouTube);
 		J2Web_UI.getTextFieldRagioneSociale().setText(schedaVeicolo.ragioneSociale);
 		J2Web_UI.getTextFieldReferente().setText(schedaVeicolo.nomeReferente);
@@ -370,7 +370,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		else {
 			J2Web_UI.getChckbxClima().setSelected(false);
 		}
-		if(schedaVeicolo.disponibilitaNavigatoreSattelitare) {
+		if(schedaVeicolo.disponibilitaNavigatoreSatellitare) {
 			J2Web_UI.getChckbxNavigatoreSatellitare().setSelected(true);
 		}
 		else {

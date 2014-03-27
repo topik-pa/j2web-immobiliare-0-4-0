@@ -284,7 +284,7 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&FreniADisco=" + (scheda.disponibilitaFreniADisco?"1":"0");
 		queryString += "&AlzacristalliElettrici=" + (scheda.disponibilitaAlzacristalliElettrici?"1":"0");
 		queryString += "&Clima=" + (scheda.disponibilitaClima?"1":"0");
-		queryString += "&NavigatoreSatellitare=" + (scheda.disponibilitaNavigatoreSattelitare?"1":"0");
+		queryString += "&NavigatoreSatellitare=" + (scheda.disponibilitaNavigatoreSatellitare?"1":"0");
 		queryString += "&RadioCD=" + (scheda.disponibilitaRadioOLettoreCD?"1":"0");
 		queryString += "&ParkDistControl=" + (scheda.disponibilitaParkDistControl?"1":"0");
 		queryString += "&SediliRiscaldati=" + (scheda.disponibilitaSediliRiscaldati?"1":"0");
@@ -300,7 +300,7 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&NumRapporti=" + (scheda.numeroRapportiVeicoloIndex==0?"0":scheda.numeroRapportiVeicoloIndex-2);
 		queryString += "&Cilindrata=" + (scheda.cilindrataVeicolo==""?"NULL":scheda.cilindrataVeicolo);
 		queryString += "&ClasseEmissione=" + (scheda.classeEmissioniVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.classeEmissioniVeicolo, "UTF-8"));
-		queryString += "&ConsumoMedio=" + (scheda.comsumeMedioVeicolo==""?"0.0":URLEncoder.encode(scheda.comsumeMedioVeicolo, "UTF-8"));
+		queryString += "&ConsumoMedio=" + (scheda.consumoMedioVeicolo==""?"0.0":URLEncoder.encode(scheda.consumoMedioVeicolo, "UTF-8"));
 		queryString += "&Immagine1=" + Immagine1;
 		queryString += "&Immagine2=" + Immagine2;
 		queryString += "&Immagine3=" + Immagine3;

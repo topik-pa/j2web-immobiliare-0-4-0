@@ -1,7 +1,6 @@
-/*
- * 
+/**
  * Funzioni generali e di inizializzazione del programma
- * 
+ * @author marco - marcopavan.mp@gmail.com 
  */
 
 import java.io.File;
@@ -143,10 +142,10 @@ public class j2web implements parametriGenerali {
 		maxCaratteri.put("comboBox_Cilindrata", 6);
 		maxCaratteri.put("comboBox_ConsumoMedio", 5);
 		maxCaratteri.put("textPane_Descrizione", 1000);
-		maxCaratteri.put("textFieldTelefonoGenerico", 15);
+		//maxCaratteri.put("textFieldTelefonoGenerico", 15);
 		maxCaratteri.put("textFieldTelefonoReferente", 15);
 		maxCaratteri.put("textFieldEmailReferente", 40);
-		maxCaratteri.put("textFieldIndirizzo", 30);	
+		//maxCaratteri.put("textFieldIndirizzo", 30);	
 		maxCaratteri.put("txtField_YouTubeUrl", 50);
 
 		maxCaratteri.put("formCliente_textFieldNome", 30);
