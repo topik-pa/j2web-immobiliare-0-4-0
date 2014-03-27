@@ -2705,7 +2705,7 @@ public class J2Web_UI implements parametriGenerali {
 		String consumoMedio;
 		String carrozzeria;
 		String trazione;
-		
+
 		String queryString = "?cmd=getModel&model=" + IdModelloVeicolo + "&_=" + now.getTime();
 		String queryUrl = urlCarQuery + queryString;
 
@@ -2912,6 +2912,7 @@ public class J2Web_UI implements parametriGenerali {
 	private void resettaForm(LinkedList<JComponent> listCampiForm) {
 
 		Color defaultColor = new Color(255,255,255);
+		Color defaultColorCombobox = new Color(0,0,0);
 
 		ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
 		while(iteratorListCampiForm.hasNext()) {
@@ -2934,7 +2935,7 @@ public class J2Web_UI implements parametriGenerali {
 					((JComboBox<String>) campoCorrente).setSelectedIndex(0);
 				}
 				((JComboBox<String>) campoCorrente).setEnabled(true);
-				campoCorrente.setBackground(defaultColor);
+				campoCorrente.setForeground(defaultColorCombobox);
 				break;
 			case "javax.swing.JButton": //Pulsante
 				((JButton) campoCorrente).setEnabled(true);
@@ -3246,9 +3247,9 @@ public class J2Web_UI implements parametriGenerali {
 
 	}
 
-	
+
 	//I metodi che espongono elementi della GUI
-	
+
 	//Combobox
 	protected static JComboBox<String> getComboBox_Tipologia() {
 		return comboBox_Tipologia;
@@ -3322,7 +3323,7 @@ public class J2Web_UI implements parametriGenerali {
 	protected static JComboBox<String> getCombobox_Contratto() {
 		return comboBox_Contratto;
 	}
-	
+
 	//Textfield
 	protected static JTextField getTextField_YouTubeUrl() {
 		return txtField_YouTubeUrl;
