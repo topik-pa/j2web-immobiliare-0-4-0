@@ -273,7 +273,7 @@ public class _vendiautoCom extends PortaleWeb {
 		if(scheda.disponibilitaImmobilizer) {postParameters.add(new BasicNameValuePair("optional[19]", "Immobilizzatore elettronico"));}
 		if(scheda.disponibilitaAlzacristalliElettrici) {postParameters.add(new BasicNameValuePair("optional[4]", "Alzacristalli elettrici"));}
 		if(scheda.disponibilitaClima) {postParameters.add(new BasicNameValuePair("optional[1]", "Climatizzatore"));}
-		if(scheda.disponibilitaNavigatoreSattelitare) {postParameters.add(new BasicNameValuePair("optional[5]", "Sistema di navigazione"));}
+		if(scheda.disponibilitaNavigatoreSatellitare) {postParameters.add(new BasicNameValuePair("optional[5]", "Sistema di navigazione"));}
 		if(scheda.disponibilitaRadioOLettoreCD) {postParameters.add(new BasicNameValuePair("optional[10]", "Autoradio"));}
 		if(scheda.disponibilitaParkDistControl) {postParameters.add(new BasicNameValuePair("optional[31]", "Sensori di Parcheggio"));}
 		if(scheda.disponibilitaSediliRiscaldati) {postParameters.add(new BasicNameValuePair("optional[8]", "Sedili riscaldati"));}

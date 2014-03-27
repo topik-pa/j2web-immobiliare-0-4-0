@@ -454,7 +454,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		if(scheda.disponibilitaESP){
 			postParameters.add(new BasicNameValuePair("car[carana001_security_flg][]", "84"));
 		}
-		if(scheda.disponibilitaNavigatoreSattelitare){
+		if(scheda.disponibilitaNavigatoreSatellitare){
 			postParameters.add(new BasicNameValuePair("car[carana001_comfort_flg][]", "73"));
 		}
 		if(scheda.disponibilitaRadioOLettoreCD){

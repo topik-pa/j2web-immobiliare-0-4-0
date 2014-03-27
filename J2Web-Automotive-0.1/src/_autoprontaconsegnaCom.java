@@ -346,7 +346,7 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 		if(scheda.disponibilitaPortaPacchi) {postParameters.add(new BasicNameValuePair("optional_26", "26"));}
 		if(scheda.disponibilitaSediliRiscaldati) {postParameters.add(new BasicNameValuePair("optional_28", "28"));}
 		if(scheda.disponibilitaServoSterzo) {postParameters.add(new BasicNameValuePair("optional_29", "29"));}
-		if(scheda.disponibilitaNavigatoreSattelitare) {postParameters.add(new BasicNameValuePair("optional_30", "30"));}		
+		if(scheda.disponibilitaNavigatoreSatellitare) {postParameters.add(new BasicNameValuePair("optional_30", "30"));}		
 
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	

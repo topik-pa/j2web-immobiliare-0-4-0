@@ -1,7 +1,6 @@
-/*
- * 
+/**
  * Parametri e strutture dati utilizzate per diverse funzionalità del programma
- * 
+ * @author marco - marcopavan.mp@gmail.com 
  */
 
 import java.io.File;
@@ -28,8 +27,8 @@ public interface parametriGenerali {
 	final String TELEFONO_UTENTE ="3295698985";
 
 	//Intestazioni codice scheda
-	final String  intestazioneCodiceSchedaVeicolo = "j2w1_V_" + IDUTENTE + "_";
-	final String  intestazioneCodiceSchedaCliente = "j2w1_C_" + IDUTENTE + "_";
+	final String  intestazioneCodiceSchedaVeicolo = "j2w1-V-" + IDUTENTE + "-";
+	final String  intestazioneCodiceSchedaCliente = "j2w1-C-" + IDUTENTE + "-";
 
 	//Mail del back end
 	final String BACKEND_EMAIL ="marcopavan.mp@gmail.com";

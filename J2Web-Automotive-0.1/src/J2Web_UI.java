@@ -1,7 +1,6 @@
-/*
- * 
+/**
  * La UI principale di J2Web
- * 
+ * @author marco - marcopavan.mp@gmail.com 
  */
 
 import java.awt.EventQueue;
