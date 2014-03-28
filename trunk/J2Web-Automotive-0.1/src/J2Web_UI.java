@@ -70,7 +70,9 @@ import java.awt.event.WindowEvent;
 import java.awt.Dimension;
 
 
-public class J2Web_UI implements parametriGenerali {
+public class J2Web_UI extends JPanel implements parametriGenerali {
+
+	private static final long serialVersionUID = 6406069515614602834L;
 
 	/**
 	 * Variabili generali della UI

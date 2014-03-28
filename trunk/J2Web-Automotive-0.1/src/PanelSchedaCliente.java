@@ -1,4 +1,7 @@
-//Questa classe definisce tutti i sottopannelli schede cliente
+/**
+ * Questa classe definisce tutti i sottopannelli schede cliente
+ * @author marco - marcopavan.mp@gmail.com 
+ */
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -39,6 +42,9 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 
 	//Costruttore
 	public PanelSchedaCliente(final SchedaCliente scheda, final LinkedList<SchedaCliente> listaSchedeCliente, final ButtonGroup radioGrpSchede) {
+
+		Component horizontalGlue = Box.createHorizontalGlue();
+
 		this.scheda = scheda;
 		idScheda = scheda.idSchedaCliente;
 		codiceScheda = scheda.codiceSchedaCliente;
@@ -90,11 +96,9 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		ImageIcon humanIcon = null;
 		if(scheda.titoloCliente.equals("signora")) {
 			humanIcon  = new ImageIcon(cl.getResource("images/icon_woman.png"));
-			//label.setIcon(womanIcon);
 		}
 		else {
 			humanIcon  = new ImageIcon(cl.getResource("images/icon_man.png"));
-			//label.setIcon(manIcon);
 		}
 
 		add(label, BorderLayout.CENTER);
@@ -135,15 +139,13 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		});
 		panel_26.add(btnCancellaScheda);
 
-		//add(new JLabel(labelSpaziatore));
-		Component horizontalGlue = Box.createHorizontalGlue();
 		panel_26.add(horizontalGlue);     
 
 	}
 
 	//Funzione di matching tra clienti e veicoli salvati in locale
 	private void  matchClienteVeicolo(SchedaCliente schedaCliente) {
-			
+
 		JPanel pannelloMatchClienteVeicolo = J2Web_UI.getPanel_6();
 
 		J2Web_UI.listSchedeVeicoliMatch.clear();
@@ -172,12 +174,11 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 			matchPositivo = true;
 		}
 
-
 		if(!matchPositivo) {
 			//Match negativo
-			System.out.println("Non è stato trovato alcun veicolo intteressante per il cliente.");
+			System.out.println("Non è stato trovato alcun veicolo interessante per il cliente.");
 			JPanel panelNessunMatch = new JPanel();
-			JLabel lblNessunMatch = new JLabel("Non è stato trovato alcun veicolo intteressante per il cliente.");                
+			JLabel lblNessunMatch = new JLabel("Non è stato trovato alcun veicolo interessante per il cliente.");                
 			panelNessunMatch.add(lblNessunMatch);
 			pannelloMatchClienteVeicolo.add(panelNessunMatch);
 		}    	
@@ -198,7 +199,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 			JTable table = new JTable(matrix, new String[] {
 					"Marca", "Modello", "Versione", "Colore", "Prezzo"
 			});
-			
+
 			table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 			table.setFillsViewportHeight(true);
 
@@ -236,7 +237,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 			J2Web_UI.formCliente_getRdbtnSignore().setSelected(true);
 		}
 		else {
-			J2Web_UI.formCliente_getRdbtnSignora().setSelected(false);
+			J2Web_UI.formCliente_getRdbtnSignora().setSelected(true);
 		}
 
 		J2Web_UI.nonUserSelection = false;

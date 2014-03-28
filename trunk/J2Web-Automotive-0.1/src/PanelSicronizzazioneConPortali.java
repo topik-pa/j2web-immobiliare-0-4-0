@@ -1,16 +1,10 @@
-/*
- * Il pannello a destra, che contiene la lista dei portali immobiliari in cui inserire le schede immobile
- * Ultima modifica: 5 sett 2010
- *
- */
-
-
 /**
- *
+ * Il pannello a destra, che contiene la lista dei portali immobiliari in cui inserire le schede immobile
  * @author marco - marcopavan.mp@gmail.com 
  */
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -47,10 +41,14 @@ import javax.swing.border.TitledBorder;
 //Pannello per l'inserimento schede nei portali immobiliari
 public class PanelSicronizzazioneConPortali extends JPanel implements parametriGenerali {
 
-	private static final long serialVersionUID = 1L;
-
 	//PanelInserimentoSequenziale panelInserimentoSequenziale;
-	//JPanel panelInserimentoPortale;     
+	//JPanel panelInserimentoPortale;
+
+	static Component spaziatoreVerticaleRigido = Box.createVerticalStrut(6);
+	static Component spaziatoreVerticaleDinamico = Box.createVerticalGlue();
+
+
+	private static final long serialVersionUID = 910339052104491609L;
 
 	//Costruttore - definisce la prima visualizzazione del pannello
 	public PanelSicronizzazioneConPortali() {
@@ -69,10 +67,6 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 	public static void updatePanello(final SchedaVeicolo scheda, final boolean selectAllSelected) {
 
 		JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
-
-		//Rimuovo tutti i portali dalle liste sequenziali
-		//listPortaliInserimentoSequenziale.clear();
-		//listPortaliCancellazioneSequenziale.clear();
 
 		pannelloListaPortali.removeAll();
 
@@ -100,7 +94,7 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 
 		pannelloListaPortali.removeAll();
 
-		pannelloListaPortali.add(Box.createVerticalStrut(6));
+		pannelloListaPortali.add(spaziatoreVerticaleRigido);
 
 		//Pannello controllo portali (primo in alto)
 		//panelInserimentoSequenziale = new PanelInserimentoSequenziale();     		        
@@ -116,7 +110,7 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 			pannelloListaPortali.add(inserimentoPortale);
 		} 
 
-		pannelloListaPortali.add(Box.createVerticalGlue());
+		pannelloListaPortali.add(spaziatoreVerticaleDinamico);
 
 		pannelloListaPortali.updateUI();
 	}
@@ -126,7 +120,7 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 
 		pannelloListaPortali.removeAll();
 
-		pannelloListaPortali.add(Box.createVerticalStrut(6));
+		pannelloListaPortali.add(spaziatoreVerticaleRigido);
 
 		//Pannello controllo portali (primo in alto)
 		//panelInserimentoSequenziale = new PanelInserimentoSequenziale(scheda, selectAllSelected);     		        
@@ -140,7 +134,7 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 			pannelloListaPortali.add(inserimentoPortale);
 		}
 
-		pannelloListaPortali.add(Box.createVerticalGlue());
+		pannelloListaPortali.add(spaziatoreVerticaleDinamico);
 
 		pannelloListaPortali.updateUI();
 	}
@@ -176,8 +170,8 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 	}
 
 	//Invio a me la mail in caso di errori runtime
-	static void sendErrorMail(String stackTrace, String errorCode)   {
-		
+	static void sendErrorMail(String stackTrace, String errorCode) {
+
 		final String CLIENTNAME = EMAIL_UTENTE;
 		final String TELCLIENTE = TELEFONO_UTENTE;
 
@@ -372,7 +366,7 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 //Classe che definisce il sottopannello per l'inserimento in portale
 class InserimentoPortale extends JPanel implements parametriGenerali {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4249328323209797212L;
 
 	String labelCheckboxSelezionaPortale = "Seleziona";
 	String labelBtnInserisci = "Inserisci";
@@ -400,7 +394,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 		setLayout(new GridLayout(2,3,5,5));
 		setMaximumSize(new Dimension(400, 90));
 		String etichetta = portale.valoreLabel;
-		
+
 		loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 		title = BorderFactory.createTitledBorder(loweredetched, etichetta);
 		title.setTitleJustification(TitledBorder.RIGHT);
@@ -431,7 +425,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 		checkboxSelezionaPortale.setEnabled(false);
 		checkboxSelezionaPortale.setVisible(false);
 		add(checkboxSelezionaPortale);   
-		
+
 		if(portale.isActive) {
 			add(btnInserisci);
 			add(btnVisualizza);
@@ -482,7 +476,6 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 					catch (HttpCommunicationException e1) {
 						PanelSicronizzazioneConPortali.manageErrorsOnPortalSubmission(e1);
 					} catch (UnsupportedEncodingException e3) {
-						// TODO Auto-generated catch block
 						e3.printStackTrace();
 					}
 					finally  {
@@ -690,7 +683,7 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 		}*/
 		checkboxSelezionaPortale.setVisible(false);
 		add(checkboxSelezionaPortale);    
-		
+
 		if(portale.isActive) {
 			add(btnInserisci);
 			add(btnVisualizza);
