@@ -1,8 +1,10 @@
+/**
+ * Eccezione: response header non previsto
+ * @author marco - marcopavan.mp@gmail.com 
+ */
+
 public class HttpWrongResponseHeaderException extends Exception {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	String cause;
 
