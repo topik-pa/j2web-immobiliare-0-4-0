@@ -1,3 +1,8 @@
+/**
+ * Connessione HTTP: POST
+ * @author marco - marcopavan.mp@gmail.com 
+ */
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -336,7 +341,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	}
 
 
-	//POST MULTIPART/FORM-DATA (2)
+	//POST MULTIPART/FORM-DATA (3)
 	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, List<NameValuePair> requestHeaders, List<BasicClientCookie> requestCookies, boolean debugMode) throws IOException {
 
 		//La risposta che verrà  restituita
@@ -357,16 +362,9 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 			}
 			if(!httppost.containsHeader("Content-Type")) {
 				httppost.addHeader(reqEntity.getContentType());
-			}
-			
-			//httppost.addHeader(reqEntity.getContentEncoding());
-			//httppost.addHeader("Content-Type", "multipart/form-data; boundary=----pluploadboundaryp18c3flp4v1q941ef91u0clsfcmq5");
-			//httppost.addHeader("Content-Length", "333606");
-			//httppost.getContentType();
-			
-			
+			}		
 		}
-		
+
 		//reqEntity.getContentType();
 
 		//Add request parameters

@@ -1,9 +1,11 @@
-import java.io.IOException;
+/**
+ * Questa classe definisce i metodi e gli attributi dell'oggetto portale web, qui definiti in termini generici, vengono riscritti nelle classi più specifiche
+ * @author marco - marcopavan.mp@gmail.com 
+ */
+
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,35 +19,24 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
 import java.util.Iterator;
-
-
-
-
-/*
- * Questa classe definische i metodi e gli attributi dell'oggetto portale web, qui definiti in termini generici, vengono riscritti nelle classi piÃ¹ specifiche
- *
- */
-
-
-/**
- *
- * @author marco - marcopavan.mp@gmail.com 
- */
+/*import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.util.Hashtable;
+import java.net.URLEncoder;
+import java.io.IOException;*/
 
 public abstract class PortaleWeb implements parametriGenerali {
 
@@ -85,7 +76,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 	//Eliminazione scheda (sovrascritto nelle sottoclassi)
 	public abstract boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException;
 
-	//Invio mail di conferma inserzione
+	//Invio mail di conferma inserzione (al cliente e al backend)
 	static void sendConfirmationMail(SchedaVeicolo scheda, String nomePortale, String codInserzione)   {
 
 		final String USERNAME = BACKEND_EMAIL;
@@ -166,7 +157,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return (double) matches / (bigram1.size() + bigram2.size());
 	}
 
-	//Trova il cookie di sessione e lo esporta a livello di portale
+	//Trova il cookie di sessione e lo esporta a livello di classe portale
 	public boolean findSessionCookie(Header[] headers, String cookieName, String cookieDomain) {
 
 		boolean cookieHeaderFound = false;
@@ -211,7 +202,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		return cookieHeaderFound?true:false;
 	}
 
-
+	//Ottiene i cookie
 	public boolean setCookies(Header[] inputHeaders, List<BasicClientCookie> outputHeaders) {
 
 		boolean cookiesFound = false;
@@ -273,7 +264,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 	}
 
 	//Metodo per ottenere le coordinate della città
-	public Map<String,String> getLatLonCoord(String indirizzo, String comune, String provincia, String regione) throws ParserConfigurationException, SAXException, IOException {
+	/*public Map<String,String> getLatLonCoord(String indirizzo, String comune, String provincia, String regione) throws ParserConfigurationException, SAXException, IOException {
 		Map<String,String> mappaLatLon = new Hashtable<String,String>();
 		String url;
 		String latitudine;
@@ -303,7 +294,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		mappaLatLon.put("longitudine", longitudine);
 
 		return mappaLatLon;       	
-	}
+	}*/
 
 	//Metodo per ottenere il valore di un input dato il nome dell'input stesso
 	public String getInputValueByName(String responseBody, String inputName) {
@@ -433,18 +424,11 @@ public abstract class PortaleWeb implements parametriGenerali {
 		}
 	}
 
-	//Adatta le select del DOM originario
+	//Adatta le select del DOM originario per renderle compatibili a quelle di j2web
 	public org.jsoup.nodes.Document adattaSelect(org.jsoup.nodes.Document doc, String selettore, List<NameValuePair> listaAssociativa) {
 		
-		Element select = null;
-		//String selectName = null;
-		//Element selectParent = null;
-		Elements options = null;
-
-		select = ((Element) doc).select(selettore).first();
-		//selectName = select.attr("name");
-		//selectParent = select.parent();
-		options = select.children();
+		Element select = ((Element) doc).select(selettore).first();
+		Elements options = select.children();
 		
 		Iterator<Element> iterator = options.iterator();
 		while(iterator.hasNext()) {
@@ -502,7 +486,6 @@ public abstract class PortaleWeb implements parametriGenerali {
 	public void messageEliminazioneKO(String nomePortale) {
 		JOptionPane.showMessageDialog(null, "Problemi nell\'eliminazione scheda in: " + nomePortale + ".\n\n Verificare l\'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
-	
 	
 	
 }

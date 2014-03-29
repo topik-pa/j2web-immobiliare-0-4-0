@@ -209,7 +209,7 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 		}
 	}
 
-
+	//Mostra sul pannello form i dati della scheda correntemente selezionata
 	private void  mostraDatiScheda(SchedaCliente scheda) {
 
 		J2Web_UI.disabilitaCampiForm(listCampiFormCliente);
