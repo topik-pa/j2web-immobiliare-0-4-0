@@ -267,9 +267,9 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&PrecedentiProprietari=" + (scheda.numeroPrecedentiProprietariVeicoloIndex==0?"ND":scheda.postiASedereVeicoloIndex);
 		queryString += "&Chilometraggio=" + URLEncoder.encode(scheda.chilometraggioVeicolo, "UTF-8");
 		queryString += "&Prezzo=" + URLEncoder.encode(scheda.prezzoVeicolo, "UTF-8");
-		queryString += "&PrezzoConcessionari=" + URLEncoder.encode(scheda.prezzoVeicolo, "UTF-8"); //!!!
+		queryString += "&PrezzoConcessionari=" + URLEncoder.encode(scheda.prezzoVeicoloCondivisione, "UTF-8");
 		queryString += "&condividiveicolo=" + "1"; //Se lo inserisce tramite j2web, lo vuole condividere...
-		queryString += "&Trattabile=" + (scheda.prezzoTrattabile?"1":"0");
+		//queryString += "&Trattabile=" + (scheda.prezzoTrattabile?"1":"0");
 		queryString += "&Contratto=" + URLEncoder.encode(scheda.tipologiaContrattoVeicolo, "UTF-8");
 		queryString += "&FinitureInterni=" + (scheda.finitureInterneVeicoloIndex==0?"ND":URLEncoder.encode(scheda.finitureInterneVeicolo, "UTF-8"));
 		queryString += "&ColoreInterni=" + (scheda.coloreInterniVeicoloIndex==0?"ND":URLEncoder.encode(scheda.coloreInterniVeicolo, "UTF-8"));

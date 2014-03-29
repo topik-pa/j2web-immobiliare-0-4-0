@@ -304,7 +304,7 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("ArticleId", articleId);
 		tabellaDiDipendenza.put("ArticleType", "***site***"); //Automobile
 		tabellaDiDipendenza.put("BaseData.Accident","***site***");
-		if(scheda.prezzoTrattabile){tabellaDiDipendenza.put("BaseData.AskingPrice","true");}
+		//if(scheda.prezzoTrattabile){tabellaDiDipendenza.put("BaseData.AskingPrice","true");}
 		tabellaDiDipendenza.put("BaseData.BodyColorId",scheda.coloreEsternoVeicolo); 
 		tabellaDiDipendenza.put("BaseData.BodyTypeId",scheda.carrozzeriaVeicolo); 
 		tabellaDiDipendenza.put("BaseData.Doors","***site***"); //bho 

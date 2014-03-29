@@ -138,7 +138,7 @@ public class j2web implements parametriGenerali {
 		maxCaratteri.put("txtFieldKw", 3);
 		maxCaratteri.put("txtFieldCv", 3);
 		maxCaratteri.put("textField_Chilometraggio", 6);
-		maxCaratteri.put("textField_Prezzo", 6);
+		maxCaratteri.put("textField_Prezzo", 6); //Vale anche per il prezzo condiviso
 		maxCaratteri.put("comboBox_Cilindrata", 6);
 		maxCaratteri.put("comboBox_ConsumoMedio", 5);
 		maxCaratteri.put("textPane_Descrizione", 1000);

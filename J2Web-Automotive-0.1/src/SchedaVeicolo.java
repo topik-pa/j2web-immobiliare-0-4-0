@@ -102,12 +102,13 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	boolean disponibilitaAvviamentoAPedale;
 	boolean disponibilitaBauletto;
 	boolean coloreMetalizzato;
-	boolean prezzoTrattabile;
+	//boolean prezzoTrattabile;
 
 	String KWVeicolo;
 	String CVVeicolo;
 	String chilometraggioVeicolo;
 	String prezzoVeicolo;
+	String prezzoVeicoloCondivisione;
 	String consumoMedioVeicolo;
 	String cilindrataVeicolo;
 	String urlVideoYouTube;
@@ -209,7 +210,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		disponibilitaBauletto = J2Web_UI.getChckbxBauletto().isSelected()?true:false;
 		coloreMetalizzato = J2Web_UI.getChckbxMetallizzato().isSelected()?true:false;
 		//ivaDeducibile = J2Web_UI.getChckbxIvaDeducibile().isSelected()?true:false;
-		prezzoTrattabile = J2Web_UI.getChckbxTrattabile().isSelected()?true:false;
+		//prezzoTrattabile = J2Web_UI.getChckbxTrattabile().isSelected()?true:false;
 
 		//Textfield (se sforano la lunghezza predefinita vengono tagliate)
 		KWVeicolo = J2Web_UI.getTextField_Kw().getText().trim();	
@@ -220,6 +221,8 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		if(chilometraggioVeicolo.length()>maxCaratteri.get("textField_Chilometraggio")) {chilometraggioVeicolo = chilometraggioVeicolo.substring(0, maxCaratteri.get("textField_Chilometraggio")-1);}
 		prezzoVeicolo = J2Web_UI.getTextField_Prezzo().getText().trim();		
 		if(prezzoVeicolo.length()>maxCaratteri.get("textField_Prezzo")) {prezzoVeicolo = prezzoVeicolo.substring(0, maxCaratteri.get("textField_Prezzo")-1);}
+		prezzoVeicoloCondivisione = J2Web_UI.getTextField_PrezzoCondivisione().getText().trim();		
+		if(prezzoVeicoloCondivisione.length()>maxCaratteri.get("textField_Prezzo")) {prezzoVeicoloCondivisione = prezzoVeicoloCondivisione.substring(0, maxCaratteri.get("textField_Prezzo")-1);}
 		consumoMedioVeicolo = J2Web_UI.getTextField_ConsumoMedio().getText().trim();		
 		if(consumoMedioVeicolo.length()>maxCaratteri.get("comboBox_ConsumoMedio")) {consumoMedioVeicolo = consumoMedioVeicolo.substring(0, maxCaratteri.get("comboBox_ConsumoMedio")-1);}
 		cilindrataVeicolo = J2Web_UI.getTextField_Cilindrata().getText().trim();		
@@ -323,6 +326,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			if(json.has("14")) {coloreEsternoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("14")));}
 			//if(json.has("18")) {prezzoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("18")));}
 			if(json.has("18")) {prezzoVeicolo = Integer.toString(json.getInt("18"));}
+			if(json.has("21")) {prezzoVeicoloCondivisione = Integer.toString(json.getInt("21"));}
 			if(json.has("62")) {ragioneSociale = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("62")));}
 			if(json.has("65")) {nomeReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("65")));}
 

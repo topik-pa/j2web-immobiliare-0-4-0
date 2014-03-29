@@ -110,6 +110,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 	private static JTextField txtFieldCv;
 	private static JTextField textField_Chilometraggio;
 	private static JTextField textField_Prezzo;
+	private static JTextField textField_PrezzoCondivisione;
 	private static JTextField txtField_YouTubeUrl;
 	private static JTextField textFieldRagioneSociale;
 	private static JTextField textFieldIndirizzo;
@@ -143,7 +144,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 	private static JCheckBox chckbxChiusuraCentralizzata;
 	private static JCheckBox chckbxSediliRiscaldati;
 	private static JCheckBox chckbxClima;
-	private static JCheckBox chckbxTrattabile;	
+	//private static JCheckBox chckbxTrattabile;	
 	private static JCheckBox chckbxMetallizzato;
 	//Radio button
 	private static JRadioButton rdbtnAutoveicolo;
@@ -746,15 +747,34 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 				}
 			}
 		});
+		textField_Prezzo.setColumns(10);
+		panel_20.add(textField_Prezzo, "2, 30, fill, default");		
+		
+		JLabel lblPrezzoCondivisione = new JLabel("Prezzo condivisione MLS*");
+		panel_20.add(lblPrezzoCondivisione, "6, 28");
+
+		textField_PrezzoCondivisione = new JTextField();
+		textField_PrezzoCondivisione.setToolTipText("Inserimento prezzo di vendita del veicolo in condivisione con altri concessionari");
+		textField_PrezzoCondivisione.addKeyListener(new KeyAdapter() {
+			@Override
+			//Controllo i tipo e numero dei caratteri immessi
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_SPACE) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) || textField_Prezzo.getText().length()>=maxCaratteri.get("textField_Prezzo")) {
+					e.getComponent().getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
+		textField_PrezzoCondivisione.setColumns(10);
+		panel_20.add(textField_PrezzoCondivisione, "6, 30, fill, default");
 
 		JLabel lblTipologiaDiContratto = new JLabel("Tipologia di contratto*");
-		panel_20.add(lblTipologiaDiContratto, "10, 28");
-		panel_20.add(textField_Prezzo, "2, 30, fill, default");
-		textField_Prezzo.setColumns(10);
+		panel_20.add(lblTipologiaDiContratto, "10, 28");	
 
-		chckbxTrattabile = new JCheckBox("Trattabile");
+		/*chckbxTrattabile = new JCheckBox("Trattabile");
 		chckbxTrattabile.setToolTipText("Il prezzo di vendita è trattabile?");
-		panel_20.add(chckbxTrattabile, "6, 30");
+		panel_20.add(chckbxTrattabile, "6, 30");*/
 
 		comboBox_Contratto = new JComboBox<String>();
 		comboBox_Contratto.setToolTipText("Tipologia di contratto");
@@ -3029,6 +3049,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 		listCampiFormVeicolo.add(getTextField_Cv());
 		listCampiFormVeicolo.add(getTextField_Chilometraggio());
 		listCampiFormVeicolo.add(getTextField_Prezzo());
+		listCampiFormVeicolo.add(getTextField_PrezzoCondivisione());
 		listCampiFormVeicolo.add(getTextField_Cilindrata());
 		listCampiFormVeicolo.add(getTextField_ConsumoMedio());
 		listCampiFormVeicolo.add(getTextField_YouTubeUrl());
@@ -3038,7 +3059,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 		listCampiFormVeicolo.add(getTextFieldEmailReferente());
 
 		listCampiFormVeicolo.add(getChckbxMetallizzato());
-		listCampiFormVeicolo.add(getChckbxTrattabile());
+		//listCampiFormVeicolo.add(getChckbxTrattabile());
 		listCampiFormVeicolo.add(getChckbxAbs());
 		listCampiFormVeicolo.add(getChckbxAirbag());
 		listCampiFormVeicolo.add(getChckbxAntifurto());
@@ -3106,7 +3127,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 		listCampiFormVeicoloObbligatori.add(getComboBox_AnnoImmatricolazione());
 		listCampiFormVeicoloObbligatori.add(getComboBox_Carburante());
 
-		listCampiFormVeicoloObbligatori.add(getTextField_Prezzo());			
+		listCampiFormVeicoloObbligatori.add(getTextField_PrezzoCondivisione());			
 		listCampiFormVeicoloObbligatori.add(getTextFieldIndirizzo());
 		listCampiFormVeicoloObbligatori.add(getTextFieldTelefonoGenerico());
 		listCampiFormVeicoloObbligatori.add(getTextFieldTelefonoReferente());
@@ -3344,6 +3365,9 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 	protected static JTextField getTextField_Prezzo() {
 		return textField_Prezzo;
 	}
+	protected static JTextField getTextField_PrezzoCondivisione() {
+		return textField_PrezzoCondivisione;
+	}
 	protected static JTextField formCliente_getNome() {
 		return formCliente_textFieldNome;
 	}
@@ -3394,9 +3418,9 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 	protected static JCheckBox getChckbxMetallizzato() {
 		return chckbxMetallizzato;
 	}
-	protected static JCheckBox getChckbxTrattabile() {
+	/*protected static JCheckBox getChckbxTrattabile() {
 		return chckbxTrattabile;
-	}
+	}*/
 	protected static JCheckBox getChckbxCupolino() {
 		return chckbxCupolino;
 	}
