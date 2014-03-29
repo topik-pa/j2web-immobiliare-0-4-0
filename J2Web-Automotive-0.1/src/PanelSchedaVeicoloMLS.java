@@ -42,6 +42,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
 
 	String labelSpaziatore = "   "; 
 
+	//Costruttore
 	public PanelSchedaVeicoloMLS(final SchedaVeicolo scheda) {
 		this.scheda = scheda;
 		idScheda = scheda.idScheda;
@@ -108,6 +109,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
 
 	}
 
+	//Mostra i dettagli del veicolo MLS attualmente selezionato
 	private void  mostraDettagliVeicoloMLS(SchedaVeicolo schedaVeicolo) {
 
 		JPanel pannelloInfoVeicoloMLS = J2Web_UI.getPanel_8();

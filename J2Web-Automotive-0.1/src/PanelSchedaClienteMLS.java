@@ -45,6 +45,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 	String labelSpaziatore = "   "; 
 
+	//Costruttore
 	public PanelSchedaClienteMLS(final SchedaCliente scheda, final LinkedList<SchedaCliente> listaSchedeCliente, final ButtonGroup radioGrpSchede) {
 		this.scheda = scheda;
 		idScheda = scheda.idSchedaCliente;
@@ -124,6 +125,7 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 	}
 
+	//Funzione di matching tra clienti e veicoli salvati con DB remoto
 	private void  matchClienteVeicoloMLS(SchedaCliente schedaCliente) {
 
 		String queryString = "";
@@ -195,7 +197,8 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 
 	}
 
-	public static void  sincronizzaRisultati(final LinkedList<SchedaCliente> listaSchedeCliente) {
+	//Mostra il numero di risultati per ogni scheda cliente nel pannello MLS
+	public static void sincronizzaRisultati(final LinkedList<SchedaCliente> listaSchedeCliente) {
 
 		System.out.print("numero schede: " + listaSchedeCliente.size());
 

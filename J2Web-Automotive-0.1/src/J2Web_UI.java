@@ -2999,7 +2999,6 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 
 	}	
 
-
 	//Popola la lista con tutti i campi della form veicolo
 	private void popolaListaCampiFormVeicolo() {
 
@@ -3093,7 +3092,6 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 		listCampiFormVeicolo.add(getRdbtnMotoScooter());
 	}
 
-
 	//Popola la lista con i soli campi obbligatori della form veicolo
 	private void popolaListaCampiObbligatoriFormVeicolo() {
 		listCampiFormVeicoloObbligatori.add(getComboBox_Marca());
@@ -3122,7 +3120,6 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 
 	}
 
-
 	//Popola la lista con tutti i campi della form cliente
 	private void popolaListaCampiFormCliente() {
 
@@ -3147,7 +3144,6 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 		listCampiFormCliente.add(formCliente_getCitta());
 
 	}
-
 
 	//Popola la lista con i soli campi obbligatori della form cliente
 	private void popolaListaCampiObbligatoriFormCliente() {			

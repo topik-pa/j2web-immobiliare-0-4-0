@@ -218,7 +218,6 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 }
 
 
-
 //La classe che definisce il pannello per l'inserimento sequenziale
 /*class PanelInserimentoSequenziale extends JPanel implements parametriGenerali {
 
@@ -360,7 +359,6 @@ public class PanelSicronizzazioneConPortali extends JPanel implements parametriG
 	}
 
 }*/
-
 
 
 //Classe che definisce il sottopannello per l'inserimento in portale
@@ -695,4 +693,4 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 
 	}
 
-}   //Fine PannelloInserimento
+}
