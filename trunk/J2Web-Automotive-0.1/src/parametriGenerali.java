@@ -143,6 +143,6 @@ public interface parametriGenerali {
 	final String[] comboboxModelCambio = {"Seleziona", "Automatico", "Manuale", "Semiautomatico", "Nessuno"};
 	final String[] comboboxModelNumeroRapporti = {"Seleziona", "3", "4", "5", "6", "7"};
 	final String[] comboboxModelClasseEmissioni = {"Seleziona", "Euro 1", "Euro 2", "Euro 3", "Euro 4", "Euro 5", "Euro 6"};
-	final String[] comboboxModelTipologieContratto = {"Seleziona", "Vendita", "Affitto"/*, "Leasing"*/};
+	final String[] comboboxModelTipologieContratto = {"Seleziona", "Vendita", "Nolleggio"/*, "Leasing"*/};
 
 }

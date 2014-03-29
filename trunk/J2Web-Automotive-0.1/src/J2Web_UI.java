@@ -632,7 +632,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 		JLabel lblTipologia = new JLabel("Tipologia*");
 		panel_20.add(lblTipologia, "2, 12");
 
-		JLabel lblCarrozzeria = new JLabel("Carrozzeria*");
+		JLabel lblCarrozzeria = new JLabel("Categoria*");
 		panel_20.add(lblCarrozzeria, "6, 12");
 
 		JLabel lblPostiASedere = new JLabel("Posti a sedere");
@@ -644,7 +644,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 		panel_20.add(comboBox_Tipologia, "2, 14, fill, default");
 
 		comboBox_Carrozzeria = new JComboBox<String>();
-		comboBox_Carrozzeria.setToolTipText("Selezione carrozzeria veicolo");
+		comboBox_Carrozzeria.setToolTipText("Selezione categoria veicolo");
 		comboBox_Carrozzeria.setModel(new DefaultComboBoxModel<String>(comboboxModelCarrozzeria));
 		panel_20.add(comboBox_Carrozzeria, "6, 14, fill, default");
 
@@ -760,6 +760,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 		comboBox_Contratto.setToolTipText("Tipologia di contratto");
 		panel_20.add(comboBox_Contratto, "10, 30, fill, default");
 		comboBox_Contratto.setModel(new DefaultComboBoxModel<String>(comboboxModelTipologieContratto));
+		comboBox_Contratto.setSelectedIndex(1);
 
 		JLabel lblFinitureInterne = new JLabel("Finiture interni");
 		panel_20.add(lblFinitureInterne, "2, 32");
@@ -955,7 +956,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 
-		JLabel lblNewLabel = new JLabel("Motore");
+		JLabel lblNewLabel = new JLabel("Trazione");
 		panel_22.add(lblNewLabel, "2, 2");
 
 		JLabel lblNewLabel_1 = new JLabel("Cambio");
