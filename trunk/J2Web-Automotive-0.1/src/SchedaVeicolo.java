@@ -102,7 +102,6 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	boolean disponibilitaAvviamentoAPedale;
 	boolean disponibilitaBauletto;
 	boolean coloreMetalizzato;
-	//boolean ivaDeducibile;
 	boolean prezzoTrattabile;
 
 	String KWVeicolo;
@@ -126,7 +125,10 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 
 	//Una scheda veicolo può essere ospitata in diversi portali, la seguente tabella hash contiene i codici dei portali(key) e il codice di inserimento(value) in cui la scheda è attualmente inserita
 	Map<String,String> mappaPortaliOspitanti = new Hashtable<String,String>();
-
+	
+	//Attributi aggiunti in seguito (possono mancare su schede clienti più vecchie della versione 1.0)
+	//nessuno
+	
 	//Costruttore (da form di creazione scheda)
 	public SchedaVeicolo () {		
 
@@ -291,15 +293,15 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 
 
 	//Costruttore 2 (da query SQL)
-	public SchedaVeicolo (JSONArray jsonArray) {			
+	public SchedaVeicolo (JSONArray JSONArray) {			
 
 		veicolo = "auto";	//solo auto attualmente
 
-		for (int h=1; h<jsonArray.length(); h++) {
+		for (int h=1; h<JSONArray.length(); h++) {
 
 			JSONObject json = null;
 			try {
-				json = new JSONObject(jsonArray.getString(h));
+				json = new JSONObject(JSONArray.getString(h));
 			} catch (NoSuchElementException | ParseException e) {
 				//
 				e.printStackTrace();
@@ -332,7 +334,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			if(json.has("66")) {TelefonoReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("66")));}
 			if(json.has("67")) {emailReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("67")));}
 
-			if(json.has("50") && !json.getString("50").equals("\u0000")) {
+			/*if(json.has("50") && !json.getString("50").equals("\u0000")) {
 
 				URL dbUrl;
 
@@ -341,6 +343,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					URLConnection connection = dbUrl.openConnection();
 					InputStream in = connection.getInputStream();
 
+					//Per questa tipologia di scheda veicolo (da JSON) si prevede solo una immagine. 
 					arrayImages[1] = new File("imagePreviewMLS.jpg");
 					FileOutputStream fos = new FileOutputStream(arrayImages[1]);
 
@@ -360,7 +363,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			}
+			}*/
 		}
 
 	}

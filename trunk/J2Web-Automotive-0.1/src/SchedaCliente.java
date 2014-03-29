@@ -41,7 +41,10 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 	String viaCliente;
 	String numeroCivicoCliente;
 	String CAPCliente;
-	String cittaCliente;	
+	String cittaCliente;
+	
+	//Attributi aggiunti in seguito (possono mancare su schede clienti più vecchie della versione 1.0)
+	//nessuno
 
 	//Costruttore
 	public SchedaCliente () {
