@@ -8,12 +8,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-//import java.io.InputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-//import java.net.URL;
-//import java.net.URLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
@@ -310,40 +310,40 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 				e.printStackTrace();
 			}
 
-			if(json.has("2")) {codiceScheda = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("2")));}
-			if(json.has("3")) {marcaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("3")));} 
-			if(json.has("4")) {modelloVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("4")));} 
-			if(json.has("5")) {versioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("5")));} 
-			if(json.has("6")) {meseImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("6")));} 
-			if(json.has("7")) {annoImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("7")));} 
-			if(json.has("8")) {carburanteVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("8")));} 
-			if(json.has("9")) {tipologiaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("9")));} 
-			if(json.has("10")) {carrozzeriaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("10")));} 
-			if(json.has("11")) {postiASedereVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("11")));} 
-			if(json.has("12")) {KWVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("12")));}
-			if(json.has("13")) {CVVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("13")));} 
+			if(json.has("71")) {codiceScheda = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("71")));}
+			if(json.has("4")) {marcaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("4")));} 
+			if(json.has("5")) {modelloVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("5")));} 
+			if(json.has("6")) {versioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("6")));} 
+			if(json.has("8")) {meseImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("8")));} 
+			if(json.has("9")) {annoImmatricolazioneVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("9")));} 
+			if(json.has("10")) {carburanteVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("10")));} 
+			if(json.has("11")) {tipologiaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("11")));} 
+			if(json.has("12")) {carrozzeriaVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("12")));} 
+			if(json.has("13")) {postiASedereVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("13")));} 
+			if(json.has("14")) {KWVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("14")));}
+			if(json.has("15")) {CVVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("15")));} 
 
-			if(json.has("14")) {coloreEsternoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("14")));}
+			if(json.has("16")) {coloreEsternoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("16")));}
 			//if(json.has("18")) {prezzoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("18")));}
-			if(json.has("18")) {prezzoVeicolo = Integer.toString(json.getInt("18"));}
+			if(json.has("20")) {prezzoVeicolo = Integer.toString(json.getInt("20"));}
 			if(json.has("21")) {prezzoVeicoloCondivisione = Integer.toString(json.getInt("21"));}
-			if(json.has("62")) {ragioneSociale = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("62")));}
-			if(json.has("65")) {nomeReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("65")));}
+			if(json.has("65")) {ragioneSociale = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("65")));}
+			if(json.has("68")) {nomeReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("68")));}
 
-			if(json.has("17")) {chilometraggioVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("17")));}
+			if(json.has("19")) {chilometraggioVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("19")));}
 
-			if(json.has("20")) {tipologiaContrattoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("20")));}
+			if(json.has("24")) {tipologiaContrattoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("24")));}
 
-			if(json.has("63")) {Indirizzo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("63")));}
-			if(json.has("66")) {TelefonoReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("66")));}
-			if(json.has("67")) {emailReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("67")));}
+			if(json.has("66")) {Indirizzo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("66")));}
+			if(json.has("69")) {TelefonoReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("69")));}
+			if(json.has("70")) {emailReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("70")));}
 
-			/*if(json.has("50") && !json.getString("50").equals("\u0000")) {
+			if(json.has("54") && !json.getString("54").equals("\u0000")) {
 
 				URL dbUrl;
 
 				try {
-					dbUrl = new URL(urlLocationImmaginiInRemoto + StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("50"))));
+					dbUrl = new URL(urlLocationImmaginiInRemoto + StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("54"))));
 					URLConnection connection = dbUrl.openConnection();
 					InputStream in = connection.getInputStream();
 
@@ -367,7 +367,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			}*/
+			}
 		}
 
 	}

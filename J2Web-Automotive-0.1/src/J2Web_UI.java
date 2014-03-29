@@ -2958,6 +2958,8 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 				}
 				((JComboBox<String>) campoCorrente).setEnabled(true);
 				campoCorrente.setForeground(defaultColorCombobox);
+				
+				getCombobox_Contratto().setSelectedIndex(1); //Il contratto predefinito è Vendita
 				break;
 			case "javax.swing.JButton": //Pulsante
 				((JButton) campoCorrente).setEnabled(true);
