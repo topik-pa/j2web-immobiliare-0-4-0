@@ -1,14 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */ 
+/**
+ * Sincronizzazione con: DB MLS
+ * @author marco
+ */
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
@@ -16,13 +16,11 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.json.JSONObject;
 
 
-/**
- *
- * @author marco
- */
-
 //La classe principale
 public class _portaleMLS extends PortaleWeb { 
+	
+	private final String NOMEPORTALE = "www.auto-nuove-usate.it - Multi Level Sharing per l\'automotive";
+	private final String URLROOT = "www.auto-nuove-usate.it";
 
 	private boolean inserimentoOK = false;
 	private boolean eliminazioneOK = false;
@@ -59,6 +57,7 @@ public class _portaleMLS extends PortaleWeb {
 				//Il nome del file sul server remoto
 				String fileName = scheda.codiceScheda + "_img_" + i + currentFileType;
 
+				//Preparo il parametro HTTP
 				FileBody bin = new FileBody(scheda.arrayImages[i]);
 				reqEntity.addPart("file", bin);
 				reqEntity.addPart("fileName", new StringBody(fileName));
@@ -260,20 +259,20 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&idCarburante=" + thisCarburante;
 		queryString += "&idTipologia=" + thisTipologia;
 		queryString += "&idCarrozzeria=" + thisCarrozzeria;
-		queryString += "&PostiASedere=" + (scheda.postiASedereVeicoloIndex==0?"NULL":scheda.postiASedereVeicoloIndex);
+		queryString += "&PostiASedere=" + (scheda.postiASedereVeicoloIndex==0?"ND":scheda.postiASedereVeicoloIndex);
 		queryString += "&PotenzaKW=" + scheda.KWVeicolo;
 		queryString += "&PotenzaCV=" + scheda.CVVeicolo;
 		queryString += "&idColoreEsterno=" + thisColoreEsterno;
 		queryString += "&Metallizzato=" + (scheda.coloreMetalizzato?"1":"0");
-		queryString += "&PrecedentiProprietari=" + (scheda.numeroPrecedentiProprietariVeicoloIndex==0?"NULL":scheda.postiASedereVeicoloIndex);
+		queryString += "&PrecedentiProprietari=" + (scheda.numeroPrecedentiProprietariVeicoloIndex==0?"ND":scheda.postiASedereVeicoloIndex);
 		queryString += "&Chilometraggio=" + URLEncoder.encode(scheda.chilometraggioVeicolo, "UTF-8");
 		queryString += "&Prezzo=" + URLEncoder.encode(scheda.prezzoVeicolo, "UTF-8");
 		queryString += "&PrezzoConcessionari=" + URLEncoder.encode(scheda.prezzoVeicolo, "UTF-8"); //!!!
 		queryString += "&condividiveicolo=" + "1"; //Se lo inserisce tramite j2web, lo vuole condividere...
 		queryString += "&Trattabile=" + (scheda.prezzoTrattabile?"1":"0");
-		queryString += "&Contratto=" + scheda.tipologiaContrattoVeicolo;
-		queryString += "&FinitureInterni=" + (scheda.finitureInterneVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.finitureInterneVeicolo, "UTF-8"));
-		queryString += "&ColoreInterni=" + (scheda.coloreInterniVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.coloreInterniVeicolo, "UTF-8"));
+		queryString += "&Contratto=" + URLEncoder.encode(scheda.tipologiaContrattoVeicolo, "UTF-8");
+		queryString += "&FinitureInterni=" + (scheda.finitureInterneVeicoloIndex==0?"ND":URLEncoder.encode(scheda.finitureInterneVeicolo, "UTF-8"));
+		queryString += "&ColoreInterni=" + (scheda.coloreInterniVeicoloIndex==0?"ND":URLEncoder.encode(scheda.coloreInterniVeicolo, "UTF-8"));
 		queryString += "&ABS=" + (scheda.disponibilitaABS?"1":"0");
 		queryString += "&Airbag=" + (scheda.disponibilitaAirBag?"1":"0");
 		queryString += "&Antifurto=" + (scheda.disponibilitaAntifurto?"1":"0");
@@ -295,11 +294,11 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&GancioTraino=" + (scheda.disponibilitaGancioTraino?"1":"0");
 		queryString += "&Portapacchi=" + (scheda.disponibilitaPortaPacchi?"1":"0");
 		queryString += "&SediliSportivi=" + (scheda.disponibilitaSediliSportivi?"1":"0");
-		queryString += "&Motore=" + (scheda.tipologiaMotoreVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.tipologiaMotoreVeicolo, "UTF-8"));
-		queryString += "&Cambio=" + (scheda.tipologiaCambioVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.tipologiaCambioVeicolo, "UTF-8"));
+		queryString += "&Motore=" + (scheda.tipologiaMotoreVeicoloIndex==0?"ND":URLEncoder.encode(scheda.tipologiaMotoreVeicolo, "UTF-8"));
+		queryString += "&Cambio=" + (scheda.tipologiaCambioVeicoloIndex==0?"ND":URLEncoder.encode(scheda.tipologiaCambioVeicolo, "UTF-8"));
 		queryString += "&NumRapporti=" + (scheda.numeroRapportiVeicoloIndex==0?"0":scheda.numeroRapportiVeicoloIndex-2);
-		queryString += "&Cilindrata=" + (scheda.cilindrataVeicolo==""?"NULL":scheda.cilindrataVeicolo);
-		queryString += "&ClasseEmissione=" + (scheda.classeEmissioniVeicoloIndex==0?"NULL":URLEncoder.encode(scheda.classeEmissioniVeicolo, "UTF-8"));
+		queryString += "&Cilindrata=" + (scheda.cilindrataVeicolo==""?"0":scheda.cilindrataVeicolo);
+		queryString += "&ClasseEmissione=" + (scheda.classeEmissioniVeicoloIndex==0?"ND":URLEncoder.encode(scheda.classeEmissioniVeicolo, "UTF-8"));
 		queryString += "&ConsumoMedio=" + (scheda.consumoMedioVeicolo==""?"0.0":URLEncoder.encode(scheda.consumoMedioVeicolo, "UTF-8"));
 		queryString += "&Immagine1=" + Immagine1;
 		queryString += "&Immagine2=" + Immagine2;
@@ -311,7 +310,7 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&Immagine8=" + Immagine8;
 		queryString += "&Immagine9=" + Immagine9;
 		queryString += "&Immagine10=" + Immagine10;
-		queryString += "&UrlYT=" + (scheda.urlVideoYouTube==""?"NULL":URLEncoder.encode(scheda.urlVideoYouTube, "UTF-8"));
+		queryString += "&UrlYT=" + (scheda.urlVideoYouTube==""?"ND":URLEncoder.encode(scheda.urlVideoYouTube, "UTF-8"));
 		queryString += "&RagioneSociale=" + URLEncoder.encode(scheda.ragioneSociale, "UTF-8");
 		queryString += "&Indirizzo=" + URLEncoder.encode(scheda.Indirizzo, "UTF-8");
 		queryString += "&TelefonoGenerico=" + URLEncoder.encode(scheda.Telefono, "UTF-8");
@@ -328,11 +327,10 @@ public class _portaleMLS extends PortaleWeb {
 			e.printStackTrace();
 		}
 		System.out.println("Query inviata: " + queryString);
-
-		queryString = "?v=203";
-		queryString += "&codiceScheda=" + scheda.codiceScheda;
 		
 		//Invio la richiesta al server remoto per la verifica dell'inserimento
+		queryString = "?v=203";
+		queryString += "&codiceScheda=" + scheda.codiceScheda;
 		HttpPortalGetConnection verificaInserimentoVeicolo = new HttpPortalGetConnection();
 		try {
 			Object[] response = verificaInserimentoVeicolo.get("GET", urlTunnelDBNekta + queryString, null, null, true);
@@ -377,7 +375,6 @@ public class _portaleMLS extends PortaleWeb {
 		try {
 			j2web.trackEvent("inserimentoMLSSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, scheda.codiceScheda);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 		}
 		System.out.print(" fatto." + "\n");
 
@@ -390,16 +387,16 @@ public class _portaleMLS extends PortaleWeb {
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
 		System.out.println("Visualizzazione scheda: " + scheda.idScheda + "...");
 
-		JOptionPane.showMessageDialog(null, "Attualmente il portale non supporta questa funzionalità", "Richiesta non eseguibile", JOptionPane.INFORMATION_MESSAGE);
-		//Apro il browser e inserisco credenziali		
-		/*try {
-		String url = URLROOT;
-		java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
-		System.out.println("Visualizzata in: " + NOMEPORTALE);
-
-	} catch (IOException e ) {
-		//Eventualità non gestita
-	}*/
+		//JOptionPane.showMessageDialog(null, "Attualmente il portale non supporta questa funzionalità", "Richiesta non eseguibile", JOptionPane.INFORMATION_MESSAGE);
+		//Apro il browser		
+			try {
+			String url = URLROOT;
+			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+			System.out.println("Visualizzata in: " + NOMEPORTALE);
+	
+		} catch (IOException e ) {
+			//Eventualità non gestita
+		}
 
 		return true;
 	}
@@ -426,7 +423,6 @@ public class _portaleMLS extends PortaleWeb {
 		//Invio la richiesta al server remoto per la verifica dell'eliminazione
 		queryString = "?v=203";
 		queryString += "&codiceScheda=" + scheda.codiceScheda;
-
 		HttpPortalGetConnection verificaEliminazioneVeicolo = new HttpPortalGetConnection();
 		try {
 			Object[] response = verificaEliminazioneVeicolo.get("GET", urlTunnelDBNekta + queryString, null, null, true);
@@ -435,7 +431,6 @@ public class _portaleMLS extends PortaleWeb {
 			try {
 				json = new JSONObject(responseBody);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -468,7 +463,6 @@ public class _portaleMLS extends PortaleWeb {
 		try {
 			j2web.trackEvent("eliminazioneMLSSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, scheda.codiceScheda);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 		}
 		System.out.print(" fatto." + "\n");
 

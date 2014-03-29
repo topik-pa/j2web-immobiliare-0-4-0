@@ -80,22 +80,19 @@ public interface parametriGenerali {
 	String pathFileDatSchedeCliente = pathSchede + "schedeClienti.dat";
 
 	//Url tunneling DB auto-nuove-usate
-	String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/httpTunnel/mysqltunnel.php";
+	String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/j2web/httpTunnel/mysqltunnel.php";
 
 	//Url carqueryapi
 	String urlCarQuery = "http://www.carqueryapi.com/api/0.3/";
-
-	//Url http tunneling
-	//String urlHTTPTunnel = "http://www.j2webstudio.it/httptunneling/mysqltunnel.php";
 
 	//Url tracking remoto
 	String urlTrackingRemoto = "http://www.j2webstudio.it/tracking/tracking.php";
 
 	//Url inserimento immagini in remoto
-	String urlInserimentoImmaginiInRemoto = "http://www.j2webstudio.it/uploadImages.php";
+	String urlInserimentoImmaginiInRemoto = "http://www.auto-nuove-usate.it/j2web/images/uploadImages.php";
 
 	//Url posizione immagini in remoto
-	String urlLocationImmaginiInRemoto = "http://www.j2webstudio.it/j2webVeichleImages/";
+	String urlLocationImmaginiInRemoto = "http://www.auto-nuove-usate.it/imgauto/";
 
 	//Lista concatenata che contiene tutti i campi della form veicolo soggetti a lettura/scrittura o modifiche varie a runtime
 	LinkedList<JComponent> listCampiFormVeicolo = new LinkedList<JComponent>();

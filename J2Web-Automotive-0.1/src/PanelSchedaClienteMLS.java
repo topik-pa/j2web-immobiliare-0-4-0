@@ -162,9 +162,9 @@ class PanelSchedaClienteMLS extends JPanel implements parametriGenerali {
 				JSONArray jsonResults = json.getJSONArray("rows"); 
 
 				for(int i=0; i<jsonResults.length(); i++) {
-					JSONArray currentJsonArray = jsonResults.getJSONArray(i); //rappresenta una riga della tabella ed una veicolo differente
+					JSONArray currentJSONArray = jsonResults.getJSONArray(i); //rappresenta una riga della tabella ed una veicolo differente
 
-					SchedaVeicolo schedaVeicoloMLS = new SchedaVeicolo(currentJsonArray);
+					SchedaVeicolo schedaVeicoloMLS = new SchedaVeicolo(currentJSONArray);
 
 					PanelSchedaVeicoloMLS panelSchedaVeicoloMLS = new PanelSchedaVeicoloMLS(schedaVeicoloMLS);
 
