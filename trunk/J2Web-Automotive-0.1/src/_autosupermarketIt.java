@@ -394,12 +394,13 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		tabellaDiDipendenza.put("car[carana001_door_num]", "Scegli...");
 		tabellaDiDipendenza.put("car[carana001_engine_des]", scheda.cilindrataVeicolo);
-		if(scheda.prezzoTrattabile)  {
+		/*if(scheda.prezzoTrattabile)  {
 			tabellaDiDipendenza.put("car[carana001_glblst001_condition_cod]", "Trattabili");
 		}
 		else {
 			tabellaDiDipendenza.put("car[carana001_glblst001_condition_cod]", "Non Trattabili");
-		}
+		}*/
+		tabellaDiDipendenza.put("car[carana001_glblst001_condition_cod]", "Trattabili");
 
 		tabellaDiDipendenza.put("car[carana001_glblst002_color_cod]", scheda.coloreEsternoVeicolo);
 

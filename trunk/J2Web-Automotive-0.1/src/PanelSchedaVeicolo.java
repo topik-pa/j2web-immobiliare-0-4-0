@@ -293,7 +293,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		//Checkbox
 		J2Web_UI.getRdbtnAutoveicolo().setSelected(schedaVeicolo.veicolo=="auto");
 		J2Web_UI.getChckbxMetallizzato().setSelected(schedaVeicolo.coloreMetalizzato);
-		J2Web_UI.getChckbxTrattabile().setSelected(scheda.prezzoTrattabile);
+		//J2Web_UI.getChckbxTrattabile().setSelected(scheda.prezzoTrattabile);
 		J2Web_UI.getChckbxAbs().setSelected(scheda.disponibilitaABS);
 		J2Web_UI.getChckbxAirbag().setSelected(scheda.disponibilitaAirBag);	
 		J2Web_UI.getChckbxAntifurto().setSelected(scheda.disponibilitaAntifurto);	
