@@ -330,7 +330,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 			if(json.has("65")) {ragioneSociale = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("65")));}
 			if(json.has("68")) {nomeReferente = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("68")));}
 
-			if(json.has("19")) {chilometraggioVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("19")));}
+			if(json.has("19")) {chilometraggioVeicolo = Integer.toString(json.getInt("19"));}
 
 			if(json.has("24")) {tipologiaContrattoVeicolo = StringUtils.newStringUtf8(Base64.decodeBase64(json.getString("24")));}
 
