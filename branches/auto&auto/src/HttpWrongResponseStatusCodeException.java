@@ -1,8 +1,10 @@
+/**
+ * Eccezione: status code non previsto
+ * @author marco - marcopavan.mp@gmail.com 
+ */
+
 public class HttpWrongResponseStatusCodeException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	String cause;
 

@@ -1,26 +1,30 @@
+/**
+ * Sovraclasse delle connessioni HTTP
+ * @author marco - marcopavan.mp@gmail.com 
+ */
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-
+/*import org.apache.http.util.EntityUtils;
+import java.util.ArrayList;
+import org.apache.http.HttpEntity;
+import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.client.entity.UrlEncodedFormEntity;*/
 
 public class HttpPortalConnection implements parametriGenerali {
 
@@ -333,7 +337,7 @@ public class HttpPortalConnection implements parametriGenerali {
 
 	}
 
-	//Metodi Set per definire il cookie di sessione a livello di connessione
+	//Metodi Set per definire il cookie di sessione a livello di classe connessione
 	public void setSessionCookie(String cookieHeader, String cookieName, String cookieValue, String cookieDomain) {
 		SESSIONCOOKIE_DOMAIN = cookieDomain;
 		SESSIONCOOKIE_HEADER = cookieHeader;
@@ -346,7 +350,7 @@ public class HttpPortalConnection implements parametriGenerali {
 	}
 
 	//Una connessione di test con parametri, headers e cookie statici
-	public Object[] testConnection(String request, String url, ArrayList<NameValuePair> headersList, ArrayList<NameValuePair> paramsList, String[] sessionCookie) throws IOException {
+	/*public Object[] testConnection(String request, String url, ArrayList<NameValuePair> headersList, ArrayList<NameValuePair> paramsList, String[] sessionCookie) throws IOException {
 
 		//Inizializza le variabili
 		BasicHeader newHeader;	//un nuovo header per ogni elemento dentro headersList
@@ -446,6 +450,6 @@ public class HttpPortalConnection implements parametriGenerali {
 		return headersAndBodyResponseAndStatus;
 
 
-	}
+	}*/
 
 }
