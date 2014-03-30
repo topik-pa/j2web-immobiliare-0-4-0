@@ -24,7 +24,7 @@ public interface parametriGenerali {
 
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
-	final int IDUTENTE = 19; //l'ID corrisponde al valore idUtente del DB
+	final int IDUTENTE = 20; //l'ID corrisponde al valore idUtente del DB
 	final String EMAIL_UTENTE ="marco--pavan@libero.it";
 	final String RAGIONESOCIALE_UTENTE ="Auto&Auto srl";
 	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
