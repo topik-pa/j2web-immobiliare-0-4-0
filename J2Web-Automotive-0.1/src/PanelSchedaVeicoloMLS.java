@@ -78,7 +78,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
 		//La label delle schede
 		String linea1 = scheda.marcaVeicolo + " " + scheda.modelloVeicolo;	
 		String linea2 = scheda.versioneVeicolo;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
-		String linea3 = scheda.carrozzeriaVeicolo + " " + scheda.prezzoVeicoloCondivisione;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}		
+		String linea3 = scheda.carrozzeriaVeicolo + " " + "\u20ac " + scheda.prezzoVeicoloCondivisione;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}		
 		String labelScheda = "<html><p style='padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i><br/>" + linea3 + "</p></html>";	
 		String tooltipScheda = labelScheda;
 
