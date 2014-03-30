@@ -78,21 +78,24 @@ public interface parametriGenerali {
 	String pathTemp = pathJ2web + "temp\\";
 	String pathFileDatSchedeVeicolo = pathSchede + "schedeVeicolo.dat";
 	String pathFileDatSchedeCliente = pathSchede + "schedeClienti.dat";
-
-	//Url tunneling DB auto-nuove-usate
-	String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/j2web/httpTunnel/mysqltunnel.php";
-
+	
 	//Url carqueryapi
 	String urlCarQuery = "http://www.carqueryapi.com/api/0.3/";
-
+	
 	//Url tracking remoto
 	String urlTrackingRemoto = "http://www.j2webstudio.it/tracking/tracking.php";
 
+	//Url tunneling DB auto-nuove-usate
+	//String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/j2web/httpTunnel/mysqltunnel.php";
+	String urlTunnelDBNekta = "http://localhost/j2web/httpTunnel/mysqltunnel.php";
+
 	//Url inserimento immagini in remoto
-	String urlInserimentoImmaginiInRemoto = "http://www.auto-nuove-usate.it/j2web/images/uploadImages.php";
+	//String urlInserimentoImmaginiInRemoto = "http://www.auto-nuove-usate.it/j2web/images/uploadImages.php";
+	String urlInserimentoImmaginiInRemoto = "http://localhost/j2web/images/uploadImages.php";
 
 	//Url posizione immagini in remoto
-	String urlLocationImmaginiInRemoto = "http://www.auto-nuove-usate.it/imgauto/";
+	//String urlLocationImmaginiInRemoto = "http://www.auto-nuove-usate.it/imgauto/";
+	String urlLocationImmaginiInRemoto = "http://localhost/imgauto/";
 
 	//Lista concatenata che contiene tutti i campi della form veicolo soggetti a lettura/scrittura o modifiche varie a runtime
 	LinkedList<JComponent> listCampiFormVeicolo = new LinkedList<JComponent>();

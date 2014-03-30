@@ -259,12 +259,12 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&idCarburante=" + thisCarburante;
 		queryString += "&idTipologia=" + thisTipologia;
 		queryString += "&idCarrozzeria=" + thisCarrozzeria;
-		queryString += "&PostiASedere=" + (scheda.postiASedereVeicoloIndex==0?"ND":scheda.postiASedereVeicoloIndex);
+		queryString += "&PostiASedere=" + (scheda.postiASedereVeicoloIndex==0?"0":scheda.postiASedereVeicoloIndex);
 		queryString += "&PotenzaKW=" + scheda.KWVeicolo;
 		queryString += "&PotenzaCV=" + scheda.CVVeicolo;
 		queryString += "&idColoreEsterno=" + thisColoreEsterno;
 		queryString += "&Metallizzato=" + (scheda.coloreMetalizzato?"1":"0");
-		queryString += "&PrecedentiProprietari=" + (scheda.numeroPrecedentiProprietariVeicoloIndex==0?"ND":scheda.postiASedereVeicoloIndex);
+		queryString += "&PrecedentiProprietari=" + (scheda.numeroPrecedentiProprietariVeicoloIndex==0?"0":scheda.postiASedereVeicoloIndex);
 		queryString += "&Chilometraggio=" + URLEncoder.encode(scheda.chilometraggioVeicolo, "UTF-8");
 		queryString += "&Prezzo=" + URLEncoder.encode(scheda.prezzoVeicolo, "UTF-8");
 		queryString += "&PrezzoConcessionari=" + URLEncoder.encode(scheda.prezzoVeicoloCondivisione, "UTF-8");
