@@ -78,7 +78,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
 		//La label delle schede
 		String linea1 = scheda.marcaVeicolo + " " + scheda.modelloVeicolo;	
 		String linea2 = scheda.versioneVeicolo;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
-		String linea3 = scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}		
+		String linea3 = scheda.carrozzeriaVeicolo + " " + scheda.prezzoVeicoloCondivisione;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}		
 		String labelScheda = "<html><p style='padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i><br/>" + linea3 + "</p></html>";	
 		String tooltipScheda = labelScheda;
 
@@ -124,21 +124,21 @@ class PanelSchedaVeicoloMLS extends JPanel {
 			matrix[row][0] = schedaVeicolo.marcaVeicolo;
 			matrix[row][1] = schedaVeicolo.modelloVeicolo;
 			matrix[row][2] = schedaVeicolo.versioneVeicolo;
-			matrix[row][3] = schedaVeicolo.coloreEsternoVeicolo;
-			matrix[row][4] = schedaVeicolo.chilometraggioVeicolo;
-			matrix[row][5] = schedaVeicolo.prezzoVeicolo;
-			matrix[row][6] = schedaVeicolo.tipologiaContrattoVeicolo;
-			matrix[row][7] = schedaVeicolo.ragioneSociale;
-			matrix[row][8] = schedaVeicolo.Indirizzo;
-			matrix[row][9] = schedaVeicolo.TelefonoReferente;
-			matrix[row][10] = schedaVeicolo.nomeReferente;
+			//matrix[row][3] = schedaVeicolo.coloreEsternoVeicolo;
+			matrix[row][3] = schedaVeicolo.chilometraggioVeicolo;
+			matrix[row][4] = schedaVeicolo.prezzoVeicoloCondivisione;
+			matrix[row][5] = schedaVeicolo.tipologiaContrattoVeicolo;
+			matrix[row][6] = schedaVeicolo.ragioneSociale;
+			matrix[row][7] = schedaVeicolo.Indirizzo;
+			matrix[row][8] = schedaVeicolo.TelefonoReferente;
+			matrix[row][9] = schedaVeicolo.nomeReferente;
 		}
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(
 				matrix,
 				new String[] {
-						"Marca", "Modello", "Versione", "Colore", "Chilometri", "Prezzo", "Contratto", "Concessionario", "Indirizzo", "Telefono", "Referente" 
+						"Marca", "Modello", "Versione", /*"Colore",*/ "Chilometri", "Prezzo condivisione", "Contratto", "Concessionario", "Indirizzo", "Telefono", "Referente" 
 				}
 				));
 

@@ -12,8 +12,15 @@ import javax.swing.JComponent;
 
 public interface parametriGenerali {
 
+	
+	
+	/*IMPOSTAZIONI SPECIFICHE DI OGNI VERSIONE DEL SOFTWARE*/
+	/*
+	 * 
+	 * 
+	 */
 	//Versione di J2Web
-	final String  j2web_version = "1.0.7 \u03B2";
+	final String  j2web_version = "1.0.7 \u03B2 - DEV";
 
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
@@ -25,7 +32,31 @@ public interface parametriGenerali {
 	final String CITTA_UTENTE ="Udine";
 	final String INDIRIZZO_UTENTE ="via Buttrio, 267 - 33100 Udine";
 	final String TELEFONO_UTENTE ="3295698985";
+	
+	//Url tracking remoto
+	//String urlTrackingRemoto = "http://www.auto-nuove-usate.it/j2web/tracking/tracking.php";
+	String urlTrackingRemoto = "http://localhost/j2web/tracking/tracking.php";
 
+	//Url tunneling DB auto-nuove-usate
+	//String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/j2web/httpTunnel/mysqltunnel.php";
+	String urlTunnelDBNekta = "http://localhost/j2web/httpTunnel/mysqltunnel.php";
+
+	//Url inserimento immagini in remoto
+	//String urlInserimentoImmaginiInRemoto = "http://www.auto-nuove-usate.it/j2web/images/uploadImages.php";
+	String urlInserimentoImmaginiInRemoto = "http://localhost/j2web/images/uploadImages.php";
+
+	//Url posizione immagini in remoto
+	//String urlLocationImmaginiInRemoto = "http://www.auto-nuove-usate.it/imgauto/";
+	String urlLocationImmaginiInRemoto = "http://localhost/imgauto/";
+	/*
+	 * 
+	 * 
+	 */
+	/*IMPOSTAZIONI SPECIFICHE DI OGNI VERSIONE DEL SOFTWARE*/
+	
+	
+	
+	
 	//Intestazioni codice scheda
 	final String  intestazioneCodiceSchedaVeicolo = "j2w1-V-" + IDUTENTE + "-";
 	final String  intestazioneCodiceSchedaCliente = "j2w1-C-" + IDUTENTE + "-";
@@ -81,21 +112,6 @@ public interface parametriGenerali {
 	
 	//Url carqueryapi
 	String urlCarQuery = "http://www.carqueryapi.com/api/0.3/";
-	
-	//Url tracking remoto
-	String urlTrackingRemoto = "http://www.j2webstudio.it/tracking/tracking.php";
-
-	//Url tunneling DB auto-nuove-usate
-	//String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/j2web/httpTunnel/mysqltunnel.php";
-	String urlTunnelDBNekta = "http://localhost/j2web/httpTunnel/mysqltunnel.php";
-
-	//Url inserimento immagini in remoto
-	//String urlInserimentoImmaginiInRemoto = "http://www.auto-nuove-usate.it/j2web/images/uploadImages.php";
-	String urlInserimentoImmaginiInRemoto = "http://localhost/j2web/images/uploadImages.php";
-
-	//Url posizione immagini in remoto
-	//String urlLocationImmaginiInRemoto = "http://www.auto-nuove-usate.it/imgauto/";
-	String urlLocationImmaginiInRemoto = "http://localhost/imgauto/";
 
 	//Lista concatenata che contiene tutti i campi della form veicolo soggetti a lettura/scrittura o modifiche varie a runtime
 	LinkedList<JComponent> listCampiFormVeicolo = new LinkedList<JComponent>();
@@ -146,6 +162,6 @@ public interface parametriGenerali {
 	final String[] comboboxModelCambio = {"Seleziona", "Automatico", "Manuale", "Semiautomatico", "Nessuno"};
 	final String[] comboboxModelNumeroRapporti = {"Seleziona", "3", "4", "5", "6", "7"};
 	final String[] comboboxModelClasseEmissioni = {"Seleziona", "Euro 1", "Euro 2", "Euro 3", "Euro 4", "Euro 5", "Euro 6"};
-	final String[] comboboxModelTipologieContratto = {"Seleziona", "Vendita", "Nolleggio"/*, "Leasing"*/};
+	final String[] comboboxModelTipologieContratto = {"Seleziona", "Vendita", "Noleggio"/*, "Leasing"*/};
 
 }
