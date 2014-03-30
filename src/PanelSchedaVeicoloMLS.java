@@ -1,4 +1,7 @@
-//Questa classe definisce tutti i sottopannelli schede veicolo
+/**
+ * Questa classe definisce tutti i sottopannelli schede veicolo nella sezione MLS
+ * @author marco - marcopavan.mp@gmail.com 
+ */
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,9 +28,9 @@ import javax.swing.table.DefaultTableModel;
 
 class PanelSchedaVeicoloMLS extends JPanel {   
 
-	JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
+	private static final long serialVersionUID = 5282968848109414898L;
 
-	private static final long serialVersionUID = 1L;
+	JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
 	static ButtonGroup buttonGroupSchedeVeicoloMLS = new ButtonGroup(); 
 
 	SchedaVeicolo scheda;
@@ -36,9 +39,10 @@ class PanelSchedaVeicoloMLS extends JPanel {
 	JButton btnCancellaScheda;
 	JButton btnEsportaScheda;
 	JRadioButton schedaRadio;
-	
+
 	String labelSpaziatore = "   "; 
 
+	//Costruttore
 	public PanelSchedaVeicoloMLS(final SchedaVeicolo scheda) {
 		this.scheda = scheda;
 		idScheda = scheda.idScheda;
@@ -72,10 +76,9 @@ class PanelSchedaVeicoloMLS extends JPanel {
 		add(schedaRadio, BorderLayout.NORTH);
 
 		//La label delle schede
-		//String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.tipologiaVeicolo + " " + scheda.coloreEsternoVeicolo + " " + scheda.prezzoVeicolo + " - " + scheda.ragioneSociale + " " + scheda.nomeReferente;
 		String linea1 = scheda.marcaVeicolo + " " + scheda.modelloVeicolo;	
 		String linea2 = scheda.versioneVeicolo;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
-		String linea3 = scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}		
+		String linea3 = scheda.carrozzeriaVeicolo + " " + "\u20ac " + scheda.prezzoVeicoloCondivisione;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}		
 		String labelScheda = "<html><p style='padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i><br/>" + linea3 + "</p></html>";	
 		String tooltipScheda = labelScheda;
 
@@ -90,12 +93,9 @@ class PanelSchedaVeicoloMLS extends JPanel {
 			try {
 				imgtest = ImageIO.read(scheda.arrayImages[1]);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
 			resizedimg = imgtest.getScaledInstance(70, 50, Image.SCALE_FAST);          
-			//label.setIcon(new ImageIcon(resizedimg));
 		}
 		else {
 			resizedimg = new BufferedImage(70,50,BufferedImage.TYPE_INT_ARGB_PRE);
@@ -109,6 +109,7 @@ class PanelSchedaVeicoloMLS extends JPanel {
 
 	}
 
+	//Mostra i dettagli del veicolo MLS attualmente selezionato
 	private void  mostraDettagliVeicoloMLS(SchedaVeicolo schedaVeicolo) {
 
 		JPanel pannelloInfoVeicoloMLS = J2Web_UI.getPanel_8();
@@ -120,25 +121,24 @@ class PanelSchedaVeicoloMLS extends JPanel {
 		String[][] matrix = new String[1][11];
 
 		for (int row = 0; row < matrix.length; row++) {
-			// for (int column = 0; column < matrix[row].length; column++)
 			matrix[row][0] = schedaVeicolo.marcaVeicolo;
 			matrix[row][1] = schedaVeicolo.modelloVeicolo;
 			matrix[row][2] = schedaVeicolo.versioneVeicolo;
-			matrix[row][3] = schedaVeicolo.coloreEsternoVeicolo;
-			matrix[row][4] = schedaVeicolo.chilometraggioVeicolo;
-			matrix[row][5] = schedaVeicolo.prezzoVeicolo;
-			matrix[row][6] = schedaVeicolo.tipologiaContrattoVeicolo;
-			matrix[row][7] = schedaVeicolo.ragioneSociale;
-			matrix[row][8] = schedaVeicolo.Indirizzo;
-			matrix[row][9] = schedaVeicolo.TelefonoReferente;
-			matrix[row][10] = schedaVeicolo.nomeReferente;
+			//matrix[row][3] = schedaVeicolo.coloreEsternoVeicolo;
+			matrix[row][3] = schedaVeicolo.chilometraggioVeicolo;
+			matrix[row][4] = schedaVeicolo.prezzoVeicoloCondivisione;
+			matrix[row][5] = schedaVeicolo.tipologiaContrattoVeicolo;
+			matrix[row][6] = schedaVeicolo.ragioneSociale;
+			matrix[row][7] = schedaVeicolo.Indirizzo;
+			matrix[row][8] = schedaVeicolo.TelefonoReferente;
+			matrix[row][9] = schedaVeicolo.nomeReferente;
 		}
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(
 				matrix,
 				new String[] {
-						"Marca", "Modello", "Versione", "Colore", "Chilometri", "Prezzo", "Contratto", "Concessionario", "Indirizzo", "Telefono", "Referente" 
+						"Marca", "Modello", "Versione", /*"Colore",*/ "Chilometri", "Prezzo condivisione", "Contratto", "Concessionario", "Indirizzo", "Telefono", "Referente" 
 				}
 				));
 

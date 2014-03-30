@@ -1,3 +1,8 @@
+/**
+ * Connessione HTTP: GET
+ * @author marco - marcopavan.mp@gmail.com 
+ */
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -72,7 +77,6 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 		if(responseEntity!=null) {
 			responseBody = EntityUtils.toString(responseEntity);
 		}
-
 
 		//Get the response headers
 		responseHeaders = response.getAllHeaders();

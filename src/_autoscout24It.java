@@ -304,7 +304,7 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("ArticleId", articleId);
 		tabellaDiDipendenza.put("ArticleType", "***site***"); //Automobile
 		tabellaDiDipendenza.put("BaseData.Accident","***site***");
-		if(scheda.prezzoTrattabile){tabellaDiDipendenza.put("BaseData.AskingPrice","true");}
+		//if(scheda.prezzoTrattabile){tabellaDiDipendenza.put("BaseData.AskingPrice","true");}
 		tabellaDiDipendenza.put("BaseData.BodyColorId",scheda.coloreEsternoVeicolo); 
 		tabellaDiDipendenza.put("BaseData.BodyTypeId",scheda.carrozzeriaVeicolo); 
 		tabellaDiDipendenza.put("BaseData.Doors","***site***"); //bho 
@@ -397,7 +397,7 @@ public class _autoscout24It extends PortaleWeb {
 		tabellaDiDipendenza.put("Moto.Co2Emission","***site***");
 		tabellaDiDipendenza.put("Moto.ConsumptionCity","***site***");
 		tabellaDiDipendenza.put("Moto.ConsumptionHighway","***site***");
-		tabellaDiDipendenza.put("Moto.ConsumptionMixed", scheda.comsumeMedioVeicolo);
+		tabellaDiDipendenza.put("Moto.ConsumptionMixed", scheda.consumoMedioVeicolo);
 		tabellaDiDipendenza.put("Moto.Cylinders","***site***");
 		tabellaDiDipendenza.put("Moto.Displacement","***site***");
 		tabellaDiDipendenza.put("Moto.EmissionClassId",scheda.classeEmissioniVeicolo);
@@ -482,7 +482,7 @@ public class _autoscout24It extends PortaleWeb {
 			postParameters.add(new BasicNameValuePair("Equipment.ComfortRight.12", "12"));
 			Equipment_EquipmentIds += "12,";
 		}
-		if(scheda.disponibilitaNavigatoreSattelitare) {
+		if(scheda.disponibilitaNavigatoreSatellitare) {
 			postParameters.add(new BasicNameValuePair("Equipment.ComfortRight.23", "23"));
 			Equipment_EquipmentIds += "23,";
 		}

@@ -1,4 +1,7 @@
-//Questa classe definisce tutti i sottopannelli schede veicolo
+/**
+ * Questa classe definisce tutti i sottopannelli schede veicolo
+ * @author marco - marcopavan.mp@gmail.com 
+ */
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,10 +36,10 @@ import javax.swing.JComponent;
 
 class PanelSchedaVeicolo extends JPanel implements parametriGenerali{   
 
+	private static final long serialVersionUID = 3014910631292246664L;
+
 	//Il pannello di sincronizzazione viene aggiornato dalla selezione di una scheda veicolo
 	JPanel pannelloListaPortali = J2Web_UI.getPanel_10();
-
-	private static final long serialVersionUID = 1L;
 
 	SchedaVeicolo scheda;
 	Long idScheda;
@@ -49,6 +52,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 
 	//Costruttore
 	public PanelSchedaVeicolo(final SchedaVeicolo scheda, final LinkedList<SchedaVeicolo> listaSchedeVeicolo, final ButtonGroup radioGrpSchede) {
+
 		this.scheda = scheda;
 		idScheda = scheda.idScheda;
 		codiceScheda = scheda.codiceScheda;
@@ -92,13 +96,10 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		});
 		add(schedaRadio, BorderLayout.NORTH);
 
-		//La label delle schede
-		//String labelScheda = scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " - " + scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;
-		
 		String linea1 = scheda.marcaVeicolo + " " + scheda.modelloVeicolo;	
 		String linea2 = scheda.versioneVeicolo;if(linea2.length()>45) {linea2 = linea2.substring(0, 44);}
 		String linea3 = scheda.carrozzeriaVeicolo + " " + scheda.coloreEsternoVeicolo;if(linea3.length()>45) {linea3 = linea3.substring(0, 44);}
-		
+
 		String labelScheda = "<html><p style='padding:5px;'><strong>" + linea1 + "</strong><br/><i>" + linea2 + "</i><br/>" + linea3 + "</p></html>";
 		String tooltipScheda = labelScheda;
 
@@ -152,7 +153,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				j2web.salvaListaSchedeVeicoloCreate();
 
 				//Eliminazione del file dat con la hashtable
-				File removeFile = new File("./schede/" + idScheda + "-" + idScheda + ".dat");
+				File removeFile = new File("pathSchede" + idScheda + "-" + idScheda + ".dat");
 				System.out.println("File da rimuovere: " + removeFile.getName());
 				if(removeFile.exists()) {
 					removeFile.setWritable(true);
@@ -235,22 +236,24 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 			JTable table = new JTable(matrix, new String[] {
 					"Nome", "Cognome", "Email", "Telefono 1", "Telefono 2", "Via", "Numero civico", "CAP", "Città"
 			});
-			
+
 			table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 			table.setFillsViewportHeight(true);
-			
+
 			pannelloMatchVeicoloCliente.add(table.getTableHeader(), BorderLayout.PAGE_START);
 			pannelloMatchVeicoloCliente.add(table, BorderLayout.CENTER);
 
 		}
 	}
 
+	//Mostra sul pannello form i dati della scheda correntemente selezionata
 	private void  mostraDatiScheda(SchedaVeicolo schedaVeicolo) {
 
 		J2Web_UI.disabilitaCampiForm(listCampiFormVeicolo);
 
 		J2Web_UI.nonUserSelection = true;
 
+		//Combobox
 		J2Web_UI.getComboBox_Marca().setSelectedIndex(schedaVeicolo.marcaVeicoloIndex);
 		J2Web_UI.getComboBox_Modello().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.modelloVeicolo}));
 		J2Web_UI.getComboBox_Versione().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.versioneVeicolo}));
@@ -269,12 +272,13 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		J2Web_UI.getComboBox_NumeroRapporti().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.numeroRapportiVeicolo}));
 		J2Web_UI.getComboBox_ClasseEmissioni().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.classeEmissioniVeicolo}));
 
+		//Textfield
 		J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
 		J2Web_UI.getTextField_Cv().setText(schedaVeicolo.CVVeicolo);
 		J2Web_UI.getTextField_Chilometraggio().setText(schedaVeicolo.chilometraggioVeicolo);
 		J2Web_UI.getTextField_Prezzo().setText(schedaVeicolo.prezzoVeicolo);
 		J2Web_UI.getTextField_Cilindrata().setText(schedaVeicolo.cilindrataVeicolo);
-		J2Web_UI.getTextField_ConsumoMedio().setText(schedaVeicolo.comsumeMedioVeicolo);
+		J2Web_UI.getTextField_ConsumoMedio().setText(schedaVeicolo.consumoMedioVeicolo);
 		J2Web_UI.getTextField_YouTubeUrl().setText(schedaVeicolo.urlVideoYouTube);
 		J2Web_UI.getTextFieldRagioneSociale().setText(schedaVeicolo.ragioneSociale);
 		J2Web_UI.getTextFieldReferente().setText(schedaVeicolo.nomeReferente);
@@ -283,263 +287,88 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		J2Web_UI.getTextFieldTelefonoReferente().setText(schedaVeicolo.TelefonoReferente);
 		J2Web_UI.getTextFieldEmailReferente().setText(schedaVeicolo.emailReferente);
 
+		//Textpane
 		J2Web_UI.getTextPane_Descrizione().setText(schedaVeicolo.descrizioneVeicolo);	
 
-		if(schedaVeicolo.veicolo=="auto") {
-			J2Web_UI.getRdbtnAutoveicolo().setSelected(true);
-		}
-		else {
-			J2Web_UI.getRdbtnMotoScooter().setSelected(false);
-		}
-
-		if(schedaVeicolo.coloreMetalizzato) {
-			J2Web_UI.getChckbxMetallizzato().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxMetallizzato().setSelected(false);
-		}
-		if(schedaVeicolo.prezzoTrattabile) {
-			J2Web_UI.getChckbxTrattabile().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxTrattabile().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaABS) {
-			J2Web_UI.getChckbxAbs().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxAbs().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaAirBag) {
-			J2Web_UI.getChckbxAirbag().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxAirbag().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaAntifurto) {
-			J2Web_UI.getChckbxAntifurto().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxAntifurto().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaChiusuraCentralizzata) {
-			J2Web_UI.getChckbxChiusuraCentralizzata().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxChiusuraCentralizzata().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaContrlAutomTrazione) {
-			J2Web_UI.getChckbxContrAutomTrazione().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxContrAutomTrazione().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaESP) {
-			J2Web_UI.getChckbxEsp().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxEsp().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaImmobilizer) {
-			J2Web_UI.getChckbxImmobilizer().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxImmobilizer().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaFreniADisco) {
-			J2Web_UI.getChckbxFreniADisco().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxFreniADisco().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaCupolino) {
-			J2Web_UI.getChckbxCupolino().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxCupolino().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaAlzacristalliElettrici) {
-			J2Web_UI.getChckbxAlzacristalliElettrici().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxAlzacristalliElettrici().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaClima) {
-			J2Web_UI.getChckbxClima().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxClima().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaNavigatoreSattelitare) {
-			J2Web_UI.getChckbxNavigatoreSatellitare().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxNavigatoreSatellitare().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaRadioOLettoreCD) {
-			J2Web_UI.getChckbxRadiolettoreCd().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxRadiolettoreCd().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaParkDistControl) {
-			J2Web_UI.getChckbxParkDistControl().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxParkDistControl().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaServoSterzo) {
-			J2Web_UI.getChckbxServosterzo().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxServosterzo().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaSediliRiscaldati) {
-			J2Web_UI.getChckbxSediliRiscaldati().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxSediliRiscaldati().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaVolanteMultifunzione) {
-			J2Web_UI.getChckbxVolanteMultifunzione().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxVolanteMultifunzione().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaAllestimentoHandicap) {
-			J2Web_UI.getChckbxHandicap().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxHandicap().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaCerchiInLega) {
-			J2Web_UI.getChckbxCerchiInLega().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxCerchiInLega().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaGancioTraino) {
-			J2Web_UI.getChckbxGancioTraino().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxGancioTraino().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaPortaPacchi) {
-			J2Web_UI.getChckbxPortapacchi().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxPortapacchi().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaSediliSportivi) {
-			J2Web_UI.getChckbxSediliSportivi().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxSediliSportivi().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaBauletto) {
-			J2Web_UI.getChckbxBauletto().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxBauletto().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaAvviamentoAPedale) {
-			J2Web_UI.getChckbxAvviamentoAPedale().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxAvviamentoAPedale().setSelected(false);
-		}
-		if(schedaVeicolo.disponibilitaAvviamentoElettrico) {
-			J2Web_UI.getChckbxAvviamentoElettrico().setSelected(true);
-		}
-		else {
-			J2Web_UI.getChckbxAvviamentoElettrico().setSelected(false);
-		}
-
-
+		//Checkbox
+		J2Web_UI.getRdbtnAutoveicolo().setSelected(schedaVeicolo.veicolo=="auto");
+		J2Web_UI.getChckbxMetallizzato().setSelected(schedaVeicolo.coloreMetalizzato);
+		//J2Web_UI.getChckbxTrattabile().setSelected(scheda.prezzoTrattabile);
+		J2Web_UI.getChckbxAbs().setSelected(scheda.disponibilitaABS);
+		J2Web_UI.getChckbxAirbag().setSelected(scheda.disponibilitaAirBag);	
+		J2Web_UI.getChckbxAntifurto().setSelected(scheda.disponibilitaAntifurto);	
+		J2Web_UI.getChckbxChiusuraCentralizzata().setSelected(scheda.disponibilitaChiusuraCentralizzata);		
+		J2Web_UI.getChckbxContrAutomTrazione().setSelected(scheda.disponibilitaContrlAutomTrazione);		
+		J2Web_UI.getChckbxEsp().setSelected(scheda.disponibilitaESP);		
+		J2Web_UI.getChckbxImmobilizer().setSelected(scheda.disponibilitaImmobilizer);	
+		J2Web_UI.getChckbxFreniADisco().setSelected(scheda.disponibilitaFreniADisco);		
+		J2Web_UI.getChckbxCupolino().setSelected(scheda.disponibilitaCupolino);		
+		J2Web_UI.getChckbxAlzacristalliElettrici().setSelected(scheda.disponibilitaAlzacristalliElettrici);		
+		J2Web_UI.getChckbxClima().setSelected(scheda.disponibilitaClima);		
+		J2Web_UI.getChckbxNavigatoreSatellitare().setSelected(scheda.disponibilitaNavigatoreSatellitare);		
+		J2Web_UI.getChckbxRadiolettoreCd().setSelected(scheda.disponibilitaRadioOLettoreCD);		
+		J2Web_UI.getChckbxParkDistControl().setSelected(scheda.disponibilitaParkDistControl);		
+		J2Web_UI.getChckbxServosterzo().setSelected(scheda.disponibilitaServoSterzo);		
+		J2Web_UI.getChckbxSediliRiscaldati().setSelected(scheda.disponibilitaSediliRiscaldati);	
+		J2Web_UI.getChckbxVolanteMultifunzione().setSelected(scheda.disponibilitaVolanteMultifunzione);		
+		J2Web_UI.getChckbxHandicap().setSelected(scheda.disponibilitaAllestimentoHandicap);	
+		J2Web_UI.getChckbxCerchiInLega().setSelected(scheda.disponibilitaCerchiInLega);		
+		J2Web_UI.getChckbxGancioTraino().setSelected(scheda.disponibilitaGancioTraino);	
+		J2Web_UI.getChckbxPortapacchi().setSelected(scheda.disponibilitaPortaPacchi);	
+		J2Web_UI.getChckbxSediliSportivi().setSelected(scheda.disponibilitaSediliSportivi);		
+		J2Web_UI.getChckbxBauletto().setSelected(scheda.disponibilitaBauletto);		
+		J2Web_UI.getChckbxAvviamentoAPedale().setSelected(scheda.disponibilitaAvviamentoAPedale);
+		J2Web_UI.getChckbxAvviamentoElettrico().setSelected(scheda.disponibilitaAvviamentoElettrico);
 
 		for(int i=1; i<scheda.arrayImages.length; i++) {
+			Icon icoImmagine = null;
+
 			if(scheda.arrayImages[i]!=null && scheda.arrayImages[i].isFile()) {
 				BufferedImage img = null;
 				try {
 					img = ImageIO.read(scheda.arrayImages[i]);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				Image resizedimg = img.getScaledInstance(70, 50, Image.SCALE_FAST);
-				Icon icoImmagine = new ImageIcon(resizedimg);
-
-				switch (i)
-				{
-				case 1: 
-					J2Web_UI.getLabel_Immagine1().setIcon(icoImmagine);
-					break;
-				case 2: 
-					J2Web_UI.getLabel_Immagine2().setIcon(icoImmagine);
-					break;
-				case 3: 
-					J2Web_UI.getLabel_Immagine3().setIcon(icoImmagine);
-					break;
-				case 4: 
-					J2Web_UI.getLabel_Immagine4().setIcon(icoImmagine);
-					break;
-				case 5: 
-					J2Web_UI.getLabel_Immagine5().setIcon(icoImmagine);
-					break;
-				case 6: 
-					J2Web_UI.getLabel_Immagine6().setIcon(icoImmagine);
-					break;
-				case 7: 
-					J2Web_UI.getLabel_Immagine7().setIcon(icoImmagine);
-					break;
-				case 8: 
-					J2Web_UI.getLabel_Immagine8().setIcon(icoImmagine);
-					break;
-				case 9: 
-					J2Web_UI.getLabel_Immagine9().setIcon(icoImmagine);
-					break;
-				default:
-					J2Web_UI.getLabel_Immagine10().setIcon(icoImmagine);
-				}	
-			}
-			else {
-				switch (i)
-				{
-				case 1: 
-					J2Web_UI.getLabel_Immagine1().setIcon(null);
-					break;
-				case 2: 
-					J2Web_UI.getLabel_Immagine2().setIcon(null);
-					break;
-				case 3: 
-					J2Web_UI.getLabel_Immagine3().setIcon(null);
-					break;
-				case 4: 
-					J2Web_UI.getLabel_Immagine4().setIcon(null);
-					break;
-				case 5: 
-					J2Web_UI.getLabel_Immagine5().setIcon(null);
-					break;
-				case 6: 
-					J2Web_UI.getLabel_Immagine6().setIcon(null);
-					break;
-				case 7: 
-					J2Web_UI.getLabel_Immagine7().setIcon(null);
-					break;
-				case 8: 
-					J2Web_UI.getLabel_Immagine8().setIcon(null);
-					break;
-				case 9: 
-					J2Web_UI.getLabel_Immagine9().setIcon(null);
-					break;
-				default:
-					J2Web_UI.getLabel_Immagine10().setIcon(null);
-				}
+				icoImmagine = new ImageIcon(resizedimg);
 			}
 
+			switch (i)
+			{
+			case 1: 
+				J2Web_UI.getLabel_Immagine1().setIcon(icoImmagine);
+				break;
+			case 2: 
+				J2Web_UI.getLabel_Immagine2().setIcon(icoImmagine);
+				break;
+			case 3: 
+				J2Web_UI.getLabel_Immagine3().setIcon(icoImmagine);
+				break;
+			case 4: 
+				J2Web_UI.getLabel_Immagine4().setIcon(icoImmagine);
+				break;
+			case 5: 
+				J2Web_UI.getLabel_Immagine5().setIcon(icoImmagine);
+				break;
+			case 6: 
+				J2Web_UI.getLabel_Immagine6().setIcon(icoImmagine);
+				break;
+			case 7: 
+				J2Web_UI.getLabel_Immagine7().setIcon(icoImmagine);
+				break;
+			case 8: 
+				J2Web_UI.getLabel_Immagine8().setIcon(icoImmagine);
+				break;
+			case 9: 
+				J2Web_UI.getLabel_Immagine9().setIcon(icoImmagine);
+				break;
+			default:
+				J2Web_UI.getLabel_Immagine10().setIcon(icoImmagine);
+			}	
 		}	
 
 		J2Web_UI.nonUserSelection = false;
 	}
-	
+
 }
