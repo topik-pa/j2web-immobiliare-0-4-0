@@ -7,8 +7,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,6 +50,9 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 	JRadioButton schedaRadio;
 
 	String labelSpaziatore = "   "; 
+	
+	//Classloader per il recupero delle risorse esterne
+	ClassLoader cl;
 
 	//Costruttore
 	public PanelSchedaVeicolo(final SchedaVeicolo scheda, final LinkedList<SchedaVeicolo> listaSchedeVeicolo, final ButtonGroup radioGrpSchede) {
@@ -57,6 +60,9 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		this.scheda = scheda;
 		idScheda = scheda.idScheda;
 		codiceScheda = scheda.codiceScheda;
+		
+		//Inizializzo il classLoader per il recupero delle risorse
+		cl = this.getClass().getClassLoader();
 
 		setLayout(new BorderLayout(0, 0));
 		setBorder(new LineBorder(Color.LIGHT_GRAY));
@@ -131,10 +137,13 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		JPanel panel_26 = new JPanel();
 		panel_26.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(panel_26, BorderLayout.SOUTH);
-		panel_26.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
+		panel_26.setLayout(new GridLayout(1, 2));
+			
 		//Pulsante "Modifica"
+		JPanel panel_27 = new JPanel();
 		btnModificaScheda = new JButton("Modifica");
+		ImageIcon editIconCliente  = new ImageIcon(cl.getResource(editIcon));
+		btnModificaScheda.setIcon(editIconCliente);
 		btnModificaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Modifica scheda veicolo: " + scheda.idScheda);
@@ -150,10 +159,13 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 
 			}
 		});
-		panel_26.add(btnModificaScheda);
+		panel_27.add(btnModificaScheda);
 		
 		//Pulsante "Cancella"
+		JPanel panel_28 = new JPanel();
 		btnCancellaScheda = new JButton("Elimina");
+		ImageIcon cancelIconCliente  = new ImageIcon(cl.getResource(cancelIcon));
+		btnCancellaScheda.setIcon(cancelIconCliente);
 		btnCancellaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Cancella scheda veicolo: " + scheda.idScheda);
@@ -191,7 +203,10 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				J2Web_UI.aggiornaPannelloListaPortaliSincronizzazione();
 			}
 		});
-		panel_26.add(btnCancellaScheda);
+		panel_28.add(btnCancellaScheda);
+		
+		panel_26.add(panel_27);
+		panel_26.add(panel_28);
 
 	}
 
