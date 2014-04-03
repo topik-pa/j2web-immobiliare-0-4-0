@@ -52,6 +52,7 @@ public class _autoscout24It extends PortaleWeb {
 	private String location;
 	private String responseBody;
 	private boolean inserimentoOK = false;
+	private boolean modifica = false;
 	private boolean debugMode = true;
 
 	//Strutture dati di supporto
@@ -103,7 +104,13 @@ public class _autoscout24It extends PortaleWeb {
 
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
-		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
+		
+		if(modifica) {			
+			System.out.println("(MLS) Modifica scheda: " + scheda.codiceScheda + "...");
+		}
+		else  {
+			System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
+		}
 
 		//autoscout24 è un portale che accetta solo veicoli usati
 		if(scheda.tipologiaVeicolo.equals("Veicolo nuovo") || scheda.meseImmatricolazioneVeicolo.equals("Da immatricolare") || scheda.annoImmatricolazioneVeicolo.equals("Da immatricolare")) {
@@ -588,21 +595,27 @@ public class _autoscout24It extends PortaleWeb {
 				//Aggiorna i pulsanti del pannello inserimento
 				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
-				//Invio mail di conferma inserimento 
-				sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+				//Mail e messaggio informativo OK
+				if(!modifica) {
+					sendConfirmationMail(scheda, NOMEPORTALE, scheda.codiceScheda);
 
-				//Stampo a video un messaggio informativo
-				messageInserimentoOK(NOMEPORTALE);
+					messageInserimentoOK(NOMEPORTALE);
+				}	
+				else {
+					messageModificaOK(NOMEPORTALE);
+				}
+				
 			}
 
 			return inserimentoOK;        	
 		}
 		else {
 
-			if(!isSequential) {
-				//Stampo a video un messaggio informativo
-				//JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
+			if(!modifica) {
 				messageInserimentoKO(NOMEPORTALE);
+			}
+			else {
+				messageModificaKO(NOMEPORTALE);
 			}
 
 			return inserimentoOK;
@@ -631,7 +644,13 @@ public class _autoscout24It extends PortaleWeb {
 
 
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
-	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {		
+	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
+		
+		//La scheda è da aggiornare
+		if(scheda.isOnThisPortal(idPortale)) {
+			modifica = true;
+		}
+				
 		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
 
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
@@ -809,7 +828,9 @@ public class _autoscout24It extends PortaleWeb {
 			System.out.println("Eliminata da: " + NOMEPORTALE);
 
 			//Stampo a video un messaggio informativo
-			messageEliminazioneOK(NOMEPORTALE);
+			if(!modifica) {
+				messageEliminazioneOK(NOMEPORTALE);
+			}
 		}
 
 		return true;
