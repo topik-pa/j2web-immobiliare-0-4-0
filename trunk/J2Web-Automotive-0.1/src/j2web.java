@@ -184,8 +184,8 @@ public class j2web implements parametriGenerali {
 
 		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeVeicolo", "Questa azione eliminerà tutte le schede veicolo. Confermi? ");
 		MapModalWindowsDialogs.put("menu_ConfermaEliminaTutteLeSchedeCliente", "Questa azione eliminerà tutte le schede cliente. Confermi? ");
-
 		MapModalWindowsDialogs.put("caricaSchedeVeicolo_ImmaginiNonDisponibili", "Attenzione: non è stato possibile recuperare alcune immagini delle schede veicolo. ");
+		MapModalWindowsDialogs.put("creaSchedaVeicolo_schedaVeicoloModificata", "La scheda veicolo è stata modificara. ");
 
 	}
 

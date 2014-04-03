@@ -45,6 +45,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 	Long idScheda;
 	String codiceScheda;
 	JButton btnCancellaScheda;
+	JButton btnModificaScheda;
 	JButton btnEsportaScheda;
 	JRadioButton schedaRadio;
 
@@ -89,7 +90,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				matchVeicoloCliente(scheda);
 
 				//I dati della scheda selezionata sono visualizzati nella form
-				mostraDatiScheda(scheda);
+				mostraDatiScheda(scheda, true);
 
 				J2Web_UI.getBtnInserisciSchedaVeicolo().setEnabled(false);
 			}
@@ -132,8 +133,27 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		add(panel_26, BorderLayout.SOUTH);
 		panel_26.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
+		//Pulsante "Modifica"
+		btnModificaScheda = new JButton("Modifica");
+		btnModificaScheda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Modifica scheda veicolo: " + scheda.idScheda);
+				
+				J2Web_UI.abilitaCampiForm(listCampiFormVeicolo);
+				
+				mostraDatiScheda(scheda, false);
+				
+				J2Web_UI.getBtnInserisciSchedaVeicolo().setText("Modifica scheda");
+				J2Web_UI.getBtnInserisciSchedaVeicolo().setEnabled(true);
+				
+				J2Web_UI.protoScheda = scheda;
+
+			}
+		});
+		panel_26.add(btnModificaScheda);
+		
 		//Pulsante "Cancella"
-		btnCancellaScheda = new JButton("Elimina scheda");
+		btnCancellaScheda = new JButton("Elimina");
 		btnCancellaScheda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Cancella scheda veicolo: " + scheda.idScheda);
@@ -247,36 +267,55 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 	}
 
 	//Mostra sul pannello form i dati della scheda correntemente selezionata
-	private void  mostraDatiScheda(SchedaVeicolo schedaVeicolo) {
+	private void  mostraDatiScheda(SchedaVeicolo schedaVeicolo, boolean disabilitaCampi) {
 
-		J2Web_UI.disabilitaCampiForm(listCampiFormVeicolo);
-
+		if(disabilitaCampi) {
+			J2Web_UI.disabilitaCampiForm(listCampiFormVeicolo);
+		}
+		
 		J2Web_UI.nonUserSelection = true;
 
 		//Combobox
 		J2Web_UI.getComboBox_Marca().setSelectedIndex(schedaVeicolo.marcaVeicoloIndex);
-		J2Web_UI.getComboBox_Modello().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.modelloVeicolo}));
-		J2Web_UI.getComboBox_Versione().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.versioneVeicolo}));
-		J2Web_UI.getComboBox_MeseImmatricolazione().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.meseImmatricolazioneVeicolo}));
-		J2Web_UI.getComboBox_AnnoImmatricolazione().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.annoImmatricolazioneVeicolo}));
-		J2Web_UI.getComboBox_Carburante().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.carburanteVeicolo}));
-		J2Web_UI.getComboBox_Tipologia().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.tipologiaVeicolo}));
-		J2Web_UI.getComboBox_Carrozzeria().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.carrozzeriaVeicolo}));
-		J2Web_UI.getComboBox_PostiASedere().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.postiASedereVeicolo}));
-		J2Web_UI.getComboBox_ColoreEsterno().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.coloreEsternoVeicolo}));
-		J2Web_UI.getComboBox_PrecedentiProprietari().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.numeroPrecedentiProprietariVeicolo}));
-		J2Web_UI.getComboBox_FinitureInterni().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.finitureInterneVeicolo}));
-		J2Web_UI.getComboBox_ColoreInterni().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.coloreInterniVeicolo}));
-		J2Web_UI.getComboBox_Motore().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.tipologiaMotoreVeicolo}));
-		J2Web_UI.getComboBox_Cambio().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.tipologiaCambioVeicolo}));
-		J2Web_UI.getComboBox_NumeroRapporti().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.numeroRapportiVeicolo}));
-		J2Web_UI.getComboBox_ClasseEmissioni().setModel(new DefaultComboBoxModel<String>(new String[]{schedaVeicolo.classeEmissioniVeicolo}));
+		J2Web_UI.getComboBox_Modello().setModel(new DefaultComboBoxModel<String>(new String[]{"Seleziona", schedaVeicolo.modelloVeicolo}));
+		J2Web_UI.getComboBox_Modello().setSelectedIndex(1);
+		J2Web_UI.getComboBox_Versione().setModel(new DefaultComboBoxModel<String>(new String[]{"Seleziona", schedaVeicolo.versioneVeicolo}));
+		J2Web_UI.getComboBox_Versione().setSelectedIndex(1);
+		J2Web_UI.getComboBox_MeseImmatricolazione().setModel(new DefaultComboBoxModel<String>(comboboxModelMesi));
+		J2Web_UI.getComboBox_MeseImmatricolazione().setSelectedIndex(scheda.meseImmatricolazioneVeicoloIndex);
+		J2Web_UI.getComboBox_AnnoImmatricolazione().setModel(new DefaultComboBoxModel<String>(comboboxModelAnni));
+		J2Web_UI.getComboBox_AnnoImmatricolazione().setSelectedIndex(scheda.annoImmatricolazioneVeicoloIndex);
+		J2Web_UI.getComboBox_Carburante().setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
+		J2Web_UI.getComboBox_Carburante().setSelectedIndex(scheda.tipologiaCambioVeicoloIndex);
+		J2Web_UI.getComboBox_Tipologia().setModel(new DefaultComboBoxModel<String>(tipologiaAutoveicoli));
+		J2Web_UI.getComboBox_Tipologia().setSelectedIndex(scheda.tipologiaVeicoloIndex);
+		J2Web_UI.getComboBox_Carrozzeria().setModel(new DefaultComboBoxModel<String>(comboboxModelCarrozzeria));
+		J2Web_UI.getComboBox_Carrozzeria().setSelectedIndex(scheda.carrozzeriaVeicoloIndex);
+		J2Web_UI.getComboBox_PostiASedere().setModel(new DefaultComboBoxModel<String>(comboboxModelPostiASedere));
+		J2Web_UI.getComboBox_PostiASedere().setSelectedIndex(scheda.postiASedereVeicoloIndex);
+		J2Web_UI.getComboBox_ColoreEsterno().setModel(new DefaultComboBoxModel<String>(comboboxModelColoreEsterno));
+		J2Web_UI.getComboBox_ColoreEsterno().setSelectedIndex(scheda.coloreEsternoVeicoloIndex);
+		J2Web_UI.getComboBox_PrecedentiProprietari().setModel(new DefaultComboBoxModel<String>(comboboxModelPrecedentiProprietari));
+		J2Web_UI.getComboBox_PrecedentiProprietari().setSelectedIndex(scheda.numeroPrecedentiProprietariVeicoloIndex);
+		J2Web_UI.getComboBox_FinitureInterni().setModel(new DefaultComboBoxModel<String>(comboboxModelFinitureInterni));
+		J2Web_UI.getComboBox_FinitureInterni().setSelectedIndex(scheda.finitureInterneVeicoloIndex);
+		J2Web_UI.getComboBox_ColoreInterni().setModel(new DefaultComboBoxModel<String>(comboboxModelColoreInterni));
+		J2Web_UI.getComboBox_ColoreInterni().setSelectedIndex(scheda.coloreInterniVeicoloIndex);
+		J2Web_UI.getComboBox_Motore().setModel(new DefaultComboBoxModel<String>(comboboxModelMotore));
+		J2Web_UI.getComboBox_Motore().setSelectedIndex(scheda.tipologiaMotoreVeicoloIndex);
+		J2Web_UI.getComboBox_Cambio().setModel(new DefaultComboBoxModel<String>(comboboxModelCambio));
+		J2Web_UI.getComboBox_Cambio().setSelectedIndex(scheda.tipologiaCambioVeicoloIndex);
+		J2Web_UI.getComboBox_NumeroRapporti().setModel(new DefaultComboBoxModel<String>(comboboxModelNumeroRapporti));
+		J2Web_UI.getComboBox_NumeroRapporti().setSelectedIndex(scheda.numeroRapportiVeicoloIndex);
+		J2Web_UI.getComboBox_ClasseEmissioni().setModel(new DefaultComboBoxModel<String>(comboboxModelClasseEmissioni));
+		J2Web_UI.getComboBox_ClasseEmissioni().setSelectedIndex(scheda.classeEmissioniVeicoloIndex);
 
 		//Textfield
 		J2Web_UI.getTextField_Kw().setText(schedaVeicolo.KWVeicolo);
 		J2Web_UI.getTextField_Cv().setText(schedaVeicolo.CVVeicolo);
 		J2Web_UI.getTextField_Chilometraggio().setText(schedaVeicolo.chilometraggioVeicolo);
 		J2Web_UI.getTextField_Prezzo().setText(schedaVeicolo.prezzoVeicolo);
+		J2Web_UI.getTextField_PrezzoCondivisione().setText(schedaVeicolo.prezzoVeicoloCondivisione);
 		J2Web_UI.getTextField_Cilindrata().setText(schedaVeicolo.cilindrataVeicolo);
 		J2Web_UI.getTextField_ConsumoMedio().setText(schedaVeicolo.consumoMedioVeicolo);
 		J2Web_UI.getTextField_YouTubeUrl().setText(schedaVeicolo.urlVideoYouTube);

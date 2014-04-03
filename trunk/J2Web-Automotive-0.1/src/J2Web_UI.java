@@ -49,6 +49,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
@@ -235,6 +236,9 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 
 	//Serve per bloccare temporaneamente l'ascoltatore di alcune combobox
 	public static boolean nonUserSelection = false;
+	
+	//Scheda in modifica
+	public static SchedaVeicolo protoScheda;
 
 	//Classloader per il recupero delle risorse esterne
 	ClassLoader cl;
@@ -1435,34 +1439,10 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 		btnInserisci = new JButton("Crea scheda");
 		btnInserisci.setToolTipText("Crea una scheda veicolo utilizzando i dati inseriti nel modulo di inserimento veicolo");
 		btnInserisci.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
-				System.out.print("Creazione della scheda veicolo...");				
+			public void actionPerformed(ActionEvent arg0) {	
 				if(isFormValid(listCampiFormVeicoloObbligatori)) { 
 					System.out.println(" ...form valido... ");
-
-					//Disabilito i campi della form
-					disabilitaCampiForm(listCampiFormVeicolo);
-
-					//Istanzio l'oggetto scheda e lo salvo nel file locale
-					SchedaVeicolo schedaVeicolo = new SchedaVeicolo();
-					aggiungiSchedaVeicolo(schedaVeicolo);
-
-					//Il pannello centrale viene ridisegnato             	   	
-					aggiornaPannelloListaSchedeVeicolo();
-
-					//Il pannello di destra viene ridisegnato             	   	
-					PanelSicronizzazioneConPortali.panelInserimentoInDefaultMode(J2Web_UI.getPanel_10());
-
-					//Tracking dell'evento creazione di una scheda veicolo
-					System.out.print("Tracking dell'evento creazione di una scheda veicolo...");
-					try {
-						j2web.trackEvent("creazioneSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, schedaVeicolo.codiceScheda);
-					} catch (IOException e) {
-						//
-					}
-					System.out.print(" fatto." + "\n");	
-
-					System.out.print(" scheda veicolo creata." + "\n");
+					creaSchedaVeicolo(protoScheda);
 				}
 				else {
 					System.out.println(" ...form non valido. Scheda non creata.");
@@ -3017,10 +2997,51 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 			}
 
 			rdbtnMotoScooter.setEnabled(false); //disattivato per il momento
+			
+			//Imposto la label di defaul per il pulsante di creazione scheda veicolo
+			getBtnInserisciSchedaVeicolo().setText("Crea scheda");
+			protoScheda = null;
 
 		}	
 
-	}	
+	}
+	
+	//Metodo per resettare la form (cliente o veicolo dipendono dal parametro attuale passato alla funzione)
+	@SuppressWarnings("unchecked")
+	public static void abilitaCampiForm(LinkedList<JComponent> listCampiForm) {
+
+			ListIterator<JComponent> iteratorListCampiForm = listCampiForm.listIterator();
+			while(iteratorListCampiForm.hasNext()) {
+				JComponent campoCorrente = iteratorListCampiForm.next();
+	
+				switch (campoCorrente.getClass().getName())
+				{
+				case "javax.swing.JTextField": //Campo testuale
+					campoCorrente.setEnabled(true);
+					break;
+				case "javax.swing.JTextPane": //TextPane
+					((JTextComponent) campoCorrente).setEnabled(true);
+					break;
+				case "javax.swing.JComboBox": //Select
+					((JComboBox<String>) campoCorrente).setEnabled(true);
+					break;
+				case "javax.swing.JButton": //Pulsante
+					((JButton) campoCorrente).setEnabled(true);
+					break;
+				case "javax.swing.JCheckBox": //Checkbox
+					((JCheckBox) campoCorrente).setEnabled(true);
+					break;  
+				case "javax.swing.JLabel": //Label
+					((JLabel) campoCorrente).setIcon(null);
+					break;
+				case "javax.swing.JRadioButton": //Radio
+					((JRadioButton) campoCorrente).setEnabled(true);
+					break;
+				default://
+				}
+	
+			}
+		}
 
 	//Popola la lista con tutti i campi della form veicolo
 	private void popolaListaCampiFormVeicolo() {
@@ -3234,10 +3255,23 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 	}
 
 	//Il nuovo oggetto scheda immobile viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
+	@Deprecated
 	static void aggiungiSchedaVeicolo(SchedaVeicolo scheda) {
 
 		//Aggiorno la lista delle schede immobile
 		listSchedeVeicolo.add(scheda);
+
+		//Aggiorno il file dat delle schede
+		j2web.salvaListaSchedeVeicoloCreate();
+
+	}
+	
+	//Il nuovo oggetto scheda immobile viene inserito nella struttura dati e salvato nel file .dat relativo a tutte le schede
+	@Deprecated
+	static void eliminaSchedaVeicolo(SchedaVeicolo scheda) {
+
+		//Aggiorno la lista delle schede immobile
+		listSchedeVeicolo.remove(scheda);
 
 		//Aggiorno il file dat delle schede
 		j2web.salvaListaSchedeVeicoloCreate();
@@ -3268,7 +3302,132 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 
 	}
 
+	//Crea la scheda veicolo
+	public static void creaSchedaVeicolo(SchedaVeicolo scheda) {
+		
+		//Se non gli passo una scheda valida, allora si tratta di creare una scheda nuova
+		if(scheda==null) {	
+			System.out.print("Creazione della scheda veicolo...");
+					
+			//Disabilito i campi della form
+			disabilitaCampiForm(listCampiFormVeicolo);
+			
+			//Istanzio l'oggetto scheda e lo salvo nel file locale
+			SchedaVeicolo schedaVeicolo = new SchedaVeicolo();
+			
+			//Aggiorno la lista delle schede immobile
+			listSchedeVeicolo.add(schedaVeicolo);
 
+			//Aggiorno il file dat delle schede
+			j2web.salvaListaSchedeVeicoloCreate();
+			
+			//Il pannello centrale viene ridisegnato             	   	
+			aggiornaPannelloListaSchedeVeicolo();
+
+			//Il pannello di destra viene ridisegnato             	   	
+			PanelSicronizzazioneConPortali.panelInserimentoInDefaultMode(J2Web_UI.getPanel_10());
+
+			//Tracking dell'evento creazione di una scheda veicolo
+			System.out.print("Tracking dell'evento creazione di una scheda veicolo...");
+			try {
+				j2web.trackEvent("creazioneSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, schedaVeicolo.codiceScheda);
+			} catch (IOException e) {
+				//
+			}
+			System.out.print(" fatto." + "\n");	
+
+			System.out.print(" scheda veicolo creata." + "\n");
+		}
+		//Modifica di una scheda preesistente
+		else {
+			System.out.print("Modifica della scheda veicolo...");
+			
+			//Disabilito i campi della form
+			disabilitaCampiForm(listCampiFormVeicolo);
+			
+			//Istanzio l'oggetto scheda e lo salvo nel file locale
+			SchedaVeicolo schedaVeicoloModificata = new SchedaVeicolo(scheda.idScheda, scheda.codiceScheda, scheda.arrayImages, scheda.mappaPortaliOspitanti);
+			
+			//Aggiorno la lista delle schede immobile
+			int index = listSchedeVeicolo.indexOf(scheda);
+			listSchedeVeicolo.remove(scheda);
+			listSchedeVeicolo.add(index, schedaVeicoloModificata);
+
+			//Aggiorno il file dat delle schede
+			j2web.salvaListaSchedeVeicoloCreate();
+			
+			//Il pannello centrale viene ridisegnato             	   	
+			aggiornaPannelloListaSchedeVeicolo();
+
+			//Il pannello di destra viene ridisegnato             	   	
+			PanelSicronizzazioneConPortali.panelInserimentoInDefaultMode(J2Web_UI.getPanel_10());
+			
+			//Resetto la scheda da modificare
+			protoScheda = null;
+			
+			//Resetto la label del pulsante di inserzione scheda
+			getBtnInserisciSchedaVeicolo().setText("Crea scheda");
+			
+			JOptionPane.showMessageDialog(null, MapModalWindowsDialogs.get("creaSchedaVeicolo_schedaVeicoloModificata"), "Scheda modificata", JOptionPane.INFORMATION_MESSAGE);
+
+			//Tracking dell'evento creazione di una scheda veicolo
+			System.out.print("Tracking dell'evento modifica di una scheda veicolo...");
+			try {
+				j2web.trackEvent("modificaSchedaVeicolo_j2web_" + j2web_version + "_" + EMAIL_UTENTE, schedaVeicoloModificata.codiceScheda);
+			} catch (IOException e) {
+				//
+			}
+			System.out.print(" fatto." + "\n");	
+
+			System.out.print(" scheda veicolo modificata." + "\n");
+			
+			ListIterator<PortaleWeb> iteratorPortali = listPortaliSincronizzazione.listIterator();
+			boolean mexMostrato = false;
+			
+			while(iteratorPortali.hasNext()) {
+				PortaleWeb portaleCorrente = iteratorPortali.next();
+				
+				if(scheda.isOnThisPortal(portaleCorrente.idPortale)) {
+					if(!mexMostrato) {
+						String [] options = { "Sincronizza ora sui portali", "Procedi manualmente"};
+						String option;
+			            int choice = JOptionPane.showOptionDialog(
+			                    null,
+			                    "La scheda modificata risulta pubblicata su alcuni portali. Scegliere come procedere per sincronizzare la modifica.",
+			                    "Scheda già pubblicata",
+			                    JOptionPane.YES_NO_CANCEL_OPTION,
+			                    JOptionPane.WARNING_MESSAGE,
+			                    null,
+			                    options,
+			                    options[1]);
+	
+			            option = options[choice];
+			            
+			            if(option=="Procedi manualmente") {
+			            	break;
+			            }
+			            else {
+			            	mexMostrato = true;
+			            }
+					}
+		                       	        
+					//Inserisco la scheda nel portale attuale
+					try {
+						portaleCorrente.cancellaScheda(scheda, false);
+						portaleCorrente.inserisciScheda(schedaVeicoloModificata, false);
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (HttpCommunicationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+	
+	
 	//I metodi che espongono elementi della GUI
 
 	//Combobox

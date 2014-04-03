@@ -27,16 +27,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
 import java.util.Iterator;
-/*import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.util.Hashtable;
-import java.net.URLEncoder;
-import java.io.IOException;*/
+
 
 public abstract class PortaleWeb implements parametriGenerali {
 
@@ -487,5 +478,14 @@ public abstract class PortaleWeb implements parametriGenerali {
 		JOptionPane.showMessageDialog(null, "Problemi nell\'eliminazione scheda in: " + nomePortale + ".\n\n Verificare l\'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	//Messaggio modifica annuncio OK
+	public void messageModificaOK(String nomePortale) {
+		JOptionPane.showMessageDialog(null, "Scheda veicolo sincronizzata in: " + nomePortale, "Scheda sincronizzata", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	//Messaggio modifica annuncio KO
+	public void messageModificaKO(String nomePortale) {
+		JOptionPane.showMessageDialog(null, "Problemi nella sincronizzazione scheda in: " + nomePortale + ".\n\n Verificare la sincronizzazione", "Errore", JOptionPane.ERROR_MESSAGE);
+	}
 	
 }
