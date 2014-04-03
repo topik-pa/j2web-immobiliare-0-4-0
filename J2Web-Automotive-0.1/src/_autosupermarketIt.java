@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -53,6 +52,7 @@ public class _autosupermarketIt extends PortaleWeb {
 	private String location;
 	private String responseBody;
 	private boolean inserimentoOK = false;
+	private boolean modifica = false;
 	private boolean debugMode = true;
 
 	//Strutture dati di supporto
@@ -103,7 +103,12 @@ public class _autosupermarketIt extends PortaleWeb {
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 
-		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
+		if(modifica) {			
+			System.out.println("(MLS) Modifica scheda: " + scheda.codiceScheda + "...");
+		}
+		else  {
+			System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
+		}
 
 		//autosupermarket accetta minimo due foto per annuncio di dimensioni prefissate
 		try {
@@ -673,20 +678,27 @@ public class _autosupermarketIt extends PortaleWeb {
 				//Aggiorna i pulsanti del pannello inserimento
 				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
-				//Invio mail di conferma inserimento 
-				sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+				//Mail e messaggio informativo OK
+				if(!modifica) {
+					sendConfirmationMail(scheda, NOMEPORTALE, scheda.codiceScheda);
 
-				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
+					messageInserimentoOK(NOMEPORTALE);
+				}	
+				else {
+					messageModificaOK(NOMEPORTALE);
+				}
+				
 			}
 
 			return inserimentoOK;        	
 		}
 		else {
 
-			if(!isSequential) {
-				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
+			if(!modifica) {
+				messageInserimentoKO(NOMEPORTALE);
+			}
+			else {
+				messageModificaKO(NOMEPORTALE);
 			}
 
 			return inserimentoOK;
@@ -715,7 +727,13 @@ public class _autosupermarketIt extends PortaleWeb {
 
 
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
-	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {		
+	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {	
+		
+		//La scheda è da aggiornare
+		if(scheda.isOnThisPortal(idPortale)) {
+			modifica = true;
+		}
+		
 		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
 
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
@@ -869,7 +887,9 @@ public class _autosupermarketIt extends PortaleWeb {
 			System.out.println("Eliminata da: " + NOMEPORTALE);
 
 			//Stampo a video un messaggio informativo
-			JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + NOMEPORTALE);
+			if(!modifica) {
+				messageEliminazioneOK(NOMEPORTALE);
+			}
 		}
 
 		return true;

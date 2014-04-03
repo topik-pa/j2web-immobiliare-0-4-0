@@ -379,6 +379,8 @@ public class _portaleMLS extends PortaleWeb {
 					messageModificaKO("PORTALE MLS");
 				}
 				
+				return inserimentoOK;
+				
 			}
 
 		} catch (IOException | ParseException e) {
