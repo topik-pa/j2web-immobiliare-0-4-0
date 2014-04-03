@@ -1833,13 +1833,13 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 
-		JLabel lblMarca_1 = new JLabel("Marca");
+		JLabel lblMarca_1 = new JLabel("Marca*");
 		panel_30.add(lblMarca_1, "2, 2");
 
-		JLabel lblModello_1 = new JLabel("Modello");
+		JLabel lblModello_1 = new JLabel("Modello*");
 		panel_30.add(lblModello_1, "4, 2");
 
-		JLabel lblVersione_1 = new JLabel("Versione");
+		JLabel lblVersione_1 = new JLabel("Versione*");
 		panel_30.add(lblVersione_1, "6, 2");
 
 		comboBox_Marca_Cliente = new JComboBox<String>();
@@ -3200,6 +3200,10 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 		listCampiFormClienteObbligatori.add(formCliente_getNumeroCivico());
 		listCampiFormClienteObbligatori.add(formCliente_getCAP());
 		listCampiFormClienteObbligatori.add(formCliente_getCitta());
+		
+		listCampiFormClienteObbligatori.add(formCliente_getMarcaVeicolo());
+		listCampiFormClienteObbligatori.add(formCliente_getModelloVeicolo());
+		listCampiFormClienteObbligatori.add(formCliente_getVersioneVeicolo());
 	}
 
 	//Controlla se la form è compilata correttamente (cliente o veicolo dipendono dal parametro attuale passato alla funzione)

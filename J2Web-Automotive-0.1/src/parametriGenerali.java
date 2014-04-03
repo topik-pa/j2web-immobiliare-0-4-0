@@ -99,6 +99,9 @@ public interface parametriGenerali {
 	final String iconUpdate = "images/update.png";
 	final String refreshIcon = "images/refresh.png";
 	final String forwardIcon = "images/forward.png";
+	final String editIcon = "images/edit.png";
+	final String cancelIcon = "images/cancel.png";
+	
 
 	//Mappa che contiene il limite di caratteri immessi per certi campi testuali. L'inizializzazione è nel file: j2web.java
 	Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>(); 
