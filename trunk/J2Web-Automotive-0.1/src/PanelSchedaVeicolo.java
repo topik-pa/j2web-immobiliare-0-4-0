@@ -301,7 +301,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		J2Web_UI.getComboBox_AnnoImmatricolazione().setModel(new DefaultComboBoxModel<String>(comboboxModelAnni));
 		J2Web_UI.getComboBox_AnnoImmatricolazione().setSelectedIndex(scheda.annoImmatricolazioneVeicoloIndex);
 		J2Web_UI.getComboBox_Carburante().setModel(new DefaultComboBoxModel<String>(carburantiAutoveicoli));
-		J2Web_UI.getComboBox_Carburante().setSelectedIndex(scheda.tipologiaCambioVeicoloIndex);
+		J2Web_UI.getComboBox_Carburante().setSelectedIndex(scheda.carburanteVeicoloIndex);
 		J2Web_UI.getComboBox_Tipologia().setModel(new DefaultComboBoxModel<String>(tipologiaAutoveicoli));
 		J2Web_UI.getComboBox_Tipologia().setSelectedIndex(scheda.tipologiaVeicoloIndex);
 		J2Web_UI.getComboBox_Carrozzeria().setModel(new DefaultComboBoxModel<String>(comboboxModelCarrozzeria));
@@ -420,7 +420,9 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 			default:
 				J2Web_UI.getLabel_Immagine10().setIcon(icoImmagine);
 			}	
-		}	
+		}
+		
+		J2Web_UI.getRdbtnMotoScooter().setEnabled(false);
 
 		J2Web_UI.nonUserSelection = false;
 	}

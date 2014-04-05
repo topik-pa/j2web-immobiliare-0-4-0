@@ -3364,10 +3364,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 			aggiornaPannelloListaSchedeVeicolo();
 
 			//Il pannello di destra viene ridisegnato             	   	
-			PanelSicronizzazioneConPortali.panelInserimentoInDefaultMode(J2Web_UI.getPanel_10());
-			
-			//Resetto la scheda da modificare
-			protoScheda = null;
+			PanelSicronizzazioneConPortali.panelInserimentoInDefaultMode(J2Web_UI.getPanel_10());			
 			
 			//Resetto la label del pulsante di inserzione scheda
 			getBtnInserisciSchedaVeicolo().setText("Crea scheda");
@@ -3420,14 +3417,15 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 						portaleCorrente.cancellaScheda(scheda, false);
 						portaleCorrente.inserisciScheda(schedaVeicoloModificata, false);
 					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (HttpCommunicationException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
+			
+			//Resetto la scheda da modificare
+			protoScheda = null;
 		}
 	}
 	
