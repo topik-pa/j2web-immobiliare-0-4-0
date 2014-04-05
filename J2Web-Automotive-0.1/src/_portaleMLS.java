@@ -271,7 +271,7 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&PotenzaCV=" + scheda.CVVeicolo;
 		queryString += "&idColoreEsterno=" + thisColoreEsterno;
 		queryString += "&Metallizzato=" + (scheda.coloreMetalizzato?"1":"0");
-		queryString += "&PrecedentiProprietari=" + (scheda.numeroPrecedentiProprietariVeicoloIndex==0?"0":scheda.postiASedereVeicoloIndex);
+		queryString += "&PrecedentiProprietari=" + (scheda.numeroPrecedentiProprietariVeicoloIndex==0?"0":scheda.numeroPrecedentiProprietariVeicoloIndex);
 		queryString += "&Chilometraggio=" + URLEncoder.encode(scheda.chilometraggioVeicolo, "UTF-8");
 		queryString += "&Prezzo=" + URLEncoder.encode(scheda.prezzoVeicolo, "UTF-8");
 		queryString += "&PrezzoConcessionari=" + URLEncoder.encode(scheda.prezzoVeicoloCondivisione, "UTF-8");
@@ -426,7 +426,7 @@ public class _portaleMLS extends PortaleWeb {
 	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 		
 		//La scheda è da aggiornare
-		if(scheda.isOnThisPortal(idPortale)) {
+		if(J2Web_UI.protoScheda!=null) {
 			modifica = true;
 		}
 		
