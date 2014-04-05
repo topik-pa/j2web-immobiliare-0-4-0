@@ -84,13 +84,7 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				PanelSicronizzazioneConPortali.panelInserimentoInActiveMode(pannelloListaPortali, scheda, true);
 
 				//Coloro il bordo della scheda
-				Component[] wrapperScheda = getParent().getComponents();
-				for(int i=0; i<wrapperScheda.length; i++) {
-					if(wrapperScheda[i].getClass().toString().contains("PanelSchedaVeicolo"))  {
-						((JComponent) wrapperScheda[i]).setBorder(new LineBorder(Color.LIGHT_GRAY));
-					}
-				}
-				setBorder(new LineBorder(Color.ORANGE));
+				bordoColorato(getParent().getComponents());
 
 				//Eseguo un match vaicolo-cliente in locale
 				matchVeicoloCliente(scheda);
@@ -156,6 +150,11 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 				J2Web_UI.getBtnInserisciSchedaVeicolo().setEnabled(true);
 				
 				J2Web_UI.protoScheda = scheda;
+				
+				//Coloro il bordo della scheda
+				bordoColorato(getParent().getComponents());
+				
+				PanelSicronizzazioneConPortali.panelInserimentoInDefaultMode(pannelloListaPortali);
 
 			}
 		});
@@ -427,4 +426,12 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 		J2Web_UI.nonUserSelection = false;
 	}
 
+	private void bordoColorato(Component[] wrapperScheda) {
+		for(int i=0; i<wrapperScheda.length; i++) {
+			if(wrapperScheda[i].getClass().toString().contains("PanelSchedaVeicolo"))  {
+				((JComponent) wrapperScheda[i]).setBorder(new LineBorder(Color.LIGHT_GRAY));
+			}
+		}
+		setBorder(new LineBorder(Color.ORANGE));
+	}
 }
