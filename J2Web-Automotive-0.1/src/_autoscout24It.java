@@ -647,7 +647,7 @@ public class _autoscout24It extends PortaleWeb {
 	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 		
 		//La scheda è da aggiornare
-		if(scheda.isOnThisPortal(idPortale)) {
+		if(J2Web_UI.protoScheda!=null) {
 			modifica = true;
 		}
 				

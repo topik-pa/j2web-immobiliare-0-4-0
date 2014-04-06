@@ -260,7 +260,7 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&Marca=" + URLEncoder.encode(scheda.marcaVeicolo, "UTF-8");
 		queryString += "&Modello=" + URLEncoder.encode(scheda.modelloVeicolo, "UTF-8");
 		queryString += "&Versione=" + URLEncoder.encode(scheda.versioneVeicolo, "UTF-8");
-		queryString += "&Descrizione=" + URLEncoder.encode(scheda.descrizioneVeicolo.replace("'", "''"), "UTF-8");
+		queryString += "&Descrizione=" + URLEncoder.encode(customEncoding(scheda.descrizioneVeicolo), "UTF-8");
 		queryString += "&MeseImmatricolazione=" + (scheda.meseImmatricolazioneVeicoloIndex-1);
 		queryString += "&AnnoImmatricolazione=" + (scheda.annoImmatricolazioneVeicoloIndex==1?"0":scheda.annoImmatricolazioneVeicolo);
 		queryString += "&idCarburante=" + thisCarburante;
@@ -495,6 +495,21 @@ public class _portaleMLS extends PortaleWeb {
 
 		return eliminazioneOK;
 
+	}
+	
+	private String customEncoding(String inString) {
+			
+		String outString = inString;
+		
+		outString = outString.replace("'", "''");
+		outString = outString.replace("à", "&agrave;");
+		outString = outString.replace("è", "&egrave;");
+		outString = outString.replace("ì", "&igrave;");
+		outString = outString.replace("ò", "&ograve;");
+		outString = outString.replace("ù", "&ugrave;");
+		outString = outString.replace("€", "&eur;");
+
+		return outString;
 	}
 
 

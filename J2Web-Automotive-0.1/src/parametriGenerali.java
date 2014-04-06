@@ -30,7 +30,7 @@ public interface parametriGenerali {
 	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
 	final String PROVINCIA_UTENTE ="Udine";
 	final String CITTA_UTENTE ="Udine";
-	final String INDIRIZZO_UTENTE ="via Buttrio, 267 - 33100 Udine";
+	final String INDIRIZZO_UTENTE ="33100 - Udine (UD)";
 	final String TELEFONO_UTENTE ="3295698985";
 	
 	//Url tracking remoto
