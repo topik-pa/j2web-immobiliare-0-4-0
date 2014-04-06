@@ -445,7 +445,7 @@ public class _vendiautoCom extends PortaleWeb {
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 
 		//Connessione 0 - GET della home page - Opzionale
-		HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
 			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, debugMode);
 			//Controllo il response status
@@ -455,7 +455,7 @@ public class _vendiautoCom extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		//Connessione 1 - GET della pagina di login

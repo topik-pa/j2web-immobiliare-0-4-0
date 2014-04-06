@@ -220,7 +220,7 @@ public class j2web implements parametriGenerali {
 		J2Web_UI.listPortaliSincronizzazione.add(_vendiautoCom);
 
 		ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
-		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "6 - subito.it", "006", true);
+		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "6 - subito.it", "006", false);
 		J2Web_UI.listPortaliSincronizzazione.add(_subitoIt);
 
 		ImageIcon _autoprontaconsegnaComIcon  = new ImageIcon(cl.getResource("images/_autoprontaconsegnaCom.png"));

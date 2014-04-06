@@ -308,6 +308,9 @@ public class _autoscout24It extends PortaleWeb {
 		//Connessione 5 - POST dei parametri di annuncio
 		DecimalFormat df = new DecimalFormat("###,###.###"); 
 		//Raccolgo i parametri nella tabella di dipendenza
+		
+		tabellaDiDipendenza.put("ArticleGuid", "***site***");
+
 		tabellaDiDipendenza.put("ArticleId", articleId);
 		tabellaDiDipendenza.put("ArticleType", "***site***"); //Automobile
 		tabellaDiDipendenza.put("BaseData.Accident","***site***");
