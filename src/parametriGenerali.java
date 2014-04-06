@@ -30,7 +30,7 @@ public interface parametriGenerali {
 	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
 	final String PROVINCIA_UTENTE ="Udine";
 	final String CITTA_UTENTE ="Udine";
-	final String INDIRIZZO_UTENTE ="via Buttrio, 267 - 33100 Udine";
+	final String INDIRIZZO_UTENTE ="33100 - Udine (UD)";
 	final String TELEFONO_UTENTE ="3295698985";
 	
 	//Url tracking remoto
@@ -99,6 +99,9 @@ public interface parametriGenerali {
 	final String iconUpdate = "images/update.png";
 	final String refreshIcon = "images/refresh.png";
 	final String forwardIcon = "images/forward.png";
+	final String editIcon = "images/edit.png";
+	final String cancelIcon = "images/cancel.png";
+	
 
 	//Mappa che contiene il limite di caratteri immessi per certi campi testuali. L'inizializzazione è nel file: j2web.java
 	Map<String,Integer> maxCaratteri =  new Hashtable<String,Integer>(); 

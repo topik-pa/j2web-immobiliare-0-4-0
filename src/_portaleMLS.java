@@ -24,6 +24,7 @@ public class _portaleMLS extends PortaleWeb {
 
 	private boolean inserimentoOK = false;
 	private boolean eliminazioneOK = false;
+	private boolean modifica = false;
 
 	//Costruttore
 	public _portaleMLS (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
@@ -35,8 +36,14 @@ public class _portaleMLS extends PortaleWeb {
 
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException, UnsupportedEncodingException {
-		System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
-
+		
+		if(modifica) {			
+			System.out.println("(MLS) Modifica scheda: " + scheda.codiceScheda + "...");
+		}
+		else  {
+			System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
+		}
+		
 		String Immagine1, Immagine2, Immagine3, Immagine4, Immagine5, Immagine6, Immagine7, Immagine8, Immagine9, Immagine10;
 		Immagine1 = Immagine2 = Immagine3 = Immagine4 = Immagine5 = Immagine6 = Immagine7 = Immagine8 = Immagine9 = Immagine10 = "NULL";
 		String queryString = "";
@@ -253,7 +260,7 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&Marca=" + URLEncoder.encode(scheda.marcaVeicolo, "UTF-8");
 		queryString += "&Modello=" + URLEncoder.encode(scheda.modelloVeicolo, "UTF-8");
 		queryString += "&Versione=" + URLEncoder.encode(scheda.versioneVeicolo, "UTF-8");
-		queryString += "&Descrizione=" + URLEncoder.encode(scheda.descrizioneVeicolo, "UTF-8");
+		queryString += "&Descrizione=" + URLEncoder.encode(customEncoding(scheda.descrizioneVeicolo), "UTF-8");
 		queryString += "&MeseImmatricolazione=" + (scheda.meseImmatricolazioneVeicoloIndex-1);
 		queryString += "&AnnoImmatricolazione=" + (scheda.annoImmatricolazioneVeicoloIndex==1?"0":scheda.annoImmatricolazioneVeicolo);
 		queryString += "&idCarburante=" + thisCarburante;
@@ -264,7 +271,7 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&PotenzaCV=" + scheda.CVVeicolo;
 		queryString += "&idColoreEsterno=" + thisColoreEsterno;
 		queryString += "&Metallizzato=" + (scheda.coloreMetalizzato?"1":"0");
-		queryString += "&PrecedentiProprietari=" + (scheda.numeroPrecedentiProprietariVeicoloIndex==0?"0":scheda.postiASedereVeicoloIndex);
+		queryString += "&PrecedentiProprietari=" + (scheda.numeroPrecedentiProprietariVeicoloIndex==0?"0":scheda.numeroPrecedentiProprietariVeicoloIndex);
 		queryString += "&Chilometraggio=" + URLEncoder.encode(scheda.chilometraggioVeicolo, "UTF-8");
 		queryString += "&Prezzo=" + URLEncoder.encode(scheda.prezzoVeicolo, "UTF-8");
 		queryString += "&PrezzoConcessionari=" + URLEncoder.encode(scheda.prezzoVeicoloCondivisione, "UTF-8");
@@ -343,25 +350,37 @@ public class _portaleMLS extends PortaleWeb {
 				System.out.println("Inserita in: " + "PORTALE MLS");  
 
 				inserimentoOK = true;
-
+				
 				//Aggiorna la lista dei portali in cui è inserita la scheda
 				scheda.aggiungiInserimentoPortale(idPortale, scheda.codiceScheda);
-
+				
 				//Aggiorna i pulsanti del pannello sincronizzazione
 				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
+				
+				//Mail e messaggio informativo OK
+				if(!modifica) {
+					sendConfirmationMail(scheda, "PORTALE MLS", scheda.codiceScheda);
 
-				//Invio mail di conferma inserimento 
-				sendConfirmationMail(scheda, "PORTALE MLS", scheda.codiceScheda);
-
-				//Stampo a video un messaggio informativo
-				messageInserimentoOK("PORTALE MLS");
+					messageInserimentoOK("PORTALE MLS");
+				}	
+				else {
+					messageModificaOK("PORTALE MLS");
+				}
 
 			}
+			//Mail e messaggio informativo KO
 			else {
 				inserimentoOK = false;
 
-				//Stampo a video un messaggio informativo
-				messageInserimentoKO("PORTALE MLS");
+				if(!modifica) {
+					messageInserimentoKO("PORTALE MLS");
+				}
+				else {
+					messageModificaKO("PORTALE MLS");
+				}
+				
+				return inserimentoOK;
+				
 			}
 
 		} catch (IOException | ParseException e) {
@@ -378,7 +397,8 @@ public class _portaleMLS extends PortaleWeb {
 		}
 		System.out.print(" fatto." + "\n");
 
-
+		modifica = false;
+		
 		return inserimentoOK;    
 	}
 
@@ -403,7 +423,13 @@ public class _portaleMLS extends PortaleWeb {
 
 
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
-	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {		
+	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
+		
+		//La scheda è da aggiornare
+		if(J2Web_UI.protoScheda!=null) {
+			modifica = true;
+		}
+		
 		System.out.println("Eliminazione scheda: " + scheda.idScheda + "...");
 
 		String queryString = "";
@@ -444,7 +470,9 @@ public class _portaleMLS extends PortaleWeb {
 				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
 				//Stampo a video un messaggio informativo
-				messageEliminazioneOK("PORTALE MLS");
+				if(!modifica) {
+					messageEliminazioneOK("PORTALE MLS");
+				}
 			}
 			else {
 				eliminazioneOK = false;
@@ -457,7 +485,6 @@ public class _portaleMLS extends PortaleWeb {
 			e.printStackTrace();
 		}
 
-
 		//Tracking dell'evento eliminazione di una scheda veicolo in MLS
 		System.out.print("Tracking dell'evento eliminazione di una scheda veicolo in MLS...");
 		try {
@@ -468,6 +495,21 @@ public class _portaleMLS extends PortaleWeb {
 
 		return eliminazioneOK;
 
+	}
+	
+	private String customEncoding(String inString) {
+			
+		String outString = inString;
+		
+		outString = outString.replace("'", "''");
+		outString = outString.replace("à", "&agrave;");
+		outString = outString.replace("è", "&egrave;");
+		outString = outString.replace("ì", "&igrave;");
+		outString = outString.replace("ò", "&ograve;");
+		outString = outString.replace("ù", "&ugrave;");
+		outString = outString.replace("€", "&eur;");
+
+		return outString;
 	}
 
 
