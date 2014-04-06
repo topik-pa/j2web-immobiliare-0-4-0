@@ -36,7 +36,7 @@ public class _subitoIt extends PortaleWeb {
 	private final String NOMEPORTALE = "www.subito.it";
 	private final String URLROOT = "http://www.subito.it";
 	private final String SECUREURLROOT = "https://www2.subito.it";
-	private final String USERNAME = "c1669723@drdrb.com";
+	private final String USERNAME = "marco--pavan@libero.it";
 	private final String PASSWORD = "topik123";
 	private final String HOST = "www.subito.it";
 	private final String HOST2 = "www2.subito.it";
@@ -547,7 +547,7 @@ public class _subitoIt extends PortaleWeb {
 
 
 		//Connessione 8 - POST della conferma alla pubblicazione
-		HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
+		/*HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
 		try {    
 			postParameters.add(new BasicNameValuePair("payment_type", "cc"));
 
@@ -575,7 +575,7 @@ public class _subitoIt extends PortaleWeb {
 		}
 		finally {
 			postParameters.clear();
-		}
+		}*/
 
 
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente

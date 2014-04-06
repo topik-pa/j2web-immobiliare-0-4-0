@@ -3388,7 +3388,7 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 			while(iteratorPortali.hasNext()) {
 				PortaleWeb portaleCorrente = iteratorPortali.next();
 				
-				if(scheda.isOnThisPortal(portaleCorrente.idPortale)) {
+				if(scheda.isOnThisPortal(portaleCorrente.idPortale) && !portaleCorrente.idPortale.equals("006")) { //Tranne subito.it
 					if(!mexMostrato) {
 						String [] options = { "Sincronizza ora sui portali", "Procedi manualmente"};
 						String option;

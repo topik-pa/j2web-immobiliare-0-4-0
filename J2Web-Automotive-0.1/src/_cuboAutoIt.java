@@ -280,7 +280,7 @@ public class _cuboAutoIt extends PortaleWeb {
 			tabellaDiDipendenza.put("meseimmatricolazione","vuoto");
 		}
 		else {
-			tabellaDiDipendenza.put("meseimmatricolazione","0"+scheda.meseImmatricolazioneVeicoloIndex);
+			tabellaDiDipendenza.put("meseimmatricolazione","0"+(scheda.meseImmatricolazioneVeicoloIndex-1));
 		}
 		tabellaDiDipendenza.put("meseprossimarevisione","vuoto");
 
