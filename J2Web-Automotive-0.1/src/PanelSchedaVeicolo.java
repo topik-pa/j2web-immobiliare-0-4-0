@@ -228,9 +228,9 @@ class PanelSchedaVeicolo extends JPanel implements parametriGenerali{
 			if(
 					(schedaVeicolo.marcaVeicolo.equalsIgnoreCase(schedaCorrente.marcaVeicoloCliente) && schedaVeicolo.modelloVeicolo.equalsIgnoreCase(schedaCorrente.modelloVeicoloCliente)) ||
 					(schedaVeicolo.versioneVeicolo.equalsIgnoreCase(schedaCorrente.versioneVeicoloCliente)) ||
-					(schedaVeicolo.marcaVeicolo.equalsIgnoreCase(schedaCorrente.marcaVeicoloCliente) && schedaVeicolo.carburanteVeicolo.equalsIgnoreCase(schedaCorrente.tipologiaCarburanteVeicoloCliente)) ||
-					(schedaVeicolo.marcaVeicolo.equalsIgnoreCase(schedaCorrente.marcaVeicoloCliente) && schedaVeicolo.coloreEsternoVeicolo.equalsIgnoreCase(schedaCorrente.coloreEsternoVeicoloCliente)) ||
-					(schedaVeicolo.marcaVeicolo.equalsIgnoreCase(schedaCorrente.marcaVeicoloCliente) && schedaVeicolo.tipologiaVeicolo.equalsIgnoreCase(schedaCorrente.tipologiaVeicoloCliente))
+					(schedaVeicolo.modelloVeicolo.equalsIgnoreCase(schedaCorrente.modelloVeicoloCliente) && schedaVeicolo.carburanteVeicolo.equalsIgnoreCase(schedaCorrente.tipologiaCarburanteVeicoloCliente)) ||
+					(schedaVeicolo.modelloVeicolo.equalsIgnoreCase(schedaCorrente.modelloVeicoloCliente) && schedaVeicolo.coloreEsternoVeicolo.equalsIgnoreCase(schedaCorrente.coloreEsternoVeicoloCliente)) ||
+					(schedaVeicolo.modelloVeicolo.equalsIgnoreCase(schedaCorrente.modelloVeicoloCliente) && schedaVeicolo.tipologiaVeicolo.equalsIgnoreCase(schedaCorrente.tipologiaVeicoloCliente))
 
 					) {
 				J2Web_UI.listSchedeClientiMatch.add(schedaCorrente);
