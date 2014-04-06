@@ -21,6 +21,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+
 import javax.swing.JOptionPane;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
@@ -125,17 +126,22 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	File[] arrayImages = new File[11]; //Attenzione: lascerò volutamente libera la prima posizione [0]
 
 	//Una scheda veicolo può essere ospitata in diversi portali, la seguente tabella hash contiene i codici dei portali(key) e il codice di inserimento(value) in cui la scheda è attualmente inserita
-	Map<String,String> mappaPortaliOspitanti = new Hashtable<String,String>();
+	Map<String,String> mappaPortaliOspitanti;
 	
 	//Attributi aggiunti in seguito (possono mancare su schede clienti più vecchie della versione 1.0)
-	//nessuno
+	//nessun attributo
 	
-	//Costruttore (da form di creazione scheda)
-	public SchedaVeicolo () {		
+	//Costruttore di default (schede nuove)
+	public SchedaVeicolo() {
+		this(new Date().getTime(), intestazioneCodiceSchedaVeicolo + (UUID.randomUUID().toString().substring(0,8)), new File[11], new Hashtable<String, String>());
+	}
+	
+	//Costruttore 2 (da form di creazione scheda)
+	public SchedaVeicolo (long idScheda, String codiceScheda, File[] immagini, Map<String,String> mappaPortaliOspitanti) {		
 
 		//Attributi della scheda veicolo	
-		idScheda = new Date().getTime();	//id univoco riferito alla scheda per ordinamento cronologico
-		codiceScheda= intestazioneCodiceSchedaVeicolo + (UUID.randomUUID().toString().substring(0,8)); //codice scheda univoco
+		this.idScheda = idScheda;	//id univoco riferito alla scheda per ordinamento cronologico
+		this.codiceScheda= codiceScheda; //codice scheda univoco
 
 		//Inizializzo il path per il file hash di questa scheda
 		singolaSchedaDatPath = pathSchede + codiceScheda + ".dat";
@@ -245,11 +251,17 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 		descrizioneVeicolo = descrizioneVeicoloLinkFree;
 		if(descrizioneVeicolo.length()>maxCaratteri.get("textPane_Descrizione")) {descrizioneVeicolo = descrizioneVeicolo.substring(0, maxCaratteri.get("textPane_Descrizione")-1);}
 
+		//Mappa dei portali ospitanti
+		this.mappaPortaliOspitanti = mappaPortaliOspitanti;
+		
 		//Immagini
 		//Svuoto l'array immagini
 		for(int i =0; i<arrayImages.length; i++) {
 			arrayImages[i]=null;
 		}
+		
+		//Copio l'array in input nell'array delle immagini attuali
+		System.arraycopy(immagini, 0, arrayImages, 0, immagini.length);
 
 		imgFile1 = J2Web_UI.getFileImmagine1();
 		if(imgFile1!=null && imgFile1.exists()) {
@@ -295,7 +307,7 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 	}
 
 
-	//Costruttore 2 (da query SQL)
+	//Costruttore 3 (da query SQL)
 	public SchedaVeicolo (JSONArray JSONArray) {			
 
 		veicolo = "auto";	//solo auto attualmente

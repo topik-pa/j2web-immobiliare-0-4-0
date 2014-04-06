@@ -45,6 +45,7 @@ public class _cuboAutoIt extends PortaleWeb {
 	private String location;
 	private String responseBody;
 	private boolean inserimentoOK = false;
+	private boolean modifica = false;
 	private boolean debugMode = true;
 
 
@@ -96,7 +97,12 @@ public class _cuboAutoIt extends PortaleWeb {
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 
-		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
+		if(modifica) {			
+			System.out.println("(MLS) Modifica scheda: " + scheda.codiceScheda + "...");
+		}
+		else  {
+			System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
+		}
 
 		//Inizializzazione scheda
 		this.scheda=scheda;
@@ -274,7 +280,7 @@ public class _cuboAutoIt extends PortaleWeb {
 			tabellaDiDipendenza.put("meseimmatricolazione","vuoto");
 		}
 		else {
-			tabellaDiDipendenza.put("meseimmatricolazione","0"+scheda.meseImmatricolazioneVeicoloIndex);
+			tabellaDiDipendenza.put("meseimmatricolazione","0"+(scheda.meseImmatricolazioneVeicoloIndex-1));
 		}
 		tabellaDiDipendenza.put("meseprossimarevisione","vuoto");
 
@@ -438,21 +444,27 @@ public class _cuboAutoIt extends PortaleWeb {
 				//Aggiorna i pulsanti del pannello inserimento
 				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
-				//Invio mail di conferma inserimento 
-				sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
+				//Mail e messaggio informativo OK
+				if(!modifica) {
+					sendConfirmationMail(scheda, NOMEPORTALE, scheda.codiceScheda);
 
-				//Stampo a video un messaggio informativo
-				//JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
-				messageInserimentoOK(NOMEPORTALE);
+					messageInserimentoOK(NOMEPORTALE);
+				}	
+				else {
+					messageModificaOK(NOMEPORTALE);
+				}
+				
 			}
 
 			return inserimentoOK;        	
 		}
 		else {
 
-			if(!isSequential) {
-				//Stampo a video un messaggio informativo
+			if(!modifica) {
 				messageInserimentoKO(NOMEPORTALE);
+			}
+			else {
+				messageModificaKO(NOMEPORTALE);
 			}
 
 			return inserimentoOK;
@@ -483,6 +495,11 @@ public class _cuboAutoIt extends PortaleWeb {
 
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
+		
+		//La scheda è da aggiornare
+		if(J2Web_UI.protoScheda!=null) {
+			modifica = true;
+		}
 
 		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
 
@@ -567,8 +584,9 @@ public class _cuboAutoIt extends PortaleWeb {
 			System.out.println("Eliminata da: " + NOMEPORTALE);
 
 			//Stampo a video un messaggio informativo
-			//JOptionPane.showMessageDialog(null, "Scheda immobile eliminata da: " + NOMEPORTALE);
-			messageEliminazioneOK(NOMEPORTALE);
+			if(!modifica) {
+				messageEliminazioneOK(NOMEPORTALE);
+			}
 		}
 
 		return true;

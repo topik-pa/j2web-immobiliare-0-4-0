@@ -161,9 +161,9 @@ class PanelSchedaCliente extends JPanel implements parametriGenerali{
 			if(
 					(schedaCliente.marcaVeicoloCliente!=null && schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && (schedaCliente.modelloVeicoloCliente!=null && schedaCliente.modelloVeicoloCliente.equalsIgnoreCase(schedaCorrente.modelloVeicolo) )) ||
 					(schedaCliente.versioneVeicoloCliente!=null && schedaCliente.versioneVeicoloCliente.equalsIgnoreCase(schedaCorrente.versioneVeicolo)) ||
-					(schedaCliente.marcaVeicoloCliente!=null && schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && (schedaCliente.tipologiaCarburanteVeicoloCliente!=null && schedaCliente.tipologiaCarburanteVeicoloCliente.equalsIgnoreCase(schedaCorrente.carburanteVeicolo) )) ||
-					(schedaCliente.marcaVeicoloCliente!=null && schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && (schedaCliente.coloreEsternoVeicoloCliente!=null && schedaCliente.coloreEsternoVeicoloCliente.equalsIgnoreCase(schedaCorrente.coloreEsternoVeicolo) )) ||
-					(schedaCliente.marcaVeicoloCliente!=null && schedaCliente.marcaVeicoloCliente.equalsIgnoreCase(schedaCorrente.marcaVeicolo) && (schedaCliente.tipologiaVeicoloCliente!=null && schedaCliente.tipologiaVeicoloCliente.equalsIgnoreCase(schedaCorrente.tipologiaVeicolo) ))
+					(schedaCliente.modelloVeicoloCliente.equalsIgnoreCase(schedaCorrente.modelloVeicolo) && (schedaCliente.tipologiaCarburanteVeicoloCliente.equalsIgnoreCase(schedaCorrente.carburanteVeicolo) )) ||
+					(schedaCliente.modelloVeicoloCliente.equalsIgnoreCase(schedaCorrente.modelloVeicolo) && (schedaCliente.coloreEsternoVeicoloCliente.equalsIgnoreCase(schedaCorrente.coloreEsternoVeicolo) )) ||
+					(schedaCliente.modelloVeicoloCliente.equalsIgnoreCase(schedaCorrente.modelloVeicolo) && (schedaCliente.tipologiaVeicoloCliente.equalsIgnoreCase(schedaCorrente.tipologiaVeicolo) ))
 
 					) {
 				J2Web_UI.listSchedeVeicoliMatch.add(schedaCorrente);
