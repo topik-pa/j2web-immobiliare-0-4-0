@@ -24,7 +24,7 @@ public interface parametriGenerali {
 
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
-	final int IDUTENTE = 19; //l'ID corrisponde al valore idUtente del DB
+	final int IDUTENTE = 19; //l'ID corrisponde al valore idUtente del DB (20 per l'utente di DEV)
 	final String EMAIL_UTENTE ="marco--pavan@libero.it";
 	final String RAGIONESOCIALE_UTENTE ="Auto&Auto srl";
 	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
@@ -34,7 +34,7 @@ public interface parametriGenerali {
 	final String TELEFONO_UTENTE ="3295698985";
 	
 	//Url tracking remoto
-	String urlTrackingRemoto = "http://www.auto-nuove-usate.it/j2web/tracking/tracking.php";
+	String urlTrackingRemoto = "http://www.j2webstudio.it/j2web/tracking/tracking.php";
 	//String urlTrackingRemoto = "http://localhost/j2web/tracking/tracking.php";
 
 	//Url tunneling DB auto-nuove-usate

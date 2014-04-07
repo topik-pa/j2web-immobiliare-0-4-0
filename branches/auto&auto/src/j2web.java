@@ -197,11 +197,7 @@ public class j2web implements parametriGenerali {
 
 		ImageIcon _portaleMLSIcon  = new ImageIcon(cl.getResource("images/_nektasoft.png"));
 		PortaleWeb _portaleMLS = new _portaleMLS(_portaleMLSIcon, "1 - Portale Multi Level Sharing", "001", true);
-		J2Web_UI.listPortaliSincronizzazione.add(_portaleMLS);
-
-		ImageIcon _autoscout24ItIcon  = new ImageIcon(cl.getResource("images/_autoscout24It.png"));
-		PortaleWeb _autoscout24It = new _autoscout24It(_autoscout24ItIcon, "2 - autoscout24.it", "002", true);
-		J2Web_UI.listPortaliSincronizzazione.add(_autoscout24It);
+		J2Web_UI.listPortaliSincronizzazione.add(_portaleMLS);	
 
 		ImageIcon _cuboAutoIcon  = new ImageIcon(cl.getResource("images/_cuboAutoIt.png"));
 		PortaleWeb _cuboAutoIt = new _cuboAutoIt(_cuboAutoIcon, "3 - cuboauto.it", "003", true);
@@ -210,6 +206,10 @@ public class j2web implements parametriGenerali {
 		ImageIcon _autosupermarketIcon  = new ImageIcon(cl.getResource("images/_autosupermarketIt.png"));
 		PortaleWeb _autosupermarketIt = new _autosupermarketIt(_autosupermarketIcon, "4 - autosupermarket.it", "004", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_autosupermarketIt);
+		
+		ImageIcon _autoscout24ItIcon  = new ImageIcon(cl.getResource("images/_autoscout24It.png"));
+		PortaleWeb _autoscout24It = new _autoscout24It(_autoscout24ItIcon, "2 - autoscout24.it", "002", true);
+		J2Web_UI.listPortaliSincronizzazione.add(_autoscout24It);
 
 		/*ImageIcon _automobileIcon  = new ImageIcon(cl.getResource("images/automobileIt.png"));
 		PortaleWeb _automobileIt = new _automobileIt(_automobileIcon, "5 - automobile.it", "005", true);
