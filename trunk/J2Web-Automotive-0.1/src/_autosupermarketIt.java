@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -42,7 +43,7 @@ public class _autosupermarketIt extends PortaleWeb {
 	//Variabili portale
 	private final String NOMEPORTALE = "www.autosupermarket.it";
 	private final String URLROOT = "http://www.autosupermarket.it";
-	private final String USERNAME = "e136467@drdrb.com";
+	private final String USERNAME = "c2775833@drdrb.com";
 	private final String PASSWORD = "topik123";
 	private final String HOST = "www.autosupermarket.it";
 
@@ -370,6 +371,9 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int mounth = (Calendar.getInstance().get(Calendar.MONTH)+1);
+		
 		tabellaDiDipendenza.put("car[carana001_carlst001_listing_type_cod]", scheda.tipologiaVeicolo); //da fare sotto
 		tabellaDiDipendenza.put("car[carana001_carlst002_interior_cod]", scheda.finitureInterneVeicolo);
 		tabellaDiDipendenza.put("car[carana001_carlst004_auto_body_cod]", scheda.carrozzeriaVeicolo);
@@ -425,13 +429,30 @@ public class _autosupermarketIt extends PortaleWeb {
 		}
 
 		tabellaDiDipendenza.put("car[carana001_last_review_num]", "Scegli...");
-		tabellaDiDipendenza.put("car[carana001_month_num]", "0" + Integer.toString(scheda.meseImmatricolazioneVeicoloIndex-1));
+		
+		if(scheda.meseImmatricolazioneVeicolo.equals("Da immatricolare")) {
+			tabellaDiDipendenza.put("car[carana001_month_num]", "0"+mounth);
+		}
+		else {
+			tabellaDiDipendenza.put("car[carana001_month_num]", "0" + Integer.toString(scheda.meseImmatricolazioneVeicoloIndex-1));
+		}
+		
+		
 		String escapedDescription = scheda.descrizioneVeicolo.replaceAll("&", "&amp;").replaceAll("'", "&quot;").replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
 		tabellaDiDipendenza.put("car[carana001_notes_des]", escapedDescription);
 		tabellaDiDipendenza.put("car[carana001_owner_num]", scheda.numeroPrecedentiProprietariVeicolo);
 		tabellaDiDipendenza.put("car[carana001_public_price_num]", scheda.prezzoVeicolo);
 		tabellaDiDipendenza.put("car[carana001_seat_num]", "0"+scheda.postiASedereVeicoloIndex);
-		tabellaDiDipendenza.put("car[carana001_year_num]", "0"+scheda.annoImmatricolazioneVeicolo);
+		
+		
+		
+		if(scheda.annoImmatricolazioneVeicolo.equals("Da immatricolare")) {
+			tabellaDiDipendenza.put("car[carana001_year_num]", "0"+year);
+		}
+		else {
+			tabellaDiDipendenza.put("car[carana001_year_num]", "0"+scheda.annoImmatricolazioneVeicolo);
+		}
+		
 		tabellaDiDipendenza.put("car[id]", ""); //non ha value nel DOM
 		tabellaDiDipendenza.put("car[make_id]", scheda.marcaVeicolo);
 		tabellaDiDipendenza.put("car[trattativa_riservata]", "0");
