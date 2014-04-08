@@ -763,7 +763,9 @@ public class _autoscout24It extends PortaleWeb {
 				
 				Document dom = Jsoup.parse(responseBody);
 				Element link = dom.select("a[data-name=deleteLink][data-article-id=" + codiceInserzione + "]").first();
-				articleGUID = link.attr("data-article-guid");
+				if(link!=null) {
+					articleGUID = link.attr("data-article-guid");
+				}			
 
 			}
 		} catch (IOException | RuntimeException e) {
@@ -777,7 +779,10 @@ public class _autoscout24It extends PortaleWeb {
 			Object[] response = connessione_4.get("Connessione 4 - GET di eliminazione annuncio", "https://offerta.autoscout24.it/privatearea/deletearticlewithsurvey?articleId=" + codiceInserzione + "&articleGuid=" + articleGUID + "&_=" + timeStamp, requestHeaders, requestCookies, debugMode);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()!=200)) {
+			if( (responseStatus.getStatusCode()==200 || responseStatus.getStatusCode()==500)) { //Se l'annuncio non esiste più, risponde con 500
+				//
+			}
+			else {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
 		} catch (IOException | RuntimeException e) {
@@ -862,11 +867,21 @@ public class _autoscout24It extends PortaleWeb {
 					Iterator<Element> iterator = optionElements.iterator();
 					while(iterator.hasNext()) {
 						Element currentElement = iterator.next();
-						if(currentElement.text().equals(scheda.modelloVeicolo)) {  
+						System.out.println(currentElement.text());
+						String modelloCorrente = currentElement.text();
+
+						if(modelloCorrente.contains(scheda.modelloVeicolo)) {  
 							returnValue = currentElement.val();
 							System.out.println("method: getBaseData_ModelId-->" + returnValue);
+							break;
+						}
+						else {
+							System.out.println("method: getBaseData_ModelId-->" + "Non trovo una corrispondenza con i modelli elencati");
 						}
 					}
+				}
+				else {
+					System.out.println("method: getBaseData_ModelId-->" + "Non trovo elementi option");
 				}
 			}
 			else {
