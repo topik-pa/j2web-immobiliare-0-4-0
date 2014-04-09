@@ -545,7 +545,7 @@ public class _subitoIt extends PortaleWeb {
 
 
 		//Connessione 8 - POST della conferma alla pubblicazione
-		/*HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
+		HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
 		try {    
 			postParameters.add(new BasicNameValuePair("payment_type", "cc"));
 
@@ -573,7 +573,7 @@ public class _subitoIt extends PortaleWeb {
 		}
 		finally {
 			postParameters.clear();
-		}*/
+		}
 
 
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
