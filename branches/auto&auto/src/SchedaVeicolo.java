@@ -35,6 +35,9 @@ public class SchedaVeicolo implements Serializable, parametriGenerali  {
 
 	//Path per il file hash di questa scheda
 	String singolaSchedaDatPath;
+	
+	//La scheda è in modifica
+	boolean schedaInModifica;
 
 	//Attributi della scheda veicolo	
 	long idScheda;	//id univoco riferito alla scheda che permette di ordinarle in modo cronologico
