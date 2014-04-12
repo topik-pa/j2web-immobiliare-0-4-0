@@ -18,22 +18,16 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
-/*import org.apache.http.util.EntityUtils;
-import java.util.ArrayList;
-import org.apache.http.HttpEntity;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.client.entity.UrlEncodedFormEntity;*/
 
-public class HttpPortalConnection implements parametriGenerali {
+
+public class HttpPortalConnection {
 
 	//Variabili di connessione
-	protected static String SESSIONCOOKIE_HEADER;
+	/*protected static String SESSIONCOOKIE_HEADER;
 	protected static String SESSIONCOOKIE_NAME;
 	protected static String SESSIONCOOKIE_VALUE;
 	protected static String SESSIONCOOKIE_DOMAIN;
-	protected static boolean isSessionCookieSet = false;
+	protected static boolean isSessionCookieSet = false;*/
 
 	protected HttpGet httpget;
 	protected HttpPost httppost;
@@ -67,11 +61,11 @@ public class HttpPortalConnection implements parametriGenerali {
 		System.out.println("----------------------------------------");
 
 		//Show session cookies
-		System.out.println("Session cookie header: " + SESSIONCOOKIE_HEADER);
+		/*System.out.println("Session cookie header: " + SESSIONCOOKIE_HEADER);
 		System.out.println("Session cookie name: " + SESSIONCOOKIE_NAME);
 		System.out.println("Session cookie value: " + SESSIONCOOKIE_VALUE);
 		System.out.println("Session cookie domain: " + SESSIONCOOKIE_DOMAIN);
-		System.out.println("----------------------------------------");
+		System.out.println("----------------------------------------");*/
 
 		//Show Request properties
 		System.out.println("Request method: " + httpRequest.getMethod());
@@ -146,7 +140,7 @@ public class HttpPortalConnection implements parametriGenerali {
 	}
 
 	//Stampa a video le proprietà  della connessione corrente (per i GET)
-	@Deprecated
+	/*@Deprecated
 	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody) throws IOException {
 
 		//Show Request URL
@@ -201,10 +195,10 @@ public class HttpPortalConnection implements parametriGenerali {
 		System.out.println("----------------------------------------");
 		System.out.println("\n\n\n");
 
-	}
+	}*/
 
 	//Stampa a video le proprietà  della connessione corrente (overloading del metodo per gestire i POST urlencoded)
-	@Deprecated
+	/*@Deprecated
 	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody, List<NameValuePair> postParameters) throws IOException {
 
 		//Show Request URL
@@ -270,10 +264,10 @@ public class HttpPortalConnection implements parametriGenerali {
 		System.out.println("----------------------------------------");
 		System.out.println("\n\n\n");
 
-	}
+	}*/
 
 	//Stampa a video le proprietà  della connessione corrente (overloading del metodo per gestire i POST multipart)
-	@Deprecated
+	/*@Deprecated
 	public void printConnectionProperties(String connectionDescription, HttpRequestBase httpRequest, Header[] responseHeaders, String responseBody, MultipartEntity postParameters) throws IOException {
 
 		//Show Request URL
@@ -335,9 +329,10 @@ public class HttpPortalConnection implements parametriGenerali {
 		System.out.println("----------------------------------------");
 		System.out.println("\n\n\n");
 
-	}
+	}*/
 
 	//Metodi Set per definire il cookie di sessione a livello di classe connessione
+	/*@Deprecated
 	public void setSessionCookie(String cookieHeader, String cookieName, String cookieValue, String cookieDomain) {
 		SESSIONCOOKIE_DOMAIN = cookieDomain;
 		SESSIONCOOKIE_HEADER = cookieHeader;
@@ -347,7 +342,7 @@ public class HttpPortalConnection implements parametriGenerali {
 
 		//Stampo i valori trovati
 		System.out.println("Method: setSessionCookie \n" + "sessionCookie_header-->"+SESSIONCOOKIE_HEADER + "\nsessionCookieName-->"+SESSIONCOOKIE_NAME + "\nsessionCookie_value-->"+SESSIONCOOKIE_VALUE + "\nsessionCookieDomain-->"+SESSIONCOOKIE_DOMAIN);
-	}
+	}*/
 
 	//Una connessione di test con parametri, headers e cookie statici
 	/*public Object[] testConnection(String request, String url, ArrayList<NameValuePair> headersList, ArrayList<NameValuePair> paramsList, String[] sessionCookie) throws IOException {
