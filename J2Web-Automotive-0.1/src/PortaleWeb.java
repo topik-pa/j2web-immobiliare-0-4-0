@@ -38,14 +38,15 @@ public abstract class PortaleWeb implements parametriGenerali {
 	boolean isActive;	
 
 	//Cookie
-	protected static String SESSIONCOOKIEHEADER;
+	/*protected static String SESSIONCOOKIEHEADER;
 	protected static String SESSIONCOOKIENAME;
 	protected static String SESSIONCOOKIEVALUE;
-	protected static String SESSIONCOOKIEDOMAIN;
+	protected static String SESSIONCOOKIEDOMAIN;*/
 
 	//La label che identifica i parametri da non inviare
 	protected static String dontSendThisParam = "***DONOTSEND***";
 
+	//Costruttore
 	public PortaleWeb (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {
 
 		this.icon = icon;
@@ -149,6 +150,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 	}
 
 	//Trova il cookie di sessione e lo esporta a livello di classe portale
+	/*@Deprecated
 	public boolean findSessionCookie(Header[] headers, String cookieName, String cookieDomain) {
 
 		boolean cookieHeaderFound = false;
@@ -191,16 +193,20 @@ public abstract class PortaleWeb implements parametriGenerali {
 
 		//Valori di ritorno
 		return cookieHeaderFound?true:false;
-	}
+	}*/
 
 	//Ottiene i cookie
-	public boolean setCookies(Header[] inputHeaders, List<BasicClientCookie> outputHeaders) {
+	/*@Deprecated
+	public boolean setCookies(Header[] inputHeaders, List<BasicClientCookie> outputCookies) {
 
 		boolean cookiesFound = false;
 
 		String current_cookie_header;
 		String current_cookie_name;
 		String current_cookie_value;
+		String current_cookie_path;
+		String current_cookie_domain = null;
+		String cookie_header_substring;
 		BasicClientCookie currentCookie;
 
 		for(int i=0; i<inputHeaders.length; i++) {       	
@@ -209,27 +215,148 @@ public abstract class PortaleWeb implements parametriGenerali {
 			if(currentHeader.getName().contains("Set-Cookie")) {
 				cookiesFound = true;
 
+				//header completo del cookie
 				current_cookie_header = currentHeader.getValue();
 				int end = current_cookie_header.indexOf("=");
+
+				//nome del cookie
 				current_cookie_name = current_cookie_header.substring(0, end);                   
+
+				//valore del cookie
 				int start = end + 1;
-				
 				if(current_cookie_header.contains(";")) {
 					end = current_cookie_header.indexOf(";");
 				}
 				else {
 					end = current_cookie_header.length();
 				}
-				
 				current_cookie_value = current_cookie_header.substring(start, end);
 
-				//Stampo i valori trovati
-				System.out.println("Method: setCookies \n" + "cookie_header-->"+current_cookie_header + "\ncookieName-->"+current_cookie_name + "\ncookie_value-->"+current_cookie_value);
+				//path del cookie
+				if(current_cookie_header.contains("path=")) {
+					start = current_cookie_header.indexOf("path=");				
+					cookie_header_substring = current_cookie_header.substring(start);
+					end = cookie_header_substring.indexOf(";");
+					if(end==-1) {
+						end = cookie_header_substring.length();
+					}
+					current_cookie_path = cookie_header_substring.substring(5, end);
+				}
+				else {
+					current_cookie_path = "/";
+				}	
+
+				//domain del cookie
+				if(current_cookie_header.contains("domain=")) {
+					start = current_cookie_header.indexOf("domain=");				
+					cookie_header_substring = current_cookie_header.substring(start);
+					end = cookie_header_substring.indexOf(";");
+					if(end==-1) {
+						end = cookie_header_substring.length();
+					}
+					current_cookie_domain = cookie_header_substring.substring(7, end);
+				}
+				else {
+					current_cookie_domain = "www.cuboauto.it";
+				}
+
 
 				currentCookie = new BasicClientCookie(current_cookie_name, current_cookie_value);
-				outputHeaders.add(currentCookie);
+				currentCookie.setPath(current_cookie_path);
+				if(current_cookie_domain!=null) {
+					currentCookie.setDomain(current_cookie_domain);
+				}
+
+				outputCookies.add(currentCookie);
 			}       	
 		}
+
+		//Stampo i valori trovati
+		System.out.println("Method: setCookies \n" + outputCookies);
+
+		return cookiesFound;
+
+	}*/
+
+
+	//Ottiene i cookie
+	public boolean setCookies(Header[] inputHeaders, List<BasicClientCookie> outputCookies, String defaultPath, String defaultDomain) {
+
+		boolean cookiesFound = false;
+
+		String current_cookie_header;
+		String current_cookie_name;
+		String current_cookie_value;
+		String current_cookie_path;
+		String current_cookie_domain = null;
+		String cookie_header_substring;
+		BasicClientCookie currentCookie;
+
+		for(int i=0; i<inputHeaders.length; i++) {       	
+			Header currentHeader = inputHeaders[i];
+			//Get cookie
+			if(currentHeader.getName().contains("Set-Cookie")) {
+				cookiesFound = true;
+
+				//header completo del cookie
+				current_cookie_header = currentHeader.getValue();
+				int end = current_cookie_header.indexOf("=");
+
+				//nome del cookie
+				current_cookie_name = current_cookie_header.substring(0, end);                   
+
+				//valore del cookie
+				int start = end + 1;
+				if(current_cookie_header.contains(";")) {
+					end = current_cookie_header.indexOf(";");
+				}
+				else {
+					end = current_cookie_header.length();
+				}
+				current_cookie_value = current_cookie_header.substring(start, end);
+
+				//path del cookie
+				if(current_cookie_header.contains("path=")) {
+					start = current_cookie_header.indexOf("path=");				
+					cookie_header_substring = current_cookie_header.substring(start);
+					end = cookie_header_substring.indexOf(";");
+					if(end==-1) {
+						end = cookie_header_substring.length();
+					}
+					current_cookie_path = cookie_header_substring.substring(5, end);
+				}
+				else {
+					current_cookie_path = defaultPath;
+				}	
+
+				//domain del cookie
+				if(current_cookie_header.contains("domain=")) {
+					start = current_cookie_header.indexOf("domain=");				
+					cookie_header_substring = current_cookie_header.substring(start);
+					end = cookie_header_substring.indexOf(";");
+					if(end==-1) {
+						end = cookie_header_substring.length();
+					}
+					current_cookie_domain = cookie_header_substring.substring(7, end);
+				}
+				else {
+					current_cookie_domain = defaultDomain;
+				}
+
+				//Creazione del nuovo cookie
+				currentCookie = new BasicClientCookie(current_cookie_name, current_cookie_value);
+				currentCookie.setPath(current_cookie_path);
+				if(current_cookie_domain!=null) {
+					currentCookie.setDomain(current_cookie_domain);
+				}
+
+				//Inserimento nella struttura in output
+				outputCookies.add(currentCookie);
+			}       	
+		}
+
+		//Stampo i valori trovati
+		System.out.println("Method: setCookies \n" + outputCookies);
 
 		return cookiesFound;
 
@@ -307,6 +434,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 	}
 
 	//Metodo per evitare l'invio di parametri
+	/*@Deprecated
 	public List<NameValuePair> removeNotUsedParams(List<NameValuePair> paramList) {	
 
 		List<NameValuePair> cleanedList = paramList;
@@ -319,6 +447,21 @@ public abstract class PortaleWeb implements parametriGenerali {
 			}
 		}
 		return cleanedList;
+	}*/
+
+	//Metodo per evitare l'invio di parametri non voluti
+	public Map<String, String> removeNotUsedParams(Map<String, String> paramMap) {	
+
+		Map<String, String> cleanedMap = paramMap;
+
+		Iterator<Entry<String, String>> iterator = paramMap.entrySet().iterator();
+		while(iterator.hasNext()) {
+			Entry<String, String>  currentParam = (Entry<String, String>) iterator.next();
+			if(currentParam.getValue() == dontSendThisParam)  {
+				iterator.remove();	
+			}
+		}
+		return cleanedMap;
 	}
 
 	//Ritorna il valore di un input dato il valore nella scheda e l'elemento input del DOM
@@ -327,6 +470,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		String returnValue = "";
 
 		switch (domElement.nodeName()) {
+		//Se è una select, il valore ritornato è la value della option che più assomiglia al valore della scheda
 		case "select":	
 			String nameElemento = domElement.attr("name");
 			Elements childrens = domElement.children();
@@ -350,14 +494,9 @@ public abstract class PortaleWeb implements parametriGenerali {
 				}       		
 			}
 			break;
-
+			//Se si tratta di un input, di una textarea o di un button: ritora il valore della scheda senza ulteriori modifiche	
 		case "input":
-			if(valueScheda.equals("***site***")) {
-				returnValue = domElement.val();
-			}
-			else {
-				returnValue = valueScheda;
-			}
+			returnValue = valueScheda;
 			break;
 
 		case "textarea":
@@ -369,7 +508,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 			break;
 
 		default:
-			System.out.println("Method getParamValue: " +  "input non elaborato-->" + domElement.nodeName());
+			System.out.println("Method getParamValue: " +  "attenzione - input non elaborato-->" + domElement.nodeName());
 
 		}
 
@@ -379,10 +518,12 @@ public abstract class PortaleWeb implements parametriGenerali {
 	//Valuta i parametri presenti nella tabella di dipendenza
 	public void valutaParametri(String dom, String selettore, Map<String,String> inputMap, Map<String,String> outputMap) {
 
+		//Nome/valore degli input esaminati e valore associato all'input stesso
 		String paramName;
 		String paramValue;
 		String dipendenza;
 
+		//Parsing del DOM e estrazione degli input
 		org.jsoup.nodes.Document doc = Jsoup.parse(dom);
 		Elements inputElements = doc.select(selettore);
 
@@ -391,17 +532,17 @@ public abstract class PortaleWeb implements parametriGenerali {
 			while(iterator.hasNext()) {
 				Element currentElement = iterator.next();
 				paramName = currentElement.attr("name");
-				dipendenza = inputMap.get(paramName);
+				paramValue = currentElement.attr("value");
+				dipendenza = inputMap.get(paramName); //controllo se l'input corrente ha un valore associato nella mappaAssociativa
 				if(dipendenza != null) {
-					paramValue = getParamValue(dipendenza, currentElement);
-					outputMap.put(paramName, paramValue);
+					paramValue = getParamValue(dipendenza, currentElement); //il valore dell'elemento corrente deve essere calcolato in base ai valori presenti nella scheda veicolo
 				}
-				else {
-					System.out.println("Method valutaParametri: " +  "input non presente nella tabella di dipendenza-->" + currentElement.attr("name") + "(" + currentElement.nodeName() + ")");
-				}
+				outputMap.put(paramName, paramValue);
 			}	
 		}
-		System.out.println("Method valutaParametri : " +  "mappaDeiParametri-->" + outputMap.toString());
+
+		removeNotUsedParams(outputMap);
+		System.out.println("Method valutaParametri (parametri inviati nella connessione attuale): " +  "mappaDeiParametri-->" + outputMap.toString());
 	}
 
 	//Prepara i parametri POST da inviare nella connessione corrente
@@ -417,75 +558,93 @@ public abstract class PortaleWeb implements parametriGenerali {
 
 	//Adatta le select del DOM originario per renderle compatibili a quelle di j2web
 	public org.jsoup.nodes.Document adattaSelect(org.jsoup.nodes.Document doc, String selettore, List<NameValuePair> listaAssociativa) {
-		
+
 		Element select = ((Element) doc).select(selettore).first();
 		Elements options = select.children();
-		
+
 		Iterator<Element> iterator = options.iterator();
 		while(iterator.hasNext()) {
 			iterator.next().remove();
 		}
-		
+
 		Iterator<NameValuePair> iterator2 = listaAssociativa.iterator();
 		while(iterator2.hasNext()) {
-			
+
 			NameValuePair currentListElement = iterator2.next();
-			
+
 			String newOptionElement = "<option value=\"" + currentListElement.getName() + "\">" + currentListElement.getValue() + "</option>"; 
 			select.append(newOptionElement);
 		}
-		
+
 		return doc;
 
 	}
-	
+
 	//Ritorna il valore di un cookie data una lista di cookie e il nome del cookie stesso
 	public String returnCookieValue(List<BasicClientCookie> cookieList, String cookieName) {
-		
+
 		String cookieValue = "";
-		
+
 		Iterator<BasicClientCookie> iterator = cookieList.iterator();
 		while(iterator.hasNext()) {
-			
+
 			BasicClientCookie currentCookie = iterator.next();
-			
+
 			if(currentCookie.getName().equals(cookieName)) {
 				cookieValue = currentCookie.getValue();
 			}
 		}
-		
+
 		return cookieValue;
-		
+
+	}
+
+	//Pulizia delle strutture dati passate
+	public void clearStruttureDati(Map<String, String> input1, Map<String, String> input2, List<NameValuePair> input3) {
+		input1.clear();
+		input2.clear();
+		input3.clear();
+	}
+
+	//Reset e inizializzazione degli headers
+	public void inizializzaHeaders(List<NameValuePair> requestHeaders, String Host) {
+		requestHeaders.clear();
+		requestHeaders.add(new BasicNameValuePair("Host", Host));
+		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
+		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
+		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
+		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
+		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
 	}
 
 	//Messaggio inserimento annuncio OK
 	public void messageInserimentoOK(String nomePortale) {
 		JOptionPane.showMessageDialog(null, "Scheda veicolo inserita in: " + nomePortale, "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+
 	//Messaggio inserimento annuncio KO
 	public void messageInserimentoKO(String nomePortale) {
 		JOptionPane.showMessageDialog(null, "Impossibile sincronizzare l'annuncio o annuncio non compatibile con il portale: " + nomePortale + ".\n\nVerificare che:\nLa combinazione marca/modello sia prevista nel portale di inserimento\nNon si sia raggiunto il limite di annunci pubblicabili\nSi stiano rispettando i vincoli di inserimento del portale (per esempio: numero minimo e dimensioni delle immagini da pubblicare)", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	//Messaggio eliminazione annuncio OK
 	public void messageEliminazioneOK(String nomePortale) {
 		JOptionPane.showMessageDialog(null, "Scheda veicolo eliminata da: " + nomePortale);
 	}
-	
+
 	//Messaggio eliminazione annuncio KO
 	public void messageEliminazioneKO(String nomePortale) {
 		JOptionPane.showMessageDialog(null, "Problemi nell\'eliminazione scheda in: " + nomePortale + ".\n\n Verificare l\'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	//Messaggio modifica annuncio OK
 	public void messageModificaOK(String nomePortale) {
 		JOptionPane.showMessageDialog(null, "Scheda veicolo sincronizzata in: " + nomePortale, "Scheda sincronizzata", JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+
 	//Messaggio modifica annuncio KO
 	public void messageModificaKO(String nomePortale) {
 		JOptionPane.showMessageDialog(null, "Problemi nella sincronizzazione scheda in: " + nomePortale + ".\n\n Verificare la sincronizzazione", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 }

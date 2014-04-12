@@ -24,7 +24,7 @@ public interface parametriGenerali {
 
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
-	final int IDUTENTE = 20; //l'ID corrisponde al valore idUtente del DB (20 per l'utente di DEV)
+	final int IDUTENTE = 20; //l'ID corrisponde al valore idUtente del DB (20 per l'utente di DEV, 19 per quello di PROD)
 	final String EMAIL_UTENTE ="marco--pavan@libero.it";
 	final String RAGIONESOCIALE_UTENTE ="Auto&Auto srl";
 	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
@@ -48,6 +48,9 @@ public interface parametriGenerali {
 	//Url posizione immagini in remoto
 	//String urlLocationImmaginiInRemoto = "http://www.auto-nuove-usate.it/imgauto/";
 	String urlLocationImmaginiInRemoto = "http://localhost/imgauto/";
+	
+	//Debug mode
+	boolean DEBUG_MODE = true; 
 	/*
 	 * 
 	 * 
