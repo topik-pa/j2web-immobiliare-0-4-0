@@ -30,6 +30,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -1268,7 +1269,9 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 				}
 			}
 		});
-		panel_24.add(textPane_Descrizione, "2, 4, fill, fill");
+	    JScrollPane scroll = new JScrollPane ( textPane_Descrizione );
+	    scroll.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
+		panel_24.add(scroll, "2, 4, fill, fill");
 
 		JPanel panel_33 = new JPanel();
 		panel_33.setBorder(new TitledBorder(null, "Informazioni di contatto", TitledBorder.LEADING, TitledBorder.TOP, null, null));
