@@ -16,6 +16,9 @@ public class SchedaCliente implements Serializable, parametriGenerali  {
 	//Attributi della scheda veicolo	
 	long idSchedaCliente;
 	String codiceSchedaCliente;
+	
+	//La scheda è in modifica
+	boolean schedaInModifica;
 
 	String numResultsMLS = "ND"; //Valore predefinito
 
