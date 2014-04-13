@@ -30,13 +30,12 @@ public class _cuboAutoIt extends PortaleWeb {
 	//Variabili portale
 	private final String NOMEPORTALE = "www.cuboauto.it";
 	private final String URLROOT = "http://www.cuboauto.it";
-	private final String USERNAME = "topik123";
-	private final String PASSWORD = "topik123";
+	private final String USERNAME = CUBOAUTO_USERNAME;
+	private final String PASSWORD = CUBOAUTO_PASSWORD;
 	private final String HOST = "www.cuboauto.it";
 
 	private final String COOKIE_DEFAULT_PATH = "/";
 	private final String COOKIE_DEFAULT_DOMAIN = "www.cuboauto.it";
-
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
@@ -233,7 +232,6 @@ public class _cuboAutoIt extends PortaleWeb {
 		mappaAssociativaInputValore.put("cilindri","vuoto");
 		mappaAssociativaInputValore.put("codice",(scheda.marcaVeicolo+"-"+scheda.modelloVeicolo+"-"+scheda.coloreEsternoVeicolo+"-"+scheda.tipologiaContrattoVeicolo).replace(" " , ""));
 		mappaAssociativaInputValore.put("coloreesterno",scheda.coloreEsternoVeicolo);
-		if(!scheda.coloreMetalizzato){mappaAssociativaInputValore.put("metallizzato","***DONOTSEND***");}	
 		if(scheda.coloreInterniVeicolo.equals("Seleziona")) {mappaAssociativaInputValore.put("coloreinterni","vuoto");}	else {mappaAssociativaInputValore.put("coloreinterni",scheda.coloreInterniVeicolo);}	
 		mappaAssociativaInputValore.put("contratto",scheda.tipologiaContrattoVeicolo);
 		mappaAssociativaInputValore.put("descrizione",scheda.descrizioneVeicolo);
@@ -250,17 +248,13 @@ public class _cuboAutoIt extends PortaleWeb {
 		if(scheda.numeroRapportiVeicolo.equals("Seleziona")) {mappaAssociativaInputValore.put("rapporti","vuoto");}else {mappaAssociativaInputValore.put("rapporti",scheda.numeroRapportiVeicolo);}	
 		if(scheda.postiASedereVeicolo.equals("Seleziona")) {mappaAssociativaInputValore.put("sedili","vuoto");}	else {mappaAssociativaInputValore.put("sedili",scheda.postiASedereVeicolo);}
 		mappaAssociativaInputValore.put("versione",scheda.versioneVeicolo);
-		mappaAssociativaInputValore.put("sicurezza[]","***DONOTSEND***");
-		mappaAssociativaInputValore.put("comfort[]","***DONOTSEND***");
-		mappaAssociativaInputValore.put("audio[]","***DONOTSEND***");
-		mappaAssociativaInputValore.put("linea[]","***DONOTSEND***");
-		mappaAssociativaInputValore.put("varie[]","***DONOTSEND***");
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
 		valutaParametri(responseBody, "#centrale form input, #centrale form select, #centrale form textarea", mappaAssociativaInputValore, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 
-		//Aggiungo qui questi parametri perchè se li aggiungessi nella mappaAssociativaInputValore si sovrascriverebbero (hanno lo stesso nome)
+		//Le checkbox
+		if(scheda.coloreMetalizzato){postParameters.add(new BasicNameValuePair("metallizzato", "1")); }
 		if(scheda.disponibilitaABS){ postParameters.add(new BasicNameValuePair("sicurezza[]", "1")); }
 		if(scheda.disponibilitaAirBag){ postParameters.add(new BasicNameValuePair("sicurezza[]", "2")); postParameters.add(new BasicNameValuePair("sicurezza[]", "4"));}
 		if(scheda.disponibilitaAntifurto){ postParameters.add(new BasicNameValuePair("sicurezza[]", "128")); }
@@ -405,17 +399,12 @@ public class _cuboAutoIt extends PortaleWeb {
 	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
 
-		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT;
-			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
-			System.out.println("Visualizzata in: " + NOMEPORTALE);
-
+			java.awt.Desktop.getDesktop().browse(java.net.URI.create(URLROOT));
 		} catch (IOException e ) {
 			//
 		}
-
 		return true;
 	}
 
