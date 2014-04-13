@@ -20,8 +20,8 @@ public interface parametriGenerali {
 	 * 
 	 */
 	//Versione di J2Web
-	final String  j2web_version = "1.0.7 \u03B2 - DEV";
-
+	final String  j2web_version = "1.1.7 \u03B2 - DEV";
+	//
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
 	final int IDUTENTE = 20; //l'ID corrisponde al valore idUtente del DB (20 per l'utente di DEV, 19 per quello di PROD)
@@ -32,25 +32,47 @@ public interface parametriGenerali {
 	final String CITTA_UTENTE ="Udine";
 	final String INDIRIZZO_UTENTE ="33100 - Udine (UD)";
 	final String TELEFONO_UTENTE ="3295698985";
-	
+	//
 	//Url tracking remoto
 	//String urlTrackingRemoto = "http://www.j2webstudio.it/j2web/tracking/tracking.php";
 	String urlTrackingRemoto = "http://localhost/j2web/tracking/tracking.php";
-
+	//
 	//Url tunneling DB auto-nuove-usate
 	//String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/j2web/httpTunnel/mysqltunnel.php";
 	String urlTunnelDBNekta = "http://localhost/j2web/httpTunnel/mysqltunnel.php";
-
+	//
 	//Url inserimento immagini in remoto
 	//String urlInserimentoImmaginiInRemoto = "http://www.auto-nuove-usate.it/j2web/images/uploadImages.php";
 	String urlInserimentoImmaginiInRemoto = "http://localhost/j2web/images/uploadImages.php";
-
+	//
 	//Url posizione immagini in remoto
 	//String urlLocationImmaginiInRemoto = "http://www.auto-nuove-usate.it/imgauto/";
 	String urlLocationImmaginiInRemoto = "http://localhost/imgauto/";
-	
+	//
 	//Debug mode
-	boolean DEBUG_MODE = true; 
+	boolean DEBUG_MODE = true;
+	//
+	//Impostazioni specifiche richieste dai portali
+	//CUBOAUTO
+	String CUBOAUTO_USERNAME = "topik123";
+	String CUBOAUTO_PASSWORD = "topik123";
+	//AUTOSCOUT24
+	String AUTOSCOUT24_USERNAME = "e138281@drdrb.com";
+	String AUTOSCOUT24_PASSWORD = "topik123";
+	//AUTOSUPERMARKET
+	String AUTOSUPERMARKET_USERNAME = "c2775833@drdrb.com";
+	String AUTOSUPERMARKET_PASSWORD = "topik123";
+	//SUBITOIT
+	String SUBITOIT_USERNAME = "marco--pavan@libero.it";
+	String SUBITOIT_PASSWORD = "topik123";
+	String SUBITOIT_CODTOWN = "030129";
+	String SUBITOIT_CODCITY = "4";
+	//VENDIAUTO
+	String VENDIAUTO_USERNAME = "c3339097@drdrb.com";
+	String VENDIAUTO_PASSWORD = "topik123";
+	//AUTOPRONTACONSEGNA
+	String AUTOPRONTACONSEGNA_USERNAME = "HeadyElf@mailinator.com";
+	String AUTOPRONTACONSEGNA_PASSWORD = "topik123";
 	/*
 	 * 
 	 * 

@@ -457,7 +457,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		Iterator<Entry<String, String>> iterator = paramMap.entrySet().iterator();
 		while(iterator.hasNext()) {
 			Entry<String, String>  currentParam = (Entry<String, String>) iterator.next();
-			if(currentParam.getValue() == dontSendThisParam)  {
+			if(currentParam.getValue() == dontSendThisParam || currentParam.getKey() == "")  {
 				iterator.remove();	
 			}
 		}
@@ -472,27 +472,33 @@ public abstract class PortaleWeb implements parametriGenerali {
 		switch (domElement.nodeName()) {
 		//Se è una select, il valore ritornato è la value della option che più assomiglia al valore della scheda
 		case "select":	
-			String nameElemento = domElement.attr("name");
-			Elements childrens = domElement.children();
-			if(childrens.isEmpty()) {
-				return "Nessun elemento option";
-			}
 
-			Iterator<Element> iterator = childrens.iterator();
-			String valueSchedaMinuscolo = valueScheda.toLowerCase();
-			List<char[]> stringaScheda = bigram(valueSchedaMinuscolo);
-			double resultComparation = 0;
-			while(iterator.hasNext()) {
-				Element currentElement = iterator.next();
-				String valueCurrentElemMinuscolo = currentElement.text().toLowerCase();
-				List<char[]> stringaPortale = bigram(valueCurrentElemMinuscolo);        		
-				double actualResultComparation = dice(stringaPortale, stringaScheda);
-				System.out.println("Comparazione " + nameElemento + " " + valueSchedaMinuscolo + "/" + valueCurrentElemMinuscolo + ": " + actualResultComparation);
-				if(actualResultComparation>resultComparation) {
-					resultComparation = actualResultComparation;
-					returnValue = currentElement.attr("value");            		
-				}       		
+			if(valueScheda.equals(dontSendThisParam)) {
+				returnValue = valueScheda;
 			}
+			else {
+				String nameElemento = domElement.attr("name");
+				Elements childrens = domElement.children();
+				if(childrens.isEmpty()) {
+					return "Nessun elemento option";
+				}
+
+				Iterator<Element> iterator = childrens.iterator();
+				String valueSchedaMinuscolo = valueScheda.toLowerCase();
+				List<char[]> stringaScheda = bigram(valueSchedaMinuscolo);
+				double resultComparation = 0;
+				while(iterator.hasNext()) {
+					Element currentElement = iterator.next();
+					String valueCurrentElemMinuscolo = currentElement.text().toLowerCase();
+					List<char[]> stringaPortale = bigram(valueCurrentElemMinuscolo);        		
+					double actualResultComparation = dice(stringaPortale, stringaScheda);
+					System.out.println("Comparazione " + nameElemento + " " + valueSchedaMinuscolo + "/" + valueCurrentElemMinuscolo + ": " + actualResultComparation);
+					if(actualResultComparation>resultComparation) {
+						resultComparation = actualResultComparation;
+						returnValue = currentElement.attr("value");            		
+					}       		
+				}
+			}		
 			break;
 			//Se si tratta di un input, di una textarea o di un button: ritora il valore della scheda senza ulteriori modifiche	
 		case "input":
@@ -521,6 +527,7 @@ public abstract class PortaleWeb implements parametriGenerali {
 		//Nome/valore degli input esaminati e valore associato all'input stesso
 		String paramName;
 		String paramValue;
+		String paramType;
 		String dipendenza;
 
 		//Parsing del DOM e estrazione degli input
@@ -533,11 +540,19 @@ public abstract class PortaleWeb implements parametriGenerali {
 				Element currentElement = iterator.next();
 				paramName = currentElement.attr("name");
 				paramValue = currentElement.attr("value");
-				dipendenza = inputMap.get(paramName); //controllo se l'input corrente ha un valore associato nella mappaAssociativa
+				paramType = currentElement.attr("type");
+				dipendenza = inputMap.get(paramName); //controllo se l'input corrente ha un valore associato nella mappaAssociativa			
+
+				//Se esiste un valore di dipendenza, allora ricalcola il value del parametro
 				if(dipendenza != null) {
 					paramValue = getParamValue(dipendenza, currentElement); //il valore dell'elemento corrente deve essere calcolato in base ai valori presenti nella scheda veicolo
+					outputMap.put(paramName, paramValue);
 				}
-				outputMap.put(paramName, paramValue);
+				//Se il parametro non ha dipendenze (prende il valore del DOM) inseriscilo sse non si tratta di una checkbox
+				if(dipendenza==null && !paramType.equalsIgnoreCase("checkbox")) {
+					outputMap.put(paramName, paramValue);
+				}
+
 			}	
 		}
 

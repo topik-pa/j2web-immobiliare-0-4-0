@@ -32,14 +32,12 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 	//Variabili portale
 	private final String NOMEPORTALE = "www.autoprontaconsegna.com";
 	private final String URLROOT = "http://www.autoprontaconsegna.com";
-	private final String USERNAME = "HeadyElf@mailinator.com";
-	private final String PASSWORD = "topik123";
+	private final String USERNAME = AUTOPRONTACONSEGNA_USERNAME;
+	private final String PASSWORD = AUTOPRONTACONSEGNA_PASSWORD;
 	private final String HOST = "www.autoprontaconsegna.com";
 
-	private final String SESSIONCOOKIENAME = "PHPSESSID";
-	private final String SESSIONCOOKIEDOMAIN = "www.autoprontaconsegna.com";
-	private final String SESSIONCOOKIEHEADER = "";
-	private final String SESSIONCOOKIEVALUE = "";
+	private final String COOKIE_DEFAULT_PATH = "/";
+	private final String COOKIE_DEFAULT_DOMAIN = "www.autoprontaconsegna.com";
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
@@ -48,7 +46,6 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 	private String responseBody;
 	private boolean inserimentoOK = false;
 	private boolean modifica = false;
-	private boolean debugMode = true;
 
 	//Strutture dati di supporto
 	//Mappa dei parametri da inviare
@@ -64,13 +61,13 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 	List<BasicClientCookie> requestCookies;
 
 	//Mappa che rappresenta la tabella di dipendennza dei parametri da inviare
-	Map<String,String> tabellaDiDipendenza;
+	Map<String,String> mappaAssociativaInputValore;
 
 	//La scheda immobile su cui si lavora
 	SchedaVeicolo scheda;
 
 	//Altre variabili di supporto a livello globale
-	//String var_idMarca;
+	//
 
 	//Costruttore
 	public _autoprontaconsegnaCom (ImageIcon icon, String valoreLabel, String idPortale, boolean isActive) {		
@@ -87,7 +84,7 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 		requestHeaders = new ArrayList<NameValuePair>();
 
 		//Iniziallizzo la tabella di dipendenza
-		tabellaDiDipendenza = new Hashtable<String,String>();
+		mappaAssociativaInputValore = new Hashtable<String,String>();
 
 		//La lista dei cookies inviati
 		requestCookies = new ArrayList<BasicClientCookie>();		
@@ -98,13 +95,7 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 
-		if(modifica) {			
-			System.out.println("(MLS) Modifica scheda: " + scheda.codiceScheda + "...");
-		}
-		else  {
-			System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
-		}
-
+		//In questo portale non si possono inserire veicoli che non siano nuovi o km0
 		if(!scheda.tipologiaVeicolo.equals("Veicolo km 0") && !scheda.tipologiaVeicolo.equals("Veicolo nuovo")) {
 			messageInserimentoKO(NOMEPORTALE);
 			return false;
@@ -113,19 +104,13 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 		//Inizializzazione scheda
 		this.scheda=scheda;
 
-		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		requestHeaders.clear();
-		requestHeaders.add(new BasicNameValuePair("Host", HOST));
-		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
-		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
-		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
-		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
-		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
+		//Inizializzo gli headers
+		inizializzaHeaders(requestHeaders, HOST);
 
 		//Connessione 0 - GET della home page - Opzionale
 		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/IT/", requestHeaders, null, debugMode);
+			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/IT/", requestHeaders, null, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -139,7 +124,7 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/IT/login", requestHeaders, null, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/IT/login", requestHeaders, null, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -155,24 +140,22 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("email",USERNAME);
-		tabellaDiDipendenza.put("password",PASSWORD);
+		mappaAssociativaInputValore.put("email",USERNAME);
+		mappaAssociativaInputValore.put("password",PASSWORD);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#login input", tabellaDiDipendenza, mappaDeiParamerti);	
+		valutaParametri(responseBody, "#login input", mappaAssociativaInputValore, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/IT/login", postParameters, requestHeaders, null, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/IT/login", postParameters, requestHeaders, null, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
 				Header[] responseHeaders = (Header[])response[0];
 				//Trovo il cookie di sessione
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				setCookies(responseHeaders, requestCookies);
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 			}
@@ -184,16 +167,14 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();
-			postParameters.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
 		//Connessione 3 - GET della pagina "Area riservata" - Opzionale
 		/*HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area riservata\"", URLROOT + location, requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area riservata\"", URLROOT + location, requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -207,7 +188,7 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 		//Connessione 4 - GET della pagina "Inserisci un nuovo annuncio"
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/IT/account/addannunci", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/IT/account/addannunci", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -220,7 +201,7 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 
-
+		//Alcune select vengono adattate per ottimizzare la compatibilità 
 		Document doc = Jsoup.parse(responseBody);
 		List<NameValuePair> lista = new LinkedList<NameValuePair>();
 		lista.add(new BasicNameValuePair("2/3-Porte", "City car"));
@@ -289,39 +270,32 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
-		tabellaDiDipendenza.put("alimentazione",scheda.carburanteVeicolo);
-		tabellaDiDipendenza.put("allestimento",scheda.versioneVeicolo);
-		tabellaDiDipendenza.put("cambio",scheda.tipologiaCambioVeicolo);
-		tabellaDiDipendenza.put("carrozzeria",scheda.carrozzeriaVeicolo);
-		tabellaDiDipendenza.put("cilindrata",scheda.cilindrataVeicolo);
-		tabellaDiDipendenza.put("colore",scheda.coloreEsternoVeicolo);
-		tabellaDiDipendenza.put("coloreinterno",scheda.coloreInterniVeicolo);
-		tabellaDiDipendenza.put("euro",scheda.classeEmissioniVeicolo);
+		mappaAssociativaInputValore.put("alimentazione",scheda.carburanteVeicolo);
+		mappaAssociativaInputValore.put("allestimento",scheda.versioneVeicolo);
+		mappaAssociativaInputValore.put("cambio",scheda.tipologiaCambioVeicolo);
+		mappaAssociativaInputValore.put("carrozzeria",scheda.carrozzeriaVeicolo);
+		mappaAssociativaInputValore.put("cilindrata",scheda.cilindrataVeicolo);
+		mappaAssociativaInputValore.put("colore",scheda.coloreEsternoVeicolo);
+		mappaAssociativaInputValore.put("coloreinterno",scheda.coloreInterniVeicolo);
+		mappaAssociativaInputValore.put("euro",scheda.classeEmissioniVeicolo);
 		if(scheda.tipologiaVeicolo.equals("Veicolo km 0")) {
-			tabellaDiDipendenza.put("km","Km Zero");
-			tabellaDiDipendenza.put("kmshow","1");
-			tabellaDiDipendenza.put("annoimmatricolazione",scheda.annoImmatricolazioneVeicolo);
+			mappaAssociativaInputValore.put("km","Km Zero");
+			mappaAssociativaInputValore.put("kmshow","1");
+			mappaAssociativaInputValore.put("annoimmatricolazione",scheda.annoImmatricolazioneVeicolo);
 		}
 		if(scheda.tipologiaVeicolo.equals("Veicolo nuovo")) {
-			tabellaDiDipendenza.put("km","Nuovo");
-			tabellaDiDipendenza.put("kmshow","0");
-			tabellaDiDipendenza.put("annoimmatricolazione","");
+			mappaAssociativaInputValore.put("km","Nuovo");
+			mappaAssociativaInputValore.put("kmshow","0");
+			mappaAssociativaInputValore.put("annoimmatricolazione","");
 		}
-		tabellaDiDipendenza.put("marca",scheda.marcaVeicolo);
-		tabellaDiDipendenza.put("note", scheda.marcaVeicolo + " - " + scheda.modelloVeicolo + " - " + scheda.versioneVeicolo);
-		tabellaDiDipendenza.put("porte","");
-		tabellaDiDipendenza.put("posti",scheda.postiASedereVeicolo);
-		tabellaDiDipendenza.put("prezzo",scheda.prezzoVeicolo);
-		tabellaDiDipendenza.put("prezzolistino","");
-		if(scheda.coloreMetalizzato) {
-			tabellaDiDipendenza.put("tipocolore","metallizzato");
-		}
-		else {
-			tabellaDiDipendenza.put("tipocolore","seleziona");
-		}
-		tabellaDiDipendenza.put("tipointerno",scheda.finitureInterneVeicolo);
+		mappaAssociativaInputValore.put("marca",scheda.marcaVeicolo);
+		mappaAssociativaInputValore.put("note", scheda.marcaVeicolo + " - " + scheda.modelloVeicolo + " - " + scheda.versioneVeicolo);
+		mappaAssociativaInputValore.put("posti",scheda.postiASedereVeicolo);
+		mappaAssociativaInputValore.put("prezzo",scheda.prezzoVeicolo);
+		if(scheda.coloreMetalizzato) {mappaAssociativaInputValore.put("tipocolore","metallizzato");}else {mappaAssociativaInputValore.put("tipocolore","seleziona");}
+		mappaAssociativaInputValore.put("tipointerno",scheda.finitureInterneVeicolo);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#nuovoannuncio input, #nuovoannuncio select, #nuovoannuncio textarea", tabellaDiDipendenza, mappaDeiParamerti);
+		valutaParametri(responseBody, "#nuovoannuncio input, #nuovoannuncio select, #nuovoannuncio textarea", mappaAssociativaInputValore, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);	
 
@@ -330,11 +304,9 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 		try {
 			modello = getModello(mappaDeiParamerti.get("marca"), scheda.modelloVeicolo);
 		} catch (HttpWrongResponseBodyException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		postParameters.add(new BasicNameValuePair("modello", modello));
-
 		if(scheda.disponibilitaABS) {postParameters.add(new BasicNameValuePair("optional_1", "1"));}
 		if(scheda.disponibilitaAirBag) {postParameters.add(new BasicNameValuePair("optional_2", "2"));}
 		if(scheda.disponibilitaAlzacristalliElettrici) {postParameters.add(new BasicNameValuePair("optional_5", "5"));}
@@ -356,7 +328,7 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", URLROOT + "/IT/account/addannunci", postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", URLROOT + "/IT/account/addannunci", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -382,14 +354,10 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			postParameters.clear();
-			mappaDeiParamerti.clear();
-			tabellaDiDipendenza.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
-		/*
-
-		Date date = new Date();
+		/*Date date = new Date();
 		long param1 = date.getTime();
 		int param2 = 12345;
 		for(int i=1; i<=8; i++) {
@@ -403,7 +371,7 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 					reqEntity.addPart("Filename", new StringBody(bin.getFilename()) );
 					reqEntity.addPart("Upload", new StringBody("Submit Query") );
 
-					Object[] response = connessione_9.post("Connessione 9 - Invio delle foto", URLROOT + "/rivenditori/upload.php?salva=" + param2 + param1, reqEntity, requestHeaders, requestCookies, debugMode);			
+					Object[] response = connessione_9.post("Connessione 9 - Invio delle foto", URLROOT + "/rivenditori/upload.php?salva=" + param2 + param1, reqEntity, requestHeaders, requestCookies, DEBUG_MODE);			
 
 					//Controllo il response status
 					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -415,15 +383,12 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 					throw new HttpCommunicationException(e);
 				}
 				finally {
-					tabellaDiDipendenza.clear();
+					mappaAssociativaInputValore.clear();
 					mappaDeiParamerti.clear();
 					postParameters.clear();
 				}
 			}
-		}
-
-
-		 */
+		}*/
 
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
 		if(inserimentoOK) {
@@ -431,25 +396,18 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 			//Aggiorna la lista dei portali in cui è inserita la scheda
 			scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
 
-			if(!isSequential) {   			
-				System.out.println("Inserita in: " + NOMEPORTALE);       		
+			//Aggiorna i pulsanti del pannello inserimento
+			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
-				//Aggiorna i pulsanti del pannello inserimento
-				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
-
-				//Mail e messaggio informativo OK
-				if(!modifica) {
-					sendConfirmationMail(scheda, NOMEPORTALE, scheda.codiceScheda);
-
-					messageInserimentoOK(NOMEPORTALE);
-				}	
-				else {
-					messageModificaOK(NOMEPORTALE);
-				}
-				
+			//Mail e messaggio informativo OK
+			if(!modifica) {
+				sendConfirmationMail(scheda, NOMEPORTALE, scheda.codiceScheda);
+				messageInserimentoOK(NOMEPORTALE);
+			}	
+			else {
+				messageModificaOK(NOMEPORTALE);
 			}
 
-			return inserimentoOK;        	
 		}
 		else {
 
@@ -460,8 +418,9 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 				messageModificaKO(NOMEPORTALE);
 			}
 
-			return inserimentoOK;
 		}
+
+		return inserimentoOK;
 
 	}
 
@@ -473,7 +432,7 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 		//Connessione 4b - GET per ottenere il modello veicolo
 		HttpPortalGetConnection connessione_4b = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_4b.get("Connessione 4b -  GET per ottenere il modello veicolo", URLROOT + "/IT/ajaxannuncio?marca=" + marca + "&apc=1", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_4b.get("Connessione 4b -  GET per ottenere il modello veicolo", URLROOT + "/IT/ajaxannuncio?marca=" + marca + "&apc=1", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -520,8 +479,6 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 		try {
 			String url = URLROOT;
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
-			System.out.println("Visualizzata in: " + NOMEPORTALE);
-
 		} catch (IOException e ) {
 			//
 		}
@@ -532,20 +489,25 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
-		
+
 		//La scheda è da aggiornare
 		if(J2Web_UI.protoScheda!=null) {
 			modifica = true;
-		}		
+		}
 
-		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
+		//Inizializzazione scheda
+		this.scheda=scheda;
 
+		//Ottengo il codice con cui è stata inserita la scheda
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
+		
+		//Inizializzo gli headers
+		inizializzaHeaders(requestHeaders, HOST);
 
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/IT/login", requestHeaders, null, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/IT/login", requestHeaders, null, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -561,26 +523,24 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("email",USERNAME);
-		tabellaDiDipendenza.put("password",PASSWORD);
+		mappaAssociativaInputValore.put("email",USERNAME);
+		mappaAssociativaInputValore.put("password",PASSWORD);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#login input", tabellaDiDipendenza, mappaDeiParamerti);	
+		valutaParametri(responseBody, "#login input", mappaAssociativaInputValore, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/IT/login", postParameters, requestHeaders, null, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/IT/login", postParameters, requestHeaders, null, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
 				Header[] responseHeaders = (Header[])response[0];
 				//Trovo il cookie di sessione
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				setCookies(responseHeaders, requestCookies);
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
-				//location = getHeaderValueByName(responseHeaders, "Location");
+				location = getHeaderValueByName(responseHeaders, "Location");
 			}
 			else {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
@@ -590,16 +550,14 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();
-			postParameters.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
 		//Connessione 3 - GET della pagina "Area annunci"
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area annunci\"", URLROOT + "/IT/account/annunci", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area annunci\"", URLROOT + "/IT/account/annunci", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -615,18 +573,18 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 
 		//Connessione 4 - POST di eliminazione annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
-		tabellaDiDipendenza.put("abilita_" + codiceInserzione ,"1");
-		tabellaDiDipendenza.put("deleteAnnuncio",codiceInserzione);
-		tabellaDiDipendenza.put("subform","1");
+		mappaAssociativaInputValore.put("abilita_" + codiceInserzione ,"1");
+		mappaAssociativaInputValore.put("deleteAnnuncio",codiceInserzione);
+		//mappaAssociativaInputValore.put("subform","1");
 
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#visibile input", tabellaDiDipendenza, mappaDeiParamerti);
+		valutaParametri(responseBody, "#visibile input", mappaAssociativaInputValore, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);	
 
 		HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_4.post("Connessione 4 - POST di eliminazione annuncio", URLROOT + "/IT/account/annunci", postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_4.post("Connessione 4 - POST di eliminazione annuncio", URLROOT + "/IT/account/annunci", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -637,29 +595,24 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			postParameters.clear();
-			mappaDeiParamerti.clear();
-			tabellaDiDipendenza.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 		//Aggiorno la lista dei portali in cui è presenta la scheda corrente
 		scheda.eliminaInserimentoPortale(idPortale);			
 
-		if(!isSequential) {
-			//Aggiorno i pulsanti del pannello inserimento
-			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
+		//Aggiorno i pulsanti del pannello inserimento
+		PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
-			System.out.println("Eliminata da: " + NOMEPORTALE);
+		System.out.println("Eliminata da: " + NOMEPORTALE);
 
-			//Stampo a video un messaggio informativo
-			if(!modifica) {
-				messageEliminazioneOK(NOMEPORTALE);
-			}
+		//Stampo a video un messaggio informativo
+		if(!modifica) {
+			messageEliminazioneOK(NOMEPORTALE);
 		}
 
 		return true;
 
 	}
-	
 
 }
