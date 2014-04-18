@@ -468,7 +468,6 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 					//Chiamo il metodo afferente all'oggetto PortaleWeb per inserire una scheda, il metooo chiamato sarà quello della sottoclasse effettiva  				
 					try {
-						System.out.println("Inserisci: " + scheda.codiceScheda + " in " + portale.idPortale);
 						portale.inserisciScheda(scheda, false);
 					}
 					catch (HttpCommunicationException e1) {

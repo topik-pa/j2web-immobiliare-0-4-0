@@ -40,6 +40,7 @@ public class _autoscout24It extends PortaleWeb {
 	private final String NOMEPORTALE = "www.autoscout24.it";
 	private final String URLROOT = "http://www.autoscout24.it";
 	private final String SECUREURLROOT = "https://secure.autoscout24.it";
+	private final String SECUREURLROOT2 = "https://offerta.autoscout24.it";
 	private final String USERNAME = AUTOSCOUT24_USERNAME;
 	private final String PASSWORD = AUTOSCOUT24_PASSWORD;
 	private final String HOST = "www.autoscout24.it";
@@ -56,6 +57,9 @@ public class _autoscout24It extends PortaleWeb {
 	private String responseBody;
 	private boolean inserimentoOK = false;
 	private boolean modifica = false;
+	
+	//Messaggi personalizzati per questo portale
+		
 
 	//Strutture dati di supporto
 	//Mappa dei parametri da inviare
@@ -70,7 +74,7 @@ public class _autoscout24It extends PortaleWeb {
 	//Lista dei cookies inviati in una singola connessione
 	List<BasicClientCookie> requestCookies;
 
-	//Mappa che rappresenta la tabella di dipendennza dei parametri da inviare
+	//Mappa che rappresenta la tabella di dipendenza dei parametri da inviare
 	Map<String,String> mappaAssociativaInputValore;
 
 	//La scheda immobile su cui si lavora
@@ -116,8 +120,9 @@ public class _autoscout24It extends PortaleWeb {
 		//Inizializzazione scheda
 		this.scheda=scheda;
 
-		//Inizializzo gli headers
+		//Inizializzo gli headers e i cookies
 		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
 		//Connessione 0 - GET della home page - Opzionale
 		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -137,7 +142,7 @@ public class _autoscout24It extends PortaleWeb {
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
 		requestHeaders.remove(0);
-		requestHeaders.add(new BasicNameValuePair("Host", HOST2));
+		requestHeaders.add(0, new BasicNameValuePair("Host", HOST2));
 		try {
 			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/Login.aspx", requestHeaders, null, DEBUG_MODE);
 			//Controllo il response status
@@ -172,7 +177,9 @@ public class _autoscout24It extends PortaleWeb {
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(location.contains("MyPrivateArea")) {
@@ -197,8 +204,8 @@ public class _autoscout24It extends PortaleWeb {
 		//Connessione 3 - GET della pagina di inserzione annuncio semplificata
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
-		requestHeaders.remove(requestHeaders.size()-1);
-		requestHeaders.add(new BasicNameValuePair("Host", HOST3));
+		requestHeaders.remove(0);
+		requestHeaders.add(0, new BasicNameValuePair("Host", HOST3));
 		try {
 			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di inserzione annuncio semplificata", "https://offerta.autoscout24.it/classified", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
@@ -208,6 +215,10 @@ public class _autoscout24It extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -221,6 +232,11 @@ public class _autoscout24It extends PortaleWeb {
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==200)) {
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+				
 				String responseBody2 = (String)response[1];
 
 				//Parsing JSON della risposta
@@ -264,6 +280,11 @@ public class _autoscout24It extends PortaleWeb {
 					if( (responseStatus.getStatusCode()!=200)) {
 						throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 					}
+					else {
+						Header[] responseHeaders = (Header[])response[0];				
+						//Gestione dei cookie
+						setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+					}
 
 				} catch (IOException | RuntimeException e) {
 					throw new HttpCommunicationException(e);
@@ -278,7 +299,7 @@ public class _autoscout24It extends PortaleWeb {
 		//Connessione 5 - POST dei parametri di annuncio
 		DecimalFormat df = new DecimalFormat("###,###.###"); 
 		//Raccolgo i parametri nella tabella di dipendenza
-		mappaAssociativaInputValore.put("ArticleId", articleId); 
+		mappaAssociativaInputValore.put("ArticleId", "0"); 
 		mappaAssociativaInputValore.put("BaseData.BodyColorId",scheda.coloreEsternoVeicolo); 
 		mappaAssociativaInputValore.put("BaseData.BodyTypeId",scheda.carrozzeriaVeicolo); 
 		mappaAssociativaInputValore.put("BaseData.FirstRegistrationMonth", "0" + Integer.toString(scheda.meseImmatricolazioneVeicoloIndex-1)); 
@@ -316,10 +337,10 @@ public class _autoscout24It extends PortaleWeb {
 		String actualMakeId = mappaDeiParamerti.get("BaseData.MakeId");
 		BaseData_ModelId = getBaseData_ModelId(actualMakeId);
 		postParameters.add(new BasicNameValuePair("BaseData.ModelId", BaseData_ModelId));
-		postParameters.add(new BasicNameValuePair("__RequestVerificationToken", "EhEdN_8j5znK565KcirBfcnQWYz6jTCUP1Aht70T_qYQ0yjxROZcztemzN15idgukEZwGfombkBQ8MqsmNxyCoqWPnWG7rOx93nCPb6wX79i-C18xP0__vxvYysSvZeC0")); //lo metto statico perchè non so come valutarlo
-		
+		postParameters.add(new BasicNameValuePair("__RequestVerificationToken", "wvuDm07xf7GmDhQ9xl8uLyFdcpBczEeuXxg6JzaAPWZghv2lULVywV99mxwQid6Qm04RDe6mhSZDkmbPkkcKcZYSMQ2a9v5Ow3og4R22T3DiCHS4XQVIUWRQx0mLYsGX0")); //lo metto statico perchè non so come valutarlo
+
 		if(scheda.coloreMetalizzato) {
-			postParameters.add(new BasicNameValuePair("BaseData.MetallicColor", "false"));
+			postParameters.add(new BasicNameValuePair("BaseData.MetallicColor", "true"));
 		}
 		if(scheda.disponibilitaABS) {
 			postParameters.add(new BasicNameValuePair("Equipment.SecurityLeft.1", "1"));
@@ -397,7 +418,6 @@ public class _autoscout24It extends PortaleWeb {
 			postParameters.add(new BasicNameValuePair("Equipment.ComfortRight.34", "34"));
 			Equipment_EquipmentIds += "34,";
 		}
-		
 		if(Equipment_EquipmentIds.equals("")) {
 			postParameters.add(new BasicNameValuePair("Equipment.EquipmentIds", ""));
 		}
@@ -428,6 +448,11 @@ public class _autoscout24It extends PortaleWeb {
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==200)) {
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+				
 				responseBody = (String)response[1];
 
 				//Parsing JSON della risposta
@@ -486,7 +511,7 @@ public class _autoscout24It extends PortaleWeb {
 		}
 
 		return inserimentoOK;
-		
+
 
 	}
 
@@ -518,8 +543,9 @@ public class _autoscout24It extends PortaleWeb {
 		//Ottengo il codice con cui è stata inserita la scheda
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 
-		//Inizializzo gli headers
+		//Inizializzo gli headers e i cookies
 		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
 		String articleGUID = "";
 		Date date = new Date();
@@ -529,7 +555,7 @@ public class _autoscout24It extends PortaleWeb {
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
 		requestHeaders.remove(0);
-		requestHeaders.add(new BasicNameValuePair("Host", HOST2));
+		requestHeaders.add(0, new BasicNameValuePair("Host", HOST2));
 		try {
 			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/Login.aspx", requestHeaders, null, DEBUG_MODE);
 			//Controllo il response status
@@ -564,11 +590,14 @@ public class _autoscout24It extends PortaleWeb {
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(location.contains("MyPrivateArea")) {
 					responseBody = (String)response[1];
+					setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				}
 				else {
 					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Location non corretta"));
@@ -590,15 +619,20 @@ public class _autoscout24It extends PortaleWeb {
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		//Cambio del valore HOST nei request headers
 		requestHeaders.remove(0);
-		requestHeaders.add(new BasicNameValuePair("Host", HOST3));
+		requestHeaders.add(0, new BasicNameValuePair("Host", HOST3));
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina PrivateArea", "https://offerta.autoscout24.it/PrivateArea", requestHeaders, requestCookies, DEBUG_MODE);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina PrivateArea", SECUREURLROOT2 + "/privatearea", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
 			else {
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+				
 				responseBody = (String)response[1];
 
 				Document dom = Jsoup.parse(responseBody);
@@ -620,7 +654,9 @@ public class _autoscout24It extends PortaleWeb {
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==200 || responseStatus.getStatusCode()==500)) { //Se l'annuncio non esiste più, risponde con 500
-				//
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 			else {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
@@ -668,7 +704,7 @@ public class _autoscout24It extends PortaleWeb {
 				Elements optionElements = doc.getElementsByTag("option");
 				if(optionElements!=null) {
 					Iterator<Element> iterator = optionElements.iterator();
-					
+
 					//Una comparazione fatta con criterio
 					double resultComparation = 0;
 					while(iterator.hasNext()) {
@@ -683,11 +719,11 @@ public class _autoscout24It extends PortaleWeb {
 							resultComparation = actualResultComparation;
 							returnValue = currentElement.val();							
 						}
-						
+
 					}
 					System.out.println("Comparazione - risultato finale "  + returnValue);
 					//Una comparazione fatta con criterio
-					
+
 				}
 				else {
 					System.out.println("method: getBaseData_ModelId-->" + "Non trovo elementi option");

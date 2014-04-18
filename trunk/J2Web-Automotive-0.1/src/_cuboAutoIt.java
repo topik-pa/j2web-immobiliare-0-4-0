@@ -44,6 +44,9 @@ public class _cuboAutoIt extends PortaleWeb {
 	private String responseBody;
 	private boolean inserimentoOK = false;
 	private boolean modifica = false;
+	
+	//Messaggi personalizzati per questo portale
+	
 
 	//Strutture dati di supporto
 	//Mappa dei parametri da inviare
@@ -96,8 +99,9 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Inizializzazione scheda
 		this.scheda=scheda;
 
-		//Inizializzo gli headers
+		//Inizializzo gli headers e i cookie
 		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
 
 		//Connessione 0 - GET della home page - Opzionale
@@ -117,7 +121,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, null, DEBUG_MODE);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -125,6 +129,9 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -141,7 +148,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, null, DEBUG_MODE);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -189,6 +196,9 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -210,6 +220,9 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -280,7 +293,9 @@ public class _cuboAutoIt extends PortaleWeb {
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
@@ -331,6 +346,11 @@ public class _cuboAutoIt extends PortaleWeb {
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
+			else {
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
@@ -353,7 +373,12 @@ public class _cuboAutoIt extends PortaleWeb {
 					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 					if( (responseStatus.getStatusCode()!=302)) {
 						throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-					}    	
+					}
+					else {
+						Header[] responseHeaders = (Header[])response[0];				
+						//Gestione dei cookie
+						setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+					}
 
 				} catch (IOException | RuntimeException e) {
 					throw new HttpCommunicationException(e);
@@ -425,11 +450,12 @@ public class _cuboAutoIt extends PortaleWeb {
 
 		//Inizializzo gli headers
 		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, null, DEBUG_MODE);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -437,6 +463,9 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -453,7 +482,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, null, DEBUG_MODE);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -484,6 +513,11 @@ public class _cuboAutoIt extends PortaleWeb {
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (!(responseStatus.getStatusCode()==200 || responseStatus.getStatusCode()==302))) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
