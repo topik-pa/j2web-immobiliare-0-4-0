@@ -41,10 +41,11 @@ public class _vendiautoCom extends PortaleWeb {
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
 	private String codiceInserzione;
-	//private String location;
 	private String responseBody;
 	private boolean inserimentoOK = false;
 	private boolean modifica = false;
+	
+	//Messaggi personalizzati per questo portale
 
 	//Strutture dati di supporto
 	//Mappa dei parametri da inviare
@@ -99,6 +100,7 @@ public class _vendiautoCom extends PortaleWeb {
 
 		//Inizializzo gli headers
 		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
 		//Connessione 0 - GET della home page - Opzionale
 		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -117,7 +119,7 @@ public class _vendiautoCom extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/rivenditori/accedi.php", requestHeaders, null, DEBUG_MODE);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/rivenditori/accedi.php", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -125,6 +127,10 @@ public class _vendiautoCom extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -142,7 +148,7 @@ public class _vendiautoCom extends PortaleWeb {
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/rivenditori/accedi.php", postParameters, requestHeaders, null, DEBUG_MODE);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/rivenditori/accedi.php", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -188,6 +194,10 @@ public class _vendiautoCom extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -276,6 +286,10 @@ public class _vendiautoCom extends PortaleWeb {
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==200)) {
 				responseBody = (String)response[1];	
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 			else {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
@@ -334,6 +348,10 @@ public class _vendiautoCom extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 
 				Document dom = Jsoup.parse(responseBody);
 				Elements tr = ((Element) dom).select("#dati tbody tr");
@@ -408,6 +426,7 @@ public class _vendiautoCom extends PortaleWeb {
 
 		//Inizializzo gli headers
 		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
 		//Connessione 0 - GET della home page - Opzionale
 		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -426,7 +445,7 @@ public class _vendiautoCom extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/rivenditori/accedi.php", requestHeaders, null, DEBUG_MODE);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/rivenditori/accedi.php", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -434,6 +453,10 @@ public class _vendiautoCom extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -451,7 +474,7 @@ public class _vendiautoCom extends PortaleWeb {
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/rivenditori/accedi.php", postParameters, requestHeaders, null, DEBUG_MODE);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/rivenditori/accedi.php", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -484,6 +507,11 @@ public class _vendiautoCom extends PortaleWeb {
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			} 
+			else {
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+			}
 
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
