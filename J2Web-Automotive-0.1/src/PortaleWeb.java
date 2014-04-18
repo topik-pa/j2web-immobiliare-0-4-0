@@ -350,8 +350,28 @@ public abstract class PortaleWeb implements parametriGenerali {
 					currentCookie.setDomain(current_cookie_domain);
 				}
 
-				//Inserimento nella struttura in output
-				outputCookies.add(currentCookie);
+				//Inserimento nella struttura in output (eventuali cookie con lo stesso nome vengono sovrascritti)
+				if(!outputCookies.isEmpty()) {
+					List<BasicClientCookie> cookiesToRemove = new ArrayList<BasicClientCookie>();
+					List<BasicClientCookie> cookiesToAdd = new ArrayList<BasicClientCookie>();
+					Iterator<BasicClientCookie> iterator = outputCookies.iterator();
+					while(iterator.hasNext()) {
+						BasicClientCookie currentSavedCookie = iterator.next();
+						if(currentSavedCookie.getName().equals(currentCookie.getName())) {
+							cookiesToRemove.add(currentSavedCookie);
+							cookiesToAdd.add(currentCookie);
+						}
+						else {
+							cookiesToAdd.add(currentCookie);
+						}
+					}
+					outputCookies.removeAll(cookiesToRemove);
+					outputCookies.addAll(cookiesToAdd);
+				}
+				else {
+					outputCookies.add(currentCookie);
+				}
+
 			}       	
 		}
 
