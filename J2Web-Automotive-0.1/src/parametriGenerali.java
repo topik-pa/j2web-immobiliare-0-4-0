@@ -20,7 +20,7 @@ public interface parametriGenerali {
 	 * 
 	 */
 	//Versione di J2Web
-	final String  j2web_version = "1.1.7 \u03B2 - DEV";
+	final String  j2web_version = "1.1.5 \u03B2 - DEV";
 	//
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
