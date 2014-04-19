@@ -507,8 +507,9 @@ public abstract class PortaleWeb implements parametriGenerali {
 				String valueSchedaMinuscolo = valueScheda.toLowerCase();
 				List<char[]> stringaScheda = bigram(valueSchedaMinuscolo);
 				double resultComparation = 0;
+				Element currentElement = null;
 				while(iterator.hasNext()) {
-					Element currentElement = iterator.next();
+					currentElement = iterator.next();
 					String valueCurrentElemMinuscolo = currentElement.text().toLowerCase();
 					List<char[]> stringaPortale = bigram(valueCurrentElemMinuscolo);        		
 					double actualResultComparation = dice(stringaPortale, stringaScheda);
@@ -518,6 +519,10 @@ public abstract class PortaleWeb implements parametriGenerali {
 						returnValue = currentElement.attr("value");            		
 					}       		
 				}
+				if(resultComparation==0 && currentElement!=null) {
+					returnValue = currentElement.text();
+				}
+				
 			}		
 			break;
 			//Se si tratta di un input, di una textarea o di un button: ritora il valore della scheda senza ulteriori modifiche	

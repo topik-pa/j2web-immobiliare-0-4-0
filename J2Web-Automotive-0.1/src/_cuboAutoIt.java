@@ -243,7 +243,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		mappaAssociativaInputValore.put("chilometri",scheda.chilometraggioVeicolo);
 		mappaAssociativaInputValore.put("cilindrata",scheda.cilindrataVeicolo);
 		mappaAssociativaInputValore.put("cilindri","vuoto");
-		mappaAssociativaInputValore.put("codice",(scheda.marcaVeicolo+"-"+scheda.modelloVeicolo+"-"+scheda.coloreEsternoVeicolo+"-"+scheda.tipologiaContrattoVeicolo).replace(" " , ""));
+		mappaAssociativaInputValore.put("codice",scheda.codiceScheda);
 		mappaAssociativaInputValore.put("coloreesterno",scheda.coloreEsternoVeicolo);
 		if(scheda.coloreInterniVeicolo.equals("Seleziona")) {mappaAssociativaInputValore.put("coloreinterni","vuoto");}	else {mappaAssociativaInputValore.put("coloreinterni",scheda.coloreInterniVeicolo);}	
 		mappaAssociativaInputValore.put("contratto",scheda.tipologiaContrattoVeicolo);

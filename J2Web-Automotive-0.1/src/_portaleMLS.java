@@ -304,9 +304,9 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&Motore=" + (scheda.tipologiaMotoreVeicoloIndex==0?"ND":URLEncoder.encode(scheda.tipologiaMotoreVeicolo, "UTF-8"));
 		queryString += "&Cambio=" + (scheda.tipologiaCambioVeicoloIndex==0?"ND":URLEncoder.encode(scheda.tipologiaCambioVeicolo, "UTF-8"));
 		queryString += "&NumRapporti=" + (scheda.numeroRapportiVeicoloIndex==0?"0":scheda.numeroRapportiVeicoloIndex-2);
-		queryString += "&Cilindrata=" + (scheda.cilindrataVeicolo==""?"0":scheda.cilindrataVeicolo);
+		queryString += "&Cilindrata=" + (scheda.cilindrataVeicolo.equals("")?"0":scheda.cilindrataVeicolo);
 		queryString += "&ClasseEmissione=" + (scheda.classeEmissioniVeicoloIndex==0?"ND":URLEncoder.encode(scheda.classeEmissioniVeicolo, "UTF-8"));
-		queryString += "&ConsumoMedio=" + (scheda.consumoMedioVeicolo==""?"0.0":URLEncoder.encode(scheda.consumoMedioVeicolo, "UTF-8"));
+		queryString += "&ConsumoMedio=" + (scheda.consumoMedioVeicolo.equals("")?"0.0":URLEncoder.encode(scheda.consumoMedioVeicolo, "UTF-8"));
 		queryString += "&Immagine1=" + Immagine1;
 		queryString += "&Immagine2=" + Immagine2;
 		queryString += "&Immagine3=" + Immagine3;
@@ -317,7 +317,7 @@ public class _portaleMLS extends PortaleWeb {
 		queryString += "&Immagine8=" + Immagine8;
 		queryString += "&Immagine9=" + Immagine9;
 		queryString += "&Immagine10=" + Immagine10;
-		queryString += "&UrlYT=" + (scheda.urlVideoYouTube==""?"ND":URLEncoder.encode(scheda.urlVideoYouTube, "UTF-8"));
+		queryString += "&UrlYT=" + (scheda.urlVideoYouTube.equals("")?"ND":URLEncoder.encode(scheda.urlVideoYouTube, "UTF-8"));
 		queryString += "&RagioneSociale=" + URLEncoder.encode(scheda.ragioneSociale, "UTF-8");
 		queryString += "&Indirizzo=" + URLEncoder.encode(scheda.Indirizzo, "UTF-8");
 		queryString += "&TelefonoGenerico=" + URLEncoder.encode(scheda.Telefono, "UTF-8");
