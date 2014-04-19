@@ -52,6 +52,8 @@ public class _subitoIt extends PortaleWeb {
 	private String responseBody;
 	private boolean inserimentoOK = false;
 	private boolean modifica = false; //è sempre false per questo portale
+	
+	//Messaggi personalizzati per questo portale
 
 	//Strutture dati di supporto
 	//Mappa dei parametri da inviare
@@ -106,6 +108,7 @@ public class _subitoIt extends PortaleWeb {
 
 		//Inizializzo gli headers
 		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
 		//Connessione 0 - GET della home page - Opzionale
 		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
@@ -124,7 +127,7 @@ public class _subitoIt extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/account/login_form/", requestHeaders, null, DEBUG_MODE);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/account/login_form/", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -132,6 +135,10 @@ public class _subitoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -151,7 +158,7 @@ public class _subitoIt extends PortaleWeb {
 		requestHeaders.remove(0);
 		requestHeaders.add(new BasicNameValuePair("Host", HOST2));
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", SECUREURLROOT + "/account/login", postParameters, requestHeaders, null, DEBUG_MODE);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", SECUREURLROOT + "/account/login", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -218,6 +225,10 @@ public class _subitoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -293,7 +304,9 @@ public class _subitoIt extends PortaleWeb {
 					//Controllo il response status
 					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 					if( (responseStatus.getStatusCode()==302)) {
-						Header[] responseHeaders = (Header[])response[0];
+						Header[] responseHeaders = (Header[])response[0];				
+						//Gestione dei cookie
+						setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 						//Trovo la location
 						location = getHeaderValueByName(responseHeaders, "Location");
 						/*if(!location.contains("/ai/form/1")) {
@@ -345,7 +358,7 @@ public class _subitoIt extends PortaleWeb {
 		mappaAssociativaInputValore.put("name",RAGIONESOCIALE_UTENTE); //autoeauto
 		mappaAssociativaInputValore.put("servicetype","Seleziona la tipologia");
 		mappaAssociativaInputValore.put("phone",TELEFONO_UTENTE); //deve essere preventivamente validato da subito.it
-		mappaAssociativaInputValore.put("phone_hidden","***site***");
+		//mappaAssociativaInputValore.put("phone_hidden","***site***");
 		mappaAssociativaInputValore.put("type","s"); //Vendita 
 		mappaAssociativaInputValore.put("carbrand",scheda.marcaVeicolo);
 
@@ -486,11 +499,13 @@ public class _subitoIt extends PortaleWeb {
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(location.contains("/ai/preview")) {
-					//inserimentoOK=true;
+					inserimentoOK=true;
 				}
 				else {
 					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
@@ -517,13 +532,18 @@ public class _subitoIt extends PortaleWeb {
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
+			else {
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
 
 
 		//Connessione 8 - POST della conferma alla pubblicazione
-		HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
+		/*HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
 		try {    
 			postParameters.add(new BasicNameValuePair("payment_type", "cc"));
 
@@ -532,7 +552,9 @@ public class _subitoIt extends PortaleWeb {
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(location.contains("/ai/confirm/")) {
@@ -551,7 +573,7 @@ public class _subitoIt extends PortaleWeb {
 		}
 		finally {
 			postParameters.clear();
-		}
+		}*/
 
 
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
@@ -600,6 +622,10 @@ public class _subitoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
