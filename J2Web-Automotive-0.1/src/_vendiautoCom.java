@@ -6,6 +6,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -259,7 +260,6 @@ public class _vendiautoCom extends PortaleWeb {
 		postParameters.add(new BasicNameValuePair("cod_marca", scheda.marcaVeicolo));
 
 		if(scheda.disponibilitaABS) {postParameters.add(new BasicNameValuePair("optional[12]", "ABS"));}
-		if(scheda.disponibilitaABS) {postParameters.add(new BasicNameValuePair("optional[12]", "ABS"));}
 		if(scheda.disponibilitaAirBag) {postParameters.add(new BasicNameValuePair("optional[13]", "Airbag"));}
 		if(scheda.disponibilitaAntifurto) {postParameters.add(new BasicNameValuePair("optional[18]", "Antifurto"));}
 		if(scheda.disponibilitaChiusuraCentralizzata) {postParameters.add(new BasicNameValuePair("optional[17]", "Chiusura centralizzata"));}
@@ -355,8 +355,19 @@ public class _vendiautoCom extends PortaleWeb {
 
 				Document dom = Jsoup.parse(responseBody);
 				Elements tr = ((Element) dom).select("#dati tbody tr");
-				Element firstTr = tr.get(1);
-				codiceInserzione = ((Element) firstTr).select("td").first().text();
+				
+				int cod = 0;
+				Iterator<Element> iterator = tr.iterator();
+				while(iterator.hasNext()) {
+					Element current = (Element) iterator.next();
+					if(!current.select("td").isEmpty()) {
+						int currentCod =  Integer.parseInt(current.select("td").first().text());
+						if(currentCod>cod) {
+							cod=currentCod;
+						}
+					}		
+				}
+				codiceInserzione = Integer.toString(cod);
 
 				inserimentoOK = true;
 			}
