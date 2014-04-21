@@ -33,7 +33,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 
 
 	//POST URLENCODED VALUES
-	@Deprecated
+	/*@Deprecated
 	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, boolean debugMode) throws IOException {
 
 		//La risposta che verrÃ  restituita
@@ -87,11 +87,11 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 		headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
 		return headersAndBodyResponseAndStatus; 
 
-	}
+	}*/
 
 
 	//POST MULTIPART/FORM-DATA
-	@Deprecated
+	/*@Deprecated
 	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, boolean debugMode) throws IOException {
 
 		//La risposta che verrÃ  restituita
@@ -144,11 +144,11 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 		headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
 		return headersAndBodyResponseAndStatus;     
 
-	}	
+	}*/
 
 
 	//POST URLENCODED VALUES (2)
-	@Deprecated
+	/*@Deprecated
 	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, List<NameValuePair> requestHeaders, boolean debugMode) throws IOException {
 
 		//La risposta che verrÃ  restituita
@@ -203,11 +203,11 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 		headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
 		return headersAndBodyResponseAndStatus; 
 
-	}
+	}*/
 
 
 	//POST MULTIPART/FORM-DATA (2)
-	@Deprecated
+	/*@Deprecated
 	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, List<NameValuePair> requestHeaders, boolean debugMode) throws IOException {
 
 		//La risposta che verrÃ  restituita
@@ -261,10 +261,10 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 		headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
 		return headersAndBodyResponseAndStatus;     
 
-	}
+	}*/
 
 
-	//POST URLENCODED VALUES (3)
+	//POST URLENCODED VALUES
 	public Object[] post(String connectionDescription, String url, List<NameValuePair> postParameters, List<NameValuePair> requestHeaders, List<BasicClientCookie> requestCookies, boolean debugMode) throws IOException {
 
 		//La risposta che verrà  restituita
@@ -298,8 +298,8 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 			Iterator<BasicClientCookie> cookiesIterator = requestCookies.iterator();
 			while(cookiesIterator.hasNext()) {
 				currentCookie = (BasicClientCookie) cookiesIterator.next();
-				currentCookie.setDomain(SESSIONCOOKIE_DOMAIN);
-				currentCookie.setPath("/"); 
+				/*currentCookie.setDomain(SESSIONCOOKIE_DOMAIN);
+				currentCookie.setPath("/");*/
 				cookieStore.addCookie(currentCookie);
 
 			}
@@ -341,7 +341,7 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 	}
 
 
-	//POST MULTIPART/FORM-DATA (3)
+	//POST MULTIPART/FORM-DATA
 	public Object[] post(String connectionDescription, String url, MultipartEntity reqEntity, List<NameValuePair> requestHeaders, List<BasicClientCookie> requestCookies, boolean debugMode) throws IOException {
 
 		//La risposta che verrà  restituita
@@ -365,8 +365,6 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 			}		
 		}
 
-		//reqEntity.getContentType();
-
 		//Add request parameters
 		httppost.setEntity(reqEntity);
 
@@ -379,8 +377,8 @@ public class HttpPortalPostConnection extends HttpPortalConnection {
 			Iterator<BasicClientCookie> cookiesIterator = requestCookies.iterator();
 			while(cookiesIterator.hasNext()) {
 				currentCookie = (BasicClientCookie) cookiesIterator.next();
-				currentCookie.setDomain(SESSIONCOOKIE_DOMAIN);
-				currentCookie.setPath("/"); 
+				/*currentCookie.setDomain(SESSIONCOOKIE_DOMAIN);
+				currentCookie.setPath("/"); */
 				cookieStore.addCookie(currentCookie);
 
 			}

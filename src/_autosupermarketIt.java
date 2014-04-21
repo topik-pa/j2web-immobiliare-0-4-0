@@ -43,9 +43,12 @@ public class _autosupermarketIt extends PortaleWeb {
 	//Variabili portale
 	private final String NOMEPORTALE = "www.autosupermarket.it";
 	private final String URLROOT = "http://www.autosupermarket.it";
-	private final String USERNAME = "c2775833@drdrb.com";
-	private final String PASSWORD = "topik123";
+	private final String USERNAME = AUTOSUPERMARKET_USERNAME;
+	private final String PASSWORD = AUTOSUPERMARKET_PASSWORD;
 	private final String HOST = "www.autosupermarket.it";
+
+	private final String COOKIE_DEFAULT_PATH = "/";
+	private final String COOKIE_DEFAULT_DOMAIN = ".autosupermarket.it";
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
@@ -54,7 +57,9 @@ public class _autosupermarketIt extends PortaleWeb {
 	private String responseBody;
 	private boolean inserimentoOK = false;
 	private boolean modifica = false;
-	private boolean debugMode = true;
+	
+	//Messaggi personalizzati per questo portale
+		
 
 	//Strutture dati di supporto
 	//Mappa dei parametri da inviare
@@ -70,7 +75,7 @@ public class _autosupermarketIt extends PortaleWeb {
 	List<BasicClientCookie> requestCookies;
 
 	//Mappa che rappresenta la tabella di dipendennza dei parametri da inviare
-	Map<String,String> tabellaDiDipendenza;
+	Map<String,String> mappaAssociativaInputValore;
 
 	//La scheda immobile su cui si lavora
 	SchedaVeicolo scheda;
@@ -96,20 +101,13 @@ public class _autosupermarketIt extends PortaleWeb {
 		requestCookies = new ArrayList<BasicClientCookie>();
 
 		//Iniziallizzo la tabella di dipendenza
-		tabellaDiDipendenza = new Hashtable<String,String>();
+		mappaAssociativaInputValore = new Hashtable<String,String>();
 
 	}
 
 
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
-
-		if(modifica) {			
-			System.out.println("(MLS) Modifica scheda: " + scheda.codiceScheda + "...");
-		}
-		else  {
-			System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
-		}
 
 		//autosupermarket accetta minimo due foto per annuncio di dimensioni prefissate
 		try {
@@ -132,32 +130,21 @@ public class _autosupermarketIt extends PortaleWeb {
 			}
 		}
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		//Inizializzazione scheda
 		this.scheda=scheda;
 
-		//Imposto le variabili per il session cookie
-		SESSIONCOOKIENAME = "autosupermarket";
-		SESSIONCOOKIEDOMAIN = ".www.autosupermarket.it";
-		SESSIONCOOKIEHEADER = "";
-		SESSIONCOOKIEVALUE = "";
+		//Inizializzo gli headers e i cookie
+		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
-		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		requestHeaders.clear();
-		requestHeaders.add(new BasicNameValuePair("Host", HOST));
-		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
-		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
-		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
-		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
-		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
 
 		//Connessione 0 - GET della home page - Opzionale
 		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, debugMode);
+			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -171,7 +158,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/mycar/index.html", requestHeaders, null, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/mycar/index.html", requestHeaders, null, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -179,12 +166,9 @@ public class _autosupermarketIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
-
 				Header[] responseHeaders = (Header[])response[0];				
 				//Gestione dei cookie
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_1.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				setCookies(responseHeaders, requestCookies);
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -192,7 +176,7 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		//Il server remoto è lento...
 		try {
-			Thread.sleep(700);
+			Thread.sleep(1700);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -200,21 +184,22 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("user[_csrf_token]","***site***");
-		tabellaDiDipendenza.put("user[password]", PASSWORD);
-		tabellaDiDipendenza.put("user[username]",USERNAME);
+		mappaAssociativaInputValore.put("user[password]", PASSWORD);
+		mappaAssociativaInputValore.put("user[username]",USERNAME);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#signinForm input", tabellaDiDipendenza, mappaDeiParamerti);	
+		valutaParametri(responseBody, "#signinForm input", mappaAssociativaInputValore, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/mycar/signin.html", postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/mycar/signin.html", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(location.contains("/mycar/index.html")) {
@@ -232,16 +217,14 @@ public class _autosupermarketIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();
-			postParameters.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
 		//Connessione 3 - GET della pagina I miei annunci - Opzionale
 		/*HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina I miei annunci", URLROOT + location, requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina I miei annunci", URLROOT + location, requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -257,19 +240,21 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		//Il server remoto è lento...
 		try {
-			Thread.sleep(700);
+			Thread.sleep(1700);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
 		//Connessione 4 - GET della pagina di inserzione annuncio
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_4.get("Connessione 4 - GET della pagina di inserzione annuncio",  URLROOT + "/mycar/new.html", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina di inserzione annuncio",  URLROOT + "/mycar/new.html", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==200)) {
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				responseBody = (String)response[1];
 			}
 			else {
@@ -282,15 +267,18 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		//Connessione 5 - GET per ottenere il modello dell'auto
 		//Raccolgo i parametri nella tabella di dipendenza
-		tabellaDiDipendenza.put("car[make_id]",scheda.marcaVeicolo);
+		mappaAssociativaInputValore.put("car[make_id]",scheda.marcaVeicolo);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "select#car_make_id", tabellaDiDipendenza, mappaDeiParamerti);
+		valutaParametri(responseBody, "select#car_make_id", mappaAssociativaInputValore, mappaDeiParamerti);
 		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_5.get("Connessione 5 - GET per ottenere il modella dell'auto",  URLROOT + "/mycar/ajax-update-model.html?make=" + mappaDeiParamerti.get("car[make_id]"), requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_5.get("Connessione 5 - GET per ottenere il modella dell'auto",  URLROOT + "/mycar/ajax-update-model.html?make=" + mappaDeiParamerti.get("car[make_id]"), requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==200)) {
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				String responseBody2 = (String)response[1];
 
 				//Parsing JSON della risposta
@@ -339,13 +327,13 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		//Il server remoto è lento...
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1700);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
-
+		//Adattamento delle select
 		Document doc = Jsoup.parse(responseBody);
 		List<NameValuePair> lista = new LinkedList<NameValuePair>();
 		lista.add(new BasicNameValuePair("0", "Seleziona"));
@@ -373,94 +361,62 @@ public class _autosupermarketIt extends PortaleWeb {
 		//Raccolgo i parametri nella tabella di dipendenza
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		int mounth = (Calendar.getInstance().get(Calendar.MONTH)+1);
-		
-		tabellaDiDipendenza.put("car[carana001_carlst001_listing_type_cod]", scheda.tipologiaVeicolo); //da fare sotto
-		tabellaDiDipendenza.put("car[carana001_carlst002_interior_cod]", scheda.finitureInterneVeicolo);
-		tabellaDiDipendenza.put("car[carana001_carlst004_auto_body_cod]", scheda.carrozzeriaVeicolo);
-		tabellaDiDipendenza.put("car[carana001_carlst005_auto_body_status_cod]", "Scegli...");
-		tabellaDiDipendenza.put("car[carana001_carlst006_fuel_cod]", scheda.carburanteVeicolo);
+
+		mappaAssociativaInputValore.put("car[carana001_carlst001_listing_type_cod]", scheda.tipologiaVeicolo); //da fare sotto
+		mappaAssociativaInputValore.put("car[carana001_carlst002_interior_cod]", scheda.finitureInterneVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_carlst004_auto_body_cod]", scheda.carrozzeriaVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_carlst005_auto_body_status_cod]", "Scegli...");
+		mappaAssociativaInputValore.put("car[carana001_carlst006_fuel_cod]", scheda.carburanteVeicolo);
 		if(scheda.coloreMetalizzato) {
-			tabellaDiDipendenza.put("car[carana001_carlst008_color_type_cod]", "Metalizzato");
+			mappaAssociativaInputValore.put("car[carana001_carlst008_color_type_cod]", "Metalizzato");
 		}
 		else {
-			tabellaDiDipendenza.put("car[carana001_carlst008_color_type_cod]", "Scegli...");
+			mappaAssociativaInputValore.put("car[carana001_carlst008_color_type_cod]", "Scegli...");
 		}
-		tabellaDiDipendenza.put("car[carana001_carlst009_drive_type_cod]", scheda.carrozzeriaVeicolo);
-		tabellaDiDipendenza.put("car[carana001_carlst009_drive_type_cod]", scheda.tipologiaMotoreVeicolo);
-		tabellaDiDipendenza.put("car[carana001_carlst010_trasmission_cod]", scheda.tipologiaCambioVeicolo);
-		tabellaDiDipendenza.put("car[carana001_carlst015_version_des]", scheda.versioneVeicolo);
-		tabellaDiDipendenza.put("car[carana001_carlst017_emission_cod]", scheda.classeEmissioniVeicolo);
-		tabellaDiDipendenza.put("car[carana001_carlst019_price_type_cod]", "***site***");
-		tabellaDiDipendenza.put("car[carana001_carlst021_guarantee_type_cod]", "Scegli...");
-
-		//tabellaDiDipendenza.put("car[carana001_cv_num]", scheda.CVVeicolo);
-		if(scheda.CVVeicolo.equals("")) {
-			tabellaDiDipendenza.put("car[carana001_cv_num]", "***site***");
+		mappaAssociativaInputValore.put("car[carana001_carlst009_drive_type_cod]", scheda.carrozzeriaVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_carlst009_drive_type_cod]", scheda.tipologiaMotoreVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_carlst010_trasmission_cod]", scheda.tipologiaCambioVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_carlst015_version_des]", scheda.versioneVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_carlst017_emission_cod]", scheda.classeEmissioniVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_carlst021_guarantee_type_cod]", "Scegli...");
+		if(!scheda.CVVeicolo.equals("")) {
+			mappaAssociativaInputValore.put("car[carana001_cv_num]", scheda.CVVeicolo);
 		}
-		else {
-			tabellaDiDipendenza.put("car[carana001_cv_num]", scheda.CVVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_door_num]", "Scegli...");
+		mappaAssociativaInputValore.put("car[carana001_engine_des]", scheda.cilindrataVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_glblst001_condition_cod]", "Trattabili");
+		mappaAssociativaInputValore.put("car[carana001_glblst002_color_cod]", scheda.coloreEsternoVeicolo);
+		if(!scheda.chilometraggioVeicolo.equals("")) {
+			mappaAssociativaInputValore.put("car[carana001_km_num]", scheda.chilometraggioVeicolo);
 		}
-
-		tabellaDiDipendenza.put("car[carana001_door_num]", "Scegli...");
-		tabellaDiDipendenza.put("car[carana001_engine_des]", scheda.cilindrataVeicolo);
-		/*if(scheda.prezzoTrattabile)  {
-			tabellaDiDipendenza.put("car[carana001_glblst001_condition_cod]", "Trattabili");
+		if(!scheda.KWVeicolo.equals("")) {
+			mappaAssociativaInputValore.put("car[carana001_kw_num]", scheda.KWVeicolo);
 		}
-		else {
-			tabellaDiDipendenza.put("car[carana001_glblst001_condition_cod]", "Non Trattabili");
-		}*/
-		tabellaDiDipendenza.put("car[carana001_glblst001_condition_cod]", "Trattabili");
-
-		tabellaDiDipendenza.put("car[carana001_glblst002_color_cod]", scheda.coloreEsternoVeicolo);
-
-
-		if(scheda.chilometraggioVeicolo.equals("")) {
-			tabellaDiDipendenza.put("car[carana001_km_num]", "***site***");
-		}
-		else {
-			tabellaDiDipendenza.put("car[carana001_km_num]", scheda.chilometraggioVeicolo);
-		}
-
-		if(scheda.KWVeicolo.equals("")) {
-			tabellaDiDipendenza.put("car[carana001_kw_num]", "***site***");
-		}
-		else {
-			tabellaDiDipendenza.put("car[carana001_kw_num]", scheda.KWVeicolo);
-		}
-
-		tabellaDiDipendenza.put("car[carana001_last_review_num]", "Scegli...");
-		
+		mappaAssociativaInputValore.put("car[carana001_last_review_num]", "Scegli...");
 		if(scheda.meseImmatricolazioneVeicolo.equals("Da immatricolare")) {
-			tabellaDiDipendenza.put("car[carana001_month_num]", "0"+mounth);
+			mappaAssociativaInputValore.put("car[carana001_month_num]", "0"+mounth);
 		}
 		else {
-			tabellaDiDipendenza.put("car[carana001_month_num]", "0" + Integer.toString(scheda.meseImmatricolazioneVeicoloIndex-1));
+			mappaAssociativaInputValore.put("car[carana001_month_num]", "0" + Integer.toString(scheda.meseImmatricolazioneVeicoloIndex-1));
 		}
-		
-		
-		String escapedDescription = scheda.descrizioneVeicolo.replaceAll("&", "&amp;").replaceAll("'", "&quot;").replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
-		tabellaDiDipendenza.put("car[carana001_notes_des]", escapedDescription);
-		tabellaDiDipendenza.put("car[carana001_owner_num]", scheda.numeroPrecedentiProprietariVeicolo);
-		tabellaDiDipendenza.put("car[carana001_public_price_num]", scheda.prezzoVeicolo);
-		tabellaDiDipendenza.put("car[carana001_seat_num]", "0"+scheda.postiASedereVeicoloIndex);
-		
-		
-		
+		//String escapedDescription = scheda.descrizioneVeicolo.replaceAll("&", "&amp;").replaceAll("'", "&quot;").replaceAll("à", "&agrave;").replaceAll("è", "&egrave;").replaceAll("ì", "&igrave;").replaceAll("ò", "&ograve;").replaceAll("ù", "&ugrave;");
+		mappaAssociativaInputValore.put("car[carana001_notes_des]", scheda.descrizioneVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_owner_num]", scheda.numeroPrecedentiProprietariVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_public_price_num]", scheda.prezzoVeicolo);
+		mappaAssociativaInputValore.put("car[carana001_seat_num]", "0"+scheda.postiASedereVeicoloIndex);
 		if(scheda.annoImmatricolazioneVeicolo.equals("Da immatricolare")) {
-			tabellaDiDipendenza.put("car[carana001_year_num]", "0"+year);
+			mappaAssociativaInputValore.put("car[carana001_year_num]", "0"+year);
 		}
 		else {
-			tabellaDiDipendenza.put("car[carana001_year_num]", "0"+scheda.annoImmatricolazioneVeicolo);
+			mappaAssociativaInputValore.put("car[carana001_year_num]", "0"+scheda.annoImmatricolazioneVeicolo);
 		}
-		
-		tabellaDiDipendenza.put("car[id]", ""); //non ha value nel DOM
-		tabellaDiDipendenza.put("car[make_id]", scheda.marcaVeicolo);
-		tabellaDiDipendenza.put("car[trattativa_riservata]", "0");
-		tabellaDiDipendenza.put("car[carana001_status_flg]", "***site***");
-		tabellaDiDipendenza.put("car[carana001_vat_deductible_flg]", "***site***");	
+		//mappaAssociativaInputValore.put("car[id]", ""); //non ha value nel DOM
+		mappaAssociativaInputValore.put("car[make_id]", scheda.marcaVeicolo);
+		mappaAssociativaInputValore.put("car[trattativa_riservata]", "0"); //forzato a trattativa non riservata
+		mappaAssociativaInputValore.put("car[model_id]", "***DONOTSEND***");
 
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "form#adv-form input, form#adv-form select, form#adv-form textarea", tabellaDiDipendenza, mappaDeiParamerti);
+		valutaParametri(responseBody, "form#adv-form input, form#adv-form select, form#adv-form textarea", mappaAssociativaInputValore, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 
@@ -517,12 +473,14 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri di annuncio", URLROOT + "/mycar/new.html", postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri di annuncio", URLROOT + "/mycar/new.html", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(location.contains("/manage_photo/id/")) {
@@ -542,16 +500,14 @@ public class _autosupermarketIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			postParameters.clear();
-			mappaDeiParamerti.clear();
-			tabellaDiDipendenza.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
 		//Connessione 7 - GET della pagina di inserzione immagini - Opzionale
 		/*HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_7.get("Connessione 7 - GET della pagina di inserzione immagini",  URLROOT + location, requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_7.get("Connessione 7 - GET della pagina di inserzione immagini",  URLROOT + location, requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==200)) {
@@ -565,6 +521,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		}*/
 
 
+		//Connessione 8 - POST delle immagini (passo 2)
 		HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();        
 		try {
 			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -572,9 +529,8 @@ public class _autosupermarketIt extends PortaleWeb {
 			for(int i=1; i<=8; i++) { //max 8 foto
 
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(1700);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
@@ -588,7 +544,7 @@ public class _autosupermarketIt extends PortaleWeb {
 			}
 			reqEntity.addPart("submit", new StringBody("photos") );
 
-			Object[] response = connessione_8.post("Connessione 8 - Invio delle foto (passo 1)", URLROOT + "/mycar/manage_photo/id/" + codiceInserzione + ".html", reqEntity, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_8.post("Connessione 8 - Invio delle foto (passo 1)", URLROOT + "/mycar/manage_photo/id/" + codiceInserzione + ".html", reqEntity, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -600,14 +556,12 @@ public class _autosupermarketIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();
-			postParameters.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
 		//Connessione 10 - POST delle immagini (passo 3)
-		postParameters.add(new BasicNameValuePair("to_publish", "1"));
+		postParameters.add(new BasicNameValuePair("to_publish", "1")); //messo da JS
 		postParameters.add(new BasicNameValuePair("photos[photo_1][photo]", ""));
 		postParameters.add(new BasicNameValuePair("photos[photo_2][photo]", ""));
 		postParameters.add(new BasicNameValuePair("photos[photo_3][photo]", ""));
@@ -620,12 +574,14 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		HttpPortalPostConnection connessione_10 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_10.post("Connessione 10 - POST delle immagini (passo 3)", URLROOT + location, postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_10.post("Connessione 10 - POST delle immagini (passo 3)", URLROOT + location, postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(!location.contains("publish/id/" + codiceInserzione)) {
@@ -633,7 +589,7 @@ public class _autosupermarketIt extends PortaleWeb {
 				}
 				else {
 					responseBody = (String)response[1];
-					inserimentoOK = true; //da togliere
+					inserimentoOK = true;
 				}
 			}
 			else {
@@ -644,9 +600,7 @@ public class _autosupermarketIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			postParameters.clear();
-			mappaDeiParamerti.clear();
-			tabellaDiDipendenza.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
@@ -655,7 +609,7 @@ public class _autosupermarketIt extends PortaleWeb {
 
 		HttpPortalPostConnection connessione_11 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_11.post("Connessione 10 - POST finale di pubblicazione", URLROOT + location, postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_11.post("Connessione 10 - POST finale di pubblicazione", URLROOT + location, postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
@@ -683,7 +637,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		finally {
 			postParameters.clear();
 			mappaDeiParamerti.clear();
-			tabellaDiDipendenza.clear();
+			mappaAssociativaInputValore.clear();
 		}*/
 
 
@@ -693,105 +647,67 @@ public class _autosupermarketIt extends PortaleWeb {
 			//Aggiorna la lista dei portali in cui è inserita la scheda
 			scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
 
-			if(!isSequential) {   			
-				System.out.println("Inserita in: " + NOMEPORTALE);       		
+			//Aggiorna i pulsanti del pannello inserimento
+			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
-				//Aggiorna i pulsanti del pannello inserimento
-				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
-
-				//Mail e messaggio informativo OK
-				if(!modifica) {
-					sendConfirmationMail(scheda, NOMEPORTALE, scheda.codiceScheda);
-
-					messageInserimentoOK(NOMEPORTALE);
-				}	
-				else {
-					messageModificaOK(NOMEPORTALE);
-				}
-				
-			}
-
-			return inserimentoOK;        	
+			//Mail e messaggio informativo OK
+			if(!modifica) {
+				sendConfirmationMail(scheda, NOMEPORTALE, scheda.codiceScheda);
+				messageInserimentoOK(NOMEPORTALE);
+			}	
+			else {
+				messageModificaOK(NOMEPORTALE);
+			}       	
 		}
 		else {
-
 			if(!modifica) {
 				messageInserimentoKO(NOMEPORTALE);
 			}
 			else {
 				messageModificaKO(NOMEPORTALE);
 			}
-
-			return inserimentoOK;
 		}
+
+		return inserimentoOK;
 
 	}
 
 
 	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
-		System.out.println("Visualizzazione scheda: " + scheda.codiceScheda + "...");
 
-		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT;
-			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
-			System.out.println("Visualizzata in: " + NOMEPORTALE);
-
+			java.awt.Desktop.getDesktop().browse(java.net.URI.create(URLROOT));
 		} catch (IOException e ) {
 			//
 		}
-
 		return true;
 	}
 
 
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {	
-		
+
 		//La scheda è da aggiornare
 		if(J2Web_UI.protoScheda!=null) {
 			modifica = true;
 		}
-		
-		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
 
+		//Inizializzazione scheda
+		this.scheda=scheda;
+
+		//Ottengo il codice con cui è stata inserita la scheda
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 
-		//Imposto le variabili per il session cookie
-		SESSIONCOOKIENAME = "autosupermarket";
-		SESSIONCOOKIEDOMAIN = ".www.autosupermarket.it";
-		SESSIONCOOKIEHEADER = "";
-		SESSIONCOOKIEVALUE = "";
-
-		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		requestHeaders.clear();
-		requestHeaders.add(new BasicNameValuePair("Host", HOST));
-		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
-		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
-		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
-		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
-		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
-
-		//Connessione 0 - GET della home page - Opzionale
-		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
-		try {
-			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, debugMode);
-			//Controllo il response status
-			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()!=200)) {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-			}
-		} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}*/
-
+		//Inizializzo gli headers
+		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/mycar/index.html", requestHeaders, null, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/mycar/index.html", requestHeaders, null, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -799,35 +715,39 @@ public class _autosupermarketIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
-
 				Header[] responseHeaders = (Header[])response[0];				
 				//Gestione dei cookie
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_1.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				setCookies(responseHeaders, requestCookies);
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
 
+		//Il server remoto è lento...
+		try {
+			Thread.sleep(700);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("user[_csrf_token]","***site***");
-		tabellaDiDipendenza.put("user[password]", PASSWORD);
-		tabellaDiDipendenza.put("user[username]",USERNAME);
+		mappaAssociativaInputValore.put("user[password]", PASSWORD);
+		mappaAssociativaInputValore.put("user[username]",USERNAME);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#signinForm input", tabellaDiDipendenza, mappaDeiParamerti);	
+		valutaParametri(responseBody, "#signinForm input", mappaAssociativaInputValore, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/mycar/signin.html", postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/mycar/signin.html", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(location.contains("/mycar/index.html")) {
@@ -845,38 +765,21 @@ public class _autosupermarketIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();
-			postParameters.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
-
-
-		//Connessione 3 - GET della pagina di I miei annunci - Opzionale
-		/*HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
-		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina I miei annunci", URLROOT + location, requestHeaders, requestCookies, debugMode);
-			//Controllo il response status
-			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
-			if( (responseStatus.getStatusCode()!=200)) {
-				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-			}
-			else {
-				responseBody = (String)response[1];
-			}
-		} catch (IOException | RuntimeException e) {
-			throw new HttpCommunicationException(e);
-		}*/
 
 
 		//Connessione 4 - POST di eliminazione annuncio
 		HttpPortalPostConnection connessione_4 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_4.post("Connessione 4 - POST di eliminazione annuncio", URLROOT + "/mycar/delete/id/" + codiceInserzione + ".html", postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_4.post("Connessione 4 - POST di eliminazione annuncio", URLROOT + "/mycar/delete/id/" + codiceInserzione + ".html", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(!location.contains("/mycar/index.html")) {
@@ -891,26 +794,21 @@ public class _autosupermarketIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			postParameters.clear();
-			mappaDeiParamerti.clear();
-			tabellaDiDipendenza.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
-
-
 
 		//Aggiorno la lista dei portali in cui è presenta la scheda corrente
 		scheda.eliminaInserimentoPortale(idPortale);			
 
-		if(!isSequential) {
-			//Aggiorno i pulsanti del pannello inserimento
-			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
+		//Aggiorno i pulsanti del pannello inserimento
+		PanelSicronizzazioneConPortali.updatePanello(scheda, false);	
 
+		//Stampo a video un messaggio informativo
+		if(!modifica) {
+			messageEliminazioneOK(NOMEPORTALE);
+		}
+		else {
 			System.out.println("Eliminata da: " + NOMEPORTALE);
-
-			//Stampo a video un messaggio informativo
-			if(!modifica) {
-				messageEliminazioneOK(NOMEPORTALE);
-			}
 		}
 
 		return true;
@@ -926,7 +824,7 @@ public class _autosupermarketIt extends PortaleWeb {
 		//Connessione 4b - GET per ottenere il BaseData_ModelId
 		HttpPortalGetConnection connessione_4b = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_4b.get("Connessione 4b - GET per ottenere il BaseData_ModelId", "https://offerta.autoscout24.it/api/modelsC/" + modelId + "?_=1386424481611", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_4b.get("Connessione 4b - GET per ottenere il BaseData_ModelId", "https://offerta.autoscout24.it/api/modelsC/" + modelId + "?_=1386424481611", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==200)) {

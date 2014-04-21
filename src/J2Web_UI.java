@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -3416,6 +3417,8 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 					}
 		                       	        
 					//Inserisco la scheda nel portale attuale
+					//Il cursore viene messo in modalità attesa
+					imagination_05.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 					try {
 						portaleCorrente.cancellaScheda(scheda, false);
 						portaleCorrente.inserisciScheda(schedaVeicoloModificata, false);
@@ -3426,6 +3429,8 @@ public class J2Web_UI extends JPanel implements parametriGenerali {
 					}
 				}
 			}
+			//Il cursone viene messo in modalità standard
+			imagination_05.setCursor(Cursor.getDefaultCursor());
 			
 			//Resetto la scheda da modificare
 			protoScheda = null;

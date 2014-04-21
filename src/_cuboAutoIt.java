@@ -30,14 +30,12 @@ public class _cuboAutoIt extends PortaleWeb {
 	//Variabili portale
 	private final String NOMEPORTALE = "www.cuboauto.it";
 	private final String URLROOT = "http://www.cuboauto.it";
-	private final String USERNAME = "topik123";
-	private final String PASSWORD = "topik123";
+	private final String USERNAME = CUBOAUTO_USERNAME;
+	private final String PASSWORD = CUBOAUTO_PASSWORD;
 	private final String HOST = "www.cuboauto.it";
 
-	private final String SESSIONCOOKIENAME = "PHPSESSID";
-	private final String SESSIONCOOKIEDOMAIN = "www.cuboauto.it";
-	private final String SESSIONCOOKIEHEADER = "";
-	private final String SESSIONCOOKIEVALUE = "";
+	private final String COOKIE_DEFAULT_PATH = "/";
+	private final String COOKIE_DEFAULT_DOMAIN = "www.cuboauto.it";
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
@@ -46,8 +44,9 @@ public class _cuboAutoIt extends PortaleWeb {
 	private String responseBody;
 	private boolean inserimentoOK = false;
 	private boolean modifica = false;
-	private boolean debugMode = true;
-
+	
+	//Messaggi personalizzati per questo portale
+	
 
 	//Strutture dati di supporto
 	//Mappa dei parametri da inviare
@@ -62,8 +61,8 @@ public class _cuboAutoIt extends PortaleWeb {
 	//Lista dei cookies inviati in una singola connessione
 	List<BasicClientCookie> requestCookies;
 
-	//Mappa che rappresenta la tabella di dipendennza dei parametri da inviare
-	Map<String,String> tabellaDiDipendenza;
+	//Mappa che rappresenta la associazione input/valore da cui dipende
+	Map<String,String> mappaAssociativaInputValore;
 
 	//La scheda immobile su cui si lavora
 	SchedaVeicolo scheda;
@@ -86,7 +85,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		requestHeaders = new ArrayList<NameValuePair>();
 
 		//Iniziallizzo la tabella di dipendenza
-		tabellaDiDipendenza = new Hashtable<String,String>();
+		mappaAssociativaInputValore = new Hashtable<String,String>();
 
 		//La lista dei cookies inviati
 		requestCookies = new ArrayList<BasicClientCookie>();
@@ -97,29 +96,18 @@ public class _cuboAutoIt extends PortaleWeb {
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 
-		if(modifica) {			
-			System.out.println("(MLS) Modifica scheda: " + scheda.codiceScheda + "...");
-		}
-		else  {
-			System.out.println("(MLS) Inserimento scheda: " + scheda.codiceScheda + "...");	
-		}
-
 		//Inizializzazione scheda
 		this.scheda=scheda;
 
-		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		requestHeaders.clear();
-		requestHeaders.add(new BasicNameValuePair("Host", HOST));
-		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
-		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
-		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
-		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
-		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
+		//Inizializzo gli headers e i cookie
+		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
+
 
 		//Connessione 0 - GET della home page - Opzionale
 		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/index.php", requestHeaders, null, debugMode);
+			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT + "/index.php", requestHeaders, null, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -133,7 +121,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, null, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -141,6 +129,9 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -149,25 +140,22 @@ public class _cuboAutoIt extends PortaleWeb {
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("password",PASSWORD);
-		tabellaDiDipendenza.put("submit","Entra");
-		tabellaDiDipendenza.put("username",USERNAME);
+		mappaAssociativaInputValore.put("password",PASSWORD);
+		mappaAssociativaInputValore.put("username",USERNAME);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#frmLogin input", tabellaDiDipendenza, mappaDeiParamerti);	
+		valutaParametri(responseBody, "#frmLogin input", mappaAssociativaInputValore, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, null, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
 				Header[] responseHeaders = (Header[])response[0];
-				//Trovo il cookie di sessione
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				setCookies(responseHeaders, requestCookies);
+				//Inizializzo i cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 			}
@@ -179,16 +167,14 @@ public class _cuboAutoIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();
-			postParameters.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
 		//Connessione 3 - GET della pagina "Area concessionario" - Opzionale
 		/*HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area concessionario\"", URLROOT + "/" + location, requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina \"Area concessionario\"", URLROOT + "/" + location, requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -202,7 +188,7 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 4 - GET della pagina "Inserisci un nuovo annuncio"
 		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina \"Inserisci un nuovo annuncio\"", URLROOT + "/concessionari/inserisci-annuncio.php", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -210,6 +196,9 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -218,12 +207,12 @@ public class _cuboAutoIt extends PortaleWeb {
 
 		//Connessione 5 - GET della pagina "Inserisci un nuovo annuncio (con parametro circa la marca veicolo)"
 		//Raccolgo i parametri nella tabella di dipendenza
-		tabellaDiDipendenza.put("idMarca",scheda.marcaVeicolo);
+		mappaAssociativaInputValore.put("idMarca",scheda.marcaVeicolo);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "select#idMarca", tabellaDiDipendenza, mappaDeiParamerti);
+		valutaParametri(responseBody, "select#idMarca", mappaAssociativaInputValore, mappaDeiParamerti);
 		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo annuncio (con parametro circa la marca veicolo)\"", URLROOT + "/concessionari/inserisci-annuncio.php?idMarca=" + mappaDeiParamerti.get("idMarca"), requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci un nuovo annuncio (con parametro circa la marca veicolo)\"", URLROOT + "/concessionari/inserisci-annuncio.php?idMarca=" + mappaDeiParamerti.get("idMarca"), requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -231,93 +220,54 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
 			var_idMarca = mappaDeiParamerti.get("idMarca");
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();	
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);	
 		}
 
 
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
-		tabellaDiDipendenza.put("CV",scheda.CVVeicolo);
-		tabellaDiDipendenza.put("KW",scheda.KWVeicolo);
-		tabellaDiDipendenza.put("Submit","Salva Annuncio"); 
-		if(scheda.annoImmatricolazioneVeicolo.equals("Anno")) {
-			tabellaDiDipendenza.put("annoimmatricolazione","vuoto");
-		}
-		else {
-			tabellaDiDipendenza.put("annoimmatricolazione",scheda.annoImmatricolazioneVeicolo);
-		}
-		tabellaDiDipendenza.put("annoprossimarevisione","vuoto");
-		tabellaDiDipendenza.put("cambio",scheda.tipologiaCambioVeicolo);
-		tabellaDiDipendenza.put("chilometri",scheda.chilometraggioVeicolo);
-		tabellaDiDipendenza.put("cilindrata",scheda.cilindrataVeicolo);
-		tabellaDiDipendenza.put("cilindri","vuoto");
-		tabellaDiDipendenza.put("codice",(scheda.marcaVeicolo+"-"+scheda.modelloVeicolo+"-"+scheda.coloreEsternoVeicolo+"-"+scheda.tipologiaContrattoVeicolo).replace(" " , ""));
-		tabellaDiDipendenza.put("coloredett","");
-		tabellaDiDipendenza.put("coloreesterno",scheda.coloreEsternoVeicolo);
-		if(scheda.coloreMetalizzato){tabellaDiDipendenza.put("metallizzato","1");}	
-		if(scheda.coloreInterniVeicolo.equals("Seleziona")) {
-			tabellaDiDipendenza.put("coloreinterni","vuoto");
-		}
-		else {
-			tabellaDiDipendenza.put("coloreinterni",scheda.coloreInterniVeicolo);
-		}	
-		tabellaDiDipendenza.put("contratto",scheda.tipologiaContrattoVeicolo);
-		tabellaDiDipendenza.put("descrizione",scheda.descrizioneVeicolo);
-		tabellaDiDipendenza.put("idAlimentazione",scheda.carburanteVeicolo);
-		tabellaDiDipendenza.put("idCarrozzeria",scheda.carrozzeriaVeicolo);
-		tabellaDiDipendenza.put("idMarca",var_idMarca);
-		tabellaDiDipendenza.put("idMarca2",var_idMarca);
-		tabellaDiDipendenza.put("idModello",scheda.modelloVeicolo);
-		tabellaDiDipendenza.put("idTipologia",scheda.tipologiaVeicolo);
-		if(scheda.meseImmatricolazioneVeicolo.equals("Mese")) {
-			tabellaDiDipendenza.put("meseimmatricolazione","vuoto");
-		}
-		else {
-			tabellaDiDipendenza.put("meseimmatricolazione","0"+(scheda.meseImmatricolazioneVeicoloIndex-1));
-		}
-		tabellaDiDipendenza.put("meseprossimarevisione","vuoto");
-
-		if(scheda.classeEmissioniVeicolo.equals("Seleziona")) {
-			tabellaDiDipendenza.put("normativa","vuoto");
-		}
-		else {
-			tabellaDiDipendenza.put("normativa",scheda.classeEmissioniVeicolo);
-		}
-		tabellaDiDipendenza.put("peso","");
-		tabellaDiDipendenza.put("porte","");
-		tabellaDiDipendenza.put("prezzo",scheda.prezzoVeicolo);
-		tabellaDiDipendenza.put("provimmatricolazione","vuoto");
-		if(scheda.numeroRapportiVeicolo.equals("Seleziona")) {
-			tabellaDiDipendenza.put("rapporti","vuoto");
-		}
-		else {
-			tabellaDiDipendenza.put("rapporti",scheda.numeroRapportiVeicolo);
-		}	
-		if(scheda.postiASedereVeicolo.equals("Seleziona")) {
-			tabellaDiDipendenza.put("sedili","vuoto");
-		}
-		else {
-			tabellaDiDipendenza.put("sedili",scheda.postiASedereVeicolo);
-		}
-		tabellaDiDipendenza.put("versione",scheda.versioneVeicolo);
+		mappaAssociativaInputValore.put("CV",scheda.CVVeicolo);
+		mappaAssociativaInputValore.put("KW",scheda.KWVeicolo);
+		if(scheda.annoImmatricolazioneVeicolo.equals("Anno")) {mappaAssociativaInputValore.put("annoimmatricolazione","vuoto");}else {mappaAssociativaInputValore.put("annoimmatricolazione",scheda.annoImmatricolazioneVeicolo);}
+		mappaAssociativaInputValore.put("annoprossimarevisione","vuoto");
+		mappaAssociativaInputValore.put("cambio",scheda.tipologiaCambioVeicolo);
+		mappaAssociativaInputValore.put("chilometri",scheda.chilometraggioVeicolo);
+		mappaAssociativaInputValore.put("cilindrata",scheda.cilindrataVeicolo);
+		mappaAssociativaInputValore.put("cilindri","vuoto");
+		mappaAssociativaInputValore.put("codice",scheda.codiceScheda);
+		mappaAssociativaInputValore.put("coloreesterno",scheda.coloreEsternoVeicolo);
+		if(scheda.coloreInterniVeicolo.equals("Seleziona")) {mappaAssociativaInputValore.put("coloreinterni","vuoto");}	else {mappaAssociativaInputValore.put("coloreinterni",scheda.coloreInterniVeicolo);}	
+		mappaAssociativaInputValore.put("contratto",scheda.tipologiaContrattoVeicolo);
+		mappaAssociativaInputValore.put("descrizione",scheda.descrizioneVeicolo);
+		mappaAssociativaInputValore.put("idAlimentazione",scheda.carburanteVeicolo);
+		mappaAssociativaInputValore.put("idCarrozzeria",scheda.carrozzeriaVeicolo);
+		mappaAssociativaInputValore.put("idMarca",var_idMarca);
+		mappaAssociativaInputValore.put("idMarca2",var_idMarca);
+		mappaAssociativaInputValore.put("idModello",scheda.modelloVeicolo);
+		mappaAssociativaInputValore.put("idTipologia",scheda.tipologiaVeicolo);
+		if(scheda.meseImmatricolazioneVeicolo.equals("Mese")) {mappaAssociativaInputValore.put("meseimmatricolazione","vuoto");}else {mappaAssociativaInputValore.put("meseimmatricolazione","0"+(scheda.meseImmatricolazioneVeicoloIndex-1));}
+		mappaAssociativaInputValore.put("meseprossimarevisione","vuoto");
+		if(scheda.classeEmissioniVeicolo.equals("Seleziona")) {mappaAssociativaInputValore.put("normativa","vuoto");}else {mappaAssociativaInputValore.put("normativa",scheda.classeEmissioniVeicolo);}
+		mappaAssociativaInputValore.put("prezzo",scheda.prezzoVeicolo);
+		if(scheda.numeroRapportiVeicolo.equals("Seleziona")) {mappaAssociativaInputValore.put("rapporti","vuoto");}else {mappaAssociativaInputValore.put("rapporti",scheda.numeroRapportiVeicolo);}	
+		if(scheda.postiASedereVeicolo.equals("Seleziona")) {mappaAssociativaInputValore.put("sedili","vuoto");}	else {mappaAssociativaInputValore.put("sedili",scheda.postiASedereVeicolo);}
+		mappaAssociativaInputValore.put("versione",scheda.versioneVeicolo);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#centrale form input, #centrale form select, #centrale form textarea", tabellaDiDipendenza, mappaDeiParamerti);
+		valutaParametri(responseBody, "#centrale form input, #centrale form select, #centrale form textarea", mappaAssociativaInputValore, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 
-		if(mappaDeiParamerti.get("idModello").equals("")) {
-			messageInserimentoKO(NOMEPORTALE);
-			return false;
-		}
-
-		//Aggiungo qui questi parametri perchè se li aggiungessi nella tabellaDiDipendenza si sovrascriverebbero (hanno lo stesso nome)
+		//Le checkbox
+		if(scheda.coloreMetalizzato){postParameters.add(new BasicNameValuePair("metallizzato", "1")); }
 		if(scheda.disponibilitaABS){ postParameters.add(new BasicNameValuePair("sicurezza[]", "1")); }
 		if(scheda.disponibilitaAirBag){ postParameters.add(new BasicNameValuePair("sicurezza[]", "2")); postParameters.add(new BasicNameValuePair("sicurezza[]", "4"));}
 		if(scheda.disponibilitaAntifurto){ postParameters.add(new BasicNameValuePair("sicurezza[]", "128")); }
@@ -338,12 +288,14 @@ public class _cuboAutoIt extends PortaleWeb {
 
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", URLROOT + "/concessionari/_inserisci-annuncio.php", postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", URLROOT + "/concessionari/_inserisci-annuncio.php", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
@@ -367,16 +319,14 @@ public class _cuboAutoIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			postParameters.clear();
-			mappaDeiParamerti.clear();
-			tabellaDiDipendenza.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
 		//Connessione 7 - GET della pagina "Dettaglio annuncio" - Opzionale
 		/*HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
 		try {
-			Object[] response =  connessione_7.get("Connessione 7 - GET della pagina \"Dettaglio annuncio\"", URLROOT + "/" + location, requestHeaders, requestCookies, debugMode);
+			Object[] response =  connessione_7.get("Connessione 7 - GET della pagina \"Dettaglio annuncio\"", URLROOT + "/" + location, requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -390,11 +340,16 @@ public class _cuboAutoIt extends PortaleWeb {
 		//Connessione 8 - GET della pagina "Inserisci una nuova foto" - Opzionale
 		HttpPortalGetConnection connessione_8 = new HttpPortalGetConnection();
 		try {
-			Object[] response =  connessione_8.get("Connessione 8 - GET della pagina \"Inserisci una nuova foto\"", URLROOT + "/concessionari/foto.php?id=" + codiceInserzione, requestHeaders, requestCookies, debugMode);
+			Object[] response =  connessione_8.get("Connessione 8 - GET della pagina \"Inserisci una nuova foto\"", URLROOT + "/concessionari/foto.php?id=" + codiceInserzione, requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+			}
+			else {
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -411,23 +366,25 @@ public class _cuboAutoIt extends PortaleWeb {
 					FileBody bin = new FileBody(scheda.arrayImages[i]);
 					reqEntity.addPart("foto", bin );
 					reqEntity.addPart("id", new StringBody(codiceInserzione) );
-					reqEntity.addPart("Submit", new StringBody("Invia la foto") );
 
-					Object[] response = connessione_9.post("Connessione 9 - Invio delle foto", URLROOT + "/concessionari/_foto.php", reqEntity, requestHeaders, requestCookies, debugMode);			
+					Object[] response = connessione_9.post("Connessione 9 - Invio delle foto", URLROOT + "/concessionari/_foto.php", reqEntity, requestHeaders, requestCookies, DEBUG_MODE);			
 
 					//Controllo il response status
 					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 					if( (responseStatus.getStatusCode()!=302)) {
 						throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
-					}    	
+					}
+					else {
+						Header[] responseHeaders = (Header[])response[0];				
+						//Gestione dei cookie
+						setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+					}
 
 				} catch (IOException | RuntimeException e) {
 					throw new HttpCommunicationException(e);
 				}
 				finally {
-					tabellaDiDipendenza.clear();
-					mappaDeiParamerti.clear();
-					postParameters.clear();
+					clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 				}
 			}
 		}
@@ -438,37 +395,28 @@ public class _cuboAutoIt extends PortaleWeb {
 			//Aggiorna la lista dei portali in cui è inserita la scheda
 			scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
 
-			if(!isSequential) {   			
-				System.out.println("Inserita in: " + NOMEPORTALE);       		
+			//Aggiorna i pulsanti del pannello inserimento
+			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
-				//Aggiorna i pulsanti del pannello inserimento
-				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
-
-				//Mail e messaggio informativo OK
-				if(!modifica) {
-					sendConfirmationMail(scheda, NOMEPORTALE, scheda.codiceScheda);
-
-					messageInserimentoOK(NOMEPORTALE);
-				}	
-				else {
-					messageModificaOK(NOMEPORTALE);
-				}
-				
-			}
-
-			return inserimentoOK;        	
+			//Mail e messaggio informativo OK
+			if(!modifica) {
+				sendConfirmationMail(scheda, NOMEPORTALE, scheda.codiceScheda);
+				messageInserimentoOK(NOMEPORTALE);
+			}	
+			else {
+				messageModificaOK(NOMEPORTALE);
+			}       	
 		}
 		else {
-
 			if(!modifica) {
 				messageInserimentoKO(NOMEPORTALE);
 			}
 			else {
 				messageModificaKO(NOMEPORTALE);
 			}
-
-			return inserimentoOK;
 		}
+
+		return inserimentoOK; 
 
 	}
 
@@ -476,39 +424,38 @@ public class _cuboAutoIt extends PortaleWeb {
 	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
 
-		System.out.println("Visualizzazione scheda: " + scheda.codiceScheda + "...");
-
-		codiceInserzione = scheda.getCodiceInserimento(idPortale);
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT;
-			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
-			System.out.println("Visualizzata in: " + NOMEPORTALE);
-
+			java.awt.Desktop.getDesktop().browse(java.net.URI.create(URLROOT));
 		} catch (IOException e ) {
 			//
 		}
-
 		return true;
 	}
 
 
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
-		
+
 		//La scheda è da aggiornare
 		if(J2Web_UI.protoScheda!=null) {
 			modifica = true;
 		}
 
-		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
+		//Inizializzazione scheda
+		this.scheda=scheda;
 
+		//Ottengo il codice con cui è stata inserita la scheda
 		codiceInserzione = scheda.getCodiceInserimento(idPortale);
+
+		//Inizializzo gli headers
+		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, null, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", URLROOT + "/login.php", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -516,6 +463,9 @@ public class _cuboAutoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -524,25 +474,22 @@ public class _cuboAutoIt extends PortaleWeb {
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("password",PASSWORD);
-		tabellaDiDipendenza.put("submit","Entra");
-		tabellaDiDipendenza.put("username",USERNAME);
+		mappaAssociativaInputValore.put("password",PASSWORD);
+		mappaAssociativaInputValore.put("username",USERNAME);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#frmLogin input", tabellaDiDipendenza, mappaDeiParamerti);	
+		valutaParametri(responseBody, "#frmLogin input", mappaAssociativaInputValore, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, null, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", URLROOT + "/_login.php", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
 				Header[] responseHeaders = (Header[])response[0];
 				//Trovo il cookie di sessione
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				setCookies(responseHeaders, requestCookies);
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 			}
@@ -554,39 +501,40 @@ public class _cuboAutoIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();
-			postParameters.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
 		//Connessione 3 - GET della pagina di eliminazione annuncio
 		HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di eliminazione annuncio", URLROOT + "/concessionari/_del_annunci.php?id=" + codiceInserzione, requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di eliminazione annuncio", URLROOT + "/concessionari/_del_annunci.php?id=" + codiceInserzione, requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (!(responseStatus.getStatusCode()==200 || responseStatus.getStatusCode()==302))) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
+			else {
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
 		}
 
-
 		//Aggiorno la lista dei portali in cui è presenta la scheda corrente
 		scheda.eliminaInserimentoPortale(idPortale);			
 
-		if(!isSequential) {
-			//Aggiorno i pulsanti del pannello inserimento
-			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
+		//Aggiorno i pulsanti del pannello inserimento
+		PanelSicronizzazioneConPortali.updatePanello(scheda, false);	
 
+		//Stampo a video un messaggio informativo
+		if(!modifica) {
+			messageEliminazioneOK(NOMEPORTALE);
+		}
+		else {
 			System.out.println("Eliminata da: " + NOMEPORTALE);
-
-			//Stampo a video un messaggio informativo
-			if(!modifica) {
-				messageEliminazioneOK(NOMEPORTALE);
-			}
 		}
 
 		return true;
