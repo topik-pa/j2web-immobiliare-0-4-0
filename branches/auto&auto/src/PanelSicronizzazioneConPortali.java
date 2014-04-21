@@ -421,7 +421,8 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 
 		//checkboxSelezionaPortale.setEnabled(false);
 		//checkboxSelezionaPortale.setVisible(false);
-		//add(checkboxSelezionaPortale);   
+		//add(checkboxSelezionaPortale); 
+		add(new JLabel(""));
 
 		if(portale.isActive) {
 			add(new JLabel(labelSpaziatore));
@@ -430,7 +431,8 @@ class InserimentoPortale extends JPanel implements parametriGenerali {
 			add(btnCancella);
 		}
 		else {
-			add(new JLabel("<html><i>Portale momentaneamente non sincronizzabile</i></html>", JLabel.LEFT));
+			add(new JLabel(""));
+			add(new JLabel("<html><i>Portale momentaneamente<br/> non sincronizzabile</i></html>", JLabel.LEFT));
 		}
 
 	}
