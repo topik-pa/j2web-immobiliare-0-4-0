@@ -221,11 +221,11 @@ public class j2web implements parametriGenerali {
 
 		/*ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
 		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "6 - subito.it", "006", false);
-		J2Web_UI.listPortaliSincronizzazione.add(_subitoIt);
+		J2Web_UI.listPortaliSincronizzazione.add(_subitoIt);*/
 
 		ImageIcon _autoprontaconsegnaComIcon  = new ImageIcon(cl.getResource("images/_autoprontaconsegnaCom.png"));
-		PortaleWeb _autoprontaconsegnaCom = new _autoprontaconsegnaCom(_autoprontaconsegnaComIcon, "7 - autoprontaconsegna.com", "005", false);
-		J2Web_UI.listPortaliSincronizzazione.add(_autoprontaconsegnaCom);*/
+		PortaleWeb _autoprontaconsegnaCom = new _autoprontaconsegnaCom(_autoprontaconsegnaComIcon, "6 - autoprontaconsegna.com", "005", false);
+		J2Web_UI.listPortaliSincronizzazione.add(_autoprontaconsegnaCom);
 
 		/*ImageIcon _kijijiItIcon  = new ImageIcon(cl.getResource("images/_kijijiIt.png"));
 		PortaleWeb _kijijiIt = new _kijijiIt(_kijijiItIcon, "5 - kijiji.it", "005", true);
