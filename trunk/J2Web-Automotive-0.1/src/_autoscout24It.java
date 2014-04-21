@@ -144,7 +144,7 @@ public class _autoscout24It extends PortaleWeb {
 		requestHeaders.remove(0);
 		requestHeaders.add(0, new BasicNameValuePair("Host", HOST2));
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/Login.aspx", requestHeaders, null, DEBUG_MODE);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/Login.aspx", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -226,9 +226,10 @@ public class _autoscout24It extends PortaleWeb {
 
 
 		//Connessione 4 - GET per ottenere l'articleId
-		HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
+		/*HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
+		java.util.Date date= new java.util.Date();
 		try {
-			Object[] response = connessione_4.get("Connessione 4 - GET per ottenere l'articleId", "https://offerta.autoscout24.it/classified/temporary/C?_=1386424481612", requestHeaders, requestCookies, DEBUG_MODE);
+			Object[] response = connessione_4.get("Connessione 4 - GET per ottenere l'articleId", "https://offerta.autoscout24.it/classified/temporary/C?_=" + date.getTime(), requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==200)) {
@@ -258,11 +259,11 @@ public class _autoscout24It extends PortaleWeb {
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
-		}
+		}*/
 
 
 		//Connessione 4c - Invio delle foto
-		for(int i=1; i<scheda.arrayImages.length; i++) {
+		/*for(int i=1; i<scheda.arrayImages.length; i++) {
 			if(scheda.arrayImages[i]!=null) {
 				HttpPortalPostConnection connessione_4c = new HttpPortalPostConnection();        
 				try {
@@ -293,7 +294,7 @@ public class _autoscout24It extends PortaleWeb {
 					clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 				}
 			}
-		}
+		}*/
 
 
 		//Connessione 5 - POST dei parametri di annuncio
@@ -422,7 +423,7 @@ public class _autoscout24It extends PortaleWeb {
 			postParameters.add(new BasicNameValuePair("Equipment.EquipmentIds", ""));
 		}
 		else {
-			Equipment_EquipmentIds.substring(0, Equipment_EquipmentIds.lastIndexOf(",")-1);
+			Equipment_EquipmentIds.substring(0, Equipment_EquipmentIds.lastIndexOf(",")-2);
 			postParameters.add(new BasicNameValuePair("Equipment.EquipmentIds", Equipment_EquipmentIds));
 		}	
 
@@ -461,6 +462,7 @@ public class _autoscout24It extends PortaleWeb {
 					json = new JSONObject(responseBody);
 					if(json.getString("status").equals("Success")) {
 						codiceInserzione = json.getString("articleId");
+						articleId = codiceInserzione;
 						inserimentoOK = true;
 					}
 					else {
@@ -480,6 +482,41 @@ public class _autoscout24It extends PortaleWeb {
 		}
 		finally {
 			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
+		}
+		
+		
+		//Connessione 4c - Invio delle foto
+		for(int i=1; i<scheda.arrayImages.length; i++) {
+			if(scheda.arrayImages[i]!=null) {
+				HttpPortalPostConnection connessione_4c = new HttpPortalPostConnection();        
+				try {
+					MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+					FileBody bin = new FileBody(scheda.arrayImages[i]);
+
+					reqEntity.addPart("file1", bin );
+
+					String articleGuid = returnCookieValue(requestCookies, "GUID");					
+
+					Object[] response = connessione_4c.post("Connessione 4c - Invio delle foto", "https://offerta.autoscout24.it/classified/image/UploadHTML5/?articleId=" + articleId + "&articleGuid=" + articleGuid, reqEntity, requestHeaders, requestCookies, DEBUG_MODE);			
+
+					//Controllo il response status
+					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
+					if( (responseStatus.getStatusCode()!=200)) {
+						throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
+					}
+					else {
+						Header[] responseHeaders = (Header[])response[0];				
+						//Gestione dei cookie
+						setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
+					}
+
+				} catch (IOException | RuntimeException e) {
+					throw new HttpCommunicationException(e);
+				}
+				finally {
+					clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
+				}
+			}
 		}
 
 
