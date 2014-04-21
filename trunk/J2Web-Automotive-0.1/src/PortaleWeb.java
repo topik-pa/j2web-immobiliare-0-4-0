@@ -37,12 +37,6 @@ public abstract class PortaleWeb implements parametriGenerali {
 	String idPortale;
 	boolean isActive;	
 
-	//Cookie
-	/*protected static String SESSIONCOOKIEHEADER;
-	protected static String SESSIONCOOKIENAME;
-	protected static String SESSIONCOOKIEVALUE;
-	protected static String SESSIONCOOKIEDOMAIN;*/
-
 	//La label che identifica i parametri da non inviare
 	protected static String dontSendThisParam = "***DONOTSEND***";
 
