@@ -20,12 +20,13 @@ public interface parametriGenerali {
 	 * 
 	 */
 	//Versione di J2Web
-	final String  j2web_version = "1.1.5 \u03B2 - Versione di prova per Auto&Auto";
+	final String  j2web_version = "1.1.6 \u03B2 - Versione di prova per Auto&Auto";
 	//
 	//Utente del programma
 	final String UTENTE ="Marco Pavan";
 	final int IDUTENTE = 19; //l'ID corrisponde al valore idUtente del DB (20 per l'utente di DEV, 19 per quello di PROD)
-	final String EMAIL_UTENTE ="n.morsillo@nektasoft.it";
+	//final String EMAIL_UTENTE ="n.morsillo@nektasoft.it";
+	final String EMAIL_UTENTE ="marco--pavan@libero.it";
 	final String RAGIONESOCIALE_UTENTE ="Auto&Auto srl";
 	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
 	final String PROVINCIA_UTENTE ="Udine";
