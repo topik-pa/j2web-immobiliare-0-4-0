@@ -59,14 +59,13 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 			Iterator<BasicClientCookie> cookiesIterator = requestCookies.iterator();
 			while(cookiesIterator.hasNext()) {
 				currentCookie = (BasicClientCookie) cookiesIterator.next();
-				currentCookie.setDomain(SESSIONCOOKIE_DOMAIN);
-				currentCookie.setPath("/"); 
+				//currentCookie.setDomain(SESSIONCOOKIE_DOMAIN);
+				//currentCookie.setPath("/"); 
 				cookieStore.addCookie(currentCookie);
 
 			}			
 			((AbstractHttpClient) httpclient).setCookieStore(cookieStore);
 		}
-
 
 		//Send the request
 		response = httpclient.execute(httpget);
@@ -103,7 +102,7 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 	}
 
 	//GET di una risorsa
-	@Deprecated
+	/*@Deprecated
 	public Object[] get(String connectionDescription, String url, boolean debugMode) throws IOException {
 
 		//La risposta che verrÃ  restituita
@@ -153,10 +152,10 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 		headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
 		return headersAndBodyResponseAndStatus;     
 
-	}
+	}*/
 
 	//GET di una risorsa
-	@Deprecated
+	/*@Deprecated
 	public Object[] get(String connectionDescription, String url, List<NameValuePair> requestHeaders, boolean debugMode) throws IOException {
 
 		//La risposta che verrÃ  restituita
@@ -229,7 +228,7 @@ public class HttpPortalGetConnection extends HttpPortalConnection {
 		headersAndBodyResponseAndStatus[2] = response.getStatusLine();    
 		return headersAndBodyResponseAndStatus;     
 
-	}
+	}*/
 
 
 }

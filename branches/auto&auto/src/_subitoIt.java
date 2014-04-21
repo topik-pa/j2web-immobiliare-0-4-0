@@ -41,11 +41,8 @@ public class _subitoIt extends PortaleWeb {
 	private final String HOST = "www.subito.it";
 	private final String HOST2 = "www2.subito.it";
 
-	private final String SESSIONCOOKIENAME = "s";
-	private final String SESSIONCOOKIEDOMAIN = ".subito.it";
-	private final String SESSIONCOOKIEHEADER = "";
-	private final String SESSIONCOOKIEVALUE = "";
-
+	private final String COOKIE_DEFAULT_PATH = "/";
+	private final String COOKIE_DEFAULT_DOMAIN = ".subito.it";
 
 	//Variabili navigazione
 	//private String codiceInserzioneTemporaneo = UUID.randomUUID().toString();
@@ -54,7 +51,9 @@ public class _subitoIt extends PortaleWeb {
 	private String location;
 	private String responseBody;
 	private boolean inserimentoOK = false;
-	private boolean debugMode = true;
+	private boolean modifica = false; //è sempre false per questo portale
+	
+	//Messaggi personalizzati per questo portale
 
 	//Strutture dati di supporto
 	//Mappa dei parametri da inviare
@@ -70,7 +69,7 @@ public class _subitoIt extends PortaleWeb {
 	List<BasicClientCookie> requestCookies;
 
 	//Mappa che rappresenta la tabella di dipendennza dei parametri da inviare
-	Map<String,String> tabellaDiDipendenza;
+	Map<String,String> mappaAssociativaInputValore;
 
 	//La scheda immobile su cui si lavora
 	SchedaVeicolo scheda;
@@ -96,7 +95,7 @@ public class _subitoIt extends PortaleWeb {
 		requestCookies = new ArrayList<BasicClientCookie>();
 
 		//Iniziallizzo la tabella di dipendenza
-		tabellaDiDipendenza = new Hashtable<String,String>();
+		mappaAssociativaInputValore = new Hashtable<String,String>();
 
 	}
 
@@ -104,24 +103,17 @@ public class _subitoIt extends PortaleWeb {
 	//Metodo per l'inserimento della scheda immobile nel portale immobiliare
 	public boolean inserisciScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 
-		System.out.println("Inserimento scheda: " + scheda.codiceScheda + "...");
-
 		//Inizializzazione scheda
 		this.scheda=scheda;
 
-		//Imposto qui gli headers che saranno utilizzati in tutte le altre connessioni
-		requestHeaders.clear();
-		requestHeaders.add(new BasicNameValuePair("Host", HOST));
-		requestHeaders.add(new BasicNameValuePair("User-Agent", USER_AGENT_VALUE));	
-		requestHeaders.add(new BasicNameValuePair("Connection", CONNECTION));
-		requestHeaders.add(new BasicNameValuePair("Cache-Control", CACHE_CONTROL));
-		requestHeaders.add(new BasicNameValuePair("Accept-Language", ACCEPT_LANGUAGE));
-		requestHeaders.add(new BasicNameValuePair("Accept", ACCEPT));
+		//Inizializzo gli headers
+		inizializzaHeaders(requestHeaders, HOST);
+		requestCookies.clear();
 
 		//Connessione 0 - GET della home page - Opzionale
 		/*HttpPortalGetConnection connessione_0 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, debugMode);
+			Object[] response = connessione_0.get("Connessione 0 - GET della home page", URLROOT, requestHeaders, null, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -135,7 +127,7 @@ public class _subitoIt extends PortaleWeb {
 		//Connessione 1 - GET della pagina di login
 		HttpPortalGetConnection connessione_1 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/account/login_form/", requestHeaders, null, debugMode);
+			Object[] response = connessione_1.get("Connessione 1 - GET della pagina di login", SECUREURLROOT + "/account/login_form/", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -143,6 +135,10 @@ public class _subitoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -151,10 +147,10 @@ public class _subitoIt extends PortaleWeb {
 
 		//Connessione 2 - POST dei parametri di accesso
 		//Raccolgo i parametri nella tabella di dipendennza
-		tabellaDiDipendenza.put("login_email",USERNAME);
-		tabellaDiDipendenza.put("login_passwd",PASSWORD);
+		mappaAssociativaInputValore.put("login_email",USERNAME);
+		mappaAssociativaInputValore.put("login_passwd",PASSWORD);
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#boxLoginContainer input", tabellaDiDipendenza, mappaDeiParamerti);	
+		valutaParametri(responseBody, "#boxLoginContainer input", mappaAssociativaInputValore, mappaDeiParamerti);	
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 		HttpPortalPostConnection connessione_2 = new HttpPortalPostConnection();
@@ -162,16 +158,14 @@ public class _subitoIt extends PortaleWeb {
 		requestHeaders.remove(0);
 		requestHeaders.add(new BasicNameValuePair("Host", HOST2));
 		try {        	
-			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", SECUREURLROOT + "/account/login", postParameters, requestHeaders, null, debugMode);			
+			Object[] response = connessione_2.post("Connessione 2 - POST dei parametri di accesso", SECUREURLROOT + "/account/login", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
 				Header[] responseHeaders = (Header[])response[0];
 				//Gestione dei cookie
-				findSessionCookie(responseHeaders, SESSIONCOOKIENAME, SESSIONCOOKIEDOMAIN);
-				connessione_2.setSessionCookie(SESSIONCOOKIEHEADER, SESSIONCOOKIENAME, SESSIONCOOKIEVALUE, SESSIONCOOKIEDOMAIN);
-				setCookies(responseHeaders, requestCookies);			
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);			
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 			}
@@ -183,16 +177,14 @@ public class _subitoIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			tabellaDiDipendenza.clear();
-			mappaDeiParamerti.clear();
-			postParameters.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
 		//Connessione 3 - GET della pagina di redirect dopo inserimento parametri login - (Opzionale)
 		/*HttpPortalGetConnection connessione_3 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + location, requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_3.get("Connessione 3 - GET della pagina di redirect dopo inserimento parametri login", SECUREURLROOT + location, requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
@@ -211,7 +203,7 @@ public class _subitoIt extends PortaleWeb {
 		//Connessione 4 - GET della pagina di redirect dopo inserimento parametri login - la connessione precedente non mi ritorna la location (Opzionale)
 		/*HttpPortalGetConnection connessione_4 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_4.get("Connessione 4 - GET della pagina di redirect dopo inserimento parametri login - la connessione precedente non mi ritorna la location", SECUREURLROOT + "/account/manageads/", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_4.get("Connessione 4 - GET della pagina di redirect dopo inserimento parametri login - la connessione precedente non mi ritorna la location", SECUREURLROOT + "/account/manageads/", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -225,7 +217,7 @@ public class _subitoIt extends PortaleWeb {
 		//Connessione 5 - GET della pagina "Inserisci il tuo annuncio"
 		HttpPortalGetConnection connessione_5 = new HttpPortalGetConnection();
 		try {
-			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci il tuo annuncio\"", SECUREURLROOT + "/ai/form/0", requestHeaders, requestCookies, debugMode);
+			Object[] response = connessione_5.get("Connessione 5 - GET della pagina \"Inserisci il tuo annuncio\"", SECUREURLROOT + "/ai/form/0", requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -233,6 +225,10 @@ public class _subitoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -249,7 +245,6 @@ public class _subitoIt extends PortaleWeb {
 
 				HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 				try {   
-
 					reqEntity.addPart("image", bin );
 					reqEntity.addPart("check_type_diff", new StringBody("0") );
 					reqEntity.addPart("category", new StringBody("2") );
@@ -304,12 +299,14 @@ public class _subitoIt extends PortaleWeb {
 					reqEntity.addPart("validate", new StringBody("continua") );
 					reqEntity.addPart("extra_images", new StringBody("Carica") );
 
-					Object[] response = connessione_6.post("Connessione5b - POST delle immagini", SECUREURLROOT + "/ai/verify/0", reqEntity, requestHeaders, requestCookies, debugMode);			
+					Object[] response = connessione_6.post("Connessione5b - POST delle immagini", SECUREURLROOT + "/ai/verify/0", reqEntity, requestHeaders, requestCookies, DEBUG_MODE);			
 
 					//Controllo il response status
 					BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 					if( (responseStatus.getStatusCode()==302)) {
-						Header[] responseHeaders = (Header[])response[0];
+						Header[] responseHeaders = (Header[])response[0];				
+						//Gestione dei cookie
+						setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 						//Trovo la location
 						location = getHeaderValueByName(responseHeaders, "Location");
 						/*if(!location.contains("/ai/form/1")) {
@@ -331,109 +328,109 @@ public class _subitoIt extends PortaleWeb {
 
 		//Connessione 6 - POST dei parametri di annuncio
 		//Raccolgo i parametri nella tabella di dipendenza
-		tabellaDiDipendenza.put("check_type_diff", "***site***");
+		//mappaAssociativaInputValore.put("check_type_diff", "***site***");
 		if(scheda.veicolo.equals("auto")) {
-			tabellaDiDipendenza.put("category", "Auto"); //Auto
+			mappaAssociativaInputValore.put("category", "Auto"); //Auto
 		}
-		tabellaDiDipendenza.put("animal_type","Seleziona il tipo");
-		tabellaDiDipendenza.put("office_type","Seleziona il tipo di ufficio o locale commerciale"); 
-		tabellaDiDipendenza.put("room_type","Seleziona il tipo di stanza"); 
-		tabellaDiDipendenza.put("ship_type","Seleziona il tipo di imbarcazione"); 
-		tabellaDiDipendenza.put("vehicle_type","Seleziona il tipo di veicolo"); 
-		tabellaDiDipendenza.put("caravan_type","Seleziona il tipo di veicolo"); 
-		tabellaDiDipendenza.put("sport_type","Seleziona il tipo di sport"); 
-		tabellaDiDipendenza.put("children_type","Seleziona il tipo di oggetto"); 
-		tabellaDiDipendenza.put("children_age","Seleziona la fascia d'et"); 
-		tabellaDiDipendenza.put("hobby_type","Seleziona il tipo di hobby"); 
-		tabellaDiDipendenza.put("audiovideo_type","Seleziona il prodotto"); 
-		tabellaDiDipendenza.put("bicycle_type","Seleziona il tipo di bicicletta");
-		tabellaDiDipendenza.put("phone_type","Scegli"); 
-		tabellaDiDipendenza.put("bikebrand","Seleziona la marca");
-		tabellaDiDipendenza.put("bikeversion",";Seleziona prima il modell"); 
-		tabellaDiDipendenza.put("moto_type","Seleziona tipologia");
-		tabellaDiDipendenza.put("computer_type","Scegli"); 
-		tabellaDiDipendenza.put("clothing_type","Scegli");
-		tabellaDiDipendenza.put("clothing_gender","Scegli"); 
-		tabellaDiDipendenza.put("clothing_number","Scegli");
-		tabellaDiDipendenza.put("region", REGIONE_UTENTE); //Friuli-Venezia Giulia
-		tabellaDiDipendenza.put("zone","");
-		tabellaDiDipendenza.put("company_ad", "1"); //pubblica come Azienda
-		tabellaDiDipendenza.put("name",RAGIONESOCIALE_UTENTE); //autoeauto
-		tabellaDiDipendenza.put("servicetype","Seleziona la tipologia");
-		tabellaDiDipendenza.put("phone",TELEFONO_UTENTE); //deve essere preventivamente validato da subito.it
-		tabellaDiDipendenza.put("phone_hidden","***site***");
-		tabellaDiDipendenza.put("type","s"); //Vendita 
-		tabellaDiDipendenza.put("carbrand",scheda.marcaVeicolo);
+		mappaAssociativaInputValore.put("animal_type","Seleziona il tipo");
+		mappaAssociativaInputValore.put("office_type","Seleziona il tipo di ufficio o locale commerciale"); 
+		mappaAssociativaInputValore.put("room_type","Seleziona il tipo di stanza"); 
+		mappaAssociativaInputValore.put("ship_type","Seleziona il tipo di imbarcazione"); 
+		mappaAssociativaInputValore.put("vehicle_type","Seleziona il tipo di veicolo"); 
+		mappaAssociativaInputValore.put("caravan_type","Seleziona il tipo di veicolo"); 
+		mappaAssociativaInputValore.put("sport_type","Seleziona il tipo di sport"); 
+		mappaAssociativaInputValore.put("children_type","Seleziona il tipo di oggetto"); 
+		mappaAssociativaInputValore.put("children_age","Seleziona la fascia d'et"); 
+		mappaAssociativaInputValore.put("hobby_type","Seleziona il tipo di hobby"); 
+		mappaAssociativaInputValore.put("audiovideo_type","Seleziona il prodotto"); 
+		mappaAssociativaInputValore.put("bicycle_type","Seleziona il tipo di bicicletta");
+		mappaAssociativaInputValore.put("phone_type","Scegli"); 
+		mappaAssociativaInputValore.put("bikebrand","Seleziona la marca");
+		mappaAssociativaInputValore.put("bikeversion",";Seleziona prima il modell"); 
+		mappaAssociativaInputValore.put("moto_type","Seleziona tipologia");
+		mappaAssociativaInputValore.put("computer_type","Scegli"); 
+		mappaAssociativaInputValore.put("clothing_type","Scegli");
+		mappaAssociativaInputValore.put("clothing_gender","Scegli"); 
+		mappaAssociativaInputValore.put("clothing_number","Scegli");
+		mappaAssociativaInputValore.put("region", REGIONE_UTENTE); //Friuli-Venezia Giulia
+		mappaAssociativaInputValore.put("zone","");
+		mappaAssociativaInputValore.put("company_ad", "1"); //pubblica come Azienda
+		mappaAssociativaInputValore.put("name",RAGIONESOCIALE_UTENTE); //autoeauto
+		mappaAssociativaInputValore.put("servicetype","Seleziona la tipologia");
+		mappaAssociativaInputValore.put("phone",TELEFONO_UTENTE); //deve essere preventivamente validato da subito.it
+		//mappaAssociativaInputValore.put("phone_hidden","***site***");
+		mappaAssociativaInputValore.put("type","s"); //Vendita 
+		mappaAssociativaInputValore.put("carbrand",scheda.marcaVeicolo);
 
 		if(scheda.annoImmatricolazioneVeicolo.equals("Da immatricolare")) {
-			tabellaDiDipendenza.put("regdate","2013");
+			mappaAssociativaInputValore.put("regdate","2014");
 		}
 		else {
-			tabellaDiDipendenza.put("regdate",scheda.annoImmatricolazioneVeicolo);
+			mappaAssociativaInputValore.put("regdate",scheda.annoImmatricolazioneVeicolo);
 		}
 
-		tabellaDiDipendenza.put("carversion", "");
-		tabellaDiDipendenza.put("fuel",scheda.carburanteVeicolo);
-		tabellaDiDipendenza.put("country","Seleziona");
-		tabellaDiDipendenza.put("car_type",scheda.carrozzeriaVeicolo);
-		tabellaDiDipendenza.put("gearbox",scheda.tipologiaCambioVeicolo);
-		tabellaDiDipendenza.put("pollution",scheda.classeEmissioniVeicolo);
-		tabellaDiDipendenza.put("seats",""+scheda.postiASedereVeicolo);
-		tabellaDiDipendenza.put("doors","Porte");
+		mappaAssociativaInputValore.put("carversion", "");
+		mappaAssociativaInputValore.put("fuel",scheda.carburanteVeicolo);
+		mappaAssociativaInputValore.put("country","Seleziona");
+		mappaAssociativaInputValore.put("car_type",scheda.carrozzeriaVeicolo);
+		mappaAssociativaInputValore.put("gearbox",scheda.tipologiaCambioVeicolo);
+		mappaAssociativaInputValore.put("pollution",scheda.classeEmissioniVeicolo);
+		mappaAssociativaInputValore.put("seats",""+scheda.postiASedereVeicolo);
+		mappaAssociativaInputValore.put("doors","Porte");
 		switch (scheda.coloreEsternoVeicolo) {
 		case "Bianco":
-			tabellaDiDipendenza.put("color","1");
+			mappaAssociativaInputValore.put("color","1");
 			break;
 		case "Grigio":
-			tabellaDiDipendenza.put("color","2");	
+			mappaAssociativaInputValore.put("color","2");	
 			break;
 		case "Marrone":
-			tabellaDiDipendenza.put("color","3");
+			mappaAssociativaInputValore.put("color","3");
 			break;
 		case "Nero":
-			tabellaDiDipendenza.put("color","4");
+			mappaAssociativaInputValore.put("color","4");
 			break;
 		case "Rosso":
-			tabellaDiDipendenza.put("color","5");
+			mappaAssociativaInputValore.put("color","5");
 			break;
 		case "Verde":
-			tabellaDiDipendenza.put("color","6");
+			mappaAssociativaInputValore.put("color","6");
 			break;
 		case "Giallo":
-			tabellaDiDipendenza.put("color","7");
+			mappaAssociativaInputValore.put("color","7");
 			break;
 		case "Blu":
-			tabellaDiDipendenza.put("color","8");
+			mappaAssociativaInputValore.put("color","8");
 			break;			
 		default:
-			tabellaDiDipendenza.put("color","");
+			mappaAssociativaInputValore.put("color","");
 			break;
 		}
-		tabellaDiDipendenza.put("subject",scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " " + scheda.tipologiaContrattoVeicolo);
-		tabellaDiDipendenza.put("price",scheda.prezzoVeicolo);
-		tabellaDiDipendenza.put("gender","Scegli");
-		tabellaDiDipendenza.put("smoker","Scegli");
-		tabellaDiDipendenza.put("cubic_capacity",scheda.cilindrataVeicolo);
-		tabellaDiDipendenza.put("rooms","Seleziona");
-		tabellaDiDipendenza.put("size","");
-		tabellaDiDipendenza.put("length","");
-		tabellaDiDipendenza.put("contract_type","Seleziona il tipo di contratto");
-		tabellaDiDipendenza.put("degree","Seleziona il tuo titolo di studio");
-		tabellaDiDipendenza.put("worklevel","Seleziona l'inquadramento");
-		tabellaDiDipendenza.put("workhours","Seleziona l'orario di lavoro");
-		tabellaDiDipendenza.put("body",scheda.descrizioneVeicolo);
-		tabellaDiDipendenza.put("cites_cert_numb","");
-		tabellaDiDipendenza.put("cites_cert_date","");
-		tabellaDiDipendenza.put("cites_cert_from","");
-		tabellaDiDipendenza.put("show_map","0"); //non mostrare la mappa
-		tabellaDiDipendenza.put("address","");
-		tabellaDiDipendenza.put("latitude","");
-		tabellaDiDipendenza.put("longitude","");
-		tabellaDiDipendenza.put("zoom","");
-		tabellaDiDipendenza.put("image","");
-		tabellaDiDipendenza.put("accept_equal_opp","1"); //annuncio per ambo i sessi
-		tabellaDiDipendenza.put("accept_term_of_use","1"); //accetto i termini d'uso
-		tabellaDiDipendenza.put("validate","continua");
+		mappaAssociativaInputValore.put("subject",scheda.marcaVeicolo + " " + scheda.modelloVeicolo + " " + scheda.versioneVeicolo + " " + scheda.tipologiaContrattoVeicolo);
+		mappaAssociativaInputValore.put("price",scheda.prezzoVeicolo);
+		mappaAssociativaInputValore.put("gender","Scegli");
+		mappaAssociativaInputValore.put("smoker","Scegli");
+		mappaAssociativaInputValore.put("cubic_capacity",scheda.cilindrataVeicolo);
+		mappaAssociativaInputValore.put("rooms","Seleziona");
+		mappaAssociativaInputValore.put("size","");
+		mappaAssociativaInputValore.put("length","");
+		mappaAssociativaInputValore.put("contract_type","Seleziona il tipo di contratto");
+		mappaAssociativaInputValore.put("degree","Seleziona il tuo titolo di studio");
+		mappaAssociativaInputValore.put("worklevel","Seleziona l'inquadramento");
+		mappaAssociativaInputValore.put("workhours","Seleziona l'orario di lavoro");
+		mappaAssociativaInputValore.put("body",scheda.descrizioneVeicolo);
+		mappaAssociativaInputValore.put("cites_cert_numb","");
+		mappaAssociativaInputValore.put("cites_cert_date","");
+		mappaAssociativaInputValore.put("cites_cert_from","");
+		mappaAssociativaInputValore.put("show_map","0"); //non mostrare la mappa
+		mappaAssociativaInputValore.put("address","");
+		mappaAssociativaInputValore.put("latitude","");
+		mappaAssociativaInputValore.put("longitude","");
+		mappaAssociativaInputValore.put("zoom","");
+		mappaAssociativaInputValore.put("image","");
+		mappaAssociativaInputValore.put("accept_equal_opp","1"); //annuncio per ambo i sessi
+		mappaAssociativaInputValore.put("accept_term_of_use","1"); //accetto i termini d'uso
+		mappaAssociativaInputValore.put("validate","continua");
 
 		if(!scheda.chilometraggioVeicolo.equals("")) {
 			String mileage = "";
@@ -481,13 +478,13 @@ public class _subitoIt extends PortaleWeb {
 		}
 
 		//Valorizzo i parametri mettendoli nella mappaDeiParametri
-		valutaParametri(responseBody, "#content form input, #content form select, #content form textarea", tabellaDiDipendenza, mappaDeiParamerti);
+		valutaParametri(responseBody, "#content form input, #content form select, #content form textarea", mappaAssociativaInputValore, mappaDeiParamerti);
 		//Trasferisco i parametri dalla mappa alla lista
 		setPostParameters(mappaDeiParamerti, postParameters);
 
 		//Questi parametri li devo valorizzare qui
-		postParameters.add(new BasicNameValuePair("city", "4")); //Udine
-		postParameters.add(new BasicNameValuePair("town", "030129"));  //Udine
+		postParameters.add(new BasicNameValuePair("city", SUBITOIT_CODCITY)); //Udine
+		postParameters.add(new BasicNameValuePair("town", SUBITOIT_CODTOWN));  //Udine
 
 		var_idMarca = mappaDeiParamerti.get("carbrand");
 		String carmodel = getCarmodel(scheda.modelloVeicolo, var_idMarca);
@@ -497,16 +494,18 @@ public class _subitoIt extends PortaleWeb {
 
 		HttpPortalPostConnection connessione_6 = new HttpPortalPostConnection();
 		try {        	
-			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", SECUREURLROOT + "/ai/verify/0", postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_6.post("Connessione 6 - POST dei parametri annuncio", SECUREURLROOT + "/ai/verify/0", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(location.contains("/ai/preview")) {
-					//inserimentoOK=true;
+					inserimentoOK=true;
 				}
 				else {
 					throw new HttpCommunicationException(new HttpWrongResponseHeaderException("Header Location non previsto"));
@@ -520,24 +519,23 @@ public class _subitoIt extends PortaleWeb {
 			throw new HttpCommunicationException(e);
 		}
 		finally {
-			postParameters.clear();
-			mappaDeiParamerti.clear();
-			tabellaDiDipendenza.clear();
+			clearStruttureDati(mappaAssociativaInputValore, mappaDeiParamerti, postParameters);
 		}
 
 
 		//Connessione 7 - GET della pagina "Preview annuncio" - Opzionale
 		HttpPortalGetConnection connessione_7 = new HttpPortalGetConnection();
 		try {
-			Object[] response =  connessione_7.get("Connessione 7 - GET della pagina \"Preview annuncio\"", SECUREURLROOT + location, requestHeaders, requestCookies, debugMode);
+			Object[] response =  connessione_7.get("Connessione 7 - GET della pagina \"Preview annuncio\"", SECUREURLROOT + location, requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
 				throw new HttpCommunicationException(new HttpWrongResponseStatusCodeException("Status code non previsto"));
 			}
 			else {
-				//Lasciare solo per test
-				//inserimentoOK=true;
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -545,16 +543,18 @@ public class _subitoIt extends PortaleWeb {
 
 
 		//Connessione 8 - POST della conferma alla pubblicazione
-		HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
+		/*HttpPortalPostConnection connessione_8 = new HttpPortalPostConnection();
 		try {    
 			postParameters.add(new BasicNameValuePair("payment_type", "cc"));
 
-			Object[] response = connessione_8.post("Connessione 8 - POST della conferma alla pubblicazione", SECUREURLROOT + "/ai/create/0", postParameters, requestHeaders, requestCookies, debugMode);			
+			Object[] response = connessione_8.post("Connessione 8 - POST della conferma alla pubblicazione", SECUREURLROOT + "/ai/create/0", postParameters, requestHeaders, requestCookies, DEBUG_MODE);			
 
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()==302)) {
-				Header[] responseHeaders = (Header[])response[0];
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 				//Trovo la location
 				location = getHeaderValueByName(responseHeaders, "Location");
 				if(location.contains("/ai/confirm/")) {
@@ -573,7 +573,7 @@ public class _subitoIt extends PortaleWeb {
 		}
 		finally {
 			postParameters.clear();
-		}
+		}*/
 
 
 		//Verifico il successo dell'inserimento, aggiorno strutture dati e pannelli, comunico l'esito all'utente
@@ -582,30 +582,28 @@ public class _subitoIt extends PortaleWeb {
 			//Aggiorna la lista dei portali in cui è inserita la scheda
 			scheda.aggiungiInserimentoPortale(idPortale, codiceInserzione);
 
-			if(!isSequential) {   			
-				System.out.println("Inserita in: " + NOMEPORTALE);       		
+			//Aggiorna i pulsanti del pannello inserimento
+			PanelSicronizzazioneConPortali.updatePanello(scheda, false);
 
-				//Aggiorna i pulsanti del pannello inserimento
-				PanelSicronizzazioneConPortali.updatePanello(scheda, false);
-
-				//Invio mail di conferma inserimento 
-				sendConfirmationMail(scheda, NOMEPORTALE, codiceInserzione);
-
-				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Scheda immobile inserita in: " + NOMEPORTALE + "\n\nLa pubblicazione dell'annuncio sarà valutata dal personale di subito.it.\nPer maggiori informazione leggete le condizioni d'uso di subito.it", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
-			}
-
-			return inserimentoOK;        	
+			//Mail e messaggio informativo OK
+			if(!modifica) {
+				sendConfirmationMail(scheda, NOMEPORTALE, scheda.codiceScheda);
+				messageInserimentoOK(NOMEPORTALE);
+			}	
+			else {
+				messageModificaOK(NOMEPORTALE);
+			}       	
 		}
 		else {
-
-			if(!isSequential) {
-				//Stampo a video un messaggio informativo
-				JOptionPane.showMessageDialog(null, "Problemi nell'inserimento scheda in: " + NOMEPORTALE + ".\n Verificare l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);	
+			if(!modifica) {
+				messageInserimentoKO(NOMEPORTALE);
 			}
-
-			return inserimentoOK;
+			else {
+				messageModificaKO(NOMEPORTALE);
+			}
 		}
+
+		return inserimentoOK;
 
 	}
 
@@ -616,7 +614,7 @@ public class _subitoIt extends PortaleWeb {
 
 		HttpPortalGetConnection connessione_a = new HttpPortalGetConnection();
 		try {
-			Object[] response =  connessione_a.get("Connessione a - GET per ottenere l'idModello", SECUREURLROOT + "/templates/common/carmodels.html?cb=" + idMarca, requestHeaders, requestCookies, debugMode);
+			Object[] response =  connessione_a.get("Connessione a - GET per ottenere l'idModello", SECUREURLROOT + "/templates/common/carmodels.html?cb=" + idMarca, requestHeaders, requestCookies, DEBUG_MODE);
 			//Controllo il response status
 			BasicStatusLine responseStatus = (BasicStatusLine) response[2];
 			if( (responseStatus.getStatusCode()!=200)) {
@@ -624,6 +622,10 @@ public class _subitoIt extends PortaleWeb {
 			}
 			else {
 				responseBody = (String)response[1];
+				
+				Header[] responseHeaders = (Header[])response[0];				
+				//Gestione dei cookie
+				setCookies(responseHeaders, requestCookies, COOKIE_DEFAULT_PATH, COOKIE_DEFAULT_DOMAIN);
 			}
 		} catch (IOException | RuntimeException e) {
 			throw new HttpCommunicationException(e);
@@ -644,18 +646,13 @@ public class _subitoIt extends PortaleWeb {
 
 	//Metodo per la visualizzazione della scheda immobile nel portale immobiliare
 	public boolean visualizzaScheda(SchedaVeicolo scheda) {
-		System.out.println("Visualizzazione scheda: " + scheda.codiceScheda + "...");
 
 		//Apro il browser e inserisco credenziali		
 		try {
-			String url = URLROOT;
-			java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
-			System.out.println("Visualizzata in: " + NOMEPORTALE);
-
+			java.awt.Desktop.getDesktop().browse(java.net.URI.create(URLROOT));
 		} catch (IOException e ) {
 			//
 		}
-
 		return true;
 	}
 
@@ -663,14 +660,9 @@ public class _subitoIt extends PortaleWeb {
 	//Metodo per l'eliminazione della scheda immobile nel portale immobiliare
 	public boolean cancellaScheda(SchedaVeicolo scheda, boolean isSequential) throws HttpCommunicationException {
 
-		System.out.println("Eliminazione scheda: " + scheda.codiceScheda + "...");
-
-		codiceInserzione = scheda.getCodiceInserimento(idPortale);
-
 		JOptionPane.showMessageDialog(null, "Non è prevista l'eliminazione automatica della scheda da: " + NOMEPORTALE + "\n\nPer elimibare la scheda, procedere direttamente attraverso il portale Web.", "Scheda inserita", JOptionPane.INFORMATION_MESSAGE);
 
 		return true;
-
 
 	}
 
