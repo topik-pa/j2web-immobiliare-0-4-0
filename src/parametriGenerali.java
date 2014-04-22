@@ -20,59 +20,59 @@ public interface parametriGenerali {
 	 * 
 	 */
 	//Versione di J2Web
-	final String  j2web_version = "1.1.5 \u03B2 - DEV";
+	final String  j2web_version = "1.1.5 \u03B2 - Versione DEMO";
 	//
 	//Utente del programma
-	final String UTENTE ="Marco Pavan";
-	final int IDUTENTE = 20; //l'ID corrisponde al valore idUtente del DB (20 per l'utente di DEV, 19 per quello di PROD)
-	final String EMAIL_UTENTE ="marco--pavan@libero.it";
-	final String RAGIONESOCIALE_UTENTE ="Auto&Auto srl";
-	final String REGIONE_UTENTE ="Friuli-Venezia Giulia";
-	final String PROVINCIA_UTENTE ="Udine";
-	final String CITTA_UTENTE ="Udine";
-	final String INDIRIZZO_UTENTE ="33100 - Udine (UD)";
+	final String UTENTE ="Marco Martini";
+	final int IDUTENTE = 21; //l'ID corrisponde al valore idUtente del DB (20 per l'utente di DEV, 19 per quello di PROD)
+	final String EMAIL_UTENTE ="j2web.demo@libero.it";
+	final String RAGIONESOCIALE_UTENTE ="j2Web Demo srl";
+	final String REGIONE_UTENTE ="Emilia-Romagna";
+	final String PROVINCIA_UTENTE ="Bologna";
+	final String CITTA_UTENTE ="Bologna";
+	final String INDIRIZZO_UTENTE ="40129 - Bologna (BO)";
 	final String TELEFONO_UTENTE ="3295698985";
 	//
 	//Url tracking remoto
-	//String urlTrackingRemoto = "http://www.j2webstudio.it/j2web/tracking/tracking.php";
-	String urlTrackingRemoto = "http://localhost/j2web/tracking/tracking.php";
+	String urlTrackingRemoto = "http://www.j2webstudio.it/j2web/tracking/tracking.php";
+	//String urlTrackingRemoto = "http://localhost/j2web/tracking/tracking.php";
 	//
 	//Url tunneling DB auto-nuove-usate
-	//String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/j2web/httpTunnel/mysqltunnel.php";
-	String urlTunnelDBNekta = "http://localhost/j2web/httpTunnel/mysqltunnel.php";
+	String urlTunnelDBNekta = "http://www.auto-nuove-usate.it/j2web/httpTunnel/mysqltunnel.php";
+	//String urlTunnelDBNekta = "http://localhost/j2web/httpTunnel/mysqltunnel.php";
 	//
 	//Url inserimento immagini in remoto
-	//String urlInserimentoImmaginiInRemoto = "http://www.auto-nuove-usate.it/j2web/images/uploadImages.php";
-	String urlInserimentoImmaginiInRemoto = "http://localhost/j2web/images/uploadImages.php";
+	String urlInserimentoImmaginiInRemoto = "http://www.auto-nuove-usate.it/j2web/images/uploadImages.php";
+	//String urlInserimentoImmaginiInRemoto = "http://localhost/j2web/images/uploadImages.php";
 	//
 	//Url posizione immagini in remoto
-	//String urlLocationImmaginiInRemoto = "http://www.auto-nuove-usate.it/imgauto/";
-	String urlLocationImmaginiInRemoto = "http://localhost/imgauto/";
+	String urlLocationImmaginiInRemoto = "http://www.auto-nuove-usate.it/imgauto/";
+	//String urlLocationImmaginiInRemoto = "http://localhost/imgauto/";
 	//
 	//Debug mode
-	boolean DEBUG_MODE = true;
+	boolean DEBUG_MODE = false;
 	//
 	//Impostazioni specifiche richieste dai portali
 	//CUBOAUTO
-	String CUBOAUTO_USERNAME = "topik123";
-	String CUBOAUTO_PASSWORD = "topik123";
+	String CUBOAUTO_USERNAME = "j2webdemo";
+	String CUBOAUTO_PASSWORD = "j2webdemo";
 	//AUTOSCOUT24
-	String AUTOSCOUT24_USERNAME = "e138281@drdrb.com";
-	String AUTOSCOUT24_PASSWORD = "topik123";
+	//String AUTOSCOUT24_USERNAME = "e138281@drdrb.com";
+	//String AUTOSCOUT24_PASSWORD = "topik123";
 	//AUTOSUPERMARKET
-	String AUTOSUPERMARKET_USERNAME = "c2775833@drdrb.com";
-	String AUTOSUPERMARKET_PASSWORD = "topik123";
+	String AUTOSUPERMARKET_USERNAME = "j2web.demo@libero.it";
+	String AUTOSUPERMARKET_PASSWORD = "j2webdemo";
 	//SUBITOIT
-	String SUBITOIT_USERNAME = "marco--pavan@libero.it";
-	String SUBITOIT_PASSWORD = "topik123";
-	String SUBITOIT_CODTOWN = "030129";
-	String SUBITOIT_CODCITY = "4";
+	//String SUBITOIT_USERNAME = "marco--pavan@libero.it";
+	//String SUBITOIT_PASSWORD = "topik123";
+	//String SUBITOIT_CODTOWN = "030129";
+	//String SUBITOIT_CODCITY = "4";
 	//VENDIAUTO
-	String VENDIAUTO_USERNAME = "c3339097@drdrb.com";
-	String VENDIAUTO_PASSWORD = "topik123";
+	String VENDIAUTO_USERNAME = "j2web.demo@libero.it";
+	String VENDIAUTO_PASSWORD = "j2webdemo";
 	//AUTOPRONTACONSEGNA
-	String AUTOPRONTACONSEGNA_USERNAME = "HeadyElf@mailinator.com";
-	String AUTOPRONTACONSEGNA_PASSWORD = "topik123";
+	//String AUTOPRONTACONSEGNA_USERNAME = "HeadyElf@mailinator.com";
+	//String AUTOPRONTACONSEGNA_PASSWORD = "topik123";
 	/*
 	 * 
 	 * 
