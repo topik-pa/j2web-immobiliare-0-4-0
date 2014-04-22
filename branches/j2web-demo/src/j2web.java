@@ -207,25 +207,25 @@ public class j2web implements parametriGenerali {
 		PortaleWeb _autosupermarketIt = new _autosupermarketIt(_autosupermarketIcon, "3 - autosupermarket.it", "004", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_autosupermarketIt);
 		
-		ImageIcon _autoscout24ItIcon  = new ImageIcon(cl.getResource("images/_autoscout24It.png"));
+		/*ImageIcon _autoscout24ItIcon  = new ImageIcon(cl.getResource("images/_autoscout24It.png"));
 		PortaleWeb _autoscout24It = new _autoscout24It(_autoscout24ItIcon, "4 - autoscout24.it", "002", true);
-		J2Web_UI.listPortaliSincronizzazione.add(_autoscout24It);
+		J2Web_UI.listPortaliSincronizzazione.add(_autoscout24It);*/
 
 		/*ImageIcon _automobileIcon  = new ImageIcon(cl.getResource("images/automobileIt.png"));
 		PortaleWeb _automobileIt = new _automobileIt(_automobileIcon, "5 - automobile.it", "005", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_automobileIt);*/
 
 		ImageIcon _vendiautoComIcon  = new ImageIcon(cl.getResource("images/_vendiautoCom.png"));
-		PortaleWeb _vendiautoCom = new _vendiautoCom(_vendiautoComIcon, "5 - vendiauto.com", "005", true);
+		PortaleWeb _vendiautoCom = new _vendiautoCom(_vendiautoComIcon, "4 - vendiauto.com", "005", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_vendiautoCom);
 
 		/*ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
 		PortaleWeb _subitoIt = new _subitoIt(_subitoItIcon, "6 - subito.it", "006", false);
 		J2Web_UI.listPortaliSincronizzazione.add(_subitoIt);*/
 
-		ImageIcon _autoprontaconsegnaComIcon  = new ImageIcon(cl.getResource("images/_autoprontaconsegnaCom.png"));
+		/*ImageIcon _autoprontaconsegnaComIcon  = new ImageIcon(cl.getResource("images/_autoprontaconsegnaCom.png"));
 		PortaleWeb _autoprontaconsegnaCom = new _autoprontaconsegnaCom(_autoprontaconsegnaComIcon, "6 - autoprontaconsegna.com", "005", false);
-		J2Web_UI.listPortaliSincronizzazione.add(_autoprontaconsegnaCom);
+		J2Web_UI.listPortaliSincronizzazione.add(_autoprontaconsegnaCom);*/
 
 		/*ImageIcon _kijijiItIcon  = new ImageIcon(cl.getResource("images/_kijijiIt.png"));
 		PortaleWeb _kijijiIt = new _kijijiIt(_kijijiItIcon, "5 - kijiji.it", "005", true);
@@ -262,7 +262,6 @@ public class j2web implements parametriGenerali {
 	}
 
 	//Funzione di tracking eventi su j2web
-	@SuppressWarnings("unused")
 	public static void  trackEvent(String eventAction, String eventLabel) throws IOException {
 		
 		if(DEBUG_MODE) {return;}
