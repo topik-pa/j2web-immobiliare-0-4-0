@@ -262,7 +262,10 @@ public class j2web implements parametriGenerali {
 	}
 
 	//Funzione di tracking eventi su j2web
+	@SuppressWarnings("unused")
 	public static void  trackEvent(String eventAction, String eventLabel) throws IOException {
+		
+		if(DEBUG_MODE) {return;}
 
 		if(eventLabel==null) {eventLabel="";}
 
