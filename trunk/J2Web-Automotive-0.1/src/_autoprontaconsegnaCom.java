@@ -284,8 +284,13 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 		mappaAssociativaInputValore.put("alimentazione",scheda.carburanteVeicolo);
 		mappaAssociativaInputValore.put("allestimento",scheda.versioneVeicolo);
 		mappaAssociativaInputValore.put("cambio",scheda.tipologiaCambioVeicolo);
-		mappaAssociativaInputValore.put("carrozzeria",scheda.carrozzeriaVeicolo);
-		mappaAssociativaInputValore.put("cilindrata",scheda.cilindrataVeicolo);
+		mappaAssociativaInputValore.put("carrozzeria",scheda.carrozzeriaVeicolo);	
+		if(scheda.cilindrataVeicolo.equals("")) {
+			mappaAssociativaInputValore.put("cilindrata","ND");
+		}
+		else {
+			mappaAssociativaInputValore.put("cilindrata",scheda.cilindrataVeicolo);
+		}		
 		mappaAssociativaInputValore.put("colore",scheda.coloreEsternoVeicolo);
 		mappaAssociativaInputValore.put("coloreinterno",scheda.coloreInterniVeicolo);
 		mappaAssociativaInputValore.put("euro",scheda.classeEmissioniVeicolo);
@@ -317,6 +322,8 @@ public class _autoprontaconsegnaCom extends PortaleWeb {
 		} catch (HttpWrongResponseBodyException e1) {
 			e1.printStackTrace();
 		}
+		
+		postParameters.remove(new BasicNameValuePair("modello", ""));
 		postParameters.add(new BasicNameValuePair("modello", modello));
 		if(scheda.disponibilitaABS) {postParameters.add(new BasicNameValuePair("optional_1", "1"));}
 		if(scheda.disponibilitaAirBag) {postParameters.add(new BasicNameValuePair("optional_2", "2"));}
