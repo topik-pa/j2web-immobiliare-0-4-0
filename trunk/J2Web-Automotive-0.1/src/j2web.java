@@ -216,7 +216,7 @@ public class j2web implements parametriGenerali {
 		J2Web_UI.listPortaliSincronizzazione.add(_automobileIt);*/
 
 		ImageIcon _vendiautoComIcon  = new ImageIcon(cl.getResource("images/_vendiautoCom.png"));
-		PortaleWeb _vendiautoCom = new _vendiautoCom(_vendiautoComIcon, "5 - vendiauto.com", "005", true);
+		PortaleWeb _vendiautoCom = new _vendiautoCom(_vendiautoComIcon, "5 - vendiauto.com", "005", false);
 		J2Web_UI.listPortaliSincronizzazione.add(_vendiautoCom);
 
 		/*ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
