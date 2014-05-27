@@ -216,7 +216,7 @@ public class j2web implements parametriGenerali {
 		J2Web_UI.listPortaliSincronizzazione.add(_automobileIt);*/
 
 		ImageIcon _vendiautoComIcon  = new ImageIcon(cl.getResource("images/_vendiautoCom.png"));
-		PortaleWeb _vendiautoCom = new _vendiautoCom(_vendiautoComIcon, "4 - vendiauto.com", "005", true);
+		PortaleWeb _vendiautoCom = new _vendiautoCom(_vendiautoComIcon, "5 - vendiauto.com", "005", false);
 		J2Web_UI.listPortaliSincronizzazione.add(_vendiautoCom);
 
 		/*ImageIcon _subitoItIcon  = new ImageIcon(cl.getResource("images/_subitoIt.png"));
@@ -224,7 +224,7 @@ public class j2web implements parametriGenerali {
 		J2Web_UI.listPortaliSincronizzazione.add(_subitoIt);*/
 
 		/*ImageIcon _autoprontaconsegnaComIcon  = new ImageIcon(cl.getResource("images/_autoprontaconsegnaCom.png"));
-		PortaleWeb _autoprontaconsegnaCom = new _autoprontaconsegnaCom(_autoprontaconsegnaComIcon, "6 - autoprontaconsegna.com", "005", false);
+		PortaleWeb _autoprontaconsegnaCom = new _autoprontaconsegnaCom(_autoprontaconsegnaComIcon, "6 - autoprontaconsegna.com", "006", true);
 		J2Web_UI.listPortaliSincronizzazione.add(_autoprontaconsegnaCom);*/
 
 		/*ImageIcon _kijijiItIcon  = new ImageIcon(cl.getResource("images/_kijijiIt.png"));
